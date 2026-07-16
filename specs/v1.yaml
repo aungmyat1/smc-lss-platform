@@ -1,0 +1,12 @@
+# SMC-LSS strategy spec v1 (deterministic)
+version: 1
+symbol: EURUSD
+htf: H4
+entry_tf: M15
+ltf_confirm: M1
+swing_lookback: 2
+equal_level_tol_pips: 2
+min_fvg_pips: 3
+risk_pct: 1.0
+min_rr: 2.0
+sessions: [london, ny]

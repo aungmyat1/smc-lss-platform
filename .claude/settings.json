@@ -1,0 +1,35 @@
+{
+  "project": "smc-lss-platform",
+  "description": "Institutional Smart Money Concepts (SMC-LSS) trading research + execution platform",
+  "skills": {
+    "autoload": true,
+    "directory": ".claude/skills"
+  },
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash",
+      "mcp__metatrader__get_*",
+      "mcp__metatrader__place_*",
+      "mcp__metatrader__modify_*",
+      "mcp__metatrader__close_*",
+      "mcp__metatrader__cancel_*"
+    ],
+    "confirmBeforeExecute": [
+      "mcp__metatrader__place_*",
+      "mcp__metatrader__modify_*",
+      "mcp__metatrader__close_*",
+      "mcp__metatrader__cancel_*"
+    ]
+  },
+  "trading": {
+    "account_mode": "DEMO_REQUIRED_FOR_TESTS",
+    "risk_pct": 1.0,
+    "daily_loss_pct": 3.0,
+    "max_positions": 3,
+    "portfolio_heat_pct": 4.0,
+    "min_rr": 2.0
+  }
+}
