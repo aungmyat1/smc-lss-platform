@@ -170,12 +170,52 @@ def detect_structure_m3(m5, bias):
                      swept_level=sw[-1]["level"], displacement_origin=origin)
 
 
-def detect_e_trigger(h1):
-    if e.liquidity_sweeps(h1):
+def detect_e1_gap_reaction(h1, bias, reaction_lookback=6):
+    """Conservative E1 proxy from source slides 53/55.
+
+    E1 is explicitly "price fills & reacts to gap" on H1.  A direction-aligned
+    prior FVG must be touched by a recent closed candle which then closes away
+    from the gap midpoint.  This is deliberately stricter than the former E1
+    fallback and remains a PLATFORM_INTERPRETATION until more source examples
+    are labelled.
+    """
+    if bias not in ("BUY", "SELL") or len(h1) < 4:
+        return False
+    want = "bull" if bias == "BUY" else "bear"
+    gaps = [gap for gap in e.fvgs(h1) if gap["dir"] == want]
+    first_reaction = max(0, len(h1) - reaction_lookback)
+    for candle_i in range(len(h1) - 1, first_reaction - 1, -1):
+        candle = h1[candle_i]
+        for gap in reversed(gaps):
+            if gap["i"] >= candle_i:
+                continue
+            midpoint = (gap["lower"] + gap["upper"]) / 2.0
+            touched = candle["low"] <= gap["upper"] and candle["high"] >= gap["lower"]
+            if not touched:
+                continue
+            if bias == "SELL":
+                rejected = candle["close"] < midpoint and candle["close"] < candle["open"]
+            else:
+                rejected = candle["close"] > midpoint and candle["close"] > candle["open"]
+            if rejected:
+                return True
+    return False
+
+
+def detect_e_trigger(h1, bias=None):
+    """Classify an H1 cause without treating E1 as a default catch-all."""
+    wanted_sweep = "bull" if bias == "BUY" else "bear" if bias == "SELL" else None
+    recent_from = max(0, len(h1) - 12)
+    if any(s["i"] >= recent_from and (wanted_sweep is None or s["dir"] == wanted_sweep)
+           for s in e.liquidity_sweeps(h1)):
         return "E3"
+    if detect_e1_gap_reaction(h1, bias):
+        return "E1"
+    # E2 remains a first-pass POI proxy.  It must be replaced by a fresh-zone
+    # reaction detector before the implementation interlock can be enabled.
     if e.order_blocks(h1):
         return "E2"
-    return "E1"
+    return None
 
 
 _DETECT = {"M1": detect_structure_m1, "M2": detect_structure_m2, "M3": detect_structure_m3}
@@ -197,7 +237,10 @@ def analyze(symbol, m5, h1=None, d1=None, primary_tp=None):
     bias = detect_bias(htf)
     if bias is None:
         return {"symbol": symbol, "decision": "NO-SIGNAL", "reason": "HTF ranging / no bias"}
-    e_trig = detect_e_trigger(htf)
+    e_trig = detect_e_trigger(htf, bias)
+    if e_trig is None:
+        return {"symbol": symbol, "decision": "NO-SIGNAL",
+                "reason": "no confirmed H1 E-trigger (E1 gap reaction / E2 POI / E3 sweep)"}
     for m_mod in ("M2", "M1", "M3"):
         variant = e_trig + m_mod
         if VARIANT_TABLE.get(variant, {}).get("direction") != bias:

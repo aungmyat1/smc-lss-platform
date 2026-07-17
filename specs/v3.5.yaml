@@ -4,6 +4,13 @@
 version: 3.5
 status: RESEARCH_CANDIDATE
 supersedes: 1
+source:
+  video_url: "https://youtu.be/PxkGqG2qiIM"
+  video_title: "D2 : Strategy Blueprint"
+  creator: "1BullBear"
+  # Evidence supplied for E1M1: slides 53 (H1 check) and 55 (M5 confirmation/target).
+  # Exact video timestamps and the remaining E×M source slides are still pending.
+  verification_scope: "E1M1 slides 53 and 55 only"
 
 # One parameterized procedure, not nine handlers:
 #   generate_signal(e_trigger, m_model, instrument_profile)
@@ -15,14 +22,24 @@ confirmation:
   require_stage1_and_stage2: true
 
 e_triggers:                          # STAGE 1 (HTF cause)
-  E1: {desc: "D1 gap fill/reaction at H1 context", tf: [D1, H1]}
+  E1:
+    desc: "H1 price fills and reacts to a gap"
+    tf: [H1]
+    source_status: SOURCE_EXPLICIT_SLIDE_53
+    # D1 may supply broader context, but the supplied source labels the E1 check
+    # itself as a 1H chart; D1 is therefore not an E1 detection requirement.
   E2: {desc: "H1 reaction at a marked POI (supply/demand/liquidity)", tf: [H1]}
   E3: {desc: "H1 sweep + reclaim of external liquidity", tf: [H1]}
 
 m_models:                            # STAGE 2 (M5 confirmation + entry anchor)
   M1:
-    desc: "inducement + character change"
-    entry: "pullback / FVG midpoint"
+    desc: "character change with inducement"
+    tf: [M5]
+    source_status: SOURCE_EXPLICIT_SLIDES_53_55
+    # The slide verifies a post-character-change execution area. Selecting the
+    # exact FVG midpoint is the platform's deterministic implementation rule,
+    # not text that is legible on the supplied slides.
+    entry: "post-character-change pullback / implementation anchor at FVG midpoint"
     stop_long: "min(anchor_low, inducement_low, swept_ssl) - buffer"
     stop_short: "max(anchor_high, inducement_high, swept_bsl) + buffer"
   M2:
@@ -48,17 +65,28 @@ horizons:
   INTRAWEEK:  {max_hold_hours: 120}
   MULTI_HORIZON: {max_hold_hours: 120, runner: true}
 
-# All 9 observed variants (E×M). instrument = source example; live watchlist maps below.
+# `instrument` and `direction` describe the source example, not proof that a
+# model is exclusive to that instrument/direction. Only E1M1 has source images
+# available in this review; legacy claims for the other cells remain pending.
 variants:
-  E1M1: {instrument: XAUUSD,  direction: SELL, horizon: INTRADAY,     tp: "Intraday SSL",              verified: true}
-  E1M2: {instrument: ETHUSDT, direction: BUY,  horizon: INTRAWEEK,    tp: "H1 external",              verified: true}
-  E1M3: {instrument: EURUSD,  direction: SELL, horizon: MULTI_HORIZON,tp: "M5 SSL + H1 runner",       verified: true}
-  E2M1: {instrument: EURGBP,  direction: SELL, horizon: INTRADAY,     tp: "Intraday SSL/midnight-open",verified: true}
-  E2M2: {instrument: CHFJPY,  direction: BUY,  horizon: OVERNIGHT,    tp: "Next-session/H1 BSL",      verified: true}
-  E2M3: {instrument: BTCUSDT, direction: SELL, horizon: INTRAWEEK,    tp: "H1 external SSL",          verified: true}
-  E3M1: {instrument: GBPJPY,  direction: BUY,  horizon: INTRADAY,     tp: "Intraday BSL",             verified: true}
-  E3M2: {instrument: GBPJPY,  direction: BUY,  horizon: INTRADAY,     tp: "Intraday BSL",             verified: "carryover"}
-  E3M3: {instrument: EURUSD,  direction: SELL, horizon: INTRADAY,     tp: "Intraday SSL",             verified: true}
+  E1M1:
+    instrument: XAUUSD
+    direction: SELL
+    horizon: INTRADAY
+    tp: "M5 intraday sell-side liquidity"
+    source_status: SOURCE_VERIFIED_SLIDES_53_55
+    evidence:
+      - "E1M1, 1H check.jpeg (slide 53)"
+      - "E1M1, 5M confirm, entry and target.jpeg (slide 55)"
+    source_example_only: true
+  E1M2: {instrument: ETHUSDT, direction: BUY,  horizon: INTRAWEEK,     tp: "H1 external",               source_status: PENDING_SOURCE}
+  E1M3: {instrument: EURUSD,  direction: SELL, horizon: MULTI_HORIZON, tp: "M5 SSL + H1 runner",        source_status: PENDING_SOURCE}
+  E2M1: {instrument: EURGBP,  direction: SELL, horizon: INTRADAY,      tp: "Intraday SSL/midnight-open", source_status: PENDING_SOURCE}
+  E2M2: {instrument: CHFJPY,  direction: BUY,  horizon: OVERNIGHT,     tp: "Next-session/H1 BSL",        source_status: PENDING_SOURCE}
+  E2M3: {instrument: BTCUSDT, direction: SELL, horizon: INTRAWEEK,     tp: "H1 external SSL",            source_status: PENDING_SOURCE}
+  E3M1: {instrument: GBPJPY,  direction: BUY,  horizon: INTRADAY,      tp: "Intraday BSL",               source_status: PENDING_SOURCE}
+  E3M2: {instrument: GBPJPY,  direction: BUY,  horizon: INTRADAY,      tp: "Intraday BSL",               source_status: PENDING_SOURCE}
+  E3M3: {instrument: EURUSD,  direction: SELL, horizon: INTRADAY,      tp: "Intraday SSL",               source_status: PENDING_SOURCE}
 
 risk:
   risk_pct_demo: 0.5
