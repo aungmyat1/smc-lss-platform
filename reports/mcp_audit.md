@@ -1,11 +1,15 @@
-# MCP Audit — SMC Trading Platform (re-run)
-Generated: 2026-07-16 | live enumeration + connection tests
+# MCP Audit — SMC Trading Platform (re-run 3)
+Generated: 2026-07-17 | live enumeration + demo execution status reconciled
 
 ## MetaTrader — CONNECTED & LIVE ✅
-- Auth valid; account REAL, $988.12, USD, 500x, 0 open positions (live-read).
+- Auth valid; VTMarkets demo login 1144985 verified by server/balance evidence.
+- Connector `account_type` may report `real`; project policy treats server-name
+  attestation as authoritative and fail-closes when not demo-attested.
 - ~30 tools: account/positions/orders/deals reads; symbols/candles/price; place/modify/close/cancel (market + pending).
 - Quirk encoded: `place_market_order` has no SL/TP → `modify_position` second step.
-- ⚠️ Live REAL account reachable by order tools; no demo isolation.
+- Demo order round trip was verified once in `reports/execution_test.json`
+  (place → modify SL/TP → close → journal). Scheduled auto-execution remains
+  disabled while `engine_implements_spec=false`.
 
 ## Platform MCPs — available
 cowork, workspace(bash+web_fetch), scheduled-tasks, skills, computer-use,

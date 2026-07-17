@@ -1,11 +1,12 @@
-# Skills Inventory — SMC Trading Platform (re-run)
-Generated: 2026-07-16 | Verified programmatically: frontmatter + 9 required sections per skill
+# Skills Inventory — SMC Trading Platform (re-run 2)
+Generated: 2026-07-17 | Verified on disk
 
 ## Structural validation result
-- Total skills: **23** (18 required atomic + 5 orchestrators)
-- Required-18 present: **18 / 18** — none missing
-- Valid YAML frontmatter: **23 / 23**
-- All 9 required sections (Purpose, Inputs, Outputs, Workflow, Decision rules, Validation checklist, Failure handling, Examples, Acceptance criteria): **23 / 23** (0 missing sections)
+- Total skills: **22** on disk (17 atomic-style skills + 5 orchestrators)
+- Required trading capabilities are represented; `risk-management` and `journaling`
+  serve both atomic and orchestrator roles after duplicate wrappers were merged.
+- Valid YAML/frontmatter and required-section checks were previously reported as passing;
+  rerun the structural validator after any skill edit.
 
 ## Required-18 (all PASS)
 market-structure, liquidity-sweep, order-block, fair-value-gap, choch-bos,
@@ -25,8 +26,8 @@ journaling, trading-coach.
 | risk-management | ACTIVE | pip value generic in spec; enforce in code | add tick_value fetch to sizing code |
 | backtesting | **OPERATIONAL** | runs; low sample | bulk history loader |
 | validation/optimization | SPEC | need dataset + walk-forward runner | wire after bulk data |
-| execution/mt5-trading | PROVEN (dry-run) | live send needs demo | bind demo account |
-| journaling | ACTIVE | no persistent store yet | write data/journal.xlsx on close |
+| execution/mt5-trading | PROVEN (demo smoke) | scheduled auto-exec still gated | keep demo attestation + M2 gate |
+| journaling | ACTIVE | CSV store wired; analytics shallow | expand weekly review outputs |
 
 ## Conflicts
 None detected. Orchestrator names differ from atomics; no trigger collisions observed

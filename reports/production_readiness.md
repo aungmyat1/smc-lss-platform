@@ -1,5 +1,5 @@
 # Production Readiness — SMC Trading Platform (re-run 2)
-Generated: 2026-07-16 | Scores reflect verified reality incl. live demo execution.
+Generated: 2026-07-17 | Scores reflect verified reality incl. live demo execution.
 
 ## Production Readiness Score
 | Category | Score | Basis |
@@ -10,7 +10,7 @@ Generated: 2026-07-16 | Scores reflect verified reality incl. live demo executio
 | Automation | 60% | trigger-on-match verified; no autonomous loop |
 | Reliability | 58% | smoke 3/3; deterministic engine; live order retcodes handled; no fault-injection harness |
 | Documentation | 92% | README, INSTALL, 9 reports, journal store |
-| Security | 62% | demo used for execution tests; real account still exists on connector; order tools gated |
+| Security | 62% | demo used for execution tests; connector account_type may mislabel; server-name attestation required |
 | Maintainability | 82% | modular engine, tests, clean structure |
 | **Overall readiness** | **≈73%** | up from ~66% — execution path now proven |
 
@@ -23,9 +23,8 @@ Generated: 2026-07-16 | Scores reflect verified reality incl. live demo executio
 |---|---|---|---|---|---|
 | 1 | Backtest not conclusive | no proven edge | run load_history.py (bulk) then validate.py --all | **P1** | Med |
 | 2 | OB/FVG/liquidity detectors spec-only | validator determinism partial | code detectors in smc_engine.py | **P1** | Med |
-| 3 | Connector also holds a REAL account | mislabel risk | keep terminal on demo; label clarity | **P2** | Low |
-| 4 | git index.lock (user side) | commits blocked from sandbox | clear lock; commit on host | **P2** | Trivial |
-| 5 | Infra MCPs absent | those integrations impossible | install only if needed | **P3** | Varies |
+| 3 | Connector account_type may mislabel demo as real | misclassification risk | keep server-name attestation; fail closed if not demo | **P2** | Low |
+| 4 | Infra MCPs absent | those integrations impossible | install only if needed | **P3** | Varies |
 
 ## Honest verdict
 The platform now executes a **full live loop on a demo account** and all 18 required

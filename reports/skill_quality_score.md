@@ -1,5 +1,5 @@
-# Skill Quality Score — SMC Trading Skills (re-run)
-Generated: 2026-07-16 | 0–100 per dimension | Now partly backed by executable code (smc_engine.py)
+# Skill Quality Score — SMC Trading Skills (re-run 2)
+Generated: 2026-07-17 | 0–100 per dimension | Now partly backed by executable code (smc_engine.py)
 
 Dimensions: Consistency, Determinism, Clarity, Completeness, Reusability, Maintainability, Production
 
@@ -20,4 +20,5 @@ Dimensions: Consistency, Determinism, Clarity, Completeness, Reusability, Mainta
 ## Remaining deductions (honest)
 - OB/FVG/liquidity/inducement/mitigation detection still specified in prose, not yet coded → determinism 70. Fix: implement detectors in `smc_engine.py`.
 - optimization/validation completeness 72 → need dataset + walk-forward runner.
-- journaling production 68 → no persistent store wired yet.
+- journaling production remains limited by review/analytics depth; persistent CSV
+  store is wired at `data/journal.csv`.

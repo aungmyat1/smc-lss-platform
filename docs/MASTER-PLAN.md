@@ -13,7 +13,7 @@ after v3.5 leaves RESEARCH_CANDIDATE and the demo evidence gate is met.
 ## 2. Status snapshot
 | Area | State |
 |---|---|
-| Repo / CI | On GitHub (origin/master), 12/12 tests pass, clean tree |
+| Repo / CI | On GitHub (origin/master), 12/12 tests pass, clean tree; local master is 1 commit ahead |
 | Skills | 22 (17 atomic + 5 orchestrators), duplicates merged |
 | Strategy | v3.5 ruleset registered; parameterized spec `specs/v3.5.yaml` |
 | Engine | Formula layer complete + tested; detection layer first pass |
@@ -25,12 +25,14 @@ after v3.5 leaves RESEARCH_CANDIDATE and the demo evidence gate is met.
 ## 3. Gap analysis (propose-mode → objective)
 1. **Signal fidelity** — detection layer uses FVG/OB/sweep proxies, not the ruleset's
    tick-level E-trigger / IFVG / gold-zone mechanics. Must be hardened + validated.
-2. **No evidence** — zero backtest metrics and zero journaled demo trades under v3.5.
+2. **Evidence gap** — only low-sample backtest output exists (1 trade, inconclusive);
+   no statistically valid v3.5 evidence set yet.
 3. **Time normalization** — broker candle timestamps ≠ UTC; killzone/session filter
    must normalize to a canonical timezone before it can be trusted.
 4. **Sizing for non-USD** — XAUUSD/BTCUSD need live tick-value sizing, not fallbacks.
-5. **No auto-execution path exercised** — demo order placement + reconciliation loop
-   is specified in the runbook but not yet run end-to-end.
+5. **Auto-execution not yet autonomous** — one demo order round trip has been
+   verified (place → modify SL/TP → close → journal), but the scheduled v3.5 loop
+   remains propose-mode until the backtest/validation gate passes.
 6. **Observability** — no run history, alerting, or health metrics for the loop.
 
 ## 4. Milestones, exit gates, and tasks
@@ -45,7 +47,7 @@ Charter, v3.5 spec, watchlist, multi-symbol runner, runbook, scheduled runs.
 `generate_signal` + fixtures done; `analyze()` detection wired. Detection refinement moves to M2.
 
 ### M2 — Backtest & signal validation  ⏳ NEXT  (the unlock gate)
-**Objective:** prove the v3.5 engine on history before any auto-execution.
+**Objective:** prove the v3.5 engine on history before scheduled demo auto-execution.
 - Build `src/backtest_v35.py`: event-driven, closed-candles-only, realistic spread/
   slippage/commission, per-symbol tick value, walk-forward split.
 - Load ≥ 12 months H1+M5(+D1) history per active symbol via `load_history.py`.
@@ -59,7 +61,8 @@ On pass → flip `engine_implements_spec: true` → demo auto-execution activate
 
 ### M3 — Demo auto-execution + evidence  ⏳
 **Objective:** run live on demo, accumulate reviewable results.
-- Exercise the full order path once (place_market_order → modify SL/TP → reconcile).
+- Full order path smoke test is complete once on demo; next step is scheduled,
+  strategy-gated execution after M2 passes.
 - Journal every outcome; weekly review via `journaling` (+ one fix each).
 - Trade-management loop per frozen horizon (BE at +1R, partial, DOL/time exits).
 **Exit gate:** ≥ 40 journaled demo trades, rule-adherence ≥ 95%, positive expectancy

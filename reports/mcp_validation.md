@@ -1,30 +1,32 @@
-# MCP Validation — Functional Tests (re-run)
-Generated: 2026-07-16 | Real results. Nothing fabricated. Blocked = NOT IMPLEMENTED + reason.
+# MCP Validation — Functional Tests (re-run 3)
+Generated: 2026-07-17 | Real results. Nothing fabricated. Blocked = NOT IMPLEMENTED + reason.
 
-## MetaTrader read path — executed live
+## MetaTrader read path — executed live/demo
 | Test | Result | Evidence |
 |---|---|---|
 | Server responds / auth | **PASS** | get_account_info returned real data |
-| Account read | **PASS** | $988.12, 500x, USD |
+| Account read | **PASS** | VTMarkets-Demo login 1144985, ~$988, 500x, USD |
 | Symbols / price | **PASS** | EURUSD + crosses; bid/ask 1.14426 |
 | Candles H1/H4/M15 | **PASS** | 500 H1 + H4/M15 pulled |
 | Positions read | **PASS** | 0 open |
 
-## MetaTrader write/execution path — NOT executed (policy)
-| Test | Result | Reason |
+## MetaTrader write/execution path — executed once on demo
+| Test | Result | Evidence |
 |---|---|---|
-| Place demo order | **NOT IMPLEMENTED** | account is REAL not demo; unsafe. Needs demo binding. |
-| Modify/cancel/close | **NOT IMPLEMENTED** | depends on a demo test position |
+| Place demo order | **PASS** | EURUSD-VIP 0.01 BUY filled, retcode 10009 |
+| Modify SL/TP | **PASS** | SL 1.14164 / TP 1.14764 attached |
+| Close position | **PASS** | position closed, account returned flat |
+| Journal/deals read | **PASS** | entry+exit deals recorded, round-trip P/L -0.13 |
 
 ## Infra tests
 | Test | Result | Evidence |
 |---|---|---|
-| Read file | **PASS** | audit read 23 skills |
+| Read file | **PASS** | audit read 22 skill directories |
 | Write file | **PASS** | reports + code written (via sandbox heredoc) |
 | Execute Python | **PASS** | backtest + smoke tests ran |
-| Smoke tests | **PASS** | pytest: 3 passed |
+| Smoke tests | **PASS** | pytest: 12 passed |
 | Backtest run | **PASS (low-sample)** | status LOW_SAMPLE, 1 trade, +2.0R on 92 bars |
-| Git status/commit | **WARNING** | commits exist; a user-side `.git/index.lock` blocked a commit from the sandbox |
+| Git status/commit | **PASS** | git history present; `.git/index.lock` absent on 2026-07-17 |
 | Redis/Postgres/Docker/WebSocket | **NOT IMPLEMENTED** | servers absent |
 
 ## Error / retry / timeout handling
