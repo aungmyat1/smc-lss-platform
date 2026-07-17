@@ -229,10 +229,22 @@ def inducement(c, k=2):
             "bull_inducement": lo[-1][1] if lo else None}
 
 
-def mitigation_status(c, from_i, low, high, direction):
-    """Status of a POI zone [low,high] after bar from_i: FRESH / MITIGATED / INVALIDATED."""
+def mitigation_status(c, from_i, low, high, direction, upto_i=None):
+    """Status of a POI zone [low,high] after bar from_i: FRESH / MITIGATED / INVALIDATED,
+    evaluated using bars up to and including `upto_i` (default: the end of
+    `c`, i.e. the original behavior — callers that already pass a
+    window ending "now" don't need to change).
+
+    upto_i matters when `c` is the FULL series and the caller wants status
+    "as of bar t" for t << len(c)-1: without it, every call scans to the
+    true end of the array regardless of from_i, which is O(len(c)) per call
+    and, called once per bar over a full history, reintroduces the O(n^2)
+    pattern fixed elsewhere in this module (found via
+    tests/test_features.py's linear-scaling guard).
+    """
     status = "FRESH"
-    for i in range(from_i + 1, len(c)):
+    end = len(c) - 1 if upto_i is None else upto_i
+    for i in range(from_i + 1, end + 1):
         if c[i]["low"] <= high and c[i]["high"] >= low:
             status = "MITIGATED"
         if direction == "bull" and c[i]["close"] < low:

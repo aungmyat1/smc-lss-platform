@@ -33,16 +33,13 @@ def _structure_around(entry, direction, primary_tp):
                      inducement=entry - 1.2 * d, primary_tp=primary_tp)
 
 
-def test_variant_table_matches_source_directions():
-    for variant, (_sym, direction, _e, _tp) in FIXTURES.items():
-        assert VARIANT_TABLE[variant]["direction"] == direction, variant
-
-
 def test_signal_invariants_per_variant():
+    # v3.6 Sec 1: direction is supplied by the caller (the historically
+    # observed direction for each fixture), not looked up from VARIANT_TABLE.
     for variant, (sym, direction, entry, tp) in FIXTURES.items():
         e_trig, m_mod = variant[:2], variant[2:]
         s = _structure_around(entry, direction, tp)
-        sig = generate_signal(e_trig, m_mod, sym, s)
+        sig = generate_signal(e_trig, m_mod, sym, s, direction)
         assert sig is not None, variant
         assert sig["direction"] == direction, variant
         assert sig["horizon"] == VARIANT_TABLE[variant]["horizon"], variant
@@ -57,9 +54,31 @@ def test_signal_invariants_per_variant():
         assert sig["risk_per_unit"] > 0, variant
 
 
+def test_variants_are_direction_neutral_not_locked():
+    # v3.6 Sec 1: v3.5 hard-locked one direction per variant (e.g. E1M1 was
+    # always SELL, baked from a single historical chart) — structurally
+    # unable to trade the mirror direction even in the opposite regime. Prove
+    # the engine will now happily fire the OPPOSITE direction for the same
+    # variant given a mirrored structure, for a sample of variants.
+    for variant in ("E1M1", "E2M2", "E3M3"):
+        e_trig, m_mod = variant[:2], variant[2:]
+        _sym, observed_dir, entry, _tp = FIXTURES[variant]
+        mirror_dir = "BUY" if observed_dir == "SELL" else "SELL"
+        # a generously far target (not the original fixture's tp distance,
+        # which doesn't necessarily clear min_rr under every model's stop
+        # formula) — the point here is proving direction-neutrality, not
+        # reproducing the original R:R.
+        d = abs(entry) * 0.001 or 0.001
+        mirror_tp = entry - 10 * d if mirror_dir == "SELL" else entry + 10 * d
+        s = _structure_around(entry, mirror_dir, mirror_tp)
+        sig = generate_signal(e_trig, m_mod, "EURUSD", s, mirror_dir)
+        assert sig is not None and sig["decision"] == "SIGNAL", variant
+        assert sig["direction"] == mirror_dir, variant
+
+
 def test_tp1_is_exactly_one_R():
     s = _structure_around(1.10000, "SELL", 1.09000)
-    sig = generate_signal("E1", "M3", "EURUSD", s)
+    sig = generate_signal("E1", "M3", "EURUSD", s, "SELL")
     r = sig["risk_per_unit"]
     assert abs((sig["entry"] - sig["tp1_1R"]) - r) < 1e-6
 
@@ -67,7 +86,7 @@ def test_tp1_is_exactly_one_R():
 def test_rr_gate_rejects_short_target():
     # primary_tp only 0.2R away -> must be rejected by min_rr
     s = Structure(zone_low=0.9999, zone_high=1.0001, swept_level=1.0003, primary_tp=0.99996)
-    sig = generate_signal("E2", "M1", "EURUSD", s, min_rr=2.0)
+    sig = generate_signal("E2", "M1", "EURUSD", s, "SELL", min_rr=2.0)
     assert sig["decision"] == "REJECT_RR"
 
 
@@ -75,22 +94,27 @@ def test_no_target_is_rejected_not_auto_passed():
     # v3.6 spec Sec 11: primary_tp=None must REJECT, not silently clear the
     # R:R gate (the v3.5 defect: realized_rr=None used to count as "ok").
     s = Structure(zone_low=0.9999, zone_high=1.0001, swept_level=1.0003, primary_tp=None)
-    sig = generate_signal("E2", "M1", "EURUSD", s, min_rr=2.0)
+    sig = generate_signal("E2", "M1", "EURUSD", s, "SELL", min_rr=2.0)
     assert sig["decision"] == "REJECT_NO_TARGET"
     assert sig["rr_to_primary_tp"] is None
 
 
 def test_invalid_variant_returns_none():
     s = _structure_around(1.10000, "SELL", 1.09000)
-    assert generate_signal("E4", "M1", "EURUSD", s) is None   # no such E-trigger
-    assert generate_signal("E1", "M9", "EURUSD", s) is None   # no such M-model
+    assert generate_signal("E4", "M1", "EURUSD", s, "SELL") is None   # no such E-trigger
+    assert generate_signal("E1", "M9", "EURUSD", s, "SELL") is None   # no such M-model
+
+
+def test_invalid_direction_returns_none():
+    s = _structure_around(1.10000, "SELL", 1.09000)
+    assert generate_signal("E1", "M1", "EURUSD", s, "SIDEWAYS") is None
 
 
 def test_stop_always_on_correct_side_by_construction():
     # entry is the zone midpoint, so SELL stop is always above entry, BUY below.
     for variant, (sym, direction, entry, tp) in FIXTURES.items():
         s = _structure_around(entry, direction, tp)
-        sig = generate_signal(variant[:2], variant[2:], sym, s)
+        sig = generate_signal(variant[:2], variant[2:], sym, s, direction)
         if direction == "SELL":
             assert sig["stop"] >= s.zone_high, variant
         else:
@@ -99,8 +123,8 @@ def test_stop_always_on_correct_side_by_construction():
 
 def test_determinism():
     s = _structure_around(26699.0, "SELL", 25324.7)
-    a = generate_signal("E2", "M3", "BTCUSD", s)
-    b = generate_signal("E2", "M3", "BTCUSD", s)
+    a = generate_signal("E2", "M3", "BTCUSD", s, "SELL")
+    b = generate_signal("E2", "M3", "BTCUSD", s, "SELL")
     assert a == b
 
 

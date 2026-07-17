@@ -236,12 +236,18 @@ def _e3_trigger(h1):
     lookback_start = max(0, n - E3_RANGE_LOOKBACK_H1_BARS)
     hi_in = [p for i, p in hi if i >= lookback_start]
     lo_in = [p for i, p in lo if i >= lookback_start]
-    if not hi_in or not lo_in:
+    # each side's extremity is independent — a market with e.g. no confirmed
+    # swing high yet in the lookback can still have a perfectly good SSL
+    # sweep on the low side; don't require both sides to exist.
+    ext_high = max(hi_in) if hi_in else None
+    ext_low = min(lo_in) if lo_in else None
+    if ext_high is None and ext_low is None:
         return None
-    ext_high, ext_low = max(hi_in), min(lo_in)
     sweeps = e.liquidity_sweeps(h1, min_wick_ratio=SWEEP_WICK_RATIO_MIN)
     for sw in reversed(sweeps):
-        if sw["level"] != ext_high and sw["level"] != ext_low:
+        is_external = (sw["dir"] == "bear" and ext_high is not None and sw["level"] == ext_high) or \
+                     (sw["dir"] == "bull" and ext_low is not None and sw["level"] == ext_low)
+        if not is_external:
             continue                           # only the range extremity is EXTERNAL liquidity
         j = sw["i"]
         for k in range(j, min(j + E3_RECLAIM_WINDOW_H1_BARS + 1, n)):
@@ -337,12 +343,21 @@ def detect_structure_m3(m5, bias):
                      zone_creation_i=fv["i"])
 
 
-def detect_e_trigger(h1):
-    if e.liquidity_sweeps(h1):
-        return "E3"
-    if e.order_blocks(h1):
-        return "E2"
-    return "E1"
+def detect_e_trigger(h1, d1=None):
+    """Stage 1 (v3.6 spec Sec 2-4): try all three E-triggers, return the one
+    with the most recent confirm_i (freshest reason), or None if none
+    qualify. The prior implementation tagged ANY H1 sweep as E3 or ANY H1
+    order block as E2 with no causal/freshness validation, and fell back to
+    E1 unconditionally otherwise — i.e. E1 was never actually a gate, it was
+    a default. That's gone: no qualifying trigger means no signal, full stop.
+    Also returns bias directly (from the trigger's own reaction), replacing
+    the separate generic-trend detect_bias() as the source of direction —
+    the E-trigger reaction IS what defines bias, not an independent HTF read.
+    """
+    candidates = [t for t in (_e1_trigger(h1, d1), _e2_trigger(h1), _e3_trigger(h1)) if t is not None]
+    if not candidates:
+        return None
+    return max(candidates, key=lambda t: t["confirm_i"])
 
 
 _DETECT = {"M1": detect_structure_m1, "M2": detect_structure_m2, "M3": detect_structure_m3}
@@ -365,20 +380,20 @@ def analyze(symbol, m5, h1=None, d1=None, primary_tp=None, index_offset=0):
     the same real zone across a sliding backtest window, not just a
     window-local coordinate that resets every call."""
     htf = h1 if h1 else m5
-    bias = detect_bias(htf)
-    if bias is None:
-        return {"symbol": symbol, "decision": "NO-SIGNAL", "reason": "HTF ranging / no bias"}
-    e_trig = detect_e_trigger(htf)
+    trig = detect_e_trigger(htf, d1)
+    if trig is None:
+        return {"symbol": symbol, "decision": "NO-SIGNAL",
+                "reason": "no qualifying E-trigger (E1 D1-gap / E2 POI / E3 external sweep)"}
+    e_trig, bias = trig["e_trigger"], trig["bias"]
     for m_mod in ("M2", "M1", "M3"):
         variant = e_trig + m_mod
-        if VARIANT_TABLE.get(variant, {}).get("direction") != bias:
+        if variant not in VARIANT_TABLE:
             continue
         st = _DETECT[m_mod](m5, bias)
         if st is None:
             continue
-        direction = VARIANT_TABLE[variant]["direction"]
-        st.primary_tp = primary_tp if primary_tp is not None else _dol_target(m5, direction, st.midpoint())
-        sig = generate_signal(e_trig, m_mod, symbol, st)
+        st.primary_tp = primary_tp if primary_tp is not None else _dol_target(m5, bias, st.midpoint())
+        sig = generate_signal(e_trig, m_mod, symbol, st, bias)
         if sig and sig["decision"] == "SIGNAL":
             sig["detected"] = True
             sig["structure_key"] = (
@@ -405,4 +420,4 @@ if __name__ == "__main__":
     else:
         s = Structure(zone_low=26649, zone_high=26749, swept_level=26900,
                       displacement_origin=26890, primary_tp=25324.7)
-        print(json.dumps(generate_signal("E2", "M3", "BTCUSD", s), indent=2))
+        print(json.dumps(generate_signal("E2", "M3", "BTCUSD", s, "SELL"), indent=2))
