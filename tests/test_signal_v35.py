@@ -112,6 +112,27 @@ def test_detect_structure_m1_finds_bear_fvg():
     assert st.zone_high > st.zone_low
 
 
+def test_e1_requires_h1_gap_fill_and_reaction_not_fallback():
+    def bar(o, h, l, c):
+        return {"time": "t", "open": o, "high": h, "low": l, "close": c}
+
+    # Bars 0..2 form a bearish FVG [103, 105].  The final closed H1 candle
+    # fills into that gap and rejects below its midpoint, matching slide 53.
+    h1 = [
+        bar(106, 107, 105, 105.5),
+        bar(104.5, 105, 103.5, 104),
+        bar(102, 103, 101, 102),
+        bar(102, 102.8, 101.5, 102.4),
+        bar(103, 104.5, 101.8, 102.2),
+    ]
+    assert sg.detect_e1_gap_reaction(h1, "SELL")
+
+    no_gap = [bar(100, 101, 99, 100), bar(100, 101, 99, 100),
+              bar(100, 101, 99, 100), bar(100, 101, 99, 100)]
+    assert not sg.detect_e1_gap_reaction(no_gap, "SELL")
+    assert sg.detect_e_trigger(no_gap, "SELL") is None
+
+
 def test_analyze_returns_no_signal_dict_not_crash():
     out = sg.analyze("EURUSD", _bear_fvg_series())
     assert isinstance(out, dict) and "decision" in out

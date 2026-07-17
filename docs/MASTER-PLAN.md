@@ -56,8 +56,9 @@ Charter, v3.5 spec, watchlist, multi-symbol runner, runbook, scheduled runs.
 - Build `src/backtest_v35.py`: event-driven, closed-candles-only, realistic spread/
   slippage/commission, per-symbol tick value, walk-forward split.
 - Load ≥ 12 months H1+M5(+D1) history per active symbol via `load_history.py`.
-- Harden detection: normalize broker→UTC time; tighten E-trigger (D1 gap / POI / sweep)
-  and M3 IFVG (inversion + ≥50% retrace) to match the ruleset.
+- Harden detection: normalize broker→UTC time; tighten E-trigger (H1 gap fill/reaction
+  per E1M1 slide 53 / POI / external-liquidity sweep) and M3 IFVG (inversion +
+  ≥50% retrace) to match the source-traced ruleset.
 - Produce `reports/backtest_v35_<symbol>.json`: trades, expectancy(R), profit factor,
   win%, max DD, avg R:R, exposure.
 **Exit gate:** each active symbol shows expectancy ≥ +0.2R and PF ≥ 1.3 out-of-sample,
