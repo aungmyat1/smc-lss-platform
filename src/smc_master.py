@@ -23,7 +23,7 @@ def session_of(ts):
     return "OFF-KZ", False
 
 
-def run(c, equity, risk_pct, rr, strict_session=False, symbol="EURUSD-VIP"):
+def run(c, equity, risk_pct, rr, strict_session=False, symbol="EURUSD-VIP", pip=0.0001, pip_value=10.0):
     stages = []
     def add(n, ok, ev):
         stages.append({"stage": n, "result": "PASS" if ok else "FAIL", "evidence": ev})
@@ -69,7 +69,7 @@ def run(c, equity, risk_pct, rr, strict_session=False, symbol="EURUSD-VIP"):
         return done("NO-GO", "price in wrong zone for " + direction)
 
     add("8 entry-confirmation", True, "LTF signal present")
-    s = size(sig, equity, risk_pct, rr)
+    s = size(sig, equity, risk_pct, rr, pip=pip, pip_value=pip_value)
     add("9 risk-management", s["decision"] == "GO",
         "lots " + str(s["lots"]) + " | RR " + str(s["rr"]) + " | risk $" + str(s["risk_usd"]))
     if s["decision"] != "GO":
@@ -87,7 +87,9 @@ if __name__ == "__main__":
     ap.add_argument("--risk_pct", type=float, default=0.5)
     ap.add_argument("--rr", type=float, default=2.0)
     ap.add_argument("--symbol", default="EURUSD-VIP")
+    ap.add_argument("--pip", type=float, default=0.0001)
+    ap.add_argument("--pip_value", type=float, default=10.0)
     ap.add_argument("--strict_session", action="store_true")
     a = ap.parse_args()
     c = e.load_candles(a.data)
-    print(json.dumps(run(c, a.equity, a.risk_pct, a.rr, a.strict_session, a.symbol), indent=2))
+    print(json.dumps(run(c, a.equity, a.risk_pct, a.rr, a.strict_session, a.symbol, a.pip, a.pip_value), indent=2))

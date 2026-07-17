@@ -1,0 +1,32 @@
+# SMC-LSS daily-loop watchlist & automation policy
+# Read by src/daily_runner.py and by docs/daily-loop-runbook.md.
+strategy_spec: specs/v3.5.yaml          # strategy of record (RESEARCH_CANDIDATE)
+
+autonomy:
+  demo: auto_on_engine_ready            # auto-execute ONLY when spec engine is ready
+  live: blocked                         # v3.5 is RESEARCH_CANDIDATE; no live orders
+  engine_implements_spec: false         # mirrors specs/v3.5.yaml interlock; false => propose-mode
+  promote_to_live: false
+
+risk:
+  risk_pct_demo: 0.5
+  risk_pct_live: 1.0
+  daily_loss_pct: 3.0
+  max_positions: 3
+  portfolio_heat_pct: 4.0
+  min_rr: 2.0
+
+cadence:                                # derived from strategy session windows (UTC)
+  runs_utc: ["07:00", "12:00"]          # London + New York; 13:30 + 18:30 Asia/Yangon
+  weekdays_only: true
+  timeframes: {etrigger: H1, context: D1, confirm: M5}
+
+# Sizing needs per-symbol point/pip value. These are FALLBACKS; the runbook pulls
+# live tick_value via the MetaTrader MCP and prefers it over these.
+symbols:
+  active:
+    - {name: EURUSD, mt5: EURUSD, pip: 0.0001, pip_value_per_lot: 10.0, variants: [E1M3, E3M3]}
+    - {name: XAUUSD, mt5: XAUUSD-VIP, pip: 0.1, pip_value_per_lot: 10.0, variants: [E1M1]}
+  pending:                              # enable after explicit owner confirmation
+    - {name: GBPUSD, mt5: GBPUSD, pip: 0.0001, pip_value_per_lot: 10.0, variants: [E2M1, E3M1]}
+    - {name: BTCUSD, mt5: BTCUSD, pip: 1.0,    pip_value_per_lot: 1.0,  variants: [E2M3]}
