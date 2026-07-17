@@ -70,4 +70,4 @@ risk:
 
 implementation_status:
   engine_implements_spec: false      # SAFETY INTERLOCK: src engine still v1-style, not v3.5 E×M
-  next: "implement generate_signal(e_trigger, m_model, instrument_profile) + fixtures from §4 table"
+  next: "FORMULA layer done (src/signal_v35.py + tests, §4 fixtures pass). Remaining: wire live E/M zone detection per variant, then backtest -> flip engine_implements_spec"
