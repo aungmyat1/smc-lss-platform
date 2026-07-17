@@ -93,3 +93,25 @@ def test_determinism():
     a = generate_signal("E2", "M3", "BTCUSD", s)
     b = generate_signal("E2", "M3", "BTCUSD", s)
     assert a == b
+
+
+def _bear_fvg_series():
+    """Hand-built M5 with a clear 3-candle bearish FVG (c[i-2].low > c[i].high)."""
+    def bar(o, h, l, c):
+        return {"time": "t", "open": o, "high": h, "low": l, "close": c}
+    return [
+        bar(1.1050, 1.1052, 1.1040, 1.1041),   # down
+        bar(1.1041, 1.1042, 1.1030, 1.1031),   # down (its low 1.1030 > next high => gap)
+        bar(1.1020, 1.1021, 1.1010, 1.1011),   # gap: c[0].low? use i=2 -> c[0].low 1.1040 > c[2].high 1.1021
+    ]
+
+
+def test_detect_structure_m1_finds_bear_fvg():
+    st = sg.detect_structure_m1(_bear_fvg_series(), "SELL")
+    assert st is not None
+    assert st.zone_high > st.zone_low
+
+
+def test_analyze_returns_no_signal_dict_not_crash():
+    out = sg.analyze("EURUSD", _bear_fvg_series())
+    assert isinstance(out, dict) and "decision" in out

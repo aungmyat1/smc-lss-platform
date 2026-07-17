@@ -27,6 +27,8 @@ symbols:
   active:
     - {name: EURUSD, mt5: EURUSD, pip: 0.0001, pip_value_per_lot: 10.0, variants: [E1M3, E3M3]}
     - {name: XAUUSD, mt5: XAUUSD-VIP, pip: 0.1, pip_value_per_lot: 10.0, variants: [E1M1]}
+    # BTCUSD confirmed active (demo). Crypto: subscribe in Market Watch for live ticks;
+    # candles work regardless. ALWAYS pull live tick value for sizing.
+    - {name: BTCUSD, mt5: BTCUSD, pip: 1.0, pip_value_per_lot: 1.0, variants: [E2M3]}
   pending:                              # enable after explicit owner confirmation
     - {name: GBPUSD, mt5: GBPUSD, pip: 0.0001, pip_value_per_lot: 10.0, variants: [E2M1, E3M1]}
-    - {name: BTCUSD, mt5: BTCUSD, pip: 1.0,    pip_value_per_lot: 1.0,  variants: [E2M3]}

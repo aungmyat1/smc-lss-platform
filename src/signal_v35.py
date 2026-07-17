@@ -1,30 +1,16 @@
 #!/usr/bin/env python3
-"""SMC-LSS v3.5 signal engine — one parameterized procedure for all 9 E×M variants.
+"""SMC-LSS v3.5 signal engine - one parameterized procedure for all 9 ExM variants.
 
 Source of truth: docs/strategy/SMC-LSS-v3.5-SIGNAL-RULESET.md, specs/v3.5.yaml.
 Status: RESEARCH_CANDIDATE. This engine does NOT authorize live trading.
 
-Per §5 of the ruleset, signal generation is ONE function:
-    generate_signal(e_trigger, m_model, instrument_profile, structure) -> signal | None
-  - E-trigger (E1/E2/E3): higher-timeframe cause -> bias (BUY/SELL) + invalidation context
-  - M-model  (M1/M2/M3): M5 confirmation -> entry anchor + stop formula
-  - profile: buffer size + point/tick conversion per instrument
-  - structure: the resolved zone levels (from detectors below or supplied by a fixture)
-
-Two layers, cleanly separated:
-  * FORMULA layer (this file, fully deterministic + unit-tested): given resolved
-    structure levels, compute direction, entry, stop, tp1, R:R, horizon.
-  * DETECTION layer (detect_structure, best-effort over closed candles via smc_engine):
-    extract those levels from live data. Wiring detection to every variant precisely
-    is the remaining M1.5 task; the formula layer is complete and locked.
-
-Determinism: no randomness, closed candles only, no look-ahead.
+Two layers: a deterministic FORMULA layer (generate_signal) and a best-effort
+DETECTION layer (analyze) over closed candles. No look-ahead, closed candles only.
 """
 from __future__ import annotations
 from dataclasses import dataclass, field
 import smc_engine as e
 
-# ---- variant table (frozen from specs/v3.5.yaml) -------------------------------
 VARIANT_TABLE = {
     "E1M1": {"direction": "SELL", "horizon": "INTRADAY"},
     "E1M2": {"direction": "BUY",  "horizon": "INTRAWEEK"},
@@ -38,12 +24,11 @@ VARIANT_TABLE = {
 }
 HORIZON_MAX_HOURS = {"INTRADAY": 12, "OVERNIGHT": 24, "INTRAWEEK": 120, "MULTI_HORIZON": 120}
 
-# ---- instrument profiles (buffer in price units; point = min increment) ---------
 INSTRUMENT_PROFILES = {
-    "fx_major": {"point": 0.00001, "buffer": 0.00030},   # EURUSD, GBPUSD, EURGBP
-    "fx_jpy":   {"point": 0.001,   "buffer": 0.030},     # *JPY
-    "metal":    {"point": 0.01,    "buffer": 0.50},      # XAUUSD
-    "crypto":   {"point": 0.01,    "buffer": 60.0},      # BTCUSD (wide crypto buffer)
+    "fx_major": {"point": 0.00001, "buffer": 0.00030},
+    "fx_jpy":   {"point": 0.001,   "buffer": 0.030},
+    "metal":    {"point": 0.01,    "buffer": 0.50},
+    "crypto":   {"point": 0.01,    "buffer": 60.0},
 }
 SYMBOL_PROFILE = {
     "EURUSD": "fx_major", "GBPUSD": "fx_major", "EURGBP": "fx_major",
@@ -57,82 +42,64 @@ def profile_for(symbol):
     return INSTRUMENT_PROFILES[SYMBOL_PROFILE.get(symbol, "fx_major")]
 
 
-# ---- structure container -------------------------------------------------------
 @dataclass
 class Structure:
-    """Resolved zone levels for a candidate signal (one execution swing)."""
-    zone_low: float                 # entry-zone lower bound (OB/FVG/IFVG/anchor)
-    zone_high: float                # entry-zone upper bound
-    swept_level: float = None       # the liquidity level taken (BSL for sells, SSL for buys)
-    displacement_origin: float = None  # origin of the displacement leg (M3)
-    inducement: float = None        # internal lure extreme (M1)
-    primary_tp: float = None        # pre-selected DOL, chosen BEFORE entry
+    zone_low: float
+    zone_high: float
+    swept_level: float = None
+    displacement_origin: float = None
+    inducement: float = None
+    primary_tp: float = None
     extras: dict = field(default_factory=dict)
 
     def midpoint(self):
         return (self.zone_low + self.zone_high) / 2.0
 
 
-# ---- M-model stop formulas (faithful to ruleset §1) ----------------------------
-def _stop_sell(m_model, s: Structure, buf: float) -> float:
+def _stop_sell(m_model, s, buf):
     cands = [s.zone_high]
     if m_model == "M1" and s.inducement is not None:
-        cands += [s.inducement]
+        cands.append(s.inducement)
     if s.swept_level is not None:
-        cands += [s.swept_level]
+        cands.append(s.swept_level)
     if m_model == "M3" and s.displacement_origin is not None:
-        cands += [s.displacement_origin]
+        cands.append(s.displacement_origin)
     return max(cands) + buf
 
 
-def _stop_buy(m_model, s: Structure, buf: float) -> float:
+def _stop_buy(m_model, s, buf):
     cands = [s.zone_low]
     if m_model == "M1" and s.inducement is not None:
-        cands += [s.inducement]
+        cands.append(s.inducement)
     if s.swept_level is not None:
-        cands += [s.swept_level]
+        cands.append(s.swept_level)
     if m_model == "M3" and s.displacement_origin is not None:
-        cands += [s.displacement_origin]
+        cands.append(s.displacement_origin)
     return min(cands) - buf
 
 
-# ---- the one signal function ---------------------------------------------------
-def generate_signal(e_trigger, m_model, symbol, structure: Structure,
-                    rr=2.0, min_rr=2.0):
-    """Return a fully-specified signal dict, or None if inputs are inconsistent.
-
-    e_trigger in {E1,E2,E3}; m_model in {M1,M2,M3}; structure has resolved levels.
-    Direction comes from the frozen variant table (E×M). Entry = zone midpoint
-    (M3 requires the midpoint to be the post->=50%-retrace anchor, enforced upstream).
-    """
+def generate_signal(e_trigger, m_model, symbol, structure, rr=2.0, min_rr=2.0):
     variant = e_trigger + m_model
     if variant not in VARIANT_TABLE:
         return None
     direction = VARIANT_TABLE[variant]["direction"]
     horizon = VARIANT_TABLE[variant]["horizon"]
-    prof = profile_for(symbol)
-    buf = prof["buffer"]
-
+    buf = profile_for(symbol)["buffer"]
     entry = structure.midpoint()
     if direction == "SELL":
         stop = _stop_sell(m_model, structure, buf)
         if stop <= entry:
-            return None                      # invalid: stop must sit above entry
+            return None
         risk = stop - entry
-        tp1 = entry - risk                   # +1R management partial
-        primary_tp = structure.primary_tp    # DOL, below entry for sells
+        tp1 = entry - risk
     else:
         stop = _stop_buy(m_model, structure, buf)
         if stop >= entry:
             return None
         risk = entry - stop
         tp1 = entry + risk
-        primary_tp = structure.primary_tp
-
-    realized_rr = None
-    if primary_tp is not None and risk > 0:
-        realized_rr = round(abs(primary_tp - entry) / risk, 2)
-
+    primary_tp = structure.primary_tp
+    realized_rr = round(abs(primary_tp - entry) / risk, 2) if (primary_tp is not None and risk > 0) else None
     ok = (realized_rr is None) or (realized_rr >= min_rr)
     return {
         "variant": variant, "e_trigger": e_trigger, "m_model": m_model,
@@ -147,16 +114,30 @@ def generate_signal(e_trigger, m_model, symbol, structure: Structure,
     }
 
 
-# ---- best-effort live detection (DETECTION layer, M1.5 in progress) ------------
 def detect_bias(h1):
-    """E-trigger bias proxy from H1 structure: BULLISH->BUY, BEARISH->SELL."""
     hi, lo = e.swings(h1)
-    t = e.trend(hi, lo)
-    return {"BULLISH": "BUY", "BEARISH": "SELL"}.get(t)
+    return {"BULLISH": "BUY", "BEARISH": "SELL"}.get(e.trend(hi, lo))
+
+
+def _swept_level(m5, bias):
+    want = "bull" if bias == "BUY" else "bear"
+    sw = [x for x in e.liquidity_sweeps(m5) if x["dir"] == want]
+    return sw[-1]["level"] if sw else None
+
+
+def detect_structure_m1(m5, bias):
+    want = "bull" if bias == "BUY" else "bear"
+    fvs = [f for f in e.fvgs(m5) if f["dir"] == want]
+    if not fvs:
+        return None
+    fv = fvs[-1]
+    ind = e.inducement(m5)
+    inducement = ind["bull_inducement"] if bias == "BUY" else ind["bear_inducement"]
+    return Structure(zone_low=fv["lower"], zone_high=fv["upper"],
+                     swept_level=_swept_level(m5, bias), inducement=inducement)
 
 
 def detect_structure_m2(m5, bias):
-    """M2 gold-zone proxy: latest aligned OB overlapped with an aligned FVG (M5)."""
     want = "bull" if bias == "BUY" else "bear"
     obs = [o for o in e.order_blocks(m5) if o["dir"] == want]
     fvs = [f for f in e.fvgs(m5) if f["dir"] == want]
@@ -166,15 +147,75 @@ def detect_structure_m2(m5, bias):
     low = max(ob["low"], fv["lower"])
     high = min(ob["high"], fv["upper"])
     if low >= high:
-        return None                          # no true overlap
-    sw = e.liquidity_sweeps(m5)
-    swept = sw[-1]["level"] if sw else None
-    return Structure(zone_low=low, zone_high=high, swept_level=swept)
+        return None
+    return Structure(zone_low=low, zone_high=high, swept_level=_swept_level(m5, bias))
+
+
+def detect_structure_m3(m5, bias):
+    want = "bull" if bias == "BUY" else "bear"
+    fvs = [f for f in e.fvgs(m5) if f["dir"] == want]
+    sw = [x for x in e.liquidity_sweeps(m5) if x["dir"] == want]
+    if not fvs or not sw:
+        return None
+    fv = fvs[-1]
+    if fv["i"] < sw[-1]["i"]:
+        return None
+    origin = m5[max(0, fv["i"] - 2)]["low" if bias == "BUY" else "high"]
+    mid = (fv["lower"] + fv["upper"]) / 2.0
+    last = m5[-1]["close"]
+    retraced = last <= mid if bias == "SELL" else last >= mid
+    if not retraced:
+        return None
+    return Structure(zone_low=fv["lower"], zone_high=fv["upper"],
+                     swept_level=sw[-1]["level"], displacement_origin=origin)
+
+
+def detect_e_trigger(h1):
+    if e.liquidity_sweeps(h1):
+        return "E3"
+    if e.order_blocks(h1):
+        return "E2"
+    return "E1"
+
+
+_DETECT = {"M1": detect_structure_m1, "M2": detect_structure_m2, "M3": detect_structure_m3}
+
+
+def analyze(symbol, m5, h1=None, d1=None, primary_tp=None):
+    htf = h1 if h1 else m5
+    bias = detect_bias(htf)
+    if bias is None:
+        return {"symbol": symbol, "decision": "NO-SIGNAL", "reason": "HTF ranging / no bias"}
+    e_trig = detect_e_trigger(htf)
+    for m_mod in ("M2", "M1", "M3"):
+        variant = e_trig + m_mod
+        if VARIANT_TABLE.get(variant, {}).get("direction") != bias:
+            continue
+        st = _DETECT[m_mod](m5, bias)
+        if st is None:
+            continue
+        st.primary_tp = primary_tp
+        sig = generate_signal(e_trig, m_mod, symbol, st)
+        if sig:
+            sig["detected"] = True
+            return sig
+    return {"symbol": symbol, "decision": "NO-SIGNAL",
+            "reason": "bias " + bias + ", e-trigger " + e_trig + ": no matching M-model structure"}
 
 
 if __name__ == "__main__":
-    # Demo: E2M3 BTCUSD from ruleset §3 (zone-level, source-verified numbers)
-    s = Structure(zone_low=26699 - 50, zone_high=26699 + 50, swept_level=26900,
-                  displacement_origin=26890, primary_tp=25324.7)
-    import json
-    print(json.dumps(generate_signal("E2", "M3", "BTCUSD", s), indent=2))
+    import argparse, json
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--analyze", action="store_true")
+    ap.add_argument("--m5"); ap.add_argument("--h1"); ap.add_argument("--d1")
+    ap.add_argument("--symbol", default="EURUSD")
+    a = ap.parse_args()
+    if a.analyze and a.m5:
+        m5 = e.load_candles(a.m5)
+        h1 = e.load_candles(a.h1) if a.h1 else None
+        d1 = e.load_candles(a.d1) if a.d1 else None
+        print(json.dumps(analyze(a.symbol, m5, h1, d1), indent=2))
+    else:
+        s = Structure(zone_low=26649, zone_high=26749, swept_level=26900,
+                      displacement_origin=26890, primary_tp=25324.7)
+        print(json.dumps(generate_signal("E2", "M3", "BTCUSD", s), indent=2))
