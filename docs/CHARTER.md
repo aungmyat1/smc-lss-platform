@@ -1,19 +1,21 @@
 # SMC-LSS Platform — Project Charter
 
 ## Objective
-Operate a disciplined, semi-autonomous Smart Money Concepts (SMC-LSS) trading
-system that Claude Cowork runs on a schedule: on each run it analyzes a preset
-watchlist with a locked deterministic strategy, and — when every hard gate passes
-— **executes automatically on a verified demo account**, or **prepares a
-confirmation-gated intent for the live account**. The system never improvises: it
-follows one versioned rulebook, sizes to fixed risk, and journals every outcome.
+Operate a disciplined, fully automated Smart Money Concepts (SMC-LSS) trading
+system that Claude Cowork runs on a schedule: on each run it analyzes only the
+preset symbols with the preset strategy and preset position/risk limits, then
+automatically places, manages, journals, and reports qualifying trades. The
+system never improvises: it follows one versioned rulebook, sizes to configured
+limits, respects hard safety gates, and sends Telegram reports for every scan,
+trade decision, order event, risk stop, and daily summary.
 
 ## Vision (end state)
-A hands-off daily loop where the human sets policy (symbols, risk, promotion) and
-reviews results, while Claude executes the mechanical work: fetch data → analyze →
-verify environment → size → execute (demo) / propose (live) → manage → journal →
-report. Live trading is unlocked only after the demo track meets published
-qualification gates.
+A hands-off trading loop where the human sets the operating presets — symbols,
+strategy version, per-trade amount/risk, max open positions, session cadence, and
+Telegram destination — while Claude executes the mechanical work: fetch data →
+analyze → verify environment → size → execute → manage → journal → report. Demo
+auto-trading comes first; live auto-trading is unlocked only after the strategy
+leaves research status and the demo evidence gates pass.
 
 ## Operating policy
 
@@ -22,7 +24,8 @@ qualification gates.
 |---|---|
 | **Demo** (verified) + engine implements spec | **Auto-execute** — place + set SL/TP, then journal. |
 | **Demo** (verified), engine NOT yet spec-complete | **Propose-mode** — analyze, size, journal the intent; hold for review (current state). |
-| **Live** | **Blocked** — v3.5 is `RESEARCH_CANDIDATE`; no live orders until it is promoted out of research AND demo gates pass. |
+| **Live** + promoted strategy + evidence gates passed | **Auto-execute** — place + set SL/TP, manage, journal, and report to Telegram. |
+| **Live** before promotion | **Blocked** — v3.5 is `RESEARCH_CANDIDATE`; no live orders until it is promoted out of research AND demo gates pass. |
 | **Unverified / not demo** | **Blocked** — no order; alert only (fail-safe). |
 
 **Safety interlock:** demo auto-execution is enabled only when
@@ -30,7 +33,8 @@ qualification gates.
 v3.5 nine-variant `generate_signal()` engine is implemented and backtested, the
 loop runs in **propose-mode** — it never blind-fires orders from code that does
 not yet implement the strategy of record. `promote_to_live` stays `false`
-regardless, until the demo qualification gates below are met.
+regardless, until the demo qualification gates below are met. Once promoted, the
+target behavior is fully automated live trading under the configured presets.
 
 ### Watchlist (tiered) → v3.5 variant mapping
 | Symbol | Tier | Primary v3.5 variant(s) | Bias |
@@ -56,6 +60,16 @@ Timeframes: E-trigger **H1** (context D1) · confirmation **M5** · management b
 - Risk/trade: **0.5%** demo, **1.0%** live
 - Daily loss stop: **3%** · Max open positions: **3** · Portfolio heat: **4%**
 - Minimum reward:risk **2.0** · Never widen a stop · Stops only tighten
+- Position amount and symbol eligibility are configuration-driven; the bot trades
+  only the preset symbols/variants and refuses orders that exceed configured
+  amount, open-position, heat, or loss limits.
+
+### Telegram reporting
+- Send a Telegram message for every scheduled scan summary.
+- Send a Telegram message for every GO, NO-GO, SKIP, fill, modify, close, reject,
+  risk stop, and daily/weekly performance summary.
+- Telegram delivery failure must not trigger duplicate orders; it is logged and
+  retried/reportable as an ops failure.
 
 ## Safety gates (every run, in order)
 1. **Environment verification** — resolve login → server name; demo-safe only when
@@ -64,8 +78,11 @@ Timeframes: E-trigger **H1** (context D1) · confirmation **M5** · management b
    Stage 2 M-model (M1/M2/M3, M5 confirmation + entry anchor) → Stage 3 direction/SL/TP/horizon.
    Both stages must confirm on closed candles or → NO-GO. (Legacy v1 pipeline retained for reference only.)
 3. **Risk gate** — position sizing + all limits; lots rounded down; REFUSE on any breach.
-4. **Execution gate** — demo auto-sends; live requires human confirmation; every order carries a stop.
-5. **Journaling** — every GO, NO-GO, fill, and reject is logged immutably.
+4. **Execution gate** — auto-send only when the environment, strategy, symbol,
+   position amount, risk, and promotion gates match the configured policy; every
+   order carries a stop.
+5. **Journaling + Telegram** — every GO, NO-GO, fill, reject, modify, close, and
+   risk stop is logged immutably and reported to Telegram.
 
 ## Demo → Live promotion gates
 Flip `promote_to_live: true` only when ALL hold on the demo track:
@@ -80,11 +97,11 @@ Expectancy (R), profit factor, win%, max drawdown, rule-adherence %, average
 R:R realized, and uptime of the scheduled loop (runs completed vs scheduled).
 
 ## Scope
-**In:** scheduled analysis, demo auto-execution, live intent preparation, sizing,
+**In:** scheduled analysis, demo auto-execution, promoted live auto-execution,
+configuration-driven symbols/strategy/position limits, Telegram reporting, sizing,
 trade management, journaling, reporting, backtest/validation of rule changes.
-**Out (for now):** live auto-execution without confirmation, discretionary
-overrides, non-watchlist symbols, news-driven or fundamental trading, martingale/
-averaging-down, any stop-widening.
+**Out:** discretionary overrides, non-watchlist symbols, news-driven or
+fundamental trading, martingale/averaging-down, any stop-widening.
 
 ## Roadmap
 - **M0 — Foundation (done):** repo cleaned, 22 skills, demo-safe env gate, pushed to GitHub.
@@ -94,8 +111,10 @@ averaging-down, any stop-widening.
   with fixtures from the ruleset §4 table; backtest; flip `engine_implements_spec: true` → demo auto-execution activates.
 - **M2 — Evidence:** accumulate ≥ 40 demo trades; weekly reviews; tune only via `backtest-researcher`.
 - **M3 — Validation:** pass walk-forward/OOS gates; expand to GBPUSD + BTCUSD.
-- **M4 — Live pilot:** on meeting promotion gates, enable live with confirm-required at reduced size.
-- **M5 — Scale:** raise size/symbols incrementally under the same gates; add CI smoke checks.
+- **M4 — Telegram + live pilot:** on meeting promotion gates, enable Telegram
+  reporting and live auto-trading at reduced preset size.
+- **M5 — Scale:** raise position amount/symbols incrementally under the same gates;
+  add CI smoke checks.
 
 ## Key risks & mitigations
 - **Broker/data outage mid-run** → env + connection preflight; skip symbol, log, alert.

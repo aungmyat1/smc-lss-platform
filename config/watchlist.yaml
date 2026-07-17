@@ -4,17 +4,29 @@ strategy_spec: specs/v3.5.yaml          # strategy of record (RESEARCH_CANDIDATE
 
 autonomy:
   demo: auto_on_engine_ready            # auto-execute ONLY when spec engine is ready
-  live: blocked                         # v3.5 is RESEARCH_CANDIDATE; no live orders
+  live: auto_on_promotion               # target-state: fully automated after promotion gates pass
   engine_implements_spec: false         # mirrors specs/v3.5.yaml interlock; false => propose-mode
   promote_to_live: false
 
 risk:
   risk_pct_demo: 0.5
   risk_pct_live: 1.0
+  position_amount_mode: risk_pct        # risk_pct | fixed_lot | fixed_notional
+  fixed_lot_demo: 0.01
+  fixed_lot_live: 0.01
+  fixed_notional_demo: 0.0
+  fixed_notional_live: 0.0
   daily_loss_pct: 3.0
   max_positions: 3
   portfolio_heat_pct: 4.0
   min_rr: 2.0
+
+reporting:
+  telegram:
+    enabled: false                      # target-state integration; wire token/chat_id outside repo
+    bot_token_env: TELEGRAM_BOT_TOKEN
+    chat_id_env: TELEGRAM_CHAT_ID
+    events: [scan_summary, decision, fill, modify, close, reject, risk_stop, daily_summary]
 
 cadence:                                # derived from strategy session windows (UTC)
   runs_utc: ["07:00", "12:00"]          # London + New York; 13:30 + 18:30 Asia/Yangon
