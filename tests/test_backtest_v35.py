@@ -36,6 +36,25 @@ def test_simulate_trade_zero_risk_returns_none():
     assert bt.simulate_trade("BUY", 100.0, 100.0, [_bar(101, 99)]) is None
 
 
+def test_dedup_one_signal_per_structure(monkeypatch):
+    # v3.6 spec Sec 12: the same structure_key must fire at most one signal
+    # ever, even if the engine keeps "detecting" it on every subsequent bar
+    # (this is the mechanism behind the v3.5 overtrading: 231-816 trades per
+    # symbol on real history because nothing stopped a re-touch of the same
+    # zone from re-firing).
+    def fake_analyze(symbol, m5, h1=None, d1=None, primary_tp=None, index_offset=0):
+        return {
+            "symbol": symbol, "decision": "SIGNAL", "detected": True,
+            "structure_key": (symbol, "E2M1", "zone", 5),   # identical every call
+            "direction": "SELL", "stop": 1.1050, "primary_tp": 1.0900,
+            "horizon": "INTRADAY", "variant": "E2M1",
+        }
+    monkeypatch.setattr(bt.v35, "analyze", fake_analyze)
+    m5 = [_bar(1.1005 + 0.00001 * i, 1.0995 + 0.00001 * i) for i in range(60)]
+    rep = bt.run_backtest("EURUSD", m5, warmup=5)
+    assert rep["trades"] == 1, "same structure_key fired more than once"
+
+
 def test_run_backtest_report_shape_on_real_csv():
     m5 = None
     csv = os.path.join(os.path.dirname(__file__), "..", "data", "EURUSD_M5.csv")

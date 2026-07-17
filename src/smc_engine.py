@@ -84,6 +84,45 @@ def atr(c, i, n=14):
         trs.append(max(h-l, abs(h-pc), abs(l-pc)))
     return sum(trs) / len(trs) if trs else 0.0
 
+def displacement_move(c, sweep_i, direction, atr_period=14, atr_mult=1.5,
+                      body_ratio_min=0.5, start_offset_bars=2, max_run_bars=3):
+    """Locate a displacement move per v3.6 spec Sec 5 — replaces qualitative
+    "strong displacement" with a numeric test: a maximal run of same-direction
+    candles (each body_ratio >= body_ratio_min), starting within
+    start_offset_bars of sweep_i, whose cumulative directional range clears
+    atr_mult * ATR(atr_period) (measured on the bar immediately before the
+    run, so the threshold isn't inflated by the move it's supposed to gate).
+
+    direction: 'bull' or 'bear'. Returns {'start','end','range','origin'} for
+    the first (earliest) qualifying start offset, or None if no run in the
+    window clears the threshold.
+    """
+    n = len(c)
+    for disp_start in range(sweep_i + 1, sweep_i + start_offset_bars + 1):
+        if disp_start >= n:
+            break
+        ref_atr = atr(c, max(0, disp_start - 1), atr_period)
+        if ref_atr <= 0:
+            continue
+        run_end = None
+        for j in range(disp_start, min(disp_start + max_run_bars, n)):
+            cndl = c[j]
+            is_dir = (cndl["close"] > cndl["open"]) if direction == "bull" else (cndl["close"] < cndl["open"])
+            rng = cndl["high"] - cndl["low"]
+            body_ratio = (abs(cndl["close"] - cndl["open"]) / rng) if rng > 0 else 0.0
+            if not is_dir or body_ratio < body_ratio_min:
+                break
+            run_end = j
+        if run_end is None:
+            continue
+        origin_open = c[disp_start]["open"]
+        end_close = c[run_end]["close"]
+        cum_range = (end_close - origin_open) if direction == "bull" else (origin_open - end_close)
+        if cum_range >= atr_mult * ref_atr:
+            return {"start": disp_start, "end": run_end, "range": cum_range, "origin": origin_open}
+    return None
+
+
 def trend(hi, lo):
     if len(hi) >= 2 and len(lo) >= 2:
         if hi[-1][1] > hi[-2][1] and lo[-1][1] > lo[-2][1]:

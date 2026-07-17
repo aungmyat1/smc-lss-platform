@@ -1,0 +1,140 @@
+# SMC-LSS strategy spec v3.6 (machine-testable, numeric)
+# Source of truth: docs/strategy/SMC-LSS-v3.6-SIGNAL-SPEC.md
+# Status: RESEARCH_CANDIDATE — spec only. No engine implements this yet;
+# engine_implements_spec stays false until harness is built AND backtested
+# against the v3.5 baseline (EURUSD 377 trades/10.6% win/-0.123R,
+# XAUUSD 816/22.8%/-0.166R, BTCUSD 231/10.0%/-0.182R, all negative expectancy).
+version: 3.6
+status: RESEARCH_CANDIDATE
+supersedes: 3.5
+
+confirmation:
+  closed_candles_only: true
+  require_stage1_and_stage2: true
+  utc_normalization_required: true     # hard precondition, §9 — not optional
+
+# Direction is NOT stored per variant (v3.5 hard-locked it from single
+# historical examples). It is always computed live from the E-trigger
+# reaction. Only horizon is a fixed property of the E×M cell.
+direction_locked_per_variant: false    # v3.5 had this true (implicitly); v3.6 fixes it
+
+e_triggers:                            # STAGE 1 (HTF cause) — see spec §2-4
+  E1:
+    desc: "D1 gap (3-candle D1 FVG) fill/reaction at H1 context"
+    tf: [D1, H1]
+    gap_max_age_d1_bars: 10
+    reaction_window_h1_bars: 6
+    reaction_wick_ratio_min: 0.4
+  E2:
+    desc: "H1 reaction at a fresh/mitigated (not invalidated) H1 order-block POI"
+    tf: [H1]
+    poi_max_age_h1_bars: 60
+    reaction_wick_ratio_min: 0.4
+  E3:
+    desc: "H1 sweep + reclaim of EXTERNAL liquidity (current dealing-range extremity)"
+    tf: [H1]
+    range_lookback_h1_bars: 40
+    sweep_wick_ratio_min: 0.5
+    reclaim_window_h1_bars: 1
+
+m_models:                              # STAGE 2 (M5 confirmation + entry anchor)
+  M1:
+    desc: "inducement (internal liquidity) sweep + character change -> pullback/FVG midpoint"
+    entry: "pullback / FVG midpoint"
+    stop_long: "min(anchor_low, inducement_low, swept_ssl) - buffer"
+    stop_short: "max(anchor_high, inducement_high, swept_bsl) + buffer"
+    retrace_max_bars: 30
+  M2:
+    desc: "supply/demand shift -> Gold Zone (OB ∩ FVG) -> overlap midpoint"
+    entry: "OB/FVG overlap midpoint"
+    stop_long: "min(ob_low, fvg_low, swept_ssl) - buffer"
+    stop_short: "max(ob_high, fvg_high, swept_bsl) + buffer"
+    retrace_max_bars: 30
+  M3:
+    desc: "sweep + displacement -> IFVG inversion, entry after >=50% retrace"
+    entry: "IFVG midpoint (>=50% retrace)"
+    stop_long: "min(ifvg_low, swept_low, displacement_origin) - buffer"
+    stop_short: "max(ifvg_high, swept_high, displacement_origin) + buffer"
+    ifvg_max_age_m5_bars: 20
+    ifvg_retrace_max_bars: 30
+
+displacement:                          # §5 — replaces qualitative "strong displacement"
+  atr_period: 14
+  atr_mult: 1.5
+  body_ratio_min: 0.5
+  start_offset_bars: 2                 # sweep -> displacement start, max gap
+  max_run_bars: 3                      # max displacement candle count
+
+sequencing:                            # §7 — required event order (bar-index constraints)
+  # i_sweep < i_disp_start <= i_sweep + displacement.start_offset_bars
+  # i_disp_start <= i_zone_creation <= i_disp_end + 1
+  # i_zone_creation < i_entry <= i_zone_creation + <model>.retrace_max_bars
+  # i_entry = first bar meeting the retrace condition (no lookahead scan)
+  enforce_order: true
+  first_qualifying_bar_only: true
+
+cross_stage:
+  max_e_to_m_h1_bars: 12               # E-trigger confirm -> M-model entry, else re-confirm E-trigger
+
+session:                               # §9
+  timezone: UTC
+  london_utc: ["06:00", "10:00"]
+  new_york_utc: ["11:30", "15:00"]
+  weekdays_only: true
+  dst_adjusted: false                  # fixed UTC windows, documented approximation
+  news_filter: none                    # explicitly out of scope per charter
+
+entry:                                 # §10
+  type: confirmation_close_next_bar_open
+  resting_limit_orders: false
+  intrabar_market_fill: false
+
+target:                                # §11 — priority order + no-DOL behavior
+  primary: "nearest unswept external liquidity beyond entry (H1, D1-extended for INTRAWEEK/MULTI_HORIZON)"
+  primary_search_lookback_h1_bars: 100
+  fallback: "nearest unswept M5 swing extremum beyond entry"
+  no_target_found: REJECT_NO_TARGET    # v3.5 defect fix: was silently treated as pass
+  tp1: "entry +/- 1R (management partial; independent of DOL existence)"
+
+signal_lifecycle:                      # §12
+  ttl_bars: 1                          # must fill at next-bar-open or expire, no retry
+  one_signal_per_structure: true
+  structure_key: [symbol, variant, structure_type, creation_index]
+  structure_types: [d1_gap, h1_poi, h1_sweep_level, ifvg]
+
+stage3:
+  direction: "bias from live E-trigger reaction (§1) — never a per-variant lookup"
+  tp1: "entry +/- 1R (management partial; never replaces the DOL)"
+  primary_tp: "per target: hierarchy above"
+  horizon_frozen: true
+
+horizons:
+  INTRADAY:      {max_hold_hours: 12}
+  OVERNIGHT:     {max_hold_hours: 24}
+  INTRAWEEK:     {max_hold_hours: 120}
+  MULTI_HORIZON: {max_hold_hours: 120, runner: true}
+
+# Horizon is the only fixed per-variant property left (direction is live, §1).
+variants:
+  E1M1: {horizon: INTRADAY}
+  E1M2: {horizon: INTRAWEEK}
+  E1M3: {horizon: MULTI_HORIZON}
+  E2M1: {horizon: INTRADAY}
+  E2M2: {horizon: OVERNIGHT}
+  E2M3: {horizon: INTRAWEEK}
+  E3M1: {horizon: INTRADAY}
+  E3M2: {horizon: INTRADAY}
+  E3M3: {horizon: INTRADAY}
+
+risk:                                  # unchanged from v3.5
+  risk_pct_demo: 0.5
+  risk_pct_live: 1.0
+  min_rr: 2.0
+  daily_loss_pct: 3.0
+  max_positions: 3
+  portfolio_heat_pct: 4.0
+
+implementation_status:
+  engine_implements_spec: false        # SAFETY INTERLOCK — nothing implements v3.6 yet
+  baseline: "v3.5 backtest on real history (2026-07-18): EURUSD 377tr/10.6%win/-0.123R, XAUUSD 816tr/22.8%win/-0.166R, BTCUSD 231tr/10.0%win/-0.182R — all negative expectancy, overtrading"
+  next: "Implement per docs/strategy/SMC-LSS-v3.6-SIGNAL-SPEC.md §13 checklist, then backtest and compare against the v3.5 baseline above via backtest-researcher before any interlock flip"

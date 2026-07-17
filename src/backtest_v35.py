@@ -78,18 +78,27 @@ def run_backtest(symbol, m5, h1=None, rr=2.0, min_rr=2.0, warmup=40,
     i = warmup
     n = len(m5)
     h1_end = 0                                        # count of h1 bars with time <= m5[i]["time"]
+    consumed = set()                                  # v3.6 spec Sec 12: one signal per structure, ever
     while i < n - 1:
-        window = m5[max(0, i + 1 - m5_lookback): i + 1]  # closed candles, bounded lookback
+        window_start = max(0, i + 1 - m5_lookback)
+        window = m5[window_start: i + 1]              # closed candles, bounded lookback
         if h1:
             while h1_end < len(h1) and h1[h1_end]["time"] <= m5[i]["time"]:
                 h1_end += 1
             h1ctx = h1[max(0, h1_end - h1_lookback): h1_end]
         else:
             h1ctx = None
-        sig = v35.analyze(symbol, window, h1ctx)
+        sig = v35.analyze(symbol, window, h1ctx, index_offset=window_start)
         if not sig.get("detected"):
             i += 1
             continue
+        key = sig.get("structure_key")
+        if key is not None:
+            if key in consumed:
+                i += 1                                 # already fired once from this structure
+                continue
+            consumed.add(key)                          # mark consumed the moment the signal fires,
+                                                        # regardless of whether it ends up filled below
         entry = m5[i + 1]["open"]                     # act on next bar's open (no look-ahead)
         stop = sig["stop"]
         direction = sig["direction"]

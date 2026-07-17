@@ -71,6 +71,15 @@ def test_rr_gate_rejects_short_target():
     assert sig["decision"] == "REJECT_RR"
 
 
+def test_no_target_is_rejected_not_auto_passed():
+    # v3.6 spec Sec 11: primary_tp=None must REJECT, not silently clear the
+    # R:R gate (the v3.5 defect: realized_rr=None used to count as "ok").
+    s = Structure(zone_low=0.9999, zone_high=1.0001, swept_level=1.0003, primary_tp=None)
+    sig = generate_signal("E2", "M1", "EURUSD", s, min_rr=2.0)
+    assert sig["decision"] == "REJECT_NO_TARGET"
+    assert sig["rr_to_primary_tp"] is None
+
+
 def test_invalid_variant_returns_none():
     s = _structure_around(1.10000, "SELL", 1.09000)
     assert generate_signal("E4", "M1", "EURUSD", s) is None   # no such E-trigger
@@ -115,3 +124,80 @@ def test_detect_structure_m1_finds_bear_fvg():
 def test_analyze_returns_no_signal_dict_not_crash():
     out = sg.analyze("EURUSD", _bear_fvg_series())
     assert isinstance(out, dict) and "decision" in out
+
+
+# --- M3 IFVG (v3.6 spec Sec 5-7): sweep -> ATR displacement -> opposite-
+# polarity FVG inverted by a full close -> retrace entry. Constructed and
+# verified interactively (each negative case confirmed to independently
+# return None) rather than hand-derived, since the interacting index
+# constraints (displacement window, inversion age, retrace window) are easy
+# to get subtly wrong by inspection alone.
+
+def _m3_baseline():
+    def bar(o, h, l, c):
+        return {"time": "t", "open": o, "high": h, "low": l, "close": c}
+    baseline = []
+    for i in range(20):
+        if i == 15:
+            baseline.append(bar(100.0, 100.05, 99.80, 99.85))   # swept low
+        elif i in (13, 14, 16, 17):
+            baseline.append(bar(100.0, 100.05, 99.90, 100.0))   # confirms it (k=2)
+        else:
+            baseline.append(bar(100.0, 100.05, 99.95, 100.0))
+    return baseline
+
+
+def _m3_bull_fixture():
+    def bar(o, h, l, c):
+        return {"time": "t", "open": o, "high": h, "low": l, "close": c}
+    sweep = bar(99.85, 99.90, 99.70, 99.86)          # bull sweep of the 99.80 low
+    disp = [                                          # ATR-qualified bullish displacement
+        bar(99.86, 100.80, 99.80, 100.75),
+        bar(100.75, 101.70, 100.70, 101.65),
+        bar(101.65, 102.60, 101.60, 102.55),
+    ]
+    pullback = bar(100.60, 100.65, 99.50, 99.60)      # bear FVG vs disp[1] (low 100.70 > high 100.65)
+    inversion = bar(99.60, 100.95, 99.55, 100.90)     # closes above fv.upper (100.70) -> inverts
+    retrace = bar(100.90, 100.95, 100.60, 100.80)     # >=50% retrace bar (>= mid 100.675)
+    return _m3_baseline() + [sweep] + disp + [pullback, inversion, retrace]
+
+
+def test_detect_structure_m3_finds_valid_ifvg_setup():
+    st = sg.detect_structure_m3(_m3_bull_fixture(), "BUY")
+    assert st is not None
+    assert st.zone_low == 100.65 and st.zone_high == 100.70
+    assert st.zone_creation_i == 24
+
+
+def test_detect_structure_m3_none_without_displacement():
+    def bar(o, h, l, c):
+        return {"time": "t", "open": o, "high": h, "low": l, "close": c}
+    weak = [bar(99.86, 99.91, 99.81, 99.87) for _ in range(3)]
+    pullback = bar(99.60, 99.65, 99.50, 99.60)
+    inversion = bar(99.60, 99.95, 99.55, 99.90)
+    retrace = bar(99.90, 99.95, 99.60, 99.80)
+    m5 = _m3_baseline() + [bar(99.85, 99.90, 99.70, 99.86)] + weak + [pullback, inversion, retrace]
+    assert sg.detect_structure_m3(m5, "BUY") is None
+
+
+def test_detect_structure_m3_none_without_inversion():
+    def bar(o, h, l, c):
+        return {"time": "t", "open": o, "high": h, "low": l, "close": c}
+    sweep = bar(99.85, 99.90, 99.70, 99.86)
+    disp = [
+        bar(99.86, 100.80, 99.80, 100.75),
+        bar(100.75, 101.70, 100.70, 101.65),
+        bar(101.65, 102.60, 101.60, 102.55),
+    ]
+    pullback = bar(100.60, 100.65, 99.50, 99.60)
+    no_inversion_1 = bar(99.60, 100.60, 99.55, 100.60)     # never closes above fv.upper (100.70)
+    no_inversion_2 = bar(100.60, 100.65, 100.55, 100.60)
+    m5 = _m3_baseline() + [sweep] + disp + [pullback, no_inversion_1, no_inversion_2]
+    assert sg.detect_structure_m3(m5, "BUY") is None
+
+
+def test_detect_structure_m3_none_before_retrace_bar_exists():
+    # inversion just happened on the LAST bar of the window -> no retrace
+    # bar has occurred yet (Sec 7: retrace must be strictly after inversion).
+    m5 = _m3_bull_fixture()[:-1]     # drop the retrace bar, ending right at inversion
+    assert sg.detect_structure_m3(m5, "BUY") is None
