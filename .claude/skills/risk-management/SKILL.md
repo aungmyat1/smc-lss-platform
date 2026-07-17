@@ -45,3 +45,9 @@ Equity 988.12, 1%=9.88, XAUUSD stop 3.0 (300 ticks), tick_value 0.01/... -> size
 ## Acceptance criteria
 - [ ] Output has lots, $risk, %equity, R:R, decision
 - [ ] symbol-generic (metals/JPY correct)
+
+## Orchestration flow (canonical)
+This skill is the single source of truth for sizing and limits. The end-to-end
+order flow is: strategy-validator (entry VALID) -> risk-management (size + limits,
+APPROVED/REFUSED) -> execution (pre-send guardrails + human confirm) -> mt5-trading
+(place then modify SL/TP). Never duplicate limit logic elsewhere; never override a REFUSE.

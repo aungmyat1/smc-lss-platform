@@ -18,7 +18,7 @@ Final checklist between an approved+sized setup and order transmission (spread, 
 - go/no-go + the exact order params to confirm
 
 ## Workflow
-1. Re-check validator VALID + risk APPROVED.
+1. Re-check validator VALID + risk APPROVED + environment DEMO_VERIFIED (per mt5-trading gate; never trust account_type).
 2. Spread <= max; session allowed.
 3. Present exact params for human confirmation.
 4. On confirm, mt5-trading executes; else abort.

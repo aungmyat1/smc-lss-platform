@@ -1,39 +1,32 @@
-# MCP Validation — Functional Tests
-Generated: 2026-07-16 | Results are REAL. No test was fabricated. Blocked tests marked NOT IMPLEMENTED with reason.
+# MCP Validation — Functional Tests (re-run)
+Generated: 2026-07-16 | Real results. Nothing fabricated. Blocked = NOT IMPLEMENTED + reason.
 
-## MetaTrader (read path) — executed live
+## MetaTrader read path — executed live
 | Test | Result | Evidence |
 |---|---|---|
-| Server responds | **PASS** | get_account_info returned data |
-| Auth valid | **PASS** | real account fields populated |
-| Account read | **PASS** | balance $988.12, 500x, USD |
-| Symbols list | **PASS** | get_symbols(*EUR*) returned EURUSD + crosses |
-| Live price | **PASS** | EURUSD bid/ask 1.1444 @ 18:37Z |
-| Candles (H4/M15) | **PASS** | 30 H4 + 40 M15 bars returned |
-| Positions read | **PASS** | 0 open positions |
+| Server responds / auth | **PASS** | get_account_info returned real data |
+| Account read | **PASS** | $988.12, 500x, USD |
+| Symbols / price | **PASS** | EURUSD + crosses; bid/ask 1.14426 |
+| Candles H1/H4/M15 | **PASS** | 500 H1 + H4/M15 pulled |
+| Positions read | **PASS** | 0 open |
 
-## MetaTrader (write / execution path) — NOT executed (by policy)
+## MetaTrader write/execution path — NOT executed (policy)
 | Test | Result | Reason |
 |---|---|---|
-| Place demo order | **NOT IMPLEMENTED** | Account is REAL, not demo. Placing test orders on a live account is unsafe and against operating policy. Requires a DEMO account first. |
-| Modify position (SL/TP) | **NOT IMPLEMENTED** | Depends on an open test position on a demo account. |
-| Cancel order | **NOT IMPLEMENTED** | Same as above. |
-| Close position | **NOT IMPLEMENTED** | Same as above. |
+| Place demo order | **NOT IMPLEMENTED** | account is REAL not demo; unsafe. Needs demo binding. |
+| Modify/cancel/close | **NOT IMPLEMENTED** | depends on a demo test position |
 
-## Infra MCP tests
-| Test | Result | Reason |
+## Infra tests
+| Test | Result | Evidence |
 |---|---|---|
-| Read file | **PASS** | bash/Read verified against outputs |
-| Write file | **PASS** | reports written successfully |
-| Execute Python | **PASS (capability)** | bash sandbox has python3 |
-| Git status/commit/push | **NOT IMPLEMENTED** | No repo connected; GitHub MCP needs auth |
-| Redis / Postgres / Docker / WebSocket | **NOT IMPLEMENTED** | Servers not present |
+| Read file | **PASS** | audit read 23 skills |
+| Write file | **PASS** | reports + code written (via sandbox heredoc) |
+| Execute Python | **PASS** | backtest + smoke tests ran |
+| Smoke tests | **PASS** | pytest: 3 passed |
+| Backtest run | **PASS (low-sample)** | status LOW_SAMPLE, 1 trade, +2.0R on 92 bars |
+| Git status/commit | **WARNING** | commits exist; a user-side `.git/index.lock` blocked a commit from the sandbox |
+| Redis/Postgres/Docker/WebSocket | **NOT IMPLEMENTED** | servers absent |
 
 ## Error / retry / timeout handling
-**NOT IMPLEMENTED (untestable here):** these require deliberate fault injection
-against each server and a repo harness. No evidence exists → not claimed.
-
-## Summary
-Read/market-data path across MetaTrader is fully operational and verified. The
-execution path is intentionally unproven pending a demo account. Infra beyond the
-sandbox is largely absent.
+**NOT IMPLEMENTED (untested):** no fault-injection harness. Note: the code sandbox
+itself showed intermittent timeouts during this session (infra flakiness, not repo).

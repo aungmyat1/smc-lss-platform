@@ -8,3 +8,9 @@ reports/_scratch/
 .DS_Store
 *.log
 .env
+
+# Account-identifying attestation (keep local; use *.example.md as template)
+.claude/skills/mt5-trading/references/attested-environments.md
+# Generated run artifacts
+reports/*_result.json
+reports/execution_test.json

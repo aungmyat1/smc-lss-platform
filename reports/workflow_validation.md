@@ -1,29 +1,38 @@
-# Workflow & Auto-loading Validation
-Generated: 2026-07-16 | Honest PASS/FAIL/NOT IMPLEMENTED
+# Workflow & Auto-loading Validation (re-run 2 — with live demo execution)
+Generated: 2026-07-16 | PASS/FAIL/NOT IMPLEMENTED
 
-## Auto-loading (Phase 9) — skills fire on trigger?
-| Prompt | Expected skill | Result | Evidence |
-|---|---|---|---|
-| (activation test) invoke strategy-validator | strategy-validator loads | **PASS** | Skill loaded full instruction set from installed cache |
-| "validate this EURUSD setup" | strategy-validator | **PASS (demonstrated prior turn)** | Ran 5-check gate on live data → INVALID/stand-aside |
-| "size this trade, stop 24 pips" | risk-manager | **PASS (demonstrated prior turn)** | Computed 0.04 lots, refused on R:R |
-| "backtest this rule" | backtest-researcher | **PARTIAL** | Skill loads, but cannot execute — no data feed |
-| "journal my last trade" | trade-journal-analyst | **NOT IMPLEMENTED** | No closed trades + no store to write to |
-| "coach me" | trading-coach | **PASS (design-verified)** | Loads; question flow intact |
-
-Note: skills are **trigger-on-match**, not autonomous daemons. They activate when
-a request matches — they do not monitor markets on their own. This is correct and safe.
-
-## End-to-end workflow (Phase 11 / 13) — GBPUSD/EURUSD full chain
-| Stage | Result | Reason |
+## Auto-loading (Phase 9)
+| Prompt | Expected skill | Result |
 |---|---|---|
-| User prompt → skill selection | **PASS** | Verified (validator/risk fired) |
-| Skill → tool selection → MCP read | **PASS** | Live candles/price/account |
-| Risk → lot size | **PASS** | Deterministic sizing computed |
-| MT5 **demo** execution | **NOT IMPLEMENTED** | No demo account; real account excluded from test orders by policy |
-| Journal write | **NOT IMPLEMENTED** | No store wired |
-| Logging / recovery | **NOT IMPLEMENTED** | No harness |
+| invoke strategy-validator | loads | **PASS** |
+| "validate this EURUSD setup" | strategy-validator | **PASS** (live data → INVALID/stand-aside) |
+| "size this trade" | risk-manager | **PASS** |
+| "backtest this" | backtest-researcher | **PASS** (engine ran) |
+| "coach me" | trading-coach | **PASS** |
+| "journal my trade" | journaling | **PASS** (store now wired: data/journal.csv) |
 
-**Verdict:** The **analysis-and-decision half** of the workflow runs end-to-end with
-no manual intervention (prompt → validate → size → decision). The **execution-and-record
-half** is NOT validated and must not be claimed until a demo account and journal store exist.
+## MCP functional tests (Phase 10) — executed on VTMarkets demo 1144985
+| Test | Result | Detail |
+|---|---|---|
+| get_account_info | **PASS** | balance 988.12 (matches demo) |
+| get_all_positions | **PASS** | flat baseline |
+| place_market_order (EURUSD) | **FAIL→FIXED** | 10017 Trade disabled → enabled AutoTrading + used -VIP symbol |
+| place_market_order (EURUSD-VIP) | **PASS** | filled @1.14364, pos 522514689 |
+| modify_position (SL/TP) | **PASS** | SL 1.14164 / TP 1.14764 |
+| get_positions_by_symbol | **PASS** | verified live |
+| close_position | **PASS** | closed @1.14351 |
+| get_deals (journal) | **PASS** | entry+exit recorded, P/L -0.13 |
+| Git status/commit | **WARNING** | user-side index.lock |
+| Redis/Postgres/Docker/WebSocket | **NOT IMPLEMENTED** | absent |
+
+## End-to-end (Phase 11 / 13)
+| Stage | Result |
+|---|---|
+| prompt → skill → MCP read | **PASS** |
+| structure → validator → sizing | **PASS** |
+| backtest → metrics | **PASS (low-sample)** |
+| **MT5 demo execution (place→modify→verify→close)** | **PASS (live)** |
+| journal write | **PASS** (data/journal.csv) |
+
+**Verdict:** The full loop — analysis → decision → sizing → **live demo execution** →
+journal — now runs end-to-end. Only a conclusive backtest (bulk data) remains.

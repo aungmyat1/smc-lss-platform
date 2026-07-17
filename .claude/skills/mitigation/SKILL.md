@@ -40,3 +40,8 @@ Bullish OB 1.1420-1.1432 tapped to 1.1428 and rejected => MITIGATED, still valid
 ## Acceptance criteria
 - [ ] Each POI carries a current status
 - [ ] invalidation removes it from candidates
+
+## Coded detector (this platform)
+`smc_engine.mitigation_status(candles, from_i, low, high, direction)` ->
+FRESH / MITIGATED / INVALIDATED for a POI zone, close-based and deterministic.
+

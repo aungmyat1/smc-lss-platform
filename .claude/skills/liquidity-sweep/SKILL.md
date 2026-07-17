@@ -44,3 +44,11 @@ M15 EURUSD swept equal highs at 1.1476 with a wick to 1.1479 then closed 1.1462 
 ## Acceptance criteria
 - [ ] Each sweep cites the exact level and the rejection candle
 - [ ] BSL/SSL correctly typed
+
+## Coded detector (this platform)
+`smc_engine.liquidity_sweeps(candles, k=2, min_wick_ratio=0.5)` implements the
+sweep+reclaim event deterministically: wick pierces a confirmed swing, body
+closes back beyond it, lower/upper wick >= min_wick_ratio of the candle range.
+Config maps to the reference spec: swingLength->k(fractal), minWickRatio->min_wick_ratio.
+Provenance: logic adapted (not copied) from the Signal-Execution-Labs
+liquidity-sweep spec; re-implemented in vetted deterministic Python.

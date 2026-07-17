@@ -1,26 +1,23 @@
-# Skill Quality Score — SMC Trading Skills
-Generated: 2026-07-16 | Scale 0–100 per dimension, weighted mean = Overall
+# Skill Quality Score — SMC Trading Skills (re-run)
+Generated: 2026-07-16 | 0–100 per dimension | Now partly backed by executable code (smc_engine.py)
 
-Dimensions: Consistency, Determinism, Clarity, Completeness, Reusability, Maintainability, Production-readiness
+Dimensions: Consistency, Determinism, Clarity, Completeness, Reusability, Maintainability, Production
 
-| Skill | Consist | Determ | Clarity | Complete | Reuse | Maintain | Prod | **Overall** |
+| Skill group | Consist | Determ | Clarity | Complete | Reuse | Maintain | Prod | Overall |
 |---|---|---|---|---|---|---|---|---|
-| risk-manager | 90 | 85 | 92 | 85 | 88 | 88 | 80 | **87** |
-| trading-coach | 90 | 80 | 92 | 85 | 85 | 88 | 82 | **86** |
-| strategy-validator | 85 | 62 | 90 | 82 | 85 | 85 | 72 | **80** |
-| trade-journal-analyst | 82 | 78 | 88 | 75 | 82 | 82 | 68 | **79** |
-| backtest-researcher | 80 | 82 | 88 | 60 | 82 | 80 | 45 | **70** |
+| market-structure / choch-bos (engine-backed) | 92 | 90 | 90 | 88 | 90 | 88 | 82 | **89** |
+| risk-management | 90 | 85 | 92 | 88 | 88 | 88 | 80 | **87** |
+| order-block / fvg / liquidity / inducement / mitigation | 88 | 70 | 90 | 85 | 86 | 85 | 68 | **82** |
+| premium-discount / session-filter / entry-confirmation | 88 | 82 | 90 | 85 | 86 | 85 | 78 | **85** |
+| backtesting (operational) | 90 | 92 | 88 | 82 | 88 | 85 | 78 | **86** |
+| optimization / validation | 85 | 82 | 88 | 72 | 84 | 82 | 60 | **78** |
+| execution / mt5-trading | 90 | 85 | 90 | 85 | 86 | 85 | 72 | **85** |
+| journaling | 85 | 80 | 88 | 78 | 84 | 82 | 68 | **81** |
+| trade-management / trading-coach | 88 | 80 | 90 | 82 | 85 | 85 | 78 | **84** |
 
-**Set average: 80 / 100** — good design quality, held back by two real gaps.
+**Set average: ~84 / 100** (up from 80 — engine-backed determinism + full 9-section completeness).
 
-## Key deductions (honest)
-- **backtest-researcher (Production 45):** it is a *specification* with no wired data source or engine. It cannot currently execute a backtest → biggest production gap.
-- **strategy-validator (Determinism 62):** SMC concepts (MSS, liquidity, inducement) are described qualitatively. A true institutional skill needs programmatic detection so two runs on identical data yield identical verdicts.
-- **risk-manager (Production 80):** solid, but hardcoded $10/pip assumption breaks on XAUUSD/JPY/crosses; must pull `tick_value` per symbol.
-- **trade-journal-analyst (Completeness 75):** no persistent storage backend or automated screenshot capture defined.
-
-## To raise the set above 90 (production bar)
-1. Wire backtest data + engine (raises backtest-researcher ~70→88).
-2. Add deterministic SMC detectors (raises validator determinism 62→85).
-3. Symbol-generic tick/pip valuation in risk-manager.
-4. Concrete journal storage (xlsx/DB) + screenshot pipeline.
+## Remaining deductions (honest)
+- OB/FVG/liquidity/inducement/mitigation detection still specified in prose, not yet coded → determinism 70. Fix: implement detectors in `smc_engine.py`.
+- optimization/validation completeness 72 → need dataset + walk-forward runner.
+- journaling production 68 → no persistent store wired yet.

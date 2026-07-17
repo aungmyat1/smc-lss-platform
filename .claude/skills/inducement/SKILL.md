@@ -39,3 +39,8 @@ Bearish POI 1.1476; minor high 1.1462 = inducement; taken before tap => entry ar
 ## Acceptance criteria
 - [ ] Inducement identified relative to a specific POI
 - [ ] gate blocks pre-inducement entries
+
+## Coded detector (this platform)
+`smc_engine.inducement(candles, k=2)` -> nearest confirmed swing high (sell-side
+lure) and swing low (buy-side lure) that must be swept before the real POI.
+

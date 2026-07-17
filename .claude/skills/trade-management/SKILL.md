@@ -41,3 +41,9 @@ Long +1R at 1.1454: close 50%, SL->1.1436 (BE), trail under new M15 HL.
 ## Acceptance criteria
 - [ ] Deterministic triggers (1R etc.)
 - [ ] all actions via modify_position, confirmed
+
+## Coded logic (this platform)
+`trade_manager.manage(entry, stop, target, price, direction, be_at_r=1.0)` ->
+at +1R move stop to breakeven + take 50% partial; on target -> close full.
+Stops only tighten. Actions applied via metatrader modify_position.
+

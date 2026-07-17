@@ -41,3 +41,8 @@ Row: EURUSD long, A, +1.8R, mistakes=none; period expectancy +0.3R over 40 trade
 ## Acceptance criteria
 - [ ] Durable store written
 - [ ] one concrete improvement per review
+
+## Review output (canonical)
+Every human-facing review ends with exactly ONE concrete next fix, derived from the
+top recurring mistake across the full journal history. (Merged from the former
+trade-journal-analyst wrapper — persistence, metrics, and review now live here.)

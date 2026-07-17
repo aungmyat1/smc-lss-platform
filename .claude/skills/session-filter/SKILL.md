@@ -41,3 +41,8 @@ Allow trades only inside configured sessions/killzones and block low-liquidity w
 ## Acceptance criteria
 - [ ] Returns active session + allowed flag
 - [ ] deterministic from the clock
+
+## Coded logic (this platform)
+`smc_master.session_of(timestamp)` -> active session + killzone flag
+(London 07-10 UTC, NY 12-15 UTC). Used as stage 1 of the master pipeline.
+

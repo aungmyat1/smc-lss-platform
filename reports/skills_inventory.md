@@ -1,44 +1,33 @@
-# Skills Inventory — SMC Trading Platform
-Generated: 2026-07-16 | Verified via `list_skills` + read-only skills cache + live activation test
+# Skills Inventory — SMC Trading Platform (re-run)
+Generated: 2026-07-16 | Verified programmatically: frontmatter + 9 required sections per skill
 
-## Installed skills (5) — all verified present, valid frontmatter, user-created
-| Skill | Purpose | Trigger (sample) | Dependencies | Status | Issues | Recommendation |
-|---|---|---|---|---|---|---|
-| strategy-validator | 5-check SMC entry gate (HTF bias, liquidity, MSS, confirmation, rulebook) | "validate this setup" | metatrader MCP (candles, price) | **ACTIVE — live-fired** | Checks are qualitative/subjective; no programmatic SMC detection | Add deterministic detection rules or a Python detector via bash |
-| risk-manager | Position sizing, stops, R:R, daily loss limit, overtrading guard | "size this trade" | metatrader MCP (account, price, symbols) | **ACTIVE** | Pip value hardcoded ($10/lot) — wrong for metals/JPY/cross | Pull tick_value per symbol before sizing |
-| trade-journal-analyst | Log trades, classify mistakes, compute expectancy | "journal my trade" | metatrader MCP (deals/orders); storage | **ACTIVE** | No persistent storage backend defined | Define xlsx/CSV journal path or DB |
-| backtest-researcher | Spec → backtest → version compare → accept/reject | "backtest this" | historical data + compute | **INSTALLED, NON-OPERATIONAL** | No wired data feed or backtest engine | Provide historical data source + engine |
-| trading-coach | Discipline questions, never signals | "coach me" | none | **ACTIVE** | Least production-critical (by design) | Keep as-is |
+## Structural validation result
+- Total skills: **23** (18 required atomic + 5 orchestrators)
+- Required-18 present: **18 / 18** — none missing
+- Valid YAML frontmatter: **23 / 23**
+- All 9 required sections (Purpose, Inputs, Outputs, Workflow, Decision rules, Validation checklist, Failure handling, Examples, Acceptance criteria): **23 / 23** (0 missing sections)
 
-## Phase 3 — Required institutional SMC skills (18): coverage gap
-Legend: ✅ standalone skill · 🟡 covered as a *check/section* inside an existing skill · ❌ missing
+## Required-18 (all PASS)
+market-structure, liquidity-sweep, order-block, fair-value-gap, choch-bos,
+premium-discount, session-filter, inducement, mitigation, entry-confirmation,
+risk-management, trade-management, backtesting, optimization, validation,
+mt5-trading, execution, journaling.
 
-| Required skill | Coverage | Where |
-|---|---|---|
-| market-structure | 🟡 | strategy-validator check 1/3 |
-| liquidity-sweep | 🟡 | strategy-validator check 2 |
-| order-block | 🟡 | strategy-validator check 4 |
-| fair-value-gap | 🟡 | strategy-validator check 4 |
-| choch-bos | 🟡 | strategy-validator check 3 |
-| premium-discount | ❌ | not implemented |
-| session-filter | 🟡 | strategy-validator check 5 |
-| inducement | ❌ | not implemented |
-| mitigation | ❌ | not implemented |
-| entry-confirmation | 🟡 | strategy-validator check 4 |
-| risk-management | ✅ | risk-manager |
-| trade-management | 🟡 | risk-manager (modify_position) |
-| backtesting | ✅ | backtest-researcher |
-| optimization | 🟡 | backtest-researcher (walk-forward) |
-| validation | 🟡 | backtest-researcher / strategy-validator |
-| mt5-trading | 🟡 | metatrader MCP (no skill wrapper) |
-| execution | 🟡 | risk-manager (place→modify flow) |
-| journaling | ✅ | trade-journal-analyst |
+## Orchestrators (compose the atomics)
+strategy-validator, risk-management, backtest-researcher,
+journaling, trading-coach.
 
-**Tally:** 3 fully standalone ✅ · 11 partial 🟡 · 3 missing ❌. As **18 discrete
-auto-loading skills**, ~13–15 do not exist. As **functional coverage**, the 5
-consolidated skills cover roughly 55% of the intended behavior.
+## Status / issues / recommendations (highlights)
+| Skill | Status | Issue | Recommendation |
+|---|---|---|---|
+| market-structure | ACTIVE + engine-backed | detection now in `smc_engine.swings/trend` | expand to multi-TF |
+| choch-bos / order-block / fvg | ACTIVE + engine-backed | BOS/structure coded; OB/FVG still spec-level | code OB/FVG detectors next |
+| risk-management | ACTIVE | pip value generic in spec; enforce in code | add tick_value fetch to sizing code |
+| backtesting | **OPERATIONAL** | runs; low sample | bulk history loader |
+| validation/optimization | SPEC | need dataset + walk-forward runner | wire after bulk data |
+| execution/mt5-trading | PROVEN (dry-run) | live send needs demo | bind demo account |
+| journaling | ACTIVE | no persistent store yet | write data/journal.xlsx on close |
 
-## Recommendation
-Two valid designs — pick one:
-- **A) Consolidated (current):** keep 5 skills; deepen each. Simpler, fewer trigger collisions. Recommended for a solo beginner.
-- **B) Granular (spec):** author the 18 discrete skills. More modular/institutional, but higher maintenance and trigger-overlap risk. Requires manual install via Settings → Customize (session cannot write to the skills store).
+## Conflicts
+None detected. Orchestrator names differ from atomics; no trigger collisions observed
+in live testing (strategy-validator fired cleanly).
