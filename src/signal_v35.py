@@ -25,10 +25,10 @@ VARIANT_TABLE = {
 HORIZON_MAX_HOURS = {"INTRADAY": 12, "OVERNIGHT": 24, "INTRAWEEK": 120, "MULTI_HORIZON": 120}
 
 INSTRUMENT_PROFILES = {
-    "fx_major": {"point": 0.00001, "buffer": 0.00030},
-    "fx_jpy":   {"point": 0.001,   "buffer": 0.030},
-    "metal":    {"point": 0.01,    "buffer": 0.50},
-    "crypto":   {"point": 0.01,    "buffer": 60.0},
+    "fx_major": {"point": 0.00001, "buffer": 0.00030, "spread": 0.00008},
+    "fx_jpy":   {"point": 0.001,   "buffer": 0.030, "spread": 0.010},
+    "metal":    {"point": 0.01,    "buffer": 0.50, "spread": 0.30},
+    "crypto":   {"point": 0.01,    "buffer": 60.0, "spread": 20.0},
 }
 SYMBOL_PROFILE = {
     "EURUSD": "fx_major", "GBPUSD": "fx_major", "EURGBP": "fx_major",
@@ -181,6 +181,17 @@ def detect_e_trigger(h1):
 _DETECT = {"M1": detect_structure_m1, "M2": detect_structure_m2, "M3": detect_structure_m3}
 
 
+def _dol_target(m5, direction, entry):
+    """Pre-selected DOL proxy: nearest opposing liquidity beyond entry in the
+    trade direction (sell-side swing low for SELL, buy-side swing high for BUY)."""
+    hi, lo = e.swings(m5)
+    if direction == "SELL":
+        cands = [p for _, p in lo if p < entry]
+        return max(cands) if cands else None
+    cands = [p for _, p in hi if p > entry]
+    return min(cands) if cands else None
+
+
 def analyze(symbol, m5, h1=None, d1=None, primary_tp=None):
     htf = h1 if h1 else m5
     bias = detect_bias(htf)
@@ -194,9 +205,10 @@ def analyze(symbol, m5, h1=None, d1=None, primary_tp=None):
         st = _DETECT[m_mod](m5, bias)
         if st is None:
             continue
-        st.primary_tp = primary_tp
+        direction = VARIANT_TABLE[variant]["direction"]
+        st.primary_tp = primary_tp if primary_tp is not None else _dol_target(m5, direction, st.midpoint())
         sig = generate_signal(e_trig, m_mod, symbol, st)
-        if sig:
+        if sig and sig["decision"] == "SIGNAL":
             sig["detected"] = True
             return sig
     return {"symbol": symbol, "decision": "NO-SIGNAL",

@@ -40,24 +40,24 @@ def _apply_offset(candles, off):
     return candles
 
 
-def simulate_trade(direction, entry, stop, forward, rr=2.0, max_hold_bars=None):
+def simulate_trade(direction, entry, stop, forward, target=None, rr=2.0, max_hold_bars=None):
     """Given entry/stop and the FORWARD M5 bars (after entry), return the outcome
-    in R multiples. Target = rr*risk. Stop-first if a bar's range hits both
-    (conservative). None risk -> skip."""
+    in R multiples. Target defaults to rr*risk; if an explicit DOL target is given,
+    the win pays its true reward:risk. Stop-first if a bar hits both (conservative)."""
     risk = abs(entry - stop)
     if risk <= 0:
         return None
-    target = entry + rr * risk if direction == "BUY" else entry - rr * risk
+    if target is None:
+        target = entry + rr * risk if direction == "BUY" else entry - rr * risk
+    reward_r = abs(target - entry) / risk
     horizon = forward if max_hold_bars is None else forward[:max_hold_bars]
     for b in horizon:
         hit_stop = b["low"] <= stop if direction == "BUY" else b["high"] >= stop
         hit_tp = b["high"] >= target if direction == "BUY" else b["low"] <= target
-        if hit_stop and hit_tp:
-            return -1.0                      # conservative: assume stop first
         if hit_stop:
-            return -1.0
+            return -1.0                      # conservative: stop first if both hit
         if hit_tp:
-            return round(rr, 2)
+            return round(reward_r, 3)
     return 0.0                                # time-stopped flat (no hit within hold)
 
 
@@ -78,13 +78,17 @@ def run_backtest(symbol, m5, h1=None, rr=2.0, min_rr=2.0, warmup=40,
         entry = m5[i + 1]["open"]                     # act on next bar's open (no look-ahead)
         stop = sig["stop"]
         direction = sig["direction"]
+        target = sig.get("primary_tp")                 # DOL target (None -> rr*risk fallback)
         max_hold = v35.HORIZON_MAX_HOURS[sig["horizon"]] * M5_PER_HOUR
         forward = m5[i + 1:]
-        r = simulate_trade(direction, entry, stop, forward, rr, max_hold)
+        r = simulate_trade(direction, entry, stop, forward, target, rr, max_hold)
         if r is None:
             i += 1
             continue
-        r -= cost_r                                    # flat cost drag (R units)
+        # spread cost as an R-drag on entry+exit (2x half-spread ~= 1 spread)
+        risk = abs(entry - stop)
+        spread = v35.profile_for(symbol).get("spread", 0.0)
+        r -= (spread / risk) if (risk and cost_r == 0.0) else cost_r
         exit_i = i + 1
         trades.append({"i": i, "variant": sig["variant"], "dir": direction,
                        "entry": round(entry, 5), "stop": round(stop, 5), "r": round(r, 3)})
