@@ -32,6 +32,7 @@ def main():
         sys.exit("mt5.initialize() failed: " + str(mt5.last_error()))
     os.makedirs(a.out, exist_ok=True)
     for sym in [s.strip() for s in a.symbols.split(",") if s.strip()]:
+        mt5.symbol_select(sym, True)
         rates = mt5.copy_rates_from_pos(sym, TF[a.timeframe], 0, a.bars)
         if rates is None or len(rates) == 0:
             print("no data for", sym, mt5.last_error()); continue

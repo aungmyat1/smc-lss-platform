@@ -6,6 +6,7 @@ Same input CSV -> identical output, always. Used by backtest.py and dry_run.py.
 """
 from __future__ import annotations
 import csv
+import bisect
 
 def load_candles(path):
     """Return candles ascending by time: list of dicts o/h/l/c/time."""
@@ -20,21 +21,53 @@ def load_candles(path):
 
 def swings(c, k=2):
     """Fractal swing points. Returns (highs, lows) as lists of (index, price).
-    A swing at center index i is only *confirmed* after k following bars."""
+    A swing at center index i is only *confirmed* after k following bars.
+
+    Plain loops with early-break rather than all(genexpr) — this runs once
+    per candle inside the backtest's per-bar analysis loop, and generator
+    object creation/teardown dominated profiled runtime at that call volume.
+    """
     hi, lo = [], []
+    highs = [x["high"] for x in c]
+    lows = [x["low"] for x in c]
     for i in range(k, len(c) - k):
-        h, l = c[i]["high"], c[i]["low"]
-        if all(h >  c[j]["high"] for j in range(i-k, i)) and \
-           all(h >= c[j]["high"] for j in range(i+1, i+k+1)):
+        h, l = highs[i], lows[i]
+        is_hi = True
+        for j in range(i - k, i):
+            if not (h > highs[j]):
+                is_hi = False
+                break
+        if is_hi:
+            for j in range(i + 1, i + k + 1):
+                if not (h >= highs[j]):
+                    is_hi = False
+                    break
+        if is_hi:
             hi.append((i, h))
-        if all(l <  c[j]["low"] for j in range(i-k, i)) and \
-           all(l <= c[j]["low"] for j in range(i+1, i+k+1)):
+        is_lo = True
+        for j in range(i - k, i):
+            if not (l < lows[j]):
+                is_lo = False
+                break
+        if is_lo:
+            for j in range(i + 1, i + k + 1):
+                if not (l <= lows[j]):
+                    is_lo = False
+                    break
+        if is_lo:
             lo.append((i, l))
     return hi, lo
 
 def confirmed_before(swing_list, idx, k=2):
-    """Swings whose center is confirmed by bar `idx` (center + k <= idx)."""
-    return [s for s in swing_list if s[0] + k <= idx]
+    """Swings whose center is confirmed by bar `idx` (center + k <= idx).
+
+    swing_list is index-sorted ascending (swings() appends in increasing i
+    order), so this is a binary search rather than a full rescan. Called
+    inside per-bar loops in order_blocks()/liquidity_sweeps(), a linear scan
+    here turns those into O(n^2) over the window.
+    """
+    pos = bisect.bisect_right(swing_list, idx - k, key=lambda s: s[0])
+    return swing_list[:pos]
 
 def equilibrium(c, i, window=40):
     """50% of the dealing range over the trailing `window` bars up to bar i."""
@@ -72,18 +105,30 @@ def fvgs(c, min_gap=0.0):
 
 
 def order_blocks(c, k=2):
-    """Order blocks: last opposing candle before a close that breaks a confirmed swing."""
+    """Order blocks: last opposing candle before a close that breaks a confirmed swing.
+
+    Only the most-recently-confirmed high/low is ever consulted (hi[-1]/lo[-1]),
+    so we track it with a monotonic pointer instead of calling confirmed_before()
+    (bisect + slice) on every candle — that pattern alone was ~800k calls on an
+    80k-bar backtest.
+    """
     hi_all, lo_all = swings(c, k)
     obs = []
+    hi_ptr, lo_ptr = 0, 0
+    n_hi, n_lo = len(hi_all), len(lo_all)
     for i in range(k + 1, len(c)):
-        hi = confirmed_before(hi_all, i, k)
-        lo = confirmed_before(lo_all, i, k)
-        if hi and c[i]["close"] > hi[-1][1]:            # bullish BOS
+        while hi_ptr < n_hi and hi_all[hi_ptr][0] + k <= i:
+            hi_ptr += 1
+        while lo_ptr < n_lo and lo_all[lo_ptr][0] + k <= i:
+            lo_ptr += 1
+        hi_last = hi_all[hi_ptr - 1][1] if hi_ptr else None
+        lo_last = lo_all[lo_ptr - 1][1] if lo_ptr else None
+        if hi_last is not None and c[i]["close"] > hi_last:      # bullish BOS
             j = i - 1
             while j > 0 and c[j]["close"] >= c[j]["open"]:
                 j -= 1                                   # walk back to last down candle
             obs.append({"i": j, "dir": "bull", "low": c[j]["low"], "high": c[j]["high"]})
-        elif lo and c[i]["close"] < lo[-1][1]:           # bearish BOS
+        elif lo_last is not None and c[i]["close"] < lo_last:    # bearish BOS
             j = i - 1
             while j > 0 and c[j]["close"] <= c[j]["open"]:
                 j -= 1
@@ -112,21 +157,25 @@ def liquidity_sweeps(c, k=2, min_wick_ratio=0.5):
     """
     hi_all, lo_all = swings(c, k)
     out = []
+    hi_ptr, lo_ptr = 0, 0
+    n_hi, n_lo = len(hi_all), len(lo_all)
     for i in range(k + 1, len(c)):
         rng = c[i]["high"] - c[i]["low"]
         if rng <= 0:
             continue
         body_lo = min(c[i]["open"], c[i]["close"])
         body_hi = max(c[i]["open"], c[i]["close"])
-        lo = confirmed_before(lo_all, i, k)
-        hi = confirmed_before(hi_all, i, k)
-        if lo:
-            lvl = lo[-1][1]
+        while lo_ptr < n_lo and lo_all[lo_ptr][0] + k <= i:
+            lo_ptr += 1
+        while hi_ptr < n_hi and hi_all[hi_ptr][0] + k <= i:
+            hi_ptr += 1
+        if lo_ptr:
+            lvl = lo_all[lo_ptr - 1][1]
             lower_wick = body_lo - c[i]["low"]
             if c[i]["low"] < lvl and c[i]["close"] > lvl and lower_wick >= min_wick_ratio * rng:
                 out.append({"i": i, "dir": "bull", "level": round(lvl, 5), "reclaim": round(c[i]["close"], 5)})
-        if hi:
-            lvl = hi[-1][1]
+        if hi_ptr:
+            lvl = hi_all[hi_ptr - 1][1]
             upper_wick = c[i]["high"] - body_hi
             if c[i]["high"] > lvl and c[i]["close"] < lvl and upper_wick >= min_wick_ratio * rng:
                 out.append({"i": i, "dir": "bear", "level": round(lvl, 5), "reclaim": round(c[i]["close"], 5)})

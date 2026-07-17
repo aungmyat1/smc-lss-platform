@@ -62,15 +62,30 @@ def simulate_trade(direction, entry, stop, forward, target=None, rr=2.0, max_hol
 
 
 def run_backtest(symbol, m5, h1=None, rr=2.0, min_rr=2.0, warmup=40,
-                 broker_offset=0, cost_r=0.0):
+                 broker_offset=0, cost_r=0.0, m5_lookback=500, h1_lookback=300):
+    """Walk M5 bar-by-bar and call the v3.5 engine at each step.
+
+    Detection windows are bounded to `m5_lookback`/`h1_lookback` trailing bars
+    (rather than the full history-to-date) so a multi-month CSV runs in O(n):
+    re-slicing/re-scanning the whole series on every bar is O(n^2) and, at
+    tens of thousands of bars, effectively never finishes. SMC structure
+    (swings/FVG/OB/sweeps) is a recent-price-action read anyway, so bounding
+    the lookback does not change what a live run would see.
+    """
     m5 = _apply_offset(list(m5), broker_offset)
     h1 = _apply_offset(list(h1), broker_offset) if h1 else None
     trades = []
     i = warmup
     n = len(m5)
+    h1_end = 0                                        # count of h1 bars with time <= m5[i]["time"]
     while i < n - 1:
-        window = m5[: i + 1]                          # closed candles up to i
-        h1ctx = [b for b in h1 if b["time"] <= m5[i]["time"]] if h1 else None
+        window = m5[max(0, i + 1 - m5_lookback): i + 1]  # closed candles, bounded lookback
+        if h1:
+            while h1_end < len(h1) and h1[h1_end]["time"] <= m5[i]["time"]:
+                h1_end += 1
+            h1ctx = h1[max(0, h1_end - h1_lookback): h1_end]
+        else:
+            h1ctx = None
         sig = v35.analyze(symbol, window, h1ctx)
         if not sig.get("detected"):
             i += 1
@@ -135,11 +150,14 @@ def main():
     ap.add_argument("--rr", type=float, default=2.0)
     ap.add_argument("--warmup", type=int, default=40)
     ap.add_argument("--broker_offset", type=int, default=0)
+    ap.add_argument("--m5_lookback", type=int, default=500)
+    ap.add_argument("--h1_lookback", type=int, default=300)
     ap.add_argument("--out", default=None)
     a = ap.parse_args()
     m5 = e.load_candles(a.m5)
     h1 = e.load_candles(a.h1) if a.h1 else None
-    rep = run_backtest(a.symbol, m5, h1, a.rr, warmup=a.warmup, broker_offset=a.broker_offset)
+    rep = run_backtest(a.symbol, m5, h1, a.rr, warmup=a.warmup, broker_offset=a.broker_offset,
+                       m5_lookback=a.m5_lookback, h1_lookback=a.h1_lookback)
     out = a.out or f"reports/backtest_v35_{a.symbol}.json"
     os.makedirs("reports", exist_ok=True)
     with open(out, "w", encoding="utf-8") as fh:
