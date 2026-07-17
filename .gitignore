@@ -15,3 +15,4 @@ reports/_scratch/
 reports/*_result.json
 reports/execution_test.json
 reports/daily_signals.json
+reports/backtest_v35_*.json
