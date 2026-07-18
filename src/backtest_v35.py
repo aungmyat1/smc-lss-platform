@@ -24,6 +24,11 @@ def normalize_time(ts, broker_offset_hours=0):
 
     VTMarkets candle stamps run ahead of UTC; pass the broker's offset (e.g. 3)
     to normalize. Offset 0 is a no-op. Returns the normalized 'YYYY-MM-DD HH:MM'.
+
+    DST note: this applies a fixed offset with no DST correction, matching the
+    project's documented policy (specs/v3.6.yaml dst_adjusted: false). Broker
+    offset is assumed constant year-round. If VTMarkets changes offset seasonally,
+    re-baseline with the updated value — a single re-run, not a code change.
     """
     if not broker_offset_hours:
         return ts
@@ -65,6 +70,11 @@ def run_backtest(symbol, m5, h1=None, rr=2.0, min_rr=2.0, warmup=40,
                  broker_offset=0, cost_r=0.0, m5_lookback=500, h1_lookback=300,
                  d1=None, d1_lookback=30):
     """Walk M5 bar-by-bar and call the v3.5 engine at each step.
+
+    broker_offset=0 here (not 3): programmatic callers (tests, other scripts)
+    are expected to pass already-normalized candles or handle offset themselves.
+    The CLI main() defaults to 3 for direct VTMarkets CSV usage. Keep these
+    two defaults consistent with their callers, not with each other.
 
     Detection windows are bounded to `m5_lookback`/`h1_lookback` trailing bars
     (rather than the full history-to-date) so a multi-month CSV runs in O(n):

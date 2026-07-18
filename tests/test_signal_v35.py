@@ -129,20 +129,59 @@ def test_determinism():
 
 
 def _bear_fvg_series():
-    """Hand-built M5 with a clear 3-candle bearish FVG (c[i-2].low > c[i].high)."""
-    def bar(o, h, l, c):
-        return {"time": "t", "open": o, "high": h, "low": l, "close": c}
-    return [
-        bar(1.1050, 1.1052, 1.1040, 1.1041),   # down
-        bar(1.1041, 1.1042, 1.1030, 1.1031),   # down (its low 1.1030 > next high => gap)
-        bar(1.1020, 1.1021, 1.1010, 1.1011),   # gap: c[0].low? use i=2 -> c[0].low 1.1040 > c[2].high 1.1021
+    """Hand-built M5 for M1 SELL: builds a confirmed swing high, then a
+    bearish sweep (wick above the swing, body closes below it), then a
+    3-candle bearish FVG that forms AFTER the sweep.
+
+    M1 §7 ordering: sweep_i < fvg_i. The sweep must be confirmed (k=2
+    following bars needed), so we pad with 2 post-sweep bars before the FVG.
+    Timestamps are London-session UTC so _in_session() passes in analyze().
+    """
+    def bar(ts, o, h, l, c):
+        return {"time": ts, "open": o, "high": h, "low": l, "close": c}
+    # 6 bars building price up to form a swing high around 1.1060
+    baseline = [
+        bar("2026-01-05 07:00", 1.1000, 1.1010, 1.0995, 1.1005),
+        bar("2026-01-05 07:05", 1.1005, 1.1020, 1.1000, 1.1018),
+        bar("2026-01-05 07:10", 1.1018, 1.1040, 1.1015, 1.1038),
+        bar("2026-01-05 07:15", 1.1038, 1.1060, 1.1030, 1.1058),  # swing high candidate
+        bar("2026-01-05 07:20", 1.1058, 1.1059, 1.1030, 1.1032),  # k=1 confirm
+        bar("2026-01-05 07:25", 1.1032, 1.1035, 1.1020, 1.1025),  # k=2 confirm -> swing high @ 1.1060 confirmed
     ]
+    # Bearish sweep: wick pierces 1.1060, body closes below it
+    sweep = bar("2026-01-05 07:30", 1.1025, 1.1075, 1.1010, 1.1020)  # high 1.1075 > 1.1060, close 1.1020 < 1.1060
+    # 2 confirmation bars after sweep (needed for k=2 sweep confirmation)
+    post_sweep = [
+        bar("2026-01-05 07:35", 1.1020, 1.1025, 1.1005, 1.1010),
+        bar("2026-01-05 07:40", 1.1010, 1.1015, 1.1000, 1.1005),
+    ]
+    # 3-candle bearish FVG: c[i-2].low > c[i].high
+    fvg = [
+        bar("2026-01-05 07:45", 1.1005, 1.1008, 1.0990, 1.0992),  # low 1.0990
+        bar("2026-01-05 07:50", 1.0992, 1.0995, 1.0980, 1.0983),  # middle
+        bar("2026-01-05 07:55", 1.0983, 1.0985, 1.0960, 1.0962),  # high 1.0985 < 1.0990 => bearish FVG
+    ]
+    return baseline + [sweep] + post_sweep + fvg
 
 
 def test_detect_structure_m1_finds_bear_fvg():
+    """M1 SELL: sweep precedes the bearish FVG — ordering gate must pass."""
     st = sg.detect_structure_m1(_bear_fvg_series(), "SELL")
-    assert st is not None
+    assert st is not None, "expected M1 structure but got None"
     assert st.zone_high > st.zone_low
+
+
+def test_detect_structure_m1_none_without_sweep():
+    """M1 requires a sweep before the FVG — no sweep => None."""
+    def bar(o, h, l, c):
+        return {"time": "2026-01-05 07:00", "open": o, "high": h, "low": l, "close": c}
+    # Only a bearish FVG, no sweep candle
+    no_sweep = [
+        bar(1.1050, 1.1052, 1.1040, 1.1041),
+        bar(1.1041, 1.1042, 1.1030, 1.1031),
+        bar(1.1020, 1.1021, 1.1010, 1.1011),
+    ]
+    assert sg.detect_structure_m1(no_sweep, "SELL") is None
 
 
 def test_analyze_returns_no_signal_dict_not_crash():
