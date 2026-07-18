@@ -9,6 +9,9 @@ reports/_scratch/
 *.log
 .env
 
+# Holds real MT5 demo credentials once filled in — never commit
+.mcp.json
+
 # Account-identifying attestation (keep local; use *.example.md as template)
 .claude/skills/mt5-trading/references/attested-environments.md
 # Generated run artifacts

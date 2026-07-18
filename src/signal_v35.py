@@ -9,6 +9,7 @@ DETECTION layer (analyze) over closed candles. No look-ahead, closed candles onl
 """
 from __future__ import annotations
 from dataclasses import dataclass, field
+import datetime
 import smc_engine as e
 
 # v3.6 spec Sec 1: direction is NOT stored per variant. v3.5 hard-locked one
@@ -157,6 +158,52 @@ E3_RECLAIM_WINDOW_H1_BARS = 1
 REACTION_WICK_RATIO_MIN = 0.4
 SWEEP_WICK_RATIO_MIN = 0.5
 
+# v3.6 spec Sec 8: E-trigger confirm -> M-model entry max gap (H1 bars).
+# Beyond this, the HTF context is considered stale and the signal is rejected.
+MAX_E_TO_M_H1_BARS = 12
+
+# v3.6 spec Sec 9: session killzones (fixed UTC, dst_adjusted: false by design).
+_SESSION_WINDOWS_UTC = [
+    (6, 0, 10, 0),    # London: 06:00-10:00 UTC
+    (11, 30, 15, 0),  # New York: 11:30-15:00 UTC
+]
+
+
+def _in_session(ts: str) -> bool:
+    """Return True if the candle timestamp (UTC, 'YYYY-MM-DD HH:MM') falls
+    within a defined killzone on a weekday (spec §9).
+    DST correction: false by design — fixed UTC windows permanently.
+    Fail-open on unparseable timestamps.
+
+    Fast-path: parse hour/minute directly from the string (no datetime object
+    needed for the time comparison; only the weekday check needs a full parse).
+    Format is always 'YYYY-MM-DD HH:MM' from load_candles().
+    """
+    if len(ts) < 16:
+        return True   # unparseable: fail-open
+    try:
+        hh = int(ts[11:13])
+        mm = int(ts[14:16])
+    except (ValueError, IndexError):
+        return True
+    # Quick time-window check before the more expensive weekday check
+    in_london = (hh == 6 or hh == 7 or hh == 8 or hh == 9) or (hh == 6 and mm >= 0)
+    in_ny     = (hh == 11 and mm >= 30) or hh == 12 or hh == 13 or (hh == 14 and mm < 60)
+    if not (in_london or in_ny):
+        return False
+    # Now check weekday (requires full parse — done only when in a window)
+    try:
+        dt = datetime.datetime.strptime(ts[:16], "%Y-%m-%d %H:%M")
+    except ValueError:
+        return True
+    if dt.weekday() >= 5:   # Saturday=5, Sunday=6
+        return False
+    # Re-confirm with exact window boundaries
+    t = hh * 60 + mm   # minutes since midnight
+    in_london_exact = (6 * 60) <= t < (10 * 60)
+    in_ny_exact     = (11 * 60 + 30) <= t < (15 * 60)
+    return in_london_exact or in_ny_exact
+
 
 def _first_reaction_bar(htf, zone_low, zone_high, want_dir, start_i, max_i, wick_ratio_min):
     """First bar in (start_i, max_i] that touches [zone_low, zone_high] and
@@ -266,8 +313,19 @@ def _swept_level(m5, bias):
 
 
 def detect_structure_m1(m5, bias):
+    """M1: inducement sweep + character change -> pullback/FVG midpoint.
+
+    §7 ordering enforced: a sweep in the bias direction must precede the FVG
+    (sweep index < FVG index). No sweep => no M1 setup. This matches the
+    minimum ordering rigor applied to M3 this session.
+    """
     want = "bull" if bias == "BUY" else "bear"
-    fvs = [f for f in e.fvgs(m5) if f["dir"] == want]
+    sweeps = [x for x in e.liquidity_sweeps(m5) if x["dir"] == want]
+    if not sweeps:
+        return None
+    sweep = sweeps[-1]
+    # FVG must form AFTER the inducement sweep (the character-change zone)
+    fvs = [f for f in e.fvgs(m5) if f["dir"] == want and f["i"] > sweep["i"]]
     if not fvs:
         return None
     fv = fvs[-1]
@@ -279,12 +337,24 @@ def detect_structure_m1(m5, bias):
 
 
 def detect_structure_m2(m5, bias):
+    """M2: supply/demand shift -> Gold Zone (OB ∩ FVG) -> overlap midpoint.
+
+    §7 ordering enforced: at least one of OB or FVG must form AFTER a
+    confirming sweep. No sweep => no valid M2 supply/demand shift.
+    """
     want = "bull" if bias == "BUY" else "bear"
     obs = [o for o in e.order_blocks(m5) if o["dir"] == want]
     fvs = [f for f in e.fvgs(m5) if f["dir"] == want]
     if not obs or not fvs:
         return None
     ob, fv = obs[-1], fvs[-1]
+    # §7: the structure-defining zone must post-date a sweep in the same direction
+    sweeps = [x for x in e.liquidity_sweeps(m5) if x["dir"] == want]
+    if not sweeps:
+        return None
+    sweep = sweeps[-1]
+    if ob["i"] <= sweep["i"] and fv["i"] <= sweep["i"]:
+        return None   # neither OB nor FVG formed after the sweep
     low = max(ob["low"], fv["lower"])
     high = min(ob["high"], fv["upper"])
     if low >= high:
@@ -385,6 +455,14 @@ def analyze(symbol, m5, h1=None, d1=None, primary_tp=None, index_offset=0):
         return {"symbol": symbol, "decision": "NO-SIGNAL",
                 "reason": "no qualifying E-trigger (E1 D1-gap / E2 POI / E3 external sweep)"}
     e_trig, bias = trig["e_trigger"], trig["bias"]
+    # §8: reject stale E-trigger context. The confirm_i is an index into the
+    # H1 window; its age is (len(h1) - 1 - confirm_i) H1 bars. When only M5
+    # is available, 1 H1 ≈ 12 M5 bars — approximate but consistent.
+    if h1 is not None:
+        confirm_h1_age = len(h1) - 1 - trig["confirm_i"]
+        if confirm_h1_age > MAX_E_TO_M_H1_BARS:
+            return {"symbol": symbol, "decision": "NO-SIGNAL",
+                    "reason": f"{e_trig} stale: {confirm_h1_age} H1 bars old > {MAX_E_TO_M_H1_BARS} (§8)"}
     for m_mod in ("M2", "M1", "M3"):
         variant = e_trig + m_mod
         if variant not in VARIANT_TABLE:
@@ -392,6 +470,13 @@ def analyze(symbol, m5, h1=None, d1=None, primary_tp=None, index_offset=0):
         st = _DETECT[m_mod](m5, bias)
         if st is None:
             continue
+        # §9: entry bar (last M5 bar in the window) must be within a session
+        # killzone. The last closed M5 bar is the candidate entry signal bar.
+        last_m5_time = m5[-1].get("time", "") if m5 else ""
+        if last_m5_time and not _in_session(last_m5_time):
+            # Log the reason once (same for all M-models in this call) and exit
+            return {"symbol": symbol, "decision": "NO-SIGNAL",
+                    "reason": f"outside London/NY session or weekend at {last_m5_time} (§9)"}
         st.primary_tp = primary_tp if primary_tp is not None else _dol_target(m5, bias, st.midpoint())
         sig = generate_signal(e_trig, m_mod, symbol, st, bias)
         if sig and sig["decision"] == "SIGNAL":
