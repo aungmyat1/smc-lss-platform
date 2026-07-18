@@ -21,6 +21,15 @@ risk:
   portfolio_heat_pct: 4.0
   min_rr: 2.0
 
+execution:                               # v1 legacy live-path knobs (Phase 3 M1 — externalized, values unchanged)
+  equilibrium_window: 40                 # bars used for premium/discount midpoint (was hardcoded in live_signal.py)
+  liquidity_sweep_lookback_bars: 10      # recent-bars window for aligned sweep detection (was hardcoded in smc_master.py)
+  breakeven_at_r: 1.0                    # R multiple that triggers move-to-BE + partial (was hardcoded in trade_manager.py)
+  lot_step: 0.01                         # broker lot rounding step (was hardcoded in live_signal.py)
+  killzones:                             # trading-session hour windows, UTC (was hardcoded in smc_master.session_of)
+    london: {start_hour: 7, end_hour: 10}
+    ny: {start_hour: 12, end_hour: 15}
+
 reporting:
   telegram:
     enabled: false                      # target-state integration; wire token/chat_id outside repo

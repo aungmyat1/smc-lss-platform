@@ -6,7 +6,7 @@ actions to apply via metatrader modify_position. Stops only ever tighten.
 """
 
 
-def manage(entry, stop, target, price, direction, be_at_r=1.0):
+def manage(entry, stop, target, price, direction, be_at_r):
     risk = abs(entry - stop)
     if risk <= 0:
         return {"r_multiple": 0, "actions": [{"action": "invalid_stop"}]}
@@ -24,9 +24,11 @@ def manage(entry, stop, target, price, direction, be_at_r=1.0):
 
 if __name__ == "__main__":
     import argparse, json
+    import config
     ap = argparse.ArgumentParser()
     for f in ("entry", "stop", "target", "price"):
         ap.add_argument("--" + f, type=float, required=True)
     ap.add_argument("--direction", default="long")
     a = ap.parse_args()
-    print(json.dumps(manage(a.entry, a.stop, a.target, a.price, a.direction), indent=2))
+    cfg = config.load()
+    print(json.dumps(manage(a.entry, a.stop, a.target, a.price, a.direction, cfg.execution.breakeven_at_r), indent=2))

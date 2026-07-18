@@ -21,6 +21,7 @@ Usage:
 """
 import argparse, json, os, datetime
 import yaml
+import config as configmod
 import smc_engine as e
 import smc_master as m
 import signal_v35 as v35
@@ -31,16 +32,14 @@ def load_cfg(path):
         return yaml.safe_load(fh)
 
 
-def run_symbol(sym, cfg, data_dir, equity, env, auto):
-    tf = cfg["cadence"]["timeframes"]["confirm"]
+def run_symbol(sym, cfg_raw, cfg, data_dir, equity, env, auto):
+    tf = cfg_raw["cadence"]["timeframes"]["confirm"]
     path = os.path.join(data_dir, f"{sym['name']}_{tf}.csv")
     if not os.path.exists(path):
         return {"symbol": sym["name"], "decision": "SKIP",
                 "reason": f"missing data file {path} (fetch via MCP first)", "variants": sym.get("variants")}
     c = e.load_candles(path)
-    risk_pct = cfg["risk"]["risk_pct_demo"] if env != "live" else cfg["risk"]["risk_pct_live"]
-    res = m.run(c, equity, risk_pct, cfg["risk"]["min_rr"], strict_session=True,
-                symbol=sym["mt5"], pip=sym["pip"], pip_value=sym["pip_value_per_lot"])
+    res = m.run(c, cfg, equity, env=env, strict_session=True, symbol_name=sym["name"])
     # v3.5 engine read (parallel, propose-only): use H1+D1 for E-trigger if available
     h1p = os.path.join(data_dir, f"{sym['name']}_H1.csv")
     h1 = e.load_candles(h1p) if os.path.exists(h1p) else None
@@ -70,18 +69,19 @@ def main():
     ap.add_argument("--tier", default="active", choices=["active", "all"])
     a = ap.parse_args()
 
-    cfg = load_cfg(a.config)
-    auto = bool(cfg["autonomy"].get("engine_implements_spec")) and cfg["autonomy"].get("demo", "").startswith("auto")
+    cfg_raw = load_cfg(a.config)
+    cfg = configmod.load(watchlist_path=a.config)
+    auto = bool(cfg_raw["autonomy"].get("engine_implements_spec")) and cfg_raw["autonomy"].get("demo", "").startswith("auto")
     if a.env == "live":
         auto = False  # live is blocked by policy regardless
-    syms = list(cfg["symbols"]["active"])
+    syms = list(cfg_raw["symbols"]["active"])
     if a.tier == "all":
-        syms += list(cfg["symbols"].get("pending", []))
+        syms += list(cfg_raw["symbols"].get("pending", []))
 
-    results = [run_symbol(s, cfg, a.data, a.equity, a.env, auto) for s in syms]
+    results = [run_symbol(s, cfg_raw, cfg, a.data, a.equity, a.env, auto) for s in syms]
     out = {
         "generated_utc": datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z",
-        "strategy_spec": cfg.get("strategy_spec"),
+        "strategy_spec": cfg.strategy_spec,
         "env": a.env,
         "equity": a.equity,
         "auto_execute_enabled": auto,

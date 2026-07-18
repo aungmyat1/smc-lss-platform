@@ -9,10 +9,11 @@ Usage:
   python src/live_signal.py --data data/EURUSD_H1.csv --equity 988.12 --symbol EURUSD-VIP
 """
 import argparse, json, math
+import config
 import smc_engine as e
 
 
-def latest_signal(c, k=2, window=40):
+def latest_signal(c, k, window):
     hi_all, lo_all = e.swings(c, k)
     i = len(c) - 1
     px = c[i]["close"]
@@ -28,11 +29,11 @@ def latest_signal(c, k=2, window=40):
     return None
 
 
-def size(sig, equity, risk_pct, rr, pip=0.0001, pip_value=10.0, step=0.01, min_rr=2.0):
+def size(sig, equity, risk_pct, rr, pip, pip_value, lot_step, min_rr):
     dist = abs(sig["entry"] - sig["stop"])
     stop_pips = dist / pip
     risk_usd = equity * risk_pct / 100
-    lots = math.floor((risk_usd / (stop_pips * pip_value)) / step) * step if stop_pips else 0
+    lots = math.floor((risk_usd / (stop_pips * pip_value)) / lot_step) * lot_step if stop_pips else 0
     tgt = sig["entry"] + rr * dist if sig["dir"] == "long" else sig["entry"] - rr * dist
     reasons = []
     if rr < min_rr:
@@ -48,20 +49,23 @@ def size(sig, equity, risk_pct, rr, pip=0.0001, pip_value=10.0, step=0.01, min_r
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--data", default="data/EURUSD_H1.csv")
-    ap.add_argument("--symbol", default="EURUSD-VIP")
+    ap.add_argument("--symbol", default=None, help="watchlist symbol name (e.g. EURUSD); defaults to specs/v1.yaml's symbol")
     ap.add_argument("--equity", type=float, default=988.12)
-    ap.add_argument("--risk_pct", type=float, default=1.0)
-    ap.add_argument("--rr", type=float, default=2.0)
+    ap.add_argument("--env", default="demo", choices=["demo", "live"])
     a = ap.parse_args()
+    cfg = config.load()
+    sym = cfg.symbol(a.symbol or cfg.strategy.symbol)
     c = e.load_candles(a.data)
-    sig = latest_signal(c)
+    sig = latest_signal(c, cfg.strategy.swing_lookback, cfg.execution.equilibrium_window)
     if not sig:
         out = {"signal": "NONE", "decision": "NO-GO", "reason": "no valid SMC setup on latest bar (stand aside)",
-               "symbol": a.symbol, "bars": len(c), "last_close": c[-1]["close"]}
+               "symbol": sym.mt5, "bars": len(c), "last_close": c[-1]["close"]}
     else:
-        s = size(sig, a.equity, a.risk_pct, a.rr)
-        out = {"signal": sig, "sizing": s, "symbol": a.symbol,
+        risk_pct = cfg.risk.risk_pct_for(a.env)
+        s = size(sig, a.equity, risk_pct, cfg.risk.min_rr, pip=sym.pip, pip_value=sym.pip_value_per_lot,
+                 lot_step=cfg.execution.lot_step, min_rr=cfg.risk.min_rr)
+        out = {"signal": sig, "sizing": s, "symbol": sym.mt5,
                "order_payload": None if s["decision"] != "GO" else {
-                   "place_market_order": {"symbol": a.symbol, "type": "BUY" if sig["dir"] == "long" else "SELL", "volume": s["lots"]},
+                   "place_market_order": {"symbol": sym.mt5, "type": "BUY" if sig["dir"] == "long" else "SELL", "volume": s["lots"]},
                    "modify_position": {"stop_loss": round(sig["stop"], 5), "take_profit": s["target"]}}}
     print(json.dumps(out, indent=2))
