@@ -1,6 +1,12 @@
-# SMC-LSS Platform — Implementation Master Plan
+# SMC-LSS Platform — Implementation Master Plan  ⚠️ DEPRECATED
 
-_Program-manager view. Objective source: docs/CHARTER.md. Strategy of record:
+> **DEPRECATED 2026-07-18.** Superseded by the root [`MASTER_PLAN.md`](../MASTER_PLAN.md)
+> (Master Agent v2.1), which is the authoritative governance document. This file is
+> retained for historical milestone detail (M0–M6, exit gates, Telegram/observability
+> plans) only. Where this document conflicts with the root `MASTER_PLAN.md`, the root
+> file wins. Do not use this as the source of phase priority or sequencing.
+
+_Program-manager view (historical). Objective source: docs/CHARTER.md. Strategy of record:
 specs/v3.5.yaml (RESEARCH_CANDIDATE). Last updated: 2026-07-17._
 
 ## 1. Objective (what "done" means)

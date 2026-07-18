@@ -5,17 +5,39 @@ Goal: a disciplined, config-driven MT5 demo trading loop, promoted to live only 
 evidence gates pass. Full detail lives in the docs below — this file is the index and
 the hard rules; don't duplicate their content here, keep it current instead.
 
-## Source of truth (read in this order)
-1. [`docs/CHARTER.md`](docs/CHARTER.md) — operational charter: autonomy policy, risk
-   envelope, safety gates, demo→live promotion gates. Governs *when the system may trade*.
-2. [`docs/RESEARCH-CHARTER.md`](docs/RESEARCH-CHARTER.md) — research discipline: no
+## Document authority (v2.1.1 — higher wins; read in this order too)
+This file (`CLAUDE.md`) is read **first** as the entry index, but `MASTER_PLAN.md` is
+the **highest authority**. Full order:
+1. [`MASTER_PLAN.md`](MASTER_PLAN.md) — **AUTHORITATIVE (v2.1.1).** Scope, phase
+   priority, sequencing, non-negotiable rules, Definition of Done, success gates.
+   When any document conflicts with it, this file wins.
+2. [`CLAUDE.md`](CLAUDE.md) — this file: entry index + the hard rules below.
+3. [`docs/CHARTER.md`](docs/CHARTER.md) — trade-safety authority (subordinate to
+   MASTER_PLAN): autonomy policy, risk envelope, demo→live promotion gates.
+4. [`docs/RESEARCH-CHARTER.md`](docs/RESEARCH-CHARTER.md) — research discipline: no
    change to `specs/*.yaml` or detection logic without the six-question
    why/evidence/hypothesis/expected-improvement/success/rollback template, logged to
    `reports/research_log.md` before running the backtest.
-3. [`PROJECT_STATUS.md`](PROJECT_STATUS.md) — last audited state, ranked blockers, what's
-   verified vs assumed. Re-read before claiming something works.
-4. [`ROADMAP.md`](ROADMAP.md) — milestone sequence (M1–M8) and acceptance criteria.
-5. [`NEXT_ACTION.md`](NEXT_ACTION.md) — the *one* milestone in flight right now.
+5. [`PROJECT_STATUS.md`](PROJECT_STATUS.md) — last audited state, ranked blockers.
+6. [`ROADMAP.md`](ROADMAP.md) — milestone sequence under MASTER_PLAN's **Phases 1–7**
+   (Risk Engine = Phase 3 = current priority; sub-milestones M1–M4).
+7. [`NEXT_ACTION.md`](NEXT_ACTION.md) — the *one* milestone in flight right now.
+8. Source code.
+
+On conflict: stop, identify it, follow the higher-authority document. Never silently
+override governance.
+
+> `docs/MASTER-PLAN.md` is **DEPRECATED** — superseded by the root `MASTER_PLAN.md`.
+
+## Owner directives (2026-07-18, override log)
+- **Priority:** Risk Engine (Phase 3) is the highest priority, built on the **locked
+  v1 engine** (`specs/v1.yaml`). Phase 3 sub-order: **M1 config loader → M2 risk
+  validator → M3 position sizing → M4 approval gate.** The v3.5 promotion track is
+  **parked** until demo success gates pass — never wire v3.5 into live execution.
+- **Skills (v2.1.1):** existing skills may continue, but **orchestration only** — they
+  MUST NOT replace Python modules, duplicate strategy logic, bypass validation, or
+  create alternative signal engines. New skills require justification. (This refines
+  the earlier owner authorization to continue skills.)
 
 ## Hard rules
 - Never hardcode strategy values (risk %, min RR, k, window, sessions) — everything
@@ -30,11 +52,17 @@ the hard rules; don't duplicate their content here, keep it current instead.
   complete on untested code.
 - Strategy/spec changes go through `backtest-researcher` → `validation`, never ad hoc.
 
-## Open item — spec version drift
-`docs/CHARTER.md` names `specs/v3.5.yaml` as the version of record and `specs/v1.yaml`
-as legacy reference, but `specs/v3.6.yaml` now also exists and `ROADMAP.md`/`NEXT_ACTION.md`
-still target `v1.yaml` for the M1 config loader. Resolve which spec file is canonical
-before wiring `src/config.py` — don't silently pick one.
+## Spec version status (resolved 2026-07-18 re-audit)
+`specs/v3.5.yaml` is the version of record (per `docs/CHARTER.md`), backed by a
+working formula layer + backtest harness (`signal_v35.py`, `backtest_v35.py`,
+28 passing tests) but still `RESEARCH_CANDIDATE` — `engine_implements_spec` stays
+`false` until the promotion gate in `ROADMAP.md` M1.5 is cleared with logged
+evidence, not decided ad hoc. `specs/v1.yaml` is legacy — it's what
+`live_signal.py`/`smc_master.py` actually execute today, and stays canonical for
+that live path until v3.5 is promoted and those modules are rewired. `specs/v3.6.yaml`
+is research-only (IFVG spec), unimplemented, not on the roadmap yet. `ROADMAP.md`
+and `NEXT_ACTION.md` were rewritten this audit to target v3.5 going forward — see
+`PROJECT_STATUS.md` §1 for the full picture of what changed and why.
 
 ## Working conventions
 - Skills autoload from `.claude/skills` (see `.claude/settings.json`). Start multi-step

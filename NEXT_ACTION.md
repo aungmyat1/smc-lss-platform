@@ -2,26 +2,38 @@
 
 **One milestone at a time. This is the next one.**
 
-## → M1: Config loader (`src/config.py`)
+## → PHASE 3 · M1: Configuration Loader (`src/config.py`)
+
+*(Per [`MASTER_PLAN.md`](MASTER_PLAN.md) v2.1.1, Phase 3 is implemented M1→M4:
+**M1 config loader** → M2 risk validator → M3 position sizing → M4 approval gate.
+M1 is first because Rule 2 forbids hardcoded strategy parameters, so every later
+risk component must read config, not constants. Built on the locked v1 engine; the
+v3.5 track stays parked.)*
 
 ### Why this first
-The charter has a hard rule: *"Never hardcode strategy values. Everything must come from configuration."* Right now `specs/v1.yaml` exists but **no code reads it** — `risk_pct`, `min_rr`, `k`, `window`, and `sessions` are hardcoded in `live_signal.py`, `backtest.py`, `validate.py`, and `dry_run.py`. Every later milestone (execution, runner, risk guards) should consume config, so this unblocks the rest cheaply. It is also the lowest-risk change — pure refactor, easy to unit-test.
+The risk validator, position sizer, and approval gate all consume strategy/risk
+parameters. Today those values are hardcoded and duplicated. A single validated
+config loader must exist before any of them can be built without baking in more
+hardcoded values.
 
 ### Scope (smallest working solution)
-1. Add `src/config.py` with `load(path="specs/v1.yaml") -> dict` (+ typed accessors and sane validation: risk_pct > 0, min_rr ≥ 1, k ≥ 1).
-2. Replace hardcoded defaults in `live_signal.py`, `backtest.py`, `validate.py` with config reads (CLI flags still override).
-3. Add a unit test: config loads, has required keys, and changing a value changes the sizing/backtest output.
+1. Create `src/config.py` — `load(path) -> Config` reading `config/watchlist.yaml`
+   (and `specs/v1.yaml` where relevant to the live path).
+2. **Schema validation** — typed accessors; reject invalid/missing values with a clear
+   error (fail closed). No silent defaults for risk-relevant fields.
+3. Replace hardcoded strategy/risk constants (risk %, min RR, session, window, ATR,
+   thresholds) in the live path with config reads.
+4. Nothing strategy-related remains hardcoded (Non-Negotiable Rule 2).
 
 ### Acceptance criteria
-- [ ] Editing `specs/v1.yaml` (e.g. `min_rr: 2.0 → 3.0`) changes GO/NO-GO in `live_signal.py` with no code edit.
-- [ ] No strategy constant remains hardcoded in the three entrypoints.
-- [ ] `python -m pytest -q` passes (incl. the new config test).
+- [ ] `src/config.py` loads + validates config; invalid values are rejected, not defaulted.
+- [ ] Changing a value in `config/watchlist.yaml` changes behavior with no code edit.
+- [ ] No hardcoded risk/strategy constant remains on the live path.
+- [ ] `python -m pytest -q` — all tests pass, plus new tests for the loader/validation. **(Blocked: workspace VM down — restore before claiming done.)**
 
-### Estimated complexity
-Small — ~1 module, ~3 edits, ~1 test. Half a session.
-
-### Blocker to be aware of
-The sandbox Linux VM is currently **down**, so I can write M1 but cannot run `pytest` to prove it this session. Options: (a) I write M1 now and we run tests once the VM is back / on your machine, or (b) we wait for the VM and do write+test together so nothing is marked done untested. Recommendation: **(b)** — it honors the charter's "never skip validation" rule.
+### Estimated complexity / time
+Small. One module + schema validation + tests. One focused session once the VM is up.
 
 ### After M1
-Proceed to **M2 (execution module)** — the Priority-1 automation spine. See ROADMAP.md.
+Proceed to **M2 — Risk Validator** (APPROVED/REJECTED-with-reason for every signal),
+then M3 sizing, then M4 the approval gate that fronts Phase 4 execution.

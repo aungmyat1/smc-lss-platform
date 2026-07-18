@@ -37,7 +37,10 @@ SYMBOLS = [
         "m5":  "BTCUSD_M5.csv",
         "h1":  "BTCUSD_H1.csv",
         "d1":  "BTCUSD_D1.csv",
-        "broker_offset": 0,   # crypto: broker timestamps already UTC
+        # load_history.py fetches every symbol via the same mt5.copy_rates_from_pos
+        # + utcfromtimestamp path with no crypto special-case, so BTCUSD carries the
+        # same ~3h broker-clock offset as EURUSD/XAUUSD-VIP, not true UTC.
+        "broker_offset": 3,
     },
 ]
 
@@ -94,7 +97,7 @@ def run_all():
         exp    = rep["expectancy_R"]
         pf     = rep["profit_factor"]
         mdd    = rep["max_drawdown_R"]
-        caveat = "⚠ SMALL" if rep.get("caveat") else "ok"
+        caveat = "SMALL" if rep.get("caveat") else "ok"
         ect    = _etrigger_counts(rep.get("trade_log", []))
         delta_t = f"({trades - old.get('trades', 0):+d})" if old else ""
         delta_e = f"({exp - old.get('expectancy_R', 0):+.3f})" if old else ""
@@ -108,7 +111,7 @@ def run_all():
     print(f"  BTCUSD:     231 trades / 10.0% win / -0.182R expectancy")
     print()
     print("NOTE: M2 gate (expectancy >= +0.2R, PF >= 1.3, >= 30 trades, OOS)")
-    print("      is NOT evaluated here \u2014 this is a raw IS re-baseline only.")
+    print("      is NOT evaluated here - this is a raw IS re-baseline only.")
     print("      Parameter tuning (optimize.py) is a later phase.")
 
 
