@@ -1,0 +1,232 @@
+# ST-C1 candidate strategy contract
+# Normalized from docs/strategy/SMC-LSS-v3.6-SIGNAL-SPEC.md
+# Status: candidate only, not approved for execution
+
+strategy:
+  strategy_id: ST-C1
+  name: London SMC Reversal
+  version: 1.0.0
+  status: candidate
+  source:
+    specification: docs/strategy/SMC-LSS-v3.6-SIGNAL-SPEC.md
+    research_spec: specs/v3.6.yaml
+    execution_spec: specs/v1.yaml
+  validation:
+    status: pending
+    approval_status: pending
+    qualification: not_started
+
+market_universe:
+  asset_class: [forex, metals]
+  instruments: [EURUSD, GBPUSD, XAUUSD]
+  sessions: [London, NewYork]
+  timezone: UTC
+  timeframes:
+    bias: H1
+    setup: H1
+    confirmation: M5
+    execution: M5
+
+parameters:
+  swing_lookback_bars: 2
+  swing_confirmation_bars: 2
+  e1_gap_max_age_d1_bars: 10
+  e1_reaction_window_h1_bars: 6
+  e1_reaction_wick_ratio_min: 0.4
+  e2_poi_max_age_h1_bars: 60
+  e2_reaction_wick_ratio_min: 0.4
+  e3_range_lookback_h1_bars: 40
+  e3_sweep_wick_ratio_min: 0.5
+  e3_reclaim_window_h1_bars: 1
+  displacement_atr_period: 14
+  displacement_atr_mult: 1.5
+  displacement_body_ratio_min: 0.5
+  displacement_start_offset_bars: 2
+  displacement_max_run_bars: 3
+  max_e_to_m_h1_bars: 12
+  signal_ttl_bars: 1
+  session_timezone: UTC
+  london_session_utc: ["06:00", "10:00"]
+  new_york_session_utc: ["11:30", "15:00"]
+  primary_target_search_lookback_h1_bars: 100
+  risk_pct_demo: 0.5
+  risk_pct_live: 1.0
+  min_rr: 2.0
+  daily_loss_pct: 2.0
+  weekly_loss_pct: 5.0
+  max_positions: 1
+  portfolio_heat_pct: 4.0
+  max_spread_points: 25
+  max_stale_price_seconds: 5
+  break_even_activation_r: 1.0
+  partial_take_r: 1.0
+  partial_take_fraction: 0.5
+  time_stop_intraday_hours: 12
+  time_stop_overnight_hours: 24
+  time_stop_intraweek_hours: 120
+  time_stop_multi_horizon_hours: 120
+
+bias:
+  bullish:
+    input_condition:
+      - H1 higher highs exist
+      - H1 higher lows exist
+      - bullish BOS is confirmed by candle close above the most recent confirmed swing high
+    deterministic_rule: bullish_bias = true only when all conditions are true
+    boolean_decision: true
+    trade_action: allow long-only setups
+  bearish:
+    input_condition:
+      - H1 lower lows exist
+      - H1 lower highs exist
+      - bearish BOS is confirmed by candle close below the most recent confirmed swing low
+    deterministic_rule: bearish_bias = true only when all conditions are true
+    boolean_decision: true
+    trade_action: allow short-only setups
+
+structure:
+  swing_high:
+    input_condition: a candidate pivot high exists
+    deterministic_rule: confirm a swing high only when the pivot high is greater than the prior 2 highs and greater than or equal to the next 2 highs
+    boolean_decision: confirmed_swing_high
+    trade_action: record the confirmed high as a structural reference
+    invalidation_rule: a later candle close above the confirmed swing high invalidates bearish structure based on that high
+  swing_low:
+    input_condition: a candidate pivot low exists
+    deterministic_rule: confirm a swing low only when the pivot low is lower than the prior 2 lows and lower than or equal to the next 2 lows
+    boolean_decision: confirmed_swing_low
+    trade_action: record the confirmed low as a structural reference
+    invalidation_rule: a later candle close below the confirmed swing low invalidates bullish structure based on that low
+  bos:
+    input_condition: confirmed swing reference exists
+    deterministic_rule: bullish BOS = candle close above last confirmed swing high; bearish BOS = candle close below last confirmed swing low
+    boolean_decision: bos_confirmed
+    trade_action: bias may update in the BOS direction
+  choch:
+    input_condition: existing bias is established and an opposite-side break occurs
+    deterministic_rule: bullish CHoCH = close above last confirmed swing high after bearish structure; bearish CHoCH = close below last confirmed swing low after bullish structure
+    boolean_decision: choch_confirmed
+    trade_action: permit reversal entry evaluation
+
+liquidity:
+  liquidity_pool:
+    input_condition:
+      - equal highs or equal lows are present within tolerance
+      - prior session high or low exists
+      - current range boundary is known
+    deterministic_rule: treat a pool as liquidity only when the levels are within the configured equality tolerance or are the prior session extremes / range extremes
+    boolean_decision: liquidity_pool_identified
+    trade_action: use the pool as a sweep target or target reference
+  sweep:
+    input_condition:
+      - price pierces a prior confirmed swing high or swing low
+      - the candle closes back across the swept level
+      - wick ratio threshold is met
+    deterministic_rule: bullish sweep = low < previous swing low AND close > previous swing low; bearish sweep = high > previous swing high AND close < previous swing high
+    boolean_decision: sweep_confirmed
+    trade_action: allow entry evaluation only after sweep confirmation
+
+poi:
+  order_block:
+    input_condition: a confirmed BOS has occurred
+    deterministic_rule: define the order block as the last opposite-color candle before the BOS candle; the zone is [low, high] of that candle
+    boolean_decision: ob_confirmed
+    trade_action: allow setup only while the OB is fresh or mitigated, not invalidated
+    mitigation_rule: mark mitigated when price revisits the zone without invalidation
+    invalidation_rule: bullish OB invalidated when price closes below the zone low; bearish OB invalidated when price closes above the zone high
+  fair_value_gap:
+    input_condition: a 3-candle imbalance exists
+    deterministic_rule: bullish FVG when high[i-2] < low[i]; bearish FVG when low[i-2] > high[i]; minimum gap size must be positive
+    boolean_decision: fvg_confirmed
+    trade_action: use the gap as a POI or entry midpoint reference
+    fill_rule: treat the FVG as fill-eligible until fully traversed or expired by age limit
+    expiry_rule: expire when the configured age limit is exceeded
+  premium_discount:
+    input_condition: a dealing range is defined for the current lookback window
+    deterministic_rule: equilibrium = midpoint of the dealing range; long entries are allowed only in discount, short entries only in premium
+    boolean_decision: entry_zone_valid
+    trade_action: permit only zone-aligned entries
+
+entry_model:
+  long:
+    input_condition:
+      - bullish bias confirmed
+      - valid bullish POI exists
+      - bullish sweep confirmed
+      - bullish CHoCH confirmed
+      - price remains in discount
+    deterministic_rule: generate a long signal only when all conditions are true in sequence
+    boolean_decision: long_signal = true
+    trade_action: create long order intent
+    confirmation_candle: M5 close
+    entry_price: next_bar_open after confirmation
+    invalidation: close below the structure invalidation level or POI invalidation level
+    timeout_bars: 1
+  short:
+    input_condition:
+      - bearish bias confirmed
+      - valid bearish POI exists
+      - bearish sweep confirmed
+      - bearish CHoCH confirmed
+      - price remains in premium
+    deterministic_rule: generate a short signal only when all conditions are true in sequence
+    boolean_decision: short_signal = true
+    trade_action: create short order intent
+    confirmation_candle: M5 close
+    entry_price: next_bar_open after confirmation
+    invalidation: close above the structure invalidation level or POI invalidation level
+    timeout_bars: 1
+  stage_mapping:
+    E1_M1: D1 gap reaction -> inducement sweep + pullback/FVG midpoint
+    E2_M2: H1 order block reaction -> OB/FVG overlap midpoint
+    E3_M3: H1 external liquidity sweep -> IFVG midpoint after retrace
+
+exit_model:
+  stop_loss:
+    input_condition: a valid entry signal exists
+    deterministic_rule: place stop beyond the swept liquidity extreme or structure extreme with ATR buffer; never widen after placement
+    boolean_decision: stop_valid
+    trade_action: attach stop loss to the order intent
+  take_profit:
+    input_condition: a valid entry signal exists
+    deterministic_rule: primary target is the nearest unswept external liquidity beyond entry; fallback target is the nearest unswept M5 swing extremum beyond entry; minimum reward:risk must be met
+    boolean_decision: target_valid
+    trade_action: attach take profit to the order intent
+  management:
+    input_condition: position is open
+    deterministic_rule: move stop to breakeven at +1R, take 50 percent partial at +1R, and exit on the pre-defined invalidation/time-stop rule
+    boolean_decision: management_action_valid
+    trade_action: tighten stop, reduce exposure, or close position
+
+risk_contract:
+  risk_per_trade:
+    demo: 0.5
+    live: 1.0
+  max_daily_loss_pct: 2.0
+  max_weekly_loss_pct: 5.0
+  max_positions: 1
+  portfolio_heat_pct: 4.0
+  minimum_rr: 2.0
+  position_sizing:
+    mode: config_driven
+    method: risk_pct_by_stop_distance
+    lot_rounding: round_down_to_broker_step
+  execution_limits:
+    max_spread_points: 25
+    max_stale_price_seconds: 5
+    duplicate_order_prevention: true
+    stop_widening_allowed: false
+
+machine_validation:
+  every_rule_measurable: true
+  every_parameter_externalizable: true
+  no_subjective_language: true
+  entry_conditions_boolean: true
+  exit_conditions_deterministic: true
+  risk_rules_explicit: true
+  strategy_codable_without_interpretation: true
+
+notes:
+  - Candidate contract only.
+  - Not approved for execution.
+  - Approval requires later validation, review, and registry publication.

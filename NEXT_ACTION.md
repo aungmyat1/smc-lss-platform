@@ -2,32 +2,31 @@
 
 **One milestone at a time. This is the next one.**
 
-## → PHASE 1 · M1: Strategy Contract Normalization
+## → PHASE 2 · M2: Strategy Approval and Validation
 
-*Normalize `docs/strategy/SMC-LSS-v3.6-SIGNAL-SPEC.md` into a machine-readable,
-versioned approved-strategy contract.*
+*Validate the normalized candidate strategy contract with deterministic,
+closed-candle evidence and approval gates.*
 
-### Why this first
-The execution layer must trade only an approved contract. Before we can build risk,
-broker, or reconciliation plumbing, the source strategy needs a stable contract form
-with explicit fields and frozen rules.
+### Why this now
+The strategy contract has been normalized. The next gate is to prove the contract
+with deterministic validation evidence before any approval or execution work.
 
 ### Scope (smallest working solution)
-1. Define the approved contract shape for the v3.6 strategy source.
-2. Map the source strategy sections into machine-readable fields.
-3. Preserve versioning, frozen-rule semantics, and approval status.
-4. Keep the output suitable for deterministic validation and later execution.
+1. Run deterministic backtesting against the normalized contract.
+2. Validate the contract with out-of-sample and walk-forward evidence.
+3. Record the approval gates and remaining evidence requirements.
+4. Keep the output candidate-only until validation is complete.
 
 ### Acceptance criteria
-- [ ] The source strategy has a machine-readable contract representation.
+- [ ] The normalized contract has deterministic validation evidence.
 - [ ] Versioning and approval status are explicit and immutable per version.
-- [ ] The contract is suitable for deterministic backtest/validation work.
+- [ ] The contract is ready for approval review and backtest/validation work.
 - [ ] `python -m pytest -q` passes after any supporting doc/test updates.
 
 ### Estimated complexity / time
 Small to medium. The hard part is making the contract shape clear enough that the
 execution layer can consume it later without redesign.
 
-### After M1
-Proceed to **M2 — Strategy Approval and Validation**, then M3 execution skeleton,
-then M4 demo integration, then M5 live promotion gate.
+### After M2
+Proceed to **M3 execution skeleton**, then M4 demo integration, then M5 live
+promotion gate.

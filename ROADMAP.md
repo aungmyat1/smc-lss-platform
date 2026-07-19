@@ -13,7 +13,7 @@ only and no longer defines the upgrade path.
 
 ---
 
-## PHASE 1 — Strategy Approval Foundation · 🟡 CURRENT
+## PHASE 1 — Strategy Approval Foundation · ✅ COMPLETE
 
 Deliverables:
 - `docs/strategy/SMC-LSS-v3.6-SIGNAL-SPEC.md` as the source strategy
@@ -24,7 +24,12 @@ Deliverables:
 *Acceptance:* the strategy source can be normalized into a versioned contract with
 deterministic validation outcomes and no ambiguity about fields, rules, or versions.
 
-## PHASE 2 — Validation & Packaging · ⏳ NEXT
+Completed:
+- `strategies/candidates/ST-C1_v1.yaml`
+- `research/ST-C1_RESEARCH_CONTRACT.md`
+- `reports/ST-C1_NORMALIZATION_REPORT.md`
+
+## PHASE 2 — Validation & Packaging · 🟡 CURRENT
 
 Deliverables:
 - closed-candle-only backtest harness
@@ -32,8 +37,8 @@ Deliverables:
 - out-of-sample and walk-forward checks
 - immutable approved-package output
 
-*Acceptance:* the approved contract passes evidence gates and produces a signed or
-equivalent immutable package for execution.
+*Acceptance:* the candidate contract passes evidence gates and produces a signed
+or equivalent immutable package for execution.
 
 ## PHASE 3 — Execution Layer · ⏳
 
