@@ -1,8 +1,8 @@
 # PROJECT_STATUS.md — SMC-LSS Platform
 
 **Audit date:** 2026-07-19
-**Status:** Configuration governance complete; strategy contract normalized
-**Current milestone:** Strategy Approval and Validation (M2)
+**Status:** Configuration governance complete; statistical validation scaffold ready
+**Current milestone:** Statistical Validation (M2.3)
 
 This status file reflects the current repository state after the governance audit
 and loader hardening work. It supersedes the older audit snapshot that described
@@ -39,9 +39,9 @@ Verified in code and tests:
 
 ### Validation evidence
 
-- `python -m pytest tests/test_config.py tests/test_daily_runner.py -q`
-  - Result: `18 passed`
-- `python -m py_compile src/config.py src/daily_runner.py tests/test_config.py tests/test_daily_runner.py`
+- `python -m pytest tests/test_config.py tests/test_daily_runner.py tests/test_strategy_contract_validator.py tests/test_historical_replay.py tests/test_statistical_validation.py -q`
+  - Result: `34 passed`
+- `python -m py_compile src/config.py src/daily_runner.py validation/strategy_contract_validator.py validation/performance_metrics.py validation/historical_replay_engine.py validation/statistical_validation.py tests/test_config.py tests/test_daily_runner.py tests/test_strategy_contract_validator.py tests/test_historical_replay.py tests/test_statistical_validation.py`
   - Result: passed
 - `git diff --check`
   - Result: passed
@@ -83,6 +83,31 @@ The M1 normalization deliverables are complete:
 
 Now that the contract exists, validate it with closed-candle-only backtesting,
 out-of-sample checks, walk-forward tests, and approval-gate evidence.
+
+### M2.1 complete
+
+The mechanical validation scaffold is now in place:
+
+- `validation/strategy_contract_validator.py`
+- `tests/test_strategy_contract_validator.py`
+- `reports/ST-C1_CONTRACT_VALIDATION_REPORT.md`
+
+### M2.2 complete
+
+The historical replay scaffold is now in place:
+
+- `validation/historical_replay_engine.py`
+- `validation/performance_metrics.py`
+- `tests/test_historical_replay.py`
+- `reports/ST-C1_BASELINE_BACKTEST_REPORT.md`
+
+### M2.3 complete
+
+The statistical validation scaffold is now in place:
+
+- `validation/statistical_validation.py`
+- `tests/test_statistical_validation.py`
+- `reports/ST-C1_STATISTICAL_VALIDATION_REPORT.md`
 
 ### M3 — Execution layer skeleton
 

@@ -2,31 +2,32 @@
 
 **One milestone at a time. This is the next one.**
 
-## → PHASE 2 · M2: Strategy Approval and Validation
+## → PHASE 3 · M3: Execution Layer Skeleton
 
-*Validate the normalized candidate strategy contract with deterministic,
-closed-candle evidence and approval gates.*
+*Build the canonical execution pipeline after the strategy approval and statistical
+validation gates are in place.*
 
 ### Why this now
-The strategy contract has been normalized. The next gate is to prove the contract
-with deterministic validation evidence before any approval or execution work.
+The approved-strategy path now has mechanical validation, replay, and statistical
+validation scaffolding. The next step is to build the execution skeleton without
+letting it rewrite strategy logic.
 
 ### Scope (smallest working solution)
-1. Run deterministic backtesting against the normalized contract.
-2. Validate the contract with out-of-sample and walk-forward evidence.
-3. Record the approval gates and remaining evidence requirements.
-4. Keep the output candidate-only until validation is complete.
+1. Define the canonical order pipeline.
+2. Add the execution risk gate.
+3. Add broker adapter boundaries.
+4. Add reconciliation and journaling hooks.
+5. Keep live trading blocked until approval and execution controls are complete.
 
 ### Acceptance criteria
-- [ ] The normalized contract has deterministic validation evidence.
-- [ ] Versioning and approval status are explicit and immutable per version.
-- [ ] The contract is ready for approval review and backtest/validation work.
+- [ ] Execution consumes approved strategy versions only.
+- [ ] Strategy logic remains immutable in the execution layer.
+- [ ] Demo/live promotion still requires validation gates.
 - [ ] `python -m pytest -q` passes after any supporting doc/test updates.
 
 ### Estimated complexity / time
-Small to medium. The hard part is making the contract shape clear enough that the
-execution layer can consume it later without redesign.
+Small to medium. The hard part is preserving the approved-strategy boundary while
+adding the order pipeline and safety checks.
 
-### After M2
-Proceed to **M3 execution skeleton**, then M4 demo integration, then M5 live
-promotion gate.
+### After M3
+Proceed to **M4 demo integration**, then M5 live promotion gate.
