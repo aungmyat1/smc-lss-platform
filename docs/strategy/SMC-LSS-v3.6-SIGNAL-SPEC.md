@@ -401,7 +401,368 @@ wait for a specific HTF cause).
 
 ---
 
-## 13. What v3.6 changes vs. current code (implementation checklist)
+## 14. Strategy state machine
+
+The strategy must run through an explicit lifecycle rather than ad hoc
+signal handling. The canonical state machine is:
+
+```text
+WAIT_HTF
+  ↓
+WAIT_EVENT
+  ↓
+WAIT_MODEL
+  ↓
+WAIT_ENTRY
+  ↓
+OPEN_POSITION
+  ↓
+MANAGE_POSITION
+  ↓
+EXIT
+  ↓
+COOLDOWN
+  ↺
+NO_GO
+  ↺
+ERROR
+  ↺
+```
+
+| State | Inputs | Outputs | Allowed transitions | Invalid transitions | Timeout |
+|---|---|---|---|---|---|
+| `WAIT_HTF` | UTC-normalized HTF candles | E-trigger context | `WAIT_EVENT` when HTF bias is established | Any entry check before HTF bias | Expire when HTF context ages beyond §8 |
+| `WAIT_EVENT` | HTF bias + live candles | Candidate E1/E2/E3 event | `WAIT_MODEL` on first valid event | Reusing an expired structure | Expire when component ages fail |
+| `WAIT_MODEL` | Event + M5 confirmation window | Model candidate | `WAIT_ENTRY` when M-model confirms | Confirming without closed-candle evidence | Expire at `max_e_to_m_h1_bars` |
+| `WAIT_ENTRY` | Confirmed model + entry anchor | Entry intent | `OPEN_POSITION` on next-bar open fill | Resting-limit improvisation | Expire after `signal_ttl_bars` |
+| `OPEN_POSITION` | Filled entry | Managed trade record | `MANAGE_POSITION` immediately | Missing stop or journal | Immediate fail-safe if SL absent |
+| `MANAGE_POSITION` | Live position + management rules | Adjusted stop / partials | `EXIT` when rule closes trade | Widening stop or unmanaged drift | Timeout per management rule |
+| `EXIT` | Close event | Closed trade record | `COOLDOWN` after journal | Reopening same structure | None |
+| `COOLDOWN` | Closed trade + consumed structure | No new entry | `WAIT_HTF` when fresh structure appears | Re-entering same consumed structure | Cooldown = structure-specific |
+| `NO_GO` | Rejected signal, risk rejection, or invalid setup | Rejection record | `WAIT_HTF` on next evaluation cycle | Any broker call or entry attempt | None; terminal for that cycle |
+| `ERROR` | Runtime fault, missing data, broker disconnect, invariant failure | Error record + alert | `WAIT_HTF` after recovery/reset | Any trade continuation without recovery | Immediate fail-closed |
+
+The engine must persist state transitions and reject invalid transitions as
+spec violations.
+
+`NO_GO` is the explicit deterministic rejection state for validly evaluated
+setups that fail a signal, risk, or execution gate. `ERROR` is the explicit
+fail-closed state for runtime faults and invariant breaches.
+
+---
+
+## 15. Formal risk model
+
+The strategy risk model is fixed and deterministic.
+
+- Maximum risk per trade: `0.5%` fixed.
+- Maximum daily loss: `2%`.
+- Maximum weekly loss: `5%`.
+- Maximum concurrent trades: `1` unless a later version explicitly allows more.
+- Correlation rule: do not exceed the daily risk limit across positively
+  correlated symbols that share the same bias.
+- Equity protection: block new entries when drawdown exceeds the configured cap.
+- Kill switch: immediate global no-trade state on risk breach, reconciliation
+  failure, or execution failure.
+
+Every candidate trade must return one of:
+
+- `APPROVED`
+- `REJECTED_RISK`
+- `REJECTED_SESSION`
+- `REJECTED_SPREAD`
+- `REJECTED_DRAWDOWN`
+- `REJECTED_MARGIN`
+- `REJECTED_ENVIRONMENT`
+
+Every rejection must include a machine-readable reason code.
+
+---
+
+## 16. Trade management
+
+Trade management is part of the strategy, not an afterthought.
+
+- Initial stop loss is mandatory before entry.
+- Break-even move after `+1R` if the trade structure remains valid.
+- Partial profit taking is allowed only if defined in the versioned spec.
+- Trailing stop is optional, but if present it must never widen risk.
+- Time stop: exit when the maximum holding horizon is exceeded.
+- Weekend exit: close before the weekend if the trade is still open and the
+  strategy disallows weekend carry.
+- Forced exit: close immediately on invalidation or kill-switch activation.
+- Manual override: allowed only in the runtime wrapper, never inside the
+  strategy rule itself.
+
+Exit reasons:
+
+- `TARGET_HIT`
+- `STOP_HIT`
+- `BREAK_EVEN`
+- `PARTIAL_TAKE`
+- `TIME_STOP`
+- `WEEKEND_EXIT`
+- `INVALIDATION_EXIT`
+- `FORCED_EXIT`
+
+---
+
+## 17. Position sizing
+
+Position sizing must be deterministic and broker-compatible.
+
+```text
+risk_amount = equity × risk_percent
+lot_size = risk_amount ÷ stop_value_per_lot
+```
+
+Where `stop_value_per_lot` is computed from the broker's actual contract size,
+tick size, tick value, and volume step.
+
+- Round down to the nearest valid volume step.
+- Reject if the minimum valid lot would exceed risk limits.
+- Reject if broker contract specification is unavailable or stale.
+- Use the same calculation in backtest, replay, demo, and live modes.
+
+---
+
+## 18. Market regime filter
+
+The strategy should know when not to trade.
+
+- `TRENDING`
+- `RANGING`
+- `EXPANDING`
+- `CONTRACTING`
+- `VOLATILE`
+- `QUIET`
+
+Regime guidance:
+
+- `RANGING` favors E3-style liquidity sweeps.
+- `TRENDING` favors bias-aligned continuation or pullback structures.
+- `VOLATILE` reduces size or blocks entry if spread and slippage expand.
+- `QUIET` can block entry if price movement is insufficient to justify risk.
+
+Regime classification must be deterministic and based on closed-candle data.
+
+---
+
+## 19. Strategy confidence score
+
+Signals may carry a `0-100` confidence score to support ranking and filtering.
+The score must never override hard invalidation rules.
+
+Example weights:
+
+- HTF alignment: 25
+- POI quality: 20
+- Liquidity quality: 20
+- Displacement quality: 15
+- Session fit: 10
+- Risk-reward quality: 10
+
+Decision bands:
+
+- `>= 85` → trade
+- `70–84` → optional / requires policy allowance
+- `< 70` → reject
+
+The score is advisory only. Hard rules still win.
+
+---
+
+## 20. Parameter registry
+
+All tunable values must be listed in one registry rather than scattered through
+the document.
+
+The registry is the sole authoritative source for tunable values, units, and
+version history. Every parameter used by the strategy must appear exactly once.
+
+| parameter | type | units | default | range | owner | tunable | version | last_changed | reason |
+|---|---|---|---|---|---|---|---|---|---|
+
+Examples:
+
+- `e1_gap_max_age_d1_bars`
+- `e2_poi_max_age_h1_bars`
+- `e3_range_lookback_h1_bars`
+- `displacement_atr_mult`
+- `ifvg_retrace_max_bars`
+- `max_e_to_m_h1_bars`
+- `max_daily_loss_pct`
+- `max_concurrent_trades`
+
+The code must read tunable values only from this registry. If a parameter is not
+listed here, it is not part of the approved specification.
+
+---
+
+## 21. Research protocol and validation gates
+
+Any material change to the strategy must follow the research workflow below:
+
+```text
+Hypothesis
+  ↓
+Backtest
+  ↓
+Walk-forward
+  ↓
+Monte Carlo
+  ↓
+Sensitivity
+  ↓
+Out-of-sample
+  ↓
+Approval
+```
+
+Minimum validation gates:
+
+- Minimum trades: `500`
+- Profit factor: `> 1.30`
+- Sharpe: `> 1.40`
+- Maximum drawdown: `< 12%`
+- CAR/MDD: `> 0.5`
+- OOS profit factor: `> 1.20`
+- Monte Carlo stability: `95%`
+- Bootstrap: pass
+- Walk-forward: pass
+
+These are approval gates, not optimization goals.
+
+---
+
+## 22. Multi-timeframe synchronization
+
+The engine must synchronize D1, H1, and M5 deterministically.
+
+- D1 updates daily.
+- H1 updates hourly.
+- M5 updates every five minutes.
+- HTF refresh invalidates stale lower-timeframe assumptions.
+- POI freshness and signal TTL are enforced at the state-machine level.
+- Cache lifetime must never outlive the component ages defined in §8.
+
+If a higher timeframe changes, lower-timeframe candidates derived from the old
+context must be re-evaluated.
+
+---
+
+## 23. Execution layer behavior
+
+The strategy spec defines the behavior expected from execution, even before the
+execution layer exists.
+
+Required execution flow:
+
+```text
+Signal
+  ↓
+Risk
+  ↓
+Order
+  ↓
+Broker
+  ↓
+Fill / Reject / Partial Fill
+  ↓
+Journal
+```
+
+This is the canonical decision pipeline for the strategy: every candidate
+must either progress through the pipeline or terminate in `NO_GO` or `ERROR`.
+
+Execution rules:
+
+- One canonical execution path only.
+- Duplicate-order prevention is mandatory.
+- Rejected orders must be logged with reason codes.
+- Partial fills must be represented as partial fills, not full fills.
+- MT5 disconnects must fail closed.
+- Execution may never invent new strategy logic.
+
+---
+
+## 24. Audit logging
+
+Every trade must be reconstructable from the audit trail.
+
+Required fields:
+
+- execution ID
+- signal ID
+- strategy version
+- approval status
+- parameter snapshot
+- parameter registry version
+- configuration hash
+- dataset version
+- code commit / build identifier
+- HTF state
+- POI or liquidity structure IDs
+- entry
+- stop
+- target
+- reason codes
+- decision
+- runtime
+- broker response
+- hash / checksum
+
+Logs must be append-only and deterministic enough for retrospective review.
+
+Each closed trade record must be sufficient to reproduce the decision path from
+market data + specification + parameter registry alone.
+
+---
+
+## 25. Version governance
+
+Strategy versions must follow a lifecycle:
+
+```text
+RESEARCH_CANDIDATE
+  ↓
+EXPERIMENTAL
+  ↓
+VALIDATED
+  ↓
+APPROVED
+  ↓
+PRODUCTION
+  ↓
+DEPRECATED
+```
+
+Each version must carry:
+
+- approval date
+- approval package reference
+- validation report
+- validation dataset version
+- performance summary
+- changelog entry
+- owner approval reference
+
+The approval package must contain:
+
+- strategy version
+- parameter registry snapshot
+- dataset version
+- backtest summary
+- walk-forward summary
+- Monte Carlo summary
+- OOS summary
+- reviewer / owner sign-off
+
+Approved versions are immutable. Any rule change creates a new version.
+
+---
+
+## 26. What v3.6 changes vs. current code (implementation checklist)
 
 Not part of the spec itself — a pointer for the implementation pass this
 document is gating:

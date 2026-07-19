@@ -1,9 +1,10 @@
 # Daily-Loop Runbook (scheduled Cowork procedure)
 
 This is the exact procedure Claude Cowork follows on each scheduled run. It is the
-"wiring" between the schedule and the deterministic engine. Strategy of record:
-`specs/v3.5.yaml` (RESEARCH_CANDIDATE). Do not improvise — follow the steps in order
-and stop at the first hard failure.
+"wiring" between the schedule and the deterministic engine. Configuration of record:
+`src/config.py` loading `config/watchlist.yaml` plus `specs/v1.yaml` as the
+execution-track strategy. Do not improvise — follow the steps in order and stop at
+the first hard failure.
 
 ## Preconditions (fail-safe)
 1. **Environment check.** Call `get_account_info`. Resolve the account to an
@@ -12,15 +13,11 @@ and stop at the first hard failure.
    demo-safe. **Never** trust the `account_type` field. If the login is not attested
    or the server is not a Demo server → environment is LIVE/UNVERIFIED → **do not place
    any order**; produce analysis + alert only.
-2. **Autonomy check.** Read `config/watchlist.yaml`. Orders are placed only if
-   the environment, promotion state, strategy interlock, and configured autonomy
-   policy all allow execution. For demo, this means
-   `autonomy.demo == auto_on_engine_ready`, `autonomy.engine_implements_spec == true`,
-   and environment is `DEMO_VERIFIED`. For live, this means
-   `autonomy.live == auto_on_promotion`, `autonomy.promote_to_live == true`, the
-   strategy is no longer `RESEARCH_CANDIDATE`, and all demo promotion gates have
-   passed. Otherwise run in **propose-mode** (analyze, size, journal/report the
-   intent, place nothing).
+2. **Autonomy check.** Load configuration through `src/config.py` only. Orders are
+   placed only if the environment, promotion state, strategy interlock, and
+   configured autonomy policy all allow execution. Demo remains propose-mode until
+   the approved execution path is explicitly enabled. Otherwise run in
+   **propose-mode** (analyze, size, journal/report the intent, place nothing).
 
 ## Per run
 For each symbol in `symbols.active` (add `symbols.pending` only after owner confirmation):
@@ -69,7 +66,6 @@ partial, never widen a stop, close at the pre-selected DOL or max-hold-hours.
 
 ## Notes
 - All decisions use closed candles only (no future bars).
-- Auto-execution activates automatically once `engine_implements_spec` flips to `true`
-  in both `specs/v3.5.yaml` and `config/watchlist.yaml` (after the v3.5 engine is
-  built + backtested and automation controls/Telegram audit pass).
+- Auto-execution activates only when the approved execution track, governance
+  gates, and runtime controls all pass and the immutable config object allows it.
 - If the broker/data is unavailable for a symbol: skip it, log, alert; do not retry blindly.

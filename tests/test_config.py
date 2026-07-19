@@ -9,6 +9,7 @@ import config as cfgmod
 ROOT = os.path.dirname(os.path.dirname(__file__))
 WATCHLIST = os.path.join(ROOT, "config", "watchlist.yaml")
 SPEC_V1 = os.path.join(ROOT, "specs", "v1.yaml")
+RESEARCH_SPEC = os.path.join(ROOT, "specs", "v3.6.yaml")
 
 
 def _write(path, text):
@@ -16,13 +17,34 @@ def _write(path, text):
         fh.write(textwrap.dedent(text))
 
 
+def _yaml_path(path):
+    return path.replace("\\", "/")
+
+
 VALID_WATCHLIST = """\
     strategy_spec: specs/v1.yaml
+    research_spec: specs/v3.6.yaml
+    governance:
+      schema_version: 1
+      config_version: 3.6.0
+      registry_version: 3.6.0
+      approval_package_required: true
+      fail_closed: true
     autonomy:
       demo: proposal_only
       live: disabled
       engine_implements_spec: false
       promote_to_live: false
+    reporting:
+      telegram:
+        enabled: false
+        bot_token_env: TELEGRAM_BOT_TOKEN
+        chat_id_env: TELEGRAM_CHAT_ID
+        events: [scan_summary, decision]
+    cadence:
+      runs_utc: ["07:00", "12:00"]
+      weekdays_only: true
+      timeframes: {etrigger: H1, context: D1, confirm: M5}
     risk:
       risk_pct_demo: 0.5
       risk_pct_live: 1.0
@@ -68,9 +90,12 @@ VALID_SPEC = """\
 def cfg_files(tmp_path):
     wl = tmp_path / "watchlist.yaml"
     spec = tmp_path / "v1.yaml"
-    _write(wl, VALID_WATCHLIST)
+    research = tmp_path / "v3.6.yaml"
+    watchlist_text = VALID_WATCHLIST.replace("specs/v1.yaml", _yaml_path(str(spec))).replace("specs/v3.6.yaml", _yaml_path(str(research)))
+    _write(wl, watchlist_text)
     _write(spec, VALID_SPEC)
-    return str(wl), str(spec)
+    _write(research, VALID_SPEC.replace("version: 1", "version: 3.6"))
+    return str(wl), str(spec), str(research)
 
 
 # --- real repo config: the loader must accept what's actually committed ---
@@ -81,12 +106,15 @@ def test_loads_real_repo_config():
     assert cfg.execution.equilibrium_window > 0
     assert len(cfg.symbols_active) >= 1
     assert cfg.strategy.symbol
+    assert cfg.schema_version == 1
+    assert cfg.config_version == "3.6.0"
+    assert cfg.registry_version == "3.6.0"
 
 
 # --- happy path on a controlled fixture ---
 
 def test_valid_config_loads_and_exposes_typed_values(cfg_files):
-    wl, spec = cfg_files
+    wl, spec, _research = cfg_files
     cfg = cfgmod.load(wl, spec)
     assert cfg.risk.risk_pct_demo == 0.5
     assert cfg.risk.risk_pct_live == 1.0
@@ -95,10 +123,13 @@ def test_valid_config_loads_and_exposes_typed_values(cfg_files):
     assert cfg.execution.breakeven_at_r == 1.0
     assert cfg.strategy.swing_lookback == 2
     assert cfg.symbol("EURUSD").mt5 == "EURUSD"
+    assert cfg.strategy_spec_path == spec
+    assert cfg.research_spec_path.endswith("v3.6.yaml")
+    assert cfg.config_hash
 
 
 def test_risk_pct_for_env(cfg_files):
-    wl, spec = cfg_files
+    wl, spec, _research = cfg_files
     cfg = cfgmod.load(wl, spec)
     assert cfg.risk.risk_pct_for("demo") == 0.5
     assert cfg.risk.risk_pct_for("live") == 1.0
@@ -107,30 +138,41 @@ def test_risk_pct_for_env(cfg_files):
 
 
 def test_unknown_symbol_raises(cfg_files):
-    wl, spec = cfg_files
+    wl, spec, _research = cfg_files
     cfg = cfgmod.load(wl, spec)
     with pytest.raises(cfgmod.ConfigError):
         cfg.symbol("DOESNOTEXIST")
 
 
 def test_killzone_hour_lookup(cfg_files):
-    wl, spec = cfg_files
+    wl, spec, _research = cfg_files
     cfg = cfgmod.load(wl, spec)
     assert cfg.execution.session_of(8) == ("LONDON-KZ", True)
     assert cfg.execution.session_of(13) == ("NY-KZ", True)
     assert cfg.execution.session_of(23) == ("OFF-KZ", False)
 
 
+def test_loaded_config_is_immutable(cfg_files):
+    wl, spec, _research = cfg_files
+    cfg = cfgmod.load(wl, spec)
+    with pytest.raises(AttributeError):
+        cfg.strategy.symbol = "GBPUSD"
+    with pytest.raises(AttributeError):
+        cfg.risk.min_rr = 3.0
+    with pytest.raises(TypeError):
+        cfg.governance["schema_version"] = 2
+
+
 # --- fail-closed: missing/invalid values must raise, never silently default ---
 
 def test_missing_file_raises(cfg_files):
-    _, spec = cfg_files
+    _, spec, _research = cfg_files
     with pytest.raises(cfgmod.ConfigError):
         cfgmod.load("does/not/exist.yaml", spec)
 
 
 def test_missing_risk_key_raises(tmp_path, cfg_files):
-    _, spec = cfg_files
+    _, spec, _research = cfg_files
     broken = VALID_WATCHLIST.replace("min_rr: 2.0\n", "")
     wl = tmp_path / "broken.yaml"
     _write(wl, broken)
@@ -139,7 +181,7 @@ def test_missing_risk_key_raises(tmp_path, cfg_files):
 
 
 def test_invalid_risk_pct_type_raises(tmp_path, cfg_files):
-    _, spec = cfg_files
+    _, spec, _research = cfg_files
     broken = VALID_WATCHLIST.replace("risk_pct_demo: 0.5", 'risk_pct_demo: "half a percent"')
     wl = tmp_path / "broken.yaml"
     _write(wl, broken)
@@ -148,7 +190,7 @@ def test_invalid_risk_pct_type_raises(tmp_path, cfg_files):
 
 
 def test_negative_risk_pct_raises(tmp_path, cfg_files):
-    _, spec = cfg_files
+    _, spec, _research = cfg_files
     broken = VALID_WATCHLIST.replace("risk_pct_demo: 0.5", "risk_pct_demo: -0.5")
     wl = tmp_path / "broken.yaml"
     _write(wl, broken)
@@ -157,7 +199,7 @@ def test_negative_risk_pct_raises(tmp_path, cfg_files):
 
 
 def test_invalid_position_amount_mode_raises(tmp_path, cfg_files):
-    _, spec = cfg_files
+    _, spec, _research = cfg_files
     broken = VALID_WATCHLIST.replace("position_amount_mode: risk_pct", "position_amount_mode: yolo")
     wl = tmp_path / "broken.yaml"
     _write(wl, broken)
@@ -166,7 +208,7 @@ def test_invalid_position_amount_mode_raises(tmp_path, cfg_files):
 
 
 def test_empty_active_symbols_raises(tmp_path, cfg_files):
-    _, spec = cfg_files
+    _, spec, _research = cfg_files
     broken = VALID_WATCHLIST.replace(
         "      active:\n        - {name: EURUSD, mt5: EURUSD, pip: 0.0001, pip_value_per_lot: 10.0, variants: [E1M3]}\n",
         "      active: []\n")
@@ -177,7 +219,7 @@ def test_empty_active_symbols_raises(tmp_path, cfg_files):
 
 
 def test_killzone_end_before_start_raises(tmp_path, cfg_files):
-    _, spec = cfg_files
+    _, spec, _research = cfg_files
     broken = VALID_WATCHLIST.replace(
         "london: {start_hour: 7, end_hour: 10}", "london: {start_hour: 10, end_hour: 7}")
     wl = tmp_path / "broken.yaml"
@@ -187,9 +229,39 @@ def test_killzone_end_before_start_raises(tmp_path, cfg_files):
 
 
 def test_missing_spec_key_raises(tmp_path, cfg_files):
-    wl, _ = cfg_files
+    wl, _spec, _research = cfg_files
     broken = VALID_SPEC.replace("swing_lookback: 2\n", "")
     spec = tmp_path / "broken_spec.yaml"
     _write(spec, broken)
     with pytest.raises(cfgmod.ConfigError):
         cfgmod.load(wl, str(spec))
+
+
+def test_unknown_governance_key_rejected(tmp_path, cfg_files):
+    _, spec, research = cfg_files
+    broken = VALID_WATCHLIST.replace(
+        "      fail_closed: true\n",
+        "      fail_closed: true\n      unexpected_key: nope\n",
+    )
+    wl = tmp_path / "broken_governance.yaml"
+    _write(wl, broken)
+    with pytest.raises(cfgmod.ConfigError):
+        cfgmod.load(str(wl), spec)
+
+
+def test_version_compatibility_rejected(tmp_path, cfg_files):
+    _, spec, research = cfg_files
+    broken = VALID_WATCHLIST.replace("config_version: 3.6.0", "config_version: 3.7.0")
+    wl = tmp_path / "broken_versions.yaml"
+    _write(wl, broken)
+    with pytest.raises(cfgmod.ConfigError):
+        cfgmod.load(str(wl), spec)
+
+
+def test_strategy_spec_must_match_loaded_spec_path(tmp_path, cfg_files):
+    wl, spec, research = cfg_files
+    broken = VALID_WATCHLIST.replace("strategy_spec: specs/v1.yaml", "strategy_spec: specs/other.yaml")
+    broken_path = tmp_path / "broken_strategy_path.yaml"
+    _write(broken_path, broken)
+    with pytest.raises(cfgmod.ConfigError):
+        cfgmod.load(str(broken_path), spec)

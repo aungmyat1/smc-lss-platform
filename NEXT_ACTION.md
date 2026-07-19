@@ -2,38 +2,32 @@
 
 **One milestone at a time. This is the next one.**
 
-## → PHASE 3 · M1: Configuration Loader (`src/config.py`)
+## → PHASE 1 · M1: Strategy Contract Normalization
 
-*(Per [`MASTER_PLAN.md`](MASTER_PLAN.md) v2.1.1, Phase 3 is implemented M1→M4:
-**M1 config loader** → M2 risk validator → M3 position sizing → M4 approval gate.
-M1 is first because Rule 2 forbids hardcoded strategy parameters, so every later
-risk component must read config, not constants. Built on the locked v1 engine; the
-v3.5 track stays parked.)*
+*Normalize `docs/strategy/SMC-LSS-v3.6-SIGNAL-SPEC.md` into a machine-readable,
+versioned approved-strategy contract.*
 
 ### Why this first
-The risk validator, position sizer, and approval gate all consume strategy/risk
-parameters. Today those values are hardcoded and duplicated. A single validated
-config loader must exist before any of them can be built without baking in more
-hardcoded values.
+The execution layer must trade only an approved contract. Before we can build risk,
+broker, or reconciliation plumbing, the source strategy needs a stable contract form
+with explicit fields and frozen rules.
 
 ### Scope (smallest working solution)
-1. Create `src/config.py` — `load(path) -> Config` reading `config/watchlist.yaml`
-   (and `specs/v1.yaml` where relevant to the live path).
-2. **Schema validation** — typed accessors; reject invalid/missing values with a clear
-   error (fail closed). No silent defaults for risk-relevant fields.
-3. Replace hardcoded strategy/risk constants (risk %, min RR, session, window, ATR,
-   thresholds) in the live path with config reads.
-4. Nothing strategy-related remains hardcoded (Non-Negotiable Rule 2).
+1. Define the approved contract shape for the v3.6 strategy source.
+2. Map the source strategy sections into machine-readable fields.
+3. Preserve versioning, frozen-rule semantics, and approval status.
+4. Keep the output suitable for deterministic validation and later execution.
 
 ### Acceptance criteria
-- [ ] `src/config.py` loads + validates config; invalid values are rejected, not defaulted.
-- [ ] Changing a value in `config/watchlist.yaml` changes behavior with no code edit.
-- [ ] No hardcoded risk/strategy constant remains on the live path.
-- [ ] `python -m pytest -q` — all tests pass, plus new tests for the loader/validation. **(Blocked: workspace VM down — restore before claiming done.)**
+- [ ] The source strategy has a machine-readable contract representation.
+- [ ] Versioning and approval status are explicit and immutable per version.
+- [ ] The contract is suitable for deterministic backtest/validation work.
+- [ ] `python -m pytest -q` passes after any supporting doc/test updates.
 
 ### Estimated complexity / time
-Small. One module + schema validation + tests. One focused session once the VM is up.
+Small to medium. The hard part is making the contract shape clear enough that the
+execution layer can consume it later without redesign.
 
 ### After M1
-Proceed to **M2 — Risk Validator** (APPROVED/REJECTED-with-reason for every signal),
-then M3 sizing, then M4 the approval gate that fronts Phase 4 execution.
+Proceed to **M2 — Strategy Approval and Validation**, then M3 execution skeleton,
+then M4 demo integration, then M5 live promotion gate.

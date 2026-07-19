@@ -1,56 +1,50 @@
 #!/usr/bin/env python3
 """Daily-loop runner — deterministic multi-symbol SMC-LSS scan.
 
-Reads config/watchlist.yaml, runs the analysis pipeline per ACTIVE symbol on
-pre-fetched CSVs (data/<symbol>_<confirm_tf>.csv), and writes a combined
-reports/daily_signals.json with a decision + sized order payload per symbol.
+Loads configuration through src/config.py only, runs the analysis pipeline per
+ACTIVE symbol on pre-fetched CSVs (data/<symbol>_<confirm_tf>.csv), and writes a
+combined reports/daily_signals.json with a decision + sized order payload per
+symbol.
 
 SAFETY: this script never sends orders. It is pure and deterministic (no network).
 Live candles are fetched by the Cowork run via the MetaTrader MCP and written to
 CSV first (see docs/daily-loop-runbook.md). Order transmission happens only in the
-runbook, demo-only, and only when the strategy-of-record engine is ready.
+runbook, demo-only, and only when the approved strategy / execution gates allow it.
 
-Interlock: while watchlist.autonomy.engine_implements_spec is false, the strategy
-of record (specs/v3.5.yaml) is NOT yet implemented in code. The runner then labels
-every decision as PROPOSE (mode=propose) so nothing is auto-executed. The current
-analysis uses the legacy v1 pipeline (smc_master) purely as a placeholder signal.
+Interlock: until the execution layer is ready, the runner labels every decision as
+PROPOSE (mode=propose) so nothing is auto-executed. The current analysis uses the
+legacy v1 pipeline (smc_master) purely as a placeholder signal.
 
 Usage:
   python src/daily_runner.py --equity 987.99 --env demo
   python src/daily_runner.py --equity 987.99 --env demo --tier all   # include pending symbols
 """
 import argparse, json, os, datetime
-import yaml
 import config as configmod
 import smc_engine as e
 import smc_master as m
 import signal_v35 as v35
 
 
-def load_cfg(path):
-    with open(path, encoding="utf-8") as fh:
-        return yaml.safe_load(fh)
-
-
-def run_symbol(sym, cfg_raw, cfg, data_dir, equity, env, auto):
-    tf = cfg_raw["cadence"]["timeframes"]["confirm"]
-    path = os.path.join(data_dir, f"{sym['name']}_{tf}.csv")
+def run_symbol(sym, cfg, data_dir, equity, env, auto):
+    tf = cfg.cadence.timeframes["confirm"]
+    path = os.path.join(data_dir, f"{sym.name}_{tf}.csv")
     if not os.path.exists(path):
-        return {"symbol": sym["name"], "decision": "SKIP",
-                "reason": f"missing data file {path} (fetch via MCP first)", "variants": sym.get("variants")}
+        return {"symbol": sym.name, "decision": "SKIP",
+                "reason": f"missing data file {path} (fetch via MCP first)", "variants": list(sym.variants)}
     c = e.load_candles(path)
-    res = m.run(c, cfg, equity, env=env, strict_session=True, symbol_name=sym["name"])
+    res = m.run(c, cfg, equity, env=env, strict_session=True, symbol_name=sym.name)
     # v3.5 engine read (parallel, propose-only): use H1+D1 for E-trigger if available
-    h1p = os.path.join(data_dir, f"{sym['name']}_H1.csv")
+    h1p = os.path.join(data_dir, f"{sym.name}_H1.csv")
     h1 = e.load_candles(h1p) if os.path.exists(h1p) else None
-    d1p = os.path.join(data_dir, f"{sym['name']}_D1.csv")
+    d1p = os.path.join(data_dir, f"{sym.name}_D1.csv")
     d1 = e.load_candles(d1p) if os.path.exists(d1p) else None
     try:
-        res["v35"] = v35.analyze(sym["name"], c, h1, d1)
+        res["v35"] = v35.analyze(sym.name, c, h1, d1)
     except Exception as ex:
         res["v35"] = {"decision": "ERROR", "reason": str(ex)}
-    res["symbol"] = sym["name"]
-    res["variants"] = sym.get("variants")
+    res["symbol"] = sym.name
+    res["variants"] = list(sym.variants)
     res["env"] = env
     # Interlock: never mark as auto-executable until the spec engine is ready.
     res["mode"] = "auto" if (auto and env == "demo") else "propose"
@@ -69,19 +63,23 @@ def main():
     ap.add_argument("--tier", default="active", choices=["active", "all"])
     a = ap.parse_args()
 
-    cfg_raw = load_cfg(a.config)
     cfg = configmod.load(watchlist_path=a.config)
-    auto = bool(cfg_raw["autonomy"].get("engine_implements_spec")) and cfg_raw["autonomy"].get("demo", "").startswith("auto")
+    auto = bool(cfg.autonomy.engine_implements_spec) and cfg.autonomy.demo.startswith("auto")
     if a.env == "live":
         auto = False  # live is blocked by policy regardless
-    syms = list(cfg_raw["symbols"]["active"])
+    syms = list(cfg.symbols_active)
     if a.tier == "all":
-        syms += list(cfg_raw["symbols"].get("pending", []))
+        syms += list(cfg.symbols_pending)
 
-    results = [run_symbol(s, cfg_raw, cfg, a.data, a.equity, a.env, auto) for s in syms]
+    results = [run_symbol(s, cfg, a.data, a.equity, a.env, auto) for s in syms]
     out = {
-        "generated_utc": datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z",
+        "generated_utc": datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "strategy_spec": cfg.strategy_spec,
+        "research_spec": cfg.research_spec,
+        "schema_version": cfg.schema_version,
+        "config_version": cfg.config_version,
+        "registry_version": cfg.registry_version,
+        "config_hash": cfg.config_hash,
         "env": a.env,
         "equity": a.equity,
         "auto_execute_enabled": auto,

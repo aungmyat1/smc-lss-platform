@@ -7,6 +7,10 @@ v3.5 signal/backtest track it never mentions)
 **Repo root:** `D:\ddev\smc-lss-platform\smc-lss-platform`
 **Objective under audit:** reach a stable, deterministic **MT5 Demo Trading** system.
 
+> Historical audit snapshot. The current governance has since moved to the
+> strategy-approval-first master plan (`MASTER_PLAN.md` v3.0.0) centered on
+> `docs/strategy/SMC-LSS-v3.6-SIGNAL-SPEC.md`.
+
 > Every status below is grounded in files actually read, tests actually run, and
 > `git log`/`git status` actually checked during this audit. Nothing is assumed.
 
