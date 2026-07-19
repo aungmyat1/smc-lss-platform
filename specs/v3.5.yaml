@@ -2,7 +2,9 @@
 # Source of truth: docs/strategy/SMC-LSS-v3.5-SIGNAL-RULESET.md
 # Status: RESEARCH_CANDIDATE — does NOT authorize live trading. Demo evidence only.
 version: 3.5
-status: RESEARCH_CANDIDATE
+track: research                # ADR-0001 — research-only, never executes trades
+status: research_candidate     # was RESEARCH_CANDIDATE (uppercase) — same fact, single field, ADR-0001 casing
+promotion_stage: backtest      # mixed cross-symbol evidence exists; walk-forward not yet passed
 supersedes: 1
 
 # One parameterized procedure, not nine handlers:

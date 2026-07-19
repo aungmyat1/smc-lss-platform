@@ -1,5 +1,8 @@
 # SMC-LSS strategy spec v1 (deterministic)
 version: 1
+track: execution              # ADR-0001 — sole execution authority
+status: active
+promotion_stage: deployed
 symbol: EURUSD
 htf: H4
 entry_tf: M15

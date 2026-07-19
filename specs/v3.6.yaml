@@ -5,7 +5,9 @@
 # against the v3.5 baseline (EURUSD 377 trades/10.6% win/-0.123R,
 # XAUUSD 816/22.8%/-0.166R, BTCUSD 231/10.0%/-0.182R, all negative expectancy).
 version: 3.6
-status: RESEARCH_CANDIDATE
+track: research                # ADR-0001 — research-only, never executes trades
+status: draft                  # was RESEARCH_CANDIDATE — reconciled: fully specified but not yet implemented/backtested (see promotion_stage)
+promotion_stage: research
 supersedes: 3.5
 
 confirmation:
