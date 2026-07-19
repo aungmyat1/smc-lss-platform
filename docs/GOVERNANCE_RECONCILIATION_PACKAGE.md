@@ -10,16 +10,37 @@
 - **Minimal edits** — clarify tracks + add ADR reference; no wholesale rewrites unless a factual contradiction requires it.
 - **Telegram is out of governance scope** — it belongs to the execution roadmap.
 - **Execution posture: PROPOSAL-ONLY** until Phase 3 Risk Engine + validation gates pass. **No automatic MT5 demo execution is authorized.**
-- **Blocked prerequisites (verified this session):** workspace VM is down; Git state is **Not Verified**. Nothing in this package can be committed — and therefore cannot become authoritative under the contract — until the VM is restored and `git` is verified.
+- **Correction (WO-1, 2026-07-19):** the earlier "workspace VM is down / Git state Not Verified / cannot be committed" language in this package was factually wrong — `git` and `pytest` run directly against this repository; the Cowork sandbox referenced elsewhere is separate, external infrastructure with no bearing on committing to this repo. Struck throughout (§3 step 1, §4, §5, §6). See D-3 below.
+
+---
+
+## 0.1 Owner ruling D-3 — `config/watchlist.yaml` execution-config correction
+
+**Ruling:** `strategy_spec` must name the execution-track spec (`specs/v1.yaml`),
+never a research spec — declaring `specs/v3.5.yaml` in an execution config
+contradicts ADR-0001's track separation regardless of any runtime interlock
+that happens to keep it non-executing today. `autonomy.demo` must read a
+proposal-only value; `auto_on_engine_ready` is not a valid pre-promotion state
+under ADR-0001 — engine-ready is not execution-authorized.
+
+**Rationale:** this is alignment, not new judgment. It matches the M1
+Governance Review's Finding R-3 (spec-authority exposure) and R-4 (autonomy
+posture contradiction), both already logged as pre-existing debt, and follows
+directly from the execution-track decision in ADR-0001 §Decision.
+
+**Executed under:** WO-1 (this ADR + Change Matrix row 14, below); the config
+edit itself is WO-2.
 
 ---
 
 ## 1. ADR-0001 — Adoption of the Two-Track Strategy Lifecycle
 
-> Proposed location: `docs/adr/ADR-0001-two-track-strategy-lifecycle.md`
+> **Extracted and Accepted (WO-1, 2026-07-19):** see
+> `docs/adr/ADR-0001-two-track-strategy-lifecycle.md`, the canonical record.
+> This section is retained as drafting history only — the file above governs.
 
-**Status:** Proposed → becomes **Accepted** on owner approval + git commit.
-**Date:** 2026-07-18
+**Status:** ~~Proposed~~ **Accepted** — see `docs/adr/ADR-0001-*.md`.
+**Date:** 2026-07-18 (drafted) · Accepted 2026-07-19
 **Deciders:** Project Owner (Aung); Governance Agent.
 
 **Context.** The repository accumulated conflicting statements about which strategy is authoritative. Verified in the Governance Verification Report (2026-07-18): `docs/CHARTER.md` names `specs/v3.5.yaml` the "version of record" and wires demo auto-execution to its `engine_implements_spec` flag; `MASTER_PLAN.md` names `specs/v1.yaml` the execution authority; `CLAUDE.md` contains both claims. Root cause: no explicit separation between the strategy that *executes* and the strategy under *research*.
@@ -40,7 +61,7 @@
 - (+) Explicit, auditable promotion gates.
 - (−) `docs/CHARTER.md` autonomy wording must be clarified (the v3.5 `engine_implements_spec` interlock no longer governs execution).
 - (−) Spec relocation is deferred (separate Engineering ADR).
-- (!) Until committed and the VM is restored, this ADR is **Proposed**, not Accepted.
+- (!) ~~Until committed and the VM is restored, this ADR is Proposed, not Accepted.~~ Superseded — Accepted 2026-07-19 (WO-1); see `docs/adr/ADR-0001-*.md`.
 
 ---
 
@@ -61,14 +82,15 @@
 | 11 | `specs/v3.5.yaml` | research spec | No track metadata | Add `track: research`, `status: research_candidate`, `promotion_stage: backtest` *(confirm value)* | Metadata | Yes |
 | 12 | `specs/v3.6.yaml` | research spec | No track metadata | Add `track: research`, `status: draft`, `promotion_stage: research` | Metadata | Yes |
 | 13 | `docs/MASTER-PLAN.md` | deprecated | Banner present | Add ADR-0001 ref to banner | Ref | Optional |
+| 14 | `config/watchlist.yaml` | execution config | `strategy_spec: specs/v3.5.yaml` names a research spec from an execution config; `autonomy.demo: auto_on_engine_ready` permits an unauthorized pre-promotion execution state | Set `strategy_spec: specs/v1.yaml`; set `autonomy.demo` to a proposal-only value; keep `autonomy.live` disabled and `promote_to_live: false` | Correction (D-3) | Yes |
 
 *Note:* no document's **authority order** changes; this package only clarifies track semantics and adds references.
 
 ---
 
-## 3. Migration Sequence *(execute only after approval AND VM restored)*
+## 3. Migration Sequence *(execute only after approval)*
 
-1. **Baseline** — restore VM; run `git status` + `git log --oneline -5`; capture the current HEAD sha as the rollback anchor. Confirm working tree state (this replaces today's "Not Verified").
+1. **Baseline** — run `git status` + `git log --oneline -5`; capture the current HEAD sha as the rollback anchor. Confirm working tree state.
 2. **ADR** — create `docs/adr/ADR-0001-two-track-strategy-lifecycle.md`; set Status: Accepted. → **Commit A**.
 3. **Spec metadata** — add the metadata blocks to `specs/v1.yaml`, `specs/v3.5.yaml`, `specs/v3.6.yaml`; run `pytest`. → **Commit B**.
 4. **Governance docs** — apply the reference + clarification edits (matrix rows 2–9, 13). → **Commit C**.
@@ -79,8 +101,8 @@
 
 ## 4. Validation Checklist
 
-- [ ] VM restored; `git status` shows a known baseline; HEAD sha recorded.
-- [ ] `ADR-0001` exists, Status = Accepted, dated, decision recorded.
+- [x] `git status` shows a known baseline; HEAD sha recorded (WO-1).
+- [x] `ADR-0001` exists, Status = Accepted, dated, decision recorded (WO-1 — `docs/adr/ADR-0001-two-track-strategy-lifecycle.md`).
 - [ ] Every governance document references ADR-0001.
 - [ ] No document states v3.5 is the execution / version-of-record strategy (research only).
 - [ ] No document connects a research spec to execution (CHARTER interlock marked superseded).
@@ -92,7 +114,7 @@
 
 ---
 
-## 5. Commit Plan *(atomic, ordered — requires VM)*
+## 5. Commit Plan *(atomic, ordered)*
 
 | Commit | Contents | Message |
 |---|---|---|
@@ -101,7 +123,9 @@
 | **C** | `MASTER_PLAN.md`, `CLAUDE.md`, `docs/CHARTER.md`, `docs/RESEARCH-CHARTER.md`, `PROJECT_STATUS.md`, `ROADMAP.md`, `NEXT_ACTION.md`, `AGENT_ALIGNMENT.md`, `docs/MASTER-PLAN.md` | `docs(governance): reference ADR-0001, clarify execution/research tracks` |
 
 Commit B only after `pytest` is green. Commit C only after the Validation Checklist passes.
-Also stages the earlier uncommitted governance files (MASTER_PLAN v2.1.1, governance/engineering agent defs) — confirm they belong in Commit C or a preceding commit once Git state is verified.
+The earlier governance files (MASTER_PLAN v2.1.1, governance/engineering agent defs) referenced in
+the original drafting of this plan are already committed (see `git log` — commit `7512629` and
+subsequent); no separate staging decision remains for them.
 
 ---
 
@@ -111,10 +135,9 @@ Also stages the earlier uncommitted governance files (MASTER_PLAN v2.1.1, govern
 - **Full rollback:** `git revert C B A` (reverse order), or hard-reset to the baseline sha captured in Migration step 1.
 - **Low blast radius:** no spec relocation is performed, so there are **no import/path changes to undo**; governance edits are additive/clarifying, so reverting restores prior text with **zero code impact**.
 - **Metadata safety net:** if Commit B's spec metadata breaks parsing/schema (caught by `pytest` before Commit C), revert B alone and hand the schema question to Engineering; governance edits (C) can proceed independently since they don't depend on the metadata.
-- **Requires VM** for all `git` operations.
 
 ---
 
 ## Open confirmations before execution
-1. `promotion_stage` value for `specs/v3.5.yaml` — proposed `backtest` (mixed cross-symbol evidence exists; walk-forward not yet passed). Confirm or set.
-2. Whether the **earlier uncommitted** governance files (MASTER_PLAN v2.1.1, `project-governance-agent.md`, `AGENT_ALIGNMENT.md`) should be folded into Commit C or committed first — resolvable once Git state is verified.
+1. `promotion_stage` value for `specs/v3.5.yaml` — proposed `backtest` (mixed cross-symbol evidence exists; walk-forward not yet passed). Confirm or set. (Batch B, WO-5.)
+2. ~~Whether the earlier uncommitted governance files... should be folded into Commit C~~ — moot: those files are already committed (see §5 Commit Plan note).

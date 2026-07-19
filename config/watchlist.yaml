@@ -1,11 +1,11 @@
 # SMC-LSS daily-loop watchlist & automation policy
 # Read by src/daily_runner.py and by docs/daily-loop-runbook.md.
-strategy_spec: specs/v3.5.yaml          # strategy of record (RESEARCH_CANDIDATE)
+strategy_spec: specs/v1.yaml             # execution-track spec (ADR-0001) — sole execution authority
 
 autonomy:
-  demo: auto_on_engine_ready            # auto-execute ONLY when spec engine is ready
-  live: auto_on_promotion               # target-state: fully automated after promotion gates pass
-  engine_implements_spec: false         # mirrors specs/v3.5.yaml interlock; false => propose-mode
+  demo: proposal_only                   # ADR-0001 / WO-2: proposal-only until Phase 3 gates pass (was auto_on_engine_ready)
+  live: disabled                        # explicitly disabled — no live automation until promotion gates pass (was auto_on_promotion)
+  engine_implements_spec: false         # false => propose-mode; kept per WO-2 fail-closed constraint (see daily_runner.py's .get() default)
   promote_to_live: false
 
 risk:

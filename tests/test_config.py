@@ -17,10 +17,10 @@ def _write(path, text):
 
 
 VALID_WATCHLIST = """\
-    strategy_spec: specs/v3.5.yaml
+    strategy_spec: specs/v1.yaml
     autonomy:
-      demo: auto_on_engine_ready
-      live: auto_on_promotion
+      demo: proposal_only
+      live: disabled
       engine_implements_spec: false
       promote_to_live: false
     risk:
