@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c ' *)",
+      "Bash(python src/load_history.py --symbols EURUSD,XAUUSD-VIP,BTCUSD --timeframe M5 --bars 20000)",
+      "Bash(python src/load_history.py --symbols BTCUSD --timeframe H1 --bars 9000)",
+      "Bash(python src/load_history.py --symbols BTCUSD --timeframe D1 --bars 500)",
+      "Bash(python src/load_history.py --symbols EURUSD,XAUUSD-VIP --timeframe M5 --bars 80000)",
+      "Bash(python src/load_history.py --symbols BTCUSD --timeframe M5 --bars 100000)",
+      "Bash(python src/load_history.py --symbols BTCUSD --timeframe M5 --bars 60000)",
+      "Bash(python src/backtest_v35.py --symbol EURUSD --m5 data/EURUSD_M5.csv --h1 data/EURUSD_H1.csv --out reports/backtest_v35_EURUSD.json)",
+      "Bash(python src/backtest_v35.py --symbol XAUUSD-VIP --m5 \"data/XAUUSD-VIP_M5.csv\" --h1 \"data/XAUUSD-VIP_H1.csv\" --out reports/backtest_v35_XAUUSD.json)",
+      "Bash(ps -o pid,etimes,pcpu,cmd)",
+      "Bash(wmic cpu *)",
+      "Bash(ps -o pid,etime,pcpu,args)",
+      "Bash(kill 1760 1780 1800)",
+      "Bash(time python -m pytest -q)",
+      "Bash(kill 73)",
+      "Bash(awk '{print $1}')",
+      "Bash(xargs -r kill)",
+      "Bash(python src/backtest_v35.py --symbol BTCUSD --m5 data/BTCUSD_M5.csv --h1 data/BTCUSD_H1.csv --out reports/backtest_v35_BTCUSD.json)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(python -m pytest -q)",
+      "Bash(python src/backtest_v35.py --symbol BTCUSD --m5 data/BTCUSD_M5.csv --h1 data/BTCUSD_H1.csv)",
+      "Bash(python src/backtest_v35.py --symbol XAUUSD --m5 data/XAUUSD-VIP_M5.csv --h1 data/XAUUSD-VIP_H1.csv)",
+      "Bash(python -m pytest -q --deselect tests/test_backtest_v35.py::test_run_backtest_report_shape_on_real_csv)",
+      "Bash(python -m pytest -q tests/test_features.py)",
+      "Bash(kill 2017)",
+      "Bash(dir)",
+      "Bash(echo \"---exit: $?---\")",
+      "Bash(python -c \"print\\('non-ascii check done'\\)\")",
+      "Bash(echo \"exit:$?\")",
+      "Bash(pip show *)",
+      "Bash(python -m pytest tests/ -q)",
+      "Bash(python src/run_baseline.py)",
+      "Bash(python -m pytest --version)",
+      "Bash(python -m pytest --collect-only -q)",
+      "Bash(python -m pytest -v --durations=10)",
+      "mcp__scheduled-tasks__list_scheduled_tasks"
+    ]
+  }
+}
