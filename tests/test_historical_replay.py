@@ -102,6 +102,11 @@ def test_historical_replay_generates_trade_and_metrics(tmp_path):
     trade = result.trades[0]
     assert trade.entry_index == result.signals[0].index + 1
     assert trade.outcome in {"TARGET", "STOP", "TIMEOUT"}
+    signal = result.signals[0]
+    assert signal.structure_identity
+    assert signal.canonical_symbol == "EURUSD"
+    assert signal.poi_time
+    assert signal.sweep_time
 
 
 def test_replay_rejects_unsorted_data(tmp_path):

@@ -9,7 +9,7 @@ import os
 import shutil
 import time
 import tempfile
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from pathlib import Path
 from typing import Any, Callable, Iterable, Sequence
 
@@ -29,6 +29,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONTRACT_PATH = ROOT / "strategies" / "candidates" / "ST-C1_v1.yaml"
 DEFAULT_REPORT_PATH = ROOT / "reports" / "ST-C1_REAL_DATA_STATISTICAL_VALIDATION.md"
 DEFAULT_CACHE_DIR = ROOT / "validation" / "cache"
+CACHE_SCHEMA_VERSION = 2
 
 
 @dataclass(frozen=True)
@@ -105,6 +106,20 @@ def _signal_to_dict(signal: SignalRecord) -> dict[str, Any]:
         "target": signal.target,
         "structure_key": signal.structure_key,
         "reason_codes": list(signal.reason_codes),
+        "structure_identity": signal.structure_identity,
+        "canonical_symbol": signal.canonical_symbol,
+        "source_symbol": signal.source_symbol,
+        "sweep_time": signal.sweep_time,
+        "sweep_level": signal.sweep_level,
+        "poi_type": signal.poi_type,
+        "poi_time": signal.poi_time,
+        "poi_low": signal.poi_low,
+        "poi_high": signal.poi_high,
+        "confirmation_time": signal.confirmation_time,
+        "choch_time": signal.choch_time,
+        "choch_direction": signal.choch_direction,
+        "choch_break_level": signal.choch_break_level,
+        "choch_reason": signal.choch_reason,
     }
 
 
@@ -160,6 +175,20 @@ def _signal_from_dict(payload: dict[str, Any]) -> SignalRecord:
         target=float(payload["target"]),
         structure_key=str(payload["structure_key"]),
         reason_codes=tuple(str(item) for item in payload.get("reason_codes", [])),
+        structure_identity=str(payload.get("structure_identity", "")),
+        canonical_symbol=str(payload.get("canonical_symbol", "")),
+        source_symbol=str(payload.get("source_symbol", "")),
+        sweep_time=str(payload.get("sweep_time", "")),
+        sweep_level=float(payload.get("sweep_level", 0.0)),
+        poi_type=str(payload.get("poi_type", "")),
+        poi_time=str(payload.get("poi_time", "")),
+        poi_low=float(payload.get("poi_low", 0.0)),
+        poi_high=float(payload.get("poi_high", 0.0)),
+        confirmation_time=str(payload.get("confirmation_time", "")),
+        choch_time=str(payload.get("choch_time", "")),
+        choch_direction=str(payload.get("choch_direction", "")),
+        choch_break_level=float(payload.get("choch_break_level", 0.0)),
+        choch_reason=str(payload.get("choch_reason", "")),
     )
 
 
@@ -285,6 +314,7 @@ def _default_funnel_counts() -> dict[str, int]:
         "duplicate_structure": 0,
         "skipped_open_trade": 0,
         "executed_trade": 0,
+        "censored_end_of_data": 0,
         "rejected_session": 0,
         "rejected_signal": 0,
         "rejected_bias": 0,
@@ -417,7 +447,7 @@ class BatchValidationRunner:
         elapsed_seconds: float | None = None,
     ) -> dict[str, Any]:
         payload: dict[str, Any] = {
-            "schema_version": 1,
+            "schema_version": CACHE_SCHEMA_VERSION,
             "complete": complete,
             "target": asdict(target),
             "dataset_hash": dataset_hash,
@@ -440,6 +470,15 @@ class BatchValidationRunner:
             payload["result"] = _result_to_dict(result)
         return payload
 
+    def _cache_is_compatible(self, payload: dict[str, Any], dataset_hash: str) -> bool:
+        return (
+            int(payload.get("schema_version", 0)) == CACHE_SCHEMA_VERSION
+            and payload.get("dataset_hash") == dataset_hash
+            and payload.get("runner_fingerprint") == self.runner_fingerprint
+            and payload.get("strategy_version") == self.strategy_version
+            and payload.get("execution_params") == dict(self.execution_params)
+        )
+
     def _state_from_payload(self, payload: dict[str, Any]) -> _RuntimeState:
         state = _RuntimeState(
             next_index=int(payload.get("next_index", self.engine.warmup_bars)),
@@ -455,6 +494,17 @@ class BatchValidationRunner:
             complete=bool(payload.get("complete", False)),
         )
         return state
+
+    def _normalize_signal(self, signal: SignalRecord, target: ValidationTarget) -> SignalRecord:
+        canonical_symbol = self.engine._metadata_for_symbol(target.source_symbol or target.display_symbol).canonical_symbol
+        source_symbol = target.source_symbol or target.display_symbol
+        structure_identity = signal.structure_identity or signal.structure_key
+        return replace(
+            signal,
+            canonical_symbol=signal.canonical_symbol or canonical_symbol,
+            source_symbol=signal.source_symbol or source_symbol,
+            structure_identity=structure_identity,
+        )
 
     def _emit_progress(self, target: ValidationTarget, state: _RuntimeState, total_candles: int, start_time: float, phase: str) -> None:
         progress = ValidationProgress(
@@ -488,9 +538,14 @@ class BatchValidationRunner:
             assumptions={
                 "entry": "next candle after signal",
                 "exit": "contract-defined SL/TP with stop-first conservative fills",
-                "costs": dict(self.execution_params),
-                "dataset_hash": self._dataset_hash(target),
+                "strategy_id": str(self.engine.contract.get("strategy", {}).get("strategy_id", "ST-C1")) if isinstance(self.engine.contract, dict) else "ST-C1",
                 "strategy_version": self.strategy_version,
+                "costs": {
+                    **dict(self.execution_params),
+                    "slippage_points_per_side": float(self.execution_params["slippage_points"]),
+                    "slippage_points_round_trip": float(self.execution_params["slippage_points"]) * 2.0,
+                },
+                "dataset_hash": self._dataset_hash(target),
                 "source_symbol": target.source_symbol or target.display_symbol,
                 "runner_fingerprint": self.runner_fingerprint,
             },
@@ -525,7 +580,7 @@ class BatchValidationRunner:
         dataset_hash = self._dataset_hash(target)
         cache_path = self._cache_path(target, dataset_hash)
         cached = self._load_state(cache_path) if resume else None
-        if cached and cached.get("complete") and cached.get("dataset_hash") == dataset_hash and cached.get("strategy_version") == self.strategy_version:
+        if cached and cached.get("complete") and self._cache_is_compatible(cached, dataset_hash):
             result = _result_from_dict(cached["result"])
             return BatchValidationResult(
                 target=target,
@@ -545,7 +600,7 @@ class BatchValidationRunner:
             )
 
         m5, h1, d1 = self.engine.load_series(target.m5_path, h1_path=target.h1_path, d1_path=target.d1_path)
-        state = self._state_from_payload(cached) if cached and cached.get("dataset_hash") == dataset_hash and cached.get("strategy_version") == self.strategy_version else _RuntimeState(next_index=self.engine.warmup_bars)
+        state = self._state_from_payload(cached) if cached and self._cache_is_compatible(cached, dataset_hash) else _RuntimeState(next_index=self.engine.warmup_bars)
         if state.next_index < self.engine.warmup_bars:
             state.next_index = self.engine.warmup_bars
         state.complete = False
@@ -576,6 +631,7 @@ class BatchValidationRunner:
                     i += 1
                     state.candles_processed = i
                 else:
+                    signal = self._normalize_signal(signal, target)
                     state.consumed.add(signal.structure_key)
                     state.signals.append(signal)
                     state.signals_detected += 1
@@ -585,6 +641,8 @@ class BatchValidationRunner:
                     state.funnel_counts["executed_trade"] = int(state.funnel_counts.get("executed_trade", 0)) + 1
                     if trade.unresolved_open_position:
                         state.funnel_counts["skipped_open_trade"] = int(state.funnel_counts.get("skipped_open_trade", 0)) + 1
+                    if trade.outcome == "CENSORED_END_OF_DATA":
+                        state.funnel_counts["censored_end_of_data"] = int(state.funnel_counts.get("censored_end_of_data", 0)) + 1
                     i = max(trade.exit_index + 1, i + 1)
                     state.candles_processed = i
             state.next_index = i
@@ -614,9 +672,14 @@ class BatchValidationRunner:
             assumptions={
                 "entry": "next candle after signal",
                 "exit": "contract-defined SL/TP with stop-first conservative fills",
-                "costs": dict(self.execution_params),
-                "dataset_hash": dataset_hash,
+                "strategy_id": str(self.engine.contract.get("strategy", {}).get("strategy_id", "ST-C1")) if isinstance(self.engine.contract, dict) else "ST-C1",
                 "strategy_version": self.strategy_version,
+                "costs": {
+                    **dict(self.execution_params),
+                    "slippage_points_per_side": float(self.execution_params["slippage_points"]),
+                    "slippage_points_round_trip": float(self.execution_params["slippage_points"]) * 2.0,
+                },
+                "dataset_hash": dataset_hash,
                 "source_symbol": target.source_symbol or target.display_symbol,
                 "runner_fingerprint": self.runner_fingerprint,
             },

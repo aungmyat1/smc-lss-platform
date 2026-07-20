@@ -36,6 +36,20 @@ class SignalRecord:
     target: float
     structure_key: str
     reason_codes: tuple[str, ...]
+    structure_identity: str = ""
+    canonical_symbol: str = ""
+    source_symbol: str = ""
+    sweep_time: str = ""
+    sweep_level: float = 0.0
+    poi_type: str = ""
+    poi_time: str = ""
+    poi_low: float = 0.0
+    poi_high: float = 0.0
+    confirmation_time: str = ""
+    choch_time: str = ""
+    choch_direction: str = ""
+    choch_break_level: float = 0.0
+    choch_reason: str = ""
 
 
 @dataclass(frozen=True)
@@ -326,7 +340,8 @@ class HistoricalReplayEngine:
     ) -> dict[str, Any]:
         k = int(self.params.get("swing_lookback_bars", 2))
         eq_window = 40
-        bias_window = h1_window if h1_window else m5_window
+        min_context_bars = 2
+        bias_window = h1_window if h1_window and len(h1_window) >= min_context_bars else m5_window
         bias = self._directional_bias(bias_window, k)
         m5_hi, m5_lo = e.swings(m5_window, k)
         m5_bias = e.trend(m5_hi, m5_lo)
@@ -344,6 +359,7 @@ class HistoricalReplayEngine:
             "order_blocks": obs,
             "fvgs": fvgs,
             "last_close": m5_window[-1]["close"],
+            "last_close_time": m5_window[-1]["time"],
             "session_allowed": _is_session_allowed(
                 m5_window[-1]["time"],
                 self.sessions,
@@ -357,6 +373,20 @@ class HistoricalReplayEngine:
         trend = e.trend(hi, lo)
         if trend != "RANGING":
             return trend
+        if len(candles) >= 2:
+            last2 = candles[-2:]
+            if (
+                last2[1]["close"] > last2[0]["close"]
+                and last2[1]["high"] >= last2[0]["high"]
+                and last2[1]["low"] >= last2[0]["low"]
+            ):
+                return "BULLISH"
+            if (
+                last2[1]["close"] < last2[0]["close"]
+                and last2[1]["high"] <= last2[0]["high"]
+                and last2[1]["low"] <= last2[0]["low"]
+            ):
+                return "BEARISH"
         if len(candles) >= 3:
             last3 = candles[-3:]
             highs = [c["high"] for c in last3]
@@ -366,6 +396,67 @@ class HistoricalReplayEngine:
             if highs[2] < highs[1] < highs[0] and lows[2] < lows[1] < lows[0]:
                 return "BEARISH"
         return "RANGING"
+
+    def _latest_matching(self, items: list[dict[str, Any]], direction: str) -> dict[str, Any] | None:
+        target_dir = "bull" if direction == "long" else "bear"
+        for item in reversed(items):
+            if item.get("dir") == target_dir:
+                return item
+        return None
+
+    def _select_poi(self, direction: str, features: dict[str, Any], window: list[dict[str, Any]]) -> dict[str, Any] | None:
+        poi_type = "bullish_order_block" if direction == "long" else "bearish_order_block"
+        poi = self._latest_matching(features["order_blocks"], direction)
+        if poi is not None:
+            poi_index = int(poi.get("i", -1))
+            poi_time = window[poi_index]["time"] if 0 <= poi_index < len(window) else str(features.get("last_close_time", ""))
+            return {
+                "type": poi_type,
+                "time": poi_time,
+                "low": float(poi["low"]),
+                "high": float(poi["high"]),
+                "index": poi_index,
+                "source": poi,
+            }
+        poi_type = "bullish_fvg" if direction == "long" else "bearish_fvg"
+        poi = self._latest_matching(features["fvgs"], direction)
+        if poi is not None:
+            poi_index = int(poi.get("i", -1))
+            poi_time = window[poi_index]["time"] if 0 <= poi_index < len(window) else str(features.get("last_close_time", ""))
+            return {
+                "type": poi_type,
+                "time": poi_time,
+                "low": float(poi["lower"]),
+                "high": float(poi["upper"]),
+                "index": poi_index,
+                "source": poi,
+            }
+        return None
+
+    def _structure_identity(
+        self,
+        *,
+        direction: str,
+        canonical_symbol: str,
+        source_symbol: str,
+        sweep: dict[str, Any],
+        poi: dict[str, Any],
+        confirmation_time: str,
+        choch_break_level: float,
+        choch_time: str,
+    ) -> str:
+        return "|".join(
+            [
+                str(self.contract.get("strategy", {}).get("strategy_id", "ST-C1")) if isinstance(self.contract, dict) else "ST-C1",
+                str(self.contract.get("strategy", {}).get("version", "unknown")) if isinstance(self.contract, dict) else "unknown",
+                canonical_symbol,
+                direction,
+                f"sweep@{sweep.get('time', '')}@{float(sweep.get('level', 0.0)):.5f}",
+                f"poi@{poi.get('type', '')}@{poi.get('time', '')}@{float(poi.get('low', 0.0)):.5f}@{float(poi.get('high', 0.0)):.5f}",
+                f"confirm@{confirmation_time}",
+                f"choch@{choch_time}@{choch_break_level:.5f}",
+            ]
+        )
 
     def generate_signal(
         self,
@@ -379,6 +470,7 @@ class HistoricalReplayEngine:
         funnel_counts: dict[str, int] | None = None,
     ) -> SignalRecord | None:
         k = int(self.params.get("swing_lookback_bars", 2))
+        eq_window = 40
         if index < max(self.warmup_bars, 3 * k + 2):
             return None
 
@@ -449,9 +541,13 @@ class HistoricalReplayEngine:
             reject("poi", "missing order block or FVG confirmation", metadata={"direction": direction, "symbol": symbol_name})
             return None
         bump("poi_pass")
+        poi = self._select_poi(direction, features, m5_window)
+        if poi is None:
+            reject("poi", "could not select direction-consistent POI", metadata={"direction": direction, "symbol": symbol_name})
+            return None
 
         entry = m5[index + 1]["open"]
-        stop = self._determine_stop(direction, m5_window, features, entry)
+        stop = self._determine_stop(direction, m5_window, features, entry, poi=poi)
         if stop is None:
             reject("risk", "could not determine stop", metadata={"direction": direction, "symbol": symbol_name})
             return None
@@ -465,7 +561,28 @@ class HistoricalReplayEngine:
             return None
         bump("candidate_ready")
 
-        structure_key = self._structure_key(direction, features)
+        sweep = self._latest_matching(features["sweeps"], direction)
+        if sweep is None:
+            reject("sweep", "could not identify matching sweep", metadata={"direction": direction, "symbol": symbol_name})
+            return None
+        sweep_index = int(sweep.get("i", -1))
+        sweep_time = m5_window[sweep_index]["time"] if 0 <= sweep_index < len(m5_window) else str(m5_window[-1]["time"])
+        confirmation_time = str(m5_window[-1]["time"])
+        confirmation = latest_signal(m5_window, k, eq_window) or {}
+        choch_break_level = float(confirmation.get("stop", stop))
+        choch_reason = "close_above_last_confirmed_swing_high" if direction == "long" else "close_below_last_confirmed_swing_low"
+        choch_time = confirmation_time
+        structure_identity = self._structure_identity(
+            direction=direction,
+            canonical_symbol=self._metadata_for_symbol(symbol_name).canonical_symbol,
+            source_symbol=symbol_name,
+            sweep={**sweep, "time": sweep_time},
+            poi=poi,
+            confirmation_time=confirmation_time,
+            choch_break_level=choch_break_level,
+            choch_time=choch_time,
+        )
+        structure_key = structure_identity
         reason_codes = (
             "H1_BIAS_" + direction.upper(),
             "SESSION_OK",
@@ -482,6 +599,20 @@ class HistoricalReplayEngine:
             target=round(target, 5),
             structure_key=structure_key,
             reason_codes=reason_codes,
+            structure_identity=structure_identity,
+            canonical_symbol=self._metadata_for_symbol(symbol_name).canonical_symbol,
+            source_symbol=symbol_name,
+            sweep_time=sweep_time,
+            sweep_level=float(sweep.get("level", 0.0)),
+            poi_type=str(poi.get("type", "")),
+            poi_time=str(poi.get("time", "")),
+            poi_low=float(poi.get("low", 0.0)),
+            poi_high=float(poi.get("high", 0.0)),
+            confirmation_time=confirmation_time,
+            choch_time=choch_time,
+            choch_direction=direction,
+            choch_break_level=choch_break_level,
+            choch_reason=choch_reason,
         )
 
     def _structure_key(self, direction: str, features: dict[str, Any]) -> str:
@@ -489,16 +620,26 @@ class HistoricalReplayEngine:
         ob_index = features["order_blocks"][-1]["i"] if features["order_blocks"] else -1
         return f"{direction}:{sweep_index}:{ob_index}"
 
-    def _determine_stop(self, direction: str, window: list[dict[str, Any]], features: dict[str, Any], entry: float) -> float | None:
+    def _determine_stop(
+        self,
+        direction: str,
+        window: list[dict[str, Any]],
+        features: dict[str, Any],
+        entry: float,
+        *,
+        poi: dict[str, Any] | None = None,
+    ) -> float | None:
         atr = e.atr(window, len(window) - 1, 14)
         buffer = atr * self.stop_buffer_atr_mult
         refs: list[float] = []
-        if features["sweeps"]:
+        if poi is not None:
+            refs.extend([float(poi.get("low", 0.0)), float(poi.get("high", 0.0))])
+        elif features["sweeps"]:
             refs.append(features["sweeps"][-1]["level"])
-        if features["order_blocks"]:
+        elif features["order_blocks"]:
             last_ob = features["order_blocks"][-1]
             refs.extend([last_ob["low"], last_ob["high"]])
-        if features["fvgs"]:
+        elif features["fvgs"]:
             last_fvg = features["fvgs"][-1]
             refs.extend([last_fvg["lower"], last_fvg["upper"]])
         if not refs:
@@ -592,7 +733,7 @@ class HistoricalReplayEngine:
         meta, cost = self._cost_to_r(symbol, signal.entry, signal.stop)
         exit_price = forward[-1]["close"]
         exit_index = len(m5) - 1
-        outcome = "TIME_STOP"
+        outcome = "TIMEOUT"
         partial_taken = False
         break_even_activated = False
         ambiguous_bar = False
@@ -630,6 +771,9 @@ class HistoricalReplayEngine:
                 management_events.append({"event": "BREAK_EVEN_ACTIVATED", "new_stop": round(signal.entry, 5), "bar": offset})
         else:
             unresolved_open_position = True
+            if start + offset >= len(m5) - 1:
+                outcome = "CENSORED_END_OF_DATA"
+                management_events.append({"event": "CENSORED_END_OF_DATA", "bar": offset})
 
         final_leg_r = ((exit_price - signal.entry) / risk) if direction == "long" else ((signal.entry - exit_price) / risk)
         gross_r = (0.5 * 1.0 + 0.5 * final_leg_r) if partial_taken else final_leg_r
@@ -781,9 +925,13 @@ class HistoricalReplayEngine:
             assumptions={
                 "entry": "next candle after signal",
                 "exit": "next candle after signal with stop-first conservative fills, managed partials and break-even",
+                "strategy_id": str(self.contract.get("strategy", {}).get("strategy_id", "ST-C1")) if isinstance(self.contract, dict) else "ST-C1",
+                "strategy_version": str(self.contract.get("strategy", {}).get("version", "unknown")) if isinstance(self.contract, dict) else "unknown",
                 "costs": {
                     "spread_points": self.spread_points,
                     "slippage_points_per_side": self.slippage_points,
+                    "slippage_points_round_trip": self.slippage_points * 2.0,
+                    "slippage_points": self.slippage_points,
                     "commission_r": self.commission_r,
                 },
                 "symbol_metadata": self._metadata_for_symbol(symbol).snapshot(),
@@ -815,7 +963,8 @@ def write_baseline_report(
         f"- Entry: `{result.assumptions['entry']}`",
         f"- Exit: `{result.assumptions['exit']}`",
         f"- Spread points: `{result.assumptions['costs']['spread_points']}`",
-        f"- Slippage points: `{result.assumptions['costs']['slippage_points']}`",
+        f"- Slippage points per side: `{result.assumptions['costs']['slippage_points_per_side']}`",
+        f"- Slippage points round trip: `{result.assumptions['costs']['slippage_points_round_trip']}`",
         f"- Commission R: `{result.assumptions['costs']['commission_r']}`",
         "",
         "## Metrics",

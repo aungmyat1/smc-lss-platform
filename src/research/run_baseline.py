@@ -18,7 +18,7 @@ import yaml
 from symbol_metadata import resolve_symbol
 from validation.batch_validation_runner import BatchValidationRunner, ValidationTarget
 
-from .dataset_manifest import build_dataset_manifest, write_manifest
+from .dataset_manifest import build_dataset_manifest, sha256_file, write_manifest
 from .diagnostics import failure_counts
 from .metrics import combined_metrics, symbol_metrics
 from .report_builder import render_table, write_markdown
@@ -45,6 +45,7 @@ DEPRECATED_TIMEFRAME_KEYS = {
     "sessions",
 }
 REQUIRED_TIMEFRAMES = ("M5", "H1", "D1")
+TIMEFRAME_MINUTES = {"M5": 5, "H1": 60, "D1": 1440}
 
 
 def _git_sha() -> str:
@@ -107,22 +108,60 @@ def _repo_relative(path: str | Path) -> str:
         return str(candidate)
 
 
-def _dataset_stats(path: Path, *, symbol: str, source_symbol: str, timeframe: str) -> dict[str, Any]:
+def _artifact_sha256(path: str | Path) -> str:
+    return sha256_file(path)
+
+
+def _validate_dataset_file(path: Path, *, symbol: str, source_symbol: str, timeframe: str) -> dict[str, Any]:
+    if timeframe not in TIMEFRAME_MINUTES:
+        raise ValueError(f"{path}: unsupported timeframe {timeframe}")
     with path.open(newline="", encoding="utf-8") as fh:
         rows = list(csv.DictReader(fh))
-    first_timestamp = _parse_time(rows[0]["time"]).isoformat().replace("+00:00", "Z") if rows else None
-    last_timestamp = _parse_time(rows[-1]["time"]).isoformat().replace("+00:00", "Z") if rows else None
+    required = {"time", "open", "high", "low", "close"}
+    if not rows:
+        raise ValueError(f"{path}: empty dataset")
+    if not required.issubset(rows[0].keys()):
+        missing = ", ".join(sorted(required - set(rows[0].keys())))
+        raise ValueError(f"{path}: missing required columns: {missing}")
+    prev_time: dt.datetime | None = None
+    seen: set[str] = set()
+    first_timestamp = last_timestamp = None
+    step_minutes = TIMEFRAME_MINUTES[timeframe]
+    for row in rows:
+        ts = _parse_time(row["time"])
+        if row["time"] in seen:
+            raise ValueError(f"{path}: duplicate timestamp {row['time']}")
+        seen.add(row["time"])
+        open_ = float(row["open"])
+        high = float(row["high"])
+        low = float(row["low"])
+        close = float(row["close"])
+        if high < low or high < max(open_, close) or low > min(open_, close):
+            raise ValueError(f"{path}: invalid OHLC at {row['time']}")
+        if prev_time is not None and ts < prev_time:
+            raise ValueError(f"{path}: candles must be sorted chronologically")
+        if prev_time is not None:
+            delta_minutes = int((ts - prev_time).total_seconds() / 60)
+            if delta_minutes < step_minutes:
+                raise ValueError(f"{path}: timeframe spacing smaller than expected for {timeframe}")
+        prev_time = ts
+        first_timestamp = first_timestamp or ts
+        last_timestamp = ts
     return {
         "symbol": symbol,
         "source_symbol": source_symbol,
         "timeframe": timeframe,
         "path": _repo_relative(path),
         "rows": len(rows),
-        "first_timestamp": first_timestamp,
-        "last_timestamp": last_timestamp,
+        "first_timestamp": first_timestamp.isoformat().replace("+00:00", "Z") if first_timestamp else None,
+        "last_timestamp": last_timestamp.isoformat().replace("+00:00", "Z") if last_timestamp else None,
         "timezone": "UTC",
         "bar_semantics": _bar_semantics(timeframe),
     }
+
+
+def _dataset_stats(path: Path, *, symbol: str, source_symbol: str, timeframe: str) -> dict[str, Any]:
+    return _validate_dataset_file(path, symbol=symbol, source_symbol=source_symbol, timeframe=timeframe)
 
 
 def _resolve_symbol_datasets(data_dir: Path, symbol: str) -> tuple[str, dict[str, Path]]:
@@ -167,6 +206,63 @@ def _aggregate_trade_components(results: Iterable[Any]) -> dict[str, float | int
         "swap_r": round(sum(float(trade.swap_r) for trade in trades), 6),
         "total_cost_drag_r": round(sum(float(trade.cost_r) for trade in trades), 6),
     }
+
+
+def _artifact_hashes(run_dir: Path) -> dict[str, str]:
+    mapping = {
+        "manifest": run_dir / "baseline_manifest.json",
+        "metrics": run_dir / "baseline_metrics.json",
+        "report": run_dir / "baseline_report.md",
+        "trades": run_dir / "baseline_trades.csv",
+        "equity": run_dir / "baseline_equity.csv",
+        "management_events": run_dir / "management_events.csv",
+        "rejected_candidates": run_dir / "rejected_candidates.csv",
+    }
+    return {name: _artifact_sha256(path) for name, path in mapping.items() if path.exists()}
+
+
+def resolve_latest_run(output_root: str | Path) -> dict[str, Any]:
+    root = Path(output_root)
+    latest_path = root / "LATEST.json"
+    if not latest_path.exists():
+        raise FileNotFoundError(f"{latest_path} does not exist")
+    latest = json.loads(latest_path.read_text(encoding="utf-8"))
+    if not isinstance(latest, dict):
+        raise ValueError(f"{latest_path}: expected a mapping")
+    required = {"run_id", "run_dir", "manifest_path", "metrics_path", "report_path"}
+    missing = sorted(required - set(latest))
+    if missing:
+        raise ValueError(f"{latest_path}: missing keys: {', '.join(missing)}")
+    if not latest.get("complete", False):
+        raise ValueError(f"{latest_path}: incomplete run pointer")
+    run_dir = (root / str(latest["run_dir"])).resolve()
+    if not run_dir.exists():
+        raise FileNotFoundError(f"{latest_path}: run directory missing: {run_dir}")
+    artifact_hashes = latest.get("artifact_hashes", {})
+    if not isinstance(artifact_hashes, dict):
+        raise ValueError(f"{latest_path}: artifact_hashes must be a mapping")
+    for rel_key in ("manifest_path", "metrics_path", "report_path", "run_dir"):
+        file_path = (root / str(latest[rel_key])).resolve()
+        if not file_path.exists():
+            raise FileNotFoundError(f"{latest_path}: missing artifact {file_path}")
+    for artifact_name, expected_hash in artifact_hashes.items():
+        file_name = {
+            "manifest": "baseline_manifest.json",
+            "metrics": "baseline_metrics.json",
+            "report": "baseline_report.md",
+            "trades": "baseline_trades.csv",
+            "equity": "baseline_equity.csv",
+            "management_events": "management_events.csv",
+            "rejected_candidates": "rejected_candidates.csv",
+        }.get(artifact_name)
+        if not file_name:
+            continue
+        file_path = run_dir / file_name
+        if not file_path.exists():
+            raise FileNotFoundError(f"{latest_path}: missing artifact {file_path}")
+        if expected_hash != _artifact_sha256(file_path):
+            raise ValueError(f"{latest_path}: hash mismatch for {artifact_name}")
+    return latest
 
 
 def _atomic_write_json(path: Path, payload: dict[str, Any]) -> None:
@@ -266,6 +362,7 @@ def run_baseline(
         equity_frame = trade_frame.copy()
         if not equity_frame.empty:
             equity_frame["cum_net_r"] = equity_frame["net_r"].cumsum()
+            equity_frame = equity_frame[["entry_time", "cum_net_r"]]
         else:
             equity_frame = pd.DataFrame(columns=["entry_time", "cum_net_r"])
 
@@ -283,6 +380,8 @@ def run_baseline(
             random_seed=random_seed,
             spec_path=str(spec_path),
             cost_profile_path=str(DEFAULT_COST_PROFILE),
+            spec_sha256=sha256_file(spec_path),
+            cost_profile_sha256=sha256_file(DEFAULT_COST_PROFILE) if DEFAULT_COST_PROFILE.exists() else None,
             runner_fingerprint=runner.runner_fingerprint,
             dataset_paths=[item["path"] for item in dataset_metadata],
             symbols=[item["symbol"] for item in dataset_metadata if item["timeframe"] == "M5"],
@@ -315,9 +414,65 @@ def run_baseline(
             + "\n",
             encoding="utf-8",
         )
-        write_csv(staging_dir / "baseline_trades.csv", trade_rows_all)
-        write_csv(staging_dir / "baseline_equity.csv", equity_frame.to_dict(orient="records"))
-        write_csv(staging_dir / "management_events.csv", event_rows_all)
+        trade_columns = [
+            "signal_index",
+            "signal_time",
+            "entry_index",
+            "entry_time",
+            "exit_index",
+            "exit_time",
+            "direction",
+            "entry",
+            "stop",
+            "target",
+            "exit_price",
+            "gross_r",
+            "cost_r",
+            "net_r",
+            "outcome",
+            "structure_key",
+            "symbol_metadata_version",
+            "spread_price",
+            "spread_points",
+            "spread_pips",
+            "entry_slippage_price",
+            "exit_slippage_price",
+            "slippage_price_round_trip",
+            "commission_usd_round_turn",
+            "commission",
+            "spread_r",
+            "slippage_r",
+            "commission_r",
+            "swap_r",
+            "price_cost_round_trip",
+            "total_cost",
+            "total_cost_r",
+            "partial_taken",
+            "break_even_activated",
+            "ambiguous_bar",
+            "unresolved_open_position",
+            "management_events",
+            "experiment_id",
+            "strategy_id",
+            "strategy_version",
+            "symbol",
+        ]
+        event_columns = [
+            "experiment_id",
+            "event",
+            "bar",
+            "fraction",
+            "new_stop",
+            "symbol",
+            "strategy_version",
+            "trade_id",
+            "remaining_fraction",
+            "stop_before",
+            "stop_after",
+            "price",
+            "reason",
+        ]
+        equity_columns = ["entry_time", "cum_net_r"]
         candidate_columns = [
             "signal_time",
             "stage",
@@ -336,7 +491,10 @@ def run_baseline(
                 if column not in candidate_frame.columns:
                     candidate_frame[column] = None
             candidate_frame = candidate_frame[candidate_columns]
-        candidate_frame.to_csv(staging_dir / "rejected_candidates.csv", index=False)
+        write_csv(staging_dir / "baseline_trades.csv", trade_rows_all, fieldnames=trade_columns)
+        write_csv(staging_dir / "baseline_equity.csv", equity_frame.to_dict(orient="records"), fieldnames=equity_columns)
+        write_csv(staging_dir / "management_events.csv", event_rows_all, fieldnames=event_columns)
+        candidate_frame.to_csv(staging_dir / "rejected_candidates.csv", index=False, columns=candidate_columns)
 
         lines = [
             "# ST-C1 Corrected Baseline Report",
@@ -395,6 +553,7 @@ def run_baseline(
             raise FileExistsError(f"{run_dir} already exists")
         staging_dir.replace(run_dir)
         published = True
+        artifact_hashes = _artifact_hashes(run_dir)
 
         latest_payload = {
             "run_id": run_id,
@@ -405,6 +564,10 @@ def run_baseline(
             "created_utc": manifest.generated_utc,
             "runner_fingerprint": runner.runner_fingerprint,
             "dirty_worktree": manifest.dirty_worktree,
+            "spec_sha256": manifest.spec_sha256,
+            "cost_profile_sha256": manifest.cost_profile_sha256,
+            "complete": True,
+            "artifact_hashes": artifact_hashes,
         }
         _atomic_write_json(latest_path, latest_payload)
 

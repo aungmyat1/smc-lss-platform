@@ -51,6 +51,8 @@ class DatasetManifest:
     random_seed: int
     spec_path: str
     cost_profile_path: str
+    spec_sha256: str | None = None
+    cost_profile_sha256: str | None = None
     runner_fingerprint: str | None = None
     dirty_worktree: bool = False
     datasets: tuple[DatasetArtifact, ...] = field(default_factory=tuple)
@@ -74,6 +76,8 @@ def build_dataset_manifest(
     random_seed: int,
     spec_path: str,
     cost_profile_path: str,
+    spec_sha256: str | None = None,
+    cost_profile_sha256: str | None = None,
     runner_fingerprint: str | None = None,
     dirty_worktree: bool | None = None,
     dataset_paths: Iterable[str | Path],
@@ -94,7 +98,9 @@ def build_dataset_manifest(
         generated_utc=generated_utc,
         random_seed=random_seed,
         spec_path=str(spec_path),
+        spec_sha256=spec_sha256,
         cost_profile_path=str(cost_profile_path),
+        cost_profile_sha256=cost_profile_sha256,
         runner_fingerprint=runner_fingerprint,
         dirty_worktree=_git_dirty_worktree() if dirty_worktree is None else dirty_worktree,
         datasets=datasets,

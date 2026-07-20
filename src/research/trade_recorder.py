@@ -12,8 +12,10 @@ def trade_rows(result: Any, experiment_id: str | None = None) -> list[dict[str, 
     for trade in getattr(result, "trades", []):
         row = asdict(trade)
         row["experiment_id"] = experiment_id
-        row["strategy_id"] = getattr(result, "symbol", None)
-        row["strategy_version"] = result.assumptions.get("strategy_version") if hasattr(result, "assumptions") else None
+        assumptions = result.assumptions if hasattr(result, "assumptions") else {}
+        row["strategy_id"] = assumptions.get("strategy_id")
+        row["strategy_version"] = assumptions.get("strategy_version")
+        row["symbol"] = getattr(result, "symbol", None)
         rows.append(row)
     return rows
 
@@ -34,14 +36,14 @@ def candidate_rows(result: Any, experiment_id: str | None = None) -> list[dict[s
     return rows
 
 
-def write_csv(path: str | Path, rows: Iterable[dict[str, Any]]) -> str:
+def write_csv(path: str | Path, rows: Iterable[dict[str, Any]], fieldnames: Iterable[str] | None = None) -> str:
     rows = list(rows)
     target = Path(path)
     target.parent.mkdir(parents=True, exist_ok=True)
-    fieldnames: list[str] = sorted({key for row in rows for key in row.keys()}) if rows else []
+    resolved_fieldnames: list[str] = list(fieldnames) if fieldnames is not None else sorted({key for row in rows for key in row.keys()}) if rows else []
     with target.open("w", newline="", encoding="utf-8") as fh:
-        writer = csv.DictWriter(fh, fieldnames=fieldnames)
+        writer = csv.DictWriter(fh, fieldnames=resolved_fieldnames)
         writer.writeheader()
-        writer.writerows(rows)
+        if rows:
+            writer.writerows(rows)
     return str(target)
-

@@ -20,7 +20,8 @@ from src.live_signal import size as live_size  # noqa: E402
 from symbol_metadata import resolve_symbol  # noqa: E402
 from validation.batch_validation_runner import BatchValidationRunner, ValidationTarget  # noqa: E402
 from validation.historical_replay_engine import HistoricalReplayEngine, SignalRecord  # noqa: E402
-from src.research.run_baseline import run_baseline  # noqa: E402
+from src.research.run_baseline import resolve_latest_run, run_baseline, _validate_dataset_file  # noqa: E402
+from src.research.trade_recorder import write_csv  # noqa: E402
 
 
 CONTRACT_PATH = os.path.join(ROOT, "strategies", "candidates", "ST-C1_v1.yaml")
@@ -191,6 +192,60 @@ def test_cost_math_matches_hand_calculation():
     assert (2.0 - xau_cost["total_cost_r"]) == pytest.approx(1.965)
 
 
+def test_signal_identity_and_zero_row_artifacts_are_parseable(tmp_path):
+    m5_path, h1_path = _build_fixture(tmp_path)
+    engine = HistoricalReplayEngine(contract_path=CONTRACT_PATH, warmup_bars=20, commission_r=0.02, point_size=0.0001)
+    result = engine.run_from_paths(m5_path, h1_path=h1_path, symbol="EURUSD")
+
+    assert result.signals
+    signal = result.signals[0]
+    assert signal.structure_identity
+    assert signal.canonical_symbol == "EURUSD"
+    assert signal.sweep_time
+    assert signal.poi_time
+    assert signal.confirmation_time
+    assert signal.choch_time
+    assert signal.poi_type in {"bullish_order_block", "bullish_fvg", "bearish_order_block", "bearish_fvg"}
+
+    csv_path = tmp_path / "empty.csv"
+    write_csv(csv_path, [], fieldnames=["a", "b"])
+    rows = list(csv.DictReader(csv_path.open(newline="", encoding="utf-8")))
+    assert rows == []
+    assert csv_path.read_text(encoding="utf-8").startswith("a,b")
+
+
+def test_dataset_validation_and_latest_pointer_resolution(tmp_path):
+    data_dir = tmp_path / "data"
+    output_dir = tmp_path / "baseline_out"
+    data_dir.mkdir()
+    _build_fixture(data_dir)
+
+    result = run_baseline(
+        BASELINE_SPEC_PATH,
+        data_dir,
+        output_dir,
+        cache_dir=tmp_path / "cache",
+        resume=False,
+        symbols=["EURUSD"],
+    )
+
+    latest = resolve_latest_run(output_dir)
+    assert latest["run_id"] == result["run_id"]
+    assert latest["complete"] is True
+    assert "artifact_hashes" in latest
+    assert latest["artifact_hashes"]["manifest"]
+
+    bad_dataset = tmp_path / "bad.csv"
+    bad_dataset.write_text(
+        "time,open,high,low,close\n"
+        "2026-07-17T06:00:00Z,1,1.5,0.5,1.1\n"
+        "2026-07-17T06:00:00Z,1,1.5,0.5,1.2\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="duplicate timestamp"):
+        _validate_dataset_file(bad_dataset, symbol="EURUSD", source_symbol="EURUSD", timeframe="M5")
+
+
 def test_baseline_runner_smoke(tmp_path):
     data_dir = tmp_path / "data"
     output_dir = tmp_path / "baseline_out"
@@ -289,6 +344,8 @@ def test_batch_runner_alias_costs_propagate_through_source_symbol(tmp_path):
     assert result.result.symbol_metadata["canonical_symbol"] == "XAUUSD"
     assert result.result.assumptions["source_symbol"] == "XAUUSD-VIP"
     assert result.result.trades
+    assert result.result.signals[0].canonical_symbol == "XAUUSD"
+    assert "XAUUSD-VIP" not in result.result.signals[0].structure_identity
     trade = result.result.trades[0]
     assert trade.spread_price == pytest.approx(0.25)
     assert trade.entry_slippage_price == pytest.approx(0.05)
