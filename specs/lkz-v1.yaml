@@ -1,0 +1,359 @@
+# LKZ-1 — ICT/SMC London Killzone Asian-Range Sweep (machine-testable, numeric)
+# Source of truth (human ruleset): docs/strategy/ICT-SMC-LONDON-KZ-ASIAN-SWEEP-v1.md
+# Derived from: "Ultimate ICT/SMC London Session Trading Strategy (Step By Step)",
+# Mulham Trading, 2024-02-14 — https://www.youtube.com/watch?v=Ujtiqz4bLeU
+# Research provenance: reports/research_log.md (six-question template, logged 2026-07-19)
+#
+# Status: DRAFT / RESEARCH-ONLY — spec + diagrams only. NOTHING implements this yet;
+# engine_implements_spec stays false until a harness is built AND backtested through
+# backtest-researcher → validation against the v3.5 baseline (all-negative expectancy,
+# see specs/v3.6.yaml header). Never wire into live execution. v1.yaml stays canonical
+# for the existing live path; v3.5 is the version of record for promotion.
+version: lkz-1.0
+track: research                # ADR-0001 — research-only, never executes trades
+status: draft
+promotion_stage: research
+supersedes: null               # new strategy family (session-model), does not modify v1/v3.5/v3.6
+
+confirmation:
+  closed_candles_only: true
+  require_all_gates: true      # G1..G5 (see state_machine) — no partial-pass entries
+  utc_normalization_required: true
+
+governance:
+  schema_version: 1
+  config_version: lkz-1.0.0
+  approval_package_required: true
+  dataset_version: pending
+  code_commit: pending
+  build_identifier: pending
+  registry_version: lkz-1.0.0
+  config_hash: pending
+  fail_closed: true
+  single_source_of_truth: true
+
+# ----------------------------------------------------------------------------- #
+# Time model — video states everything in New York time. Authoritative schedule
+# is America/New_York (DST-adjusted); the engine MUST normalise to UTC internally
+# and convert, never hardcode a fixed UTC offset (EDT ≠ EST).
+# ----------------------------------------------------------------------------- #
+time_model:
+  timezone: America/New_York
+  dst_adjusted: true
+  weekdays_only: true
+  asian_range: ["20:00", "00:00"]       # Q1 accumulation — must be RANGING
+  midnight_open: "00:00"                # reference price for long/short side rule
+  prep_time: "01:00"                    # be at chart; mark map + POIs
+  manipulation_window: ["01:30", "03:30"]  # Q2; core taught as 01:30–03:00 (see note)
+  manipulation_window_core: ["01:30", "03:00"]  # video §intro; examples allow to 03:30
+  distribution_window: ["03:30", "07:00"]
+  ny_continuation_window: ["07:00", "10:00"]  # optional model, §ny_continuation
+  news_filter: none                      # out of scope per research charter
+
+decision_pipeline:
+  - utc_normalization
+  - weekday_check
+  - asian_range_validation              # G1
+  - liquidity_map_and_draw              # G2
+  - poi_and_bias_filters                # G3 (POI + midnight-open side + daily bias)
+  - sweep_in_window                     # G4
+  - ltf_entry_trigger
+  - risk_validation                     # G5 (SL defined, RR gate, sizing)
+  - execution_approval
+  - order_submission                    # DEMO ONLY
+  - fill_processing
+  - management
+  - journaling
+
+state_machine:
+  states:
+    - WAIT_UTC_SYNC
+    - WAIT_ASIAN_RANGE
+    - PRE_MARK_MAP
+    - WAIT_WINDOW
+    - WAIT_SWEEP
+    - WAIT_LTF_TRIGGER
+    - WAIT_RISK_OK
+    - OPEN_POSITION
+    - MANAGE_POSITION
+    - EXIT
+    - COOLDOWN
+    - NO_GO
+    - ERROR
+  transitions:
+    WAIT_UTC_SYNC: [WAIT_ASIAN_RANGE, NO_GO, ERROR]
+    WAIT_ASIAN_RANGE: [PRE_MARK_MAP, NO_GO, ERROR]          # G1
+    PRE_MARK_MAP: [WAIT_WINDOW, NO_GO, ERROR]               # G2 + G3 evaluated here
+    WAIT_WINDOW: [WAIT_SWEEP, NO_GO, ERROR]
+    WAIT_SWEEP: [WAIT_LTF_TRIGGER, NO_GO, ERROR]            # G4; expires at window end
+    WAIT_LTF_TRIGGER: [WAIT_RISK_OK, NO_GO, ERROR]
+    WAIT_RISK_OK: [OPEN_POSITION, NO_GO, ERROR]             # G5
+    OPEN_POSITION: [MANAGE_POSITION, ERROR]
+    MANAGE_POSITION: [EXIT, ERROR]
+    EXIT: [COOLDOWN, ERROR]
+    COOLDOWN: [WAIT_UTC_SYNC, ERROR]
+    NO_GO: [WAIT_UTC_SYNC]
+    ERROR: [WAIT_UTC_SYNC]
+  invalid_transitions:
+    - any_entry_before_G1_to_G4_pass
+    - any_sweep_outside_manipulation_window_promoted_to_signal
+    - stop_widening
+    - reuse_consumed_structure
+    - second_trade_same_day
+  timeouts:
+    WAIT_SWEEP: manipulation_window_end
+    WAIT_LTF_TRIGGER: max_sweep_to_entry_m5_bars
+    MANAGE_POSITION: time_stop_max_hold_hours
+  no_go_state: true
+  error_state: true
+
+# ----------------------------------------------------------------------------- #
+# G1 — Asian range quality (hard filter: RANGING, not trending)
+# ----------------------------------------------------------------------------- #
+asian_range:
+  tf_context: M15
+  atr_period: 14
+  atr_tf: H1
+  ranging_gates:
+    width_atr_mult_max: 1.5        # range_width <= 1.5 x ATR14(H1)
+    net_drift_fraction_max: 0.35   # |close(00:00) - open(20:00)| / range_width
+    require_both_thirds_touched: true   # upper & lower third traded after first hour
+  on_fail: NO_GO_DAY
+
+# ----------------------------------------------------------------------------- #
+# G2 — liquidity map + draw on liquidity (low-resistance side)
+# ----------------------------------------------------------------------------- #
+liquidity_map:
+  pivot_definition: {left_bars: 2, right_bars: 2}     # confirmed fractals, closed candles
+  equal_level_tolerance_atr_mult: 0.10                # vs ATR14(M15)
+  high_resistance: "extremity already swept & rejected -> purged -> NOT a draw"
+  low_resistance: "unswept equal highs/lows OR failure-swing chain (pivot low then higher
+    pivot low, both unswept — mirrored for highs)"
+  require_draw_opposite_poi_side: true    # clean low-resistance pool on ONE side
+  prev_day_extremes_required: true        # mark PDH/PDL for TP3
+  min_draw_distance_atr_mult: 1.0         # draw must be worth the trade
+
+# ----------------------------------------------------------------------------- #
+# G3 — point of interest + midnight-open side + optional daily bias
+# ----------------------------------------------------------------------------- #
+poi:
+  tf_allowed: [M15, H1, H4]
+  types: [fvg, order_block, breaker_block]   # FVG preferred ("goat of PD arrays")
+  note: "a candle that created an FVG is an order block"
+  unmitigated_rule:
+    fvg: no_close_beyond_consequent_encroachment   # 50% not closed through
+    order_block: no_close_through_body
+    breaker_block: not_yet_retested_after_break
+  poi_max_age_h1_bars: 72
+  must_be_outside_asian_range: true     # above range for shorts, below for longs
+  preferred_side_rule: draw_side_opposite  # POI sits opposite the draw on liquidity
+
+midnight_open:
+  enabled: true
+  rule: "shorts only ABOVE midnight open; longs only BELOW (buy low / sell high)"
+  side_buffer_atr_mult: 0.0             # strict; >0 tolerates marginal POI placement
+  reference_for_partials: true          # P1 partial level
+
+daily_bias_filter:
+  enabled: false                        # optional confluence in the video (own D1 bias process)
+  source: external_d1_bias_process      # out of scope for this spec
+  when_enabled_require_alignment: true  # bearish bias -> only POIs above range, etc.
+
+# ----------------------------------------------------------------------------- #
+# G4 — the manipulation: sweep of an Asian-range extreme INTO the POI,
+# strictly inside 01:30-03:30 NY
+# ----------------------------------------------------------------------------- #
+sweep:
+  window: manipulation_window
+  sweeps_before_window_invalid: true    # even if the POI reacted (video examples 1 & 2)
+  direction_short: "wick beyond Asian HIGH into a POI above the range"
+  direction_long: "wick beyond Asian LOW into a POI below the range"
+  min_penetration_atr_mult: 0.05        # wick must clear the extreme (ATR14 M15)
+  must_reach_poi: true                  # sweep high/low must tag the POI zone
+  reclaim_rule:
+    either_close_back_inside_range_within_m5_bars: 12
+    or_ltf_trigger_fires: true
+
+# ----------------------------------------------------------------------------- #
+# LTF execution + entry models (one structure, one signal)
+# ----------------------------------------------------------------------------- #
+execution:
+  tf_allowed: [M1, M2, M3, M5]
+  tf_preferred: M3                       # video: 3m ideal, 5m max, 1m aggressive
+  type: confirmation_close_next_bar_open # E-A excepted (resting limit)
+  intrabar_market_fill: false
+  max_sweep_to_entry_m5_bars: 60         # ~3h freshness; else structure consumed
+
+displacement:                            # gates the shift leg behind E-C/E-D
+  atr_period: 14
+  atr_tf: execution_tf
+  atr_mult: 1.2
+  body_ratio_min: 0.5
+  max_run_bars: 3
+
+entry_models:
+  E-A_turtle_soup:
+    allowed: true
+    aggressive: true
+    trigger: "active in-window sweep tagging POI"
+    entry: "resting limit at POI consequent encroachment (50%)"
+    confirmation: none
+  E-B_csd:
+    trigger: "after sweep: exec-TF candle engulfs the final root candle of the
+      pre-sweep leg AND closes through that candle's extreme (the change in state
+      of delivery)"
+    body_engulf_fraction_min: 1.0
+    entry: "next bar open after the CSD close"
+  E-C_mss_fvg_ce:                        # video's workhorse
+    trigger: "close beyond the last LTF pivot (k=2) after the sweep, with a
+      displacement leg that prints an FVG"
+    require_displacement: true
+    entry: "FVG consequent encroachment (50%) limit"
+    retrace_max_bars: 30
+  E-D_first_fvg_ce:
+    trigger: "first FVG created from the POI after the sweep"
+    entry: "FVG consequent encroachment (50%) limit"
+    retrace_max_bars: 30
+  E-E_ifvg_breaker:
+    trigger: "price closes THROUGH the E-D zone -> inverted FVG / breaker"
+    entry: "IFVG/breaker retest limit"
+    ifvg_max_age_bars: 20
+
+sequencing:                              # bar-index order (no lookahead)
+  # i_asia_end < i_mno < i_sweep (inside window) < i_trigger < i_entry
+  # i_entry <= i_sweep + max_sweep_to_entry_m5_bars
+  # i_entry = first bar meeting the model condition (first_qualifying_bar_only)
+  enforce_order: true
+  first_qualifying_bar_only: true
+
+signal_lifecycle:
+  ttl_bars: 1                            # fill at next-bar-open or expire (limits: model TTL)
+  one_signal_per_structure: true
+  structure_key: [symbol, ny_date, side, poi_id, entry_model]
+  max_signals_per_day: 1
+
+# ----------------------------------------------------------------------------- #
+# Stop / targets / management — the "R-ladder" from the video
+# ----------------------------------------------------------------------------- #
+stop_loss:
+  anchor_short: "max(poi_high, sweep_high) + buffer"
+  anchor_long: "min(poi_low, sweep_low) - buffer"
+  buffer_atr_mult: 0.15                  # ATR14 on execution TF
+  wide_poi_fallback:
+    poi_width_atr_mult_max: 2.5          # if POI too wide ("give price room to breathe")
+    anchor_short: "sweep_high + buffer"
+    anchor_long: "sweep_low - buffer"
+  stop_widening_allowed: false
+
+targets:
+  order: [P1, TP1, TP2, TP3]
+  P1: "midnight open, partial only, taken only if >= p1_min_r from entry"
+  TP1: "opposite Asian-range extreme"
+  TP2: "nearest low-resistance liquidity pool beyond TP1 (failure-swing / equal-level)"
+  TP3: "previous day extreme (runner)"
+  p1_min_r: 1.0
+  partial_ladder_pct: {P1: 25, TP1: 25, TP2: 25, TP3: 25}
+  min_rr_final_structural: 3.0           # G5: RR to the final planned level, else REJECT
+  no_target_found: REJECT_NO_TARGET
+  guidance: "video: stick to 3-5R, always take partials, never chase 10-15R"
+
+risk:
+  strategy:
+    risk_pct_demo: 0.5
+    max_trades_per_day: 1
+    max_positions: 1
+    min_rr: 3.0
+    stop_widening_allowed: false
+  execution:
+    kill_switch: true
+    fail_closed: true
+    max_spread_points: 25
+    max_stale_price_seconds: 5
+    duplicate_order_prevention: true
+  portfolio:
+    daily_loss_pct: 2.0
+    weekly_loss_pct: 5.0
+    portfolio_heat_pct: 4.0
+    drawdown_cap_pct: 12.0
+
+trade_management:
+  initial_sl_required: true
+  break_even: {enabled: true, after: P1_or_1R}
+  partial_take: {enabled: true, ladder: targets.partial_ladder_pct}
+  trailing_stop: {enabled: false, may_widen: false}
+  time_stop: {enabled: true, max_hold_hours: 12}   # flat by NY lunch
+  weekend_exit: true
+  forced_exit: true
+  invalidation_exit: true
+
+# ----------------------------------------------------------------------------- #
+# Optional continuation model (video example-2 addendum): after the London move,
+# NY killzone often mitigates the London-KZ FVG for a second entry.
+# ----------------------------------------------------------------------------- #
+ny_continuation:
+  enabled: false                         # off until the core model is validated
+  window: ny_continuation_window
+  precondition: "core model completed manipulation+distribution; no open position;
+    max_signals_per_day still respected (set 2 to enable in research)"
+  trigger: "mitigation of an M15 FVG created during the London distribution leg"
+  entry: "FVG ce limit, same SL/TP rules toward the day's draw"
+
+invalidations:                           # any of these = NO-GO / signal void
+  - asian_session_trending
+  - sweep_printed_before_or_after_manipulation_window
+  - sweep_without_poi_tag
+  - poi_mitigated_before_window
+  - draw_already_taken_before_entry      # stale FVG re-entry is low probability (video)
+  - poi_on_wrong_side_of_midnight_open
+  - daily_bias_conflict_when_filter_enabled
+  - rr_to_final_structural_below_min
+  - structure_already_consumed
+
+parameter_registry:
+  authoritative: true
+  fields: [parameter, type, units, default, range, owner, tunable, version, last_changed, reason]
+  parameters:
+    asian_width_atr_mult_max:      {type: number,  units: atr_mult, default: 1.5,  range: [0.5, 5.0],  owner: research, tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "G1 ranging-width cap"}
+    asian_net_drift_fraction_max:  {type: number,  units: ratio,    default: 0.35, range: [0.1, 1.0],  owner: research, tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "G1 ranging vs trending discriminator"}
+    equal_level_tolerance_atr_mult: {type: number,  units: atr_mult, default: 0.10, range: [0.02, 0.5], owner: research, tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "equal highs/lows pool detection"}
+    min_draw_distance_atr_mult:    {type: number,  units: atr_mult, default: 1.0,  range: [0.25, 5.0], owner: research, tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "draw must be worth the trade"}
+    poi_max_age_h1_bars:           {type: integer, units: bars,     default: 72,   range: [1, 240],    owner: research, tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "POI freshness bound"}
+    mno_side_buffer_atr_mult:      {type: number,  units: atr_mult, default: 0.0,  range: [0.0, 0.5],  owner: research, tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "midnight-open side strictness"}
+    sweep_min_penetration_atr_mult: {type: number,  units: atr_mult, default: 0.05, range: [0.0, 0.5],  owner: research, tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "sweep must clearly clear the extreme"}
+    sweep_reclaim_window_m5_bars:  {type: integer, units: bars,     default: 12,   range: [1, 48],     owner: research, tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "reclaim timing for G4"}
+    max_sweep_to_entry_m5_bars:    {type: integer, units: bars,     default: 60,   range: [6, 240],    owner: research, tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "structure freshness after sweep"}
+    displacement_atr_mult:         {type: number,  units: atr_mult, default: 1.2,  range: [0.5, 3.0],  owner: research, tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "shift-leg strength gate (E-C/E-D)"}
+    displacement_body_ratio_min:   {type: number,  units: ratio,    default: 0.5,  range: [0.1, 0.9],  owner: research, tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "shift-leg candle body gate"}
+    fvg_retrace_max_bars:          {type: integer, units: bars,     default: 30,   range: [1, 100],    owner: research, tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "E-C/E-D retrace window"}
+    ifvg_max_age_bars:             {type: integer, units: bars,     default: 20,   range: [1, 100],    owner: research, tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "E-E inversion freshness"}
+    sl_buffer_atr_mult:            {type: number,  units: atr_mult, default: 0.15, range: [0.0, 1.0],  owner: strategy, tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "breathing room beyond POI/sweep extreme"}
+    poi_width_atr_mult_max:        {type: number,  units: atr_mult, default: 2.5,  range: [0.5, 10.0], owner: strategy, tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "wide-POI SL fallback threshold"}
+    min_rr:                        {type: number,  units: rr,       default: 3.0,  range: [1.0, 10.0], owner: strategy, tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "G5 final-structural RR gate (video: 3-5R)"}
+    p1_min_r:                      {type: number,  units: rr,       default: 1.0,  range: [0.0, 5.0],  owner: strategy, tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "P1 partial worth-it threshold"}
+    risk_pct_demo:                 {type: number,  units: percent,  default: 0.5,  range: [0.1, 5.0],  owner: risk,     tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "demo risk per trade"}
+    daily_loss_pct:                {type: number,  units: percent,  default: 2.0,  range: [0.1, 10.0], owner: risk,     tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "daily drawdown cap"}
+    weekly_loss_pct:               {type: number,  units: percent,  default: 5.0,  range: [0.1, 20.0], owner: risk,     tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "weekly drawdown cap"}
+    max_spread_points:             {type: integer, units: points,   default: 25,   range: [1, 100],    owner: execution,tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "spread guard"}
+    max_stale_price_seconds:       {type: integer, units: seconds,  default: 5,    range: [1, 60],     owner: execution,tunable: true,  version: lkz-1.0, last_changed: 2026-07-19, reason: "stale price cutoff"}
+    closed_candles_only:           {type: boolean, units: bool,     default: true, range: [true, false], owner: strategy, tunable: false, version: lkz-1.0, last_changed: 2026-07-19, reason: "no-lookahead hard precondition"}
+    utc_normalization_required:    {type: boolean, units: bool,     default: true, range: [true, false], owner: strategy, tunable: false, version: lkz-1.0, last_changed: 2026-07-19, reason: "NY->UTC normalization hard precondition"}
+    stop_widening_allowed:         {type: boolean, units: bool,     default: false, range: [true, false], owner: strategy, tunable: false, version: lkz-1.0, last_changed: 2026-07-19, reason: "stops only tighten"}
+    one_signal_per_structure:      {type: boolean, units: bool,     default: true, range: [true, false], owner: strategy, tunable: false, version: lkz-1.0, last_changed: 2026-07-19, reason: "no repeated signals from one structure"}
+    fail_closed:                   {type: boolean, units: bool,     default: true, range: [true, false], owner: execution, tunable: false, version: lkz-1.0, last_changed: 2026-07-19, reason: "fail-closed enforcement"}
+
+approval_package:
+  required: false                        # becomes required before any promotion step
+  fields: [strategy_version, parameter_registry_snapshot, dataset_version,
+    backtest_summary, walk_forward_summary, monte_carlo_summary, oos_summary,
+    reviewer_signoff]
+
+implementation_status:
+  engine_implements_spec: false          # SAFETY INTERLOCK — nothing implements LKZ-1
+  baseline: "none yet — must be compared against v3.5 baseline (negative expectancy)
+    before any research continuation; see specs/v3.6.yaml header for numbers"
+  next_steps:
+    - "build research harness per docs/strategy/ICT-SMC-LONDON-KZ-ASIAN-SWEEP-v1.md §11"
+    - "backtest via backtest-researcher; walk-forward + OOS per validation skill"
+    - "compare expectancy vs v3.5 baseline; only then consider promotion discussion"
+  diagram_sources: scripts/generate_lkz_diagrams.py
+  figures: docs/strategy/assets/lkz/
