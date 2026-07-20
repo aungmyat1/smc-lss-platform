@@ -1,0 +1,29 @@
+version: 1
+hypotheses:
+  - id: STC1-H001
+    symbol_scope: XAUUSD
+    title: Restrict to gold sessions with positive net expectancy
+    observation: XAUUSD remains the only symbol with positive net expectancy in the corrected research path so far.
+    evidence:
+      baseline_net_expectancy_r: 0.1624
+      baseline_net_pf: 1.2622
+    change: Restrict candidate evaluation to XAUUSD and London/NewYork sessions only.
+    single_conceptual_dimension: true
+    expected_effect: Reduce the number of low-quality trades and preserve the surviving edge.
+    overfitting_risk: Medium
+    minimum_sample_required: 50
+    status: proposed
+  - id: STC1-H002
+    symbol_scope: EURUSD
+    title: Demand stronger HTF alignment before entry
+    observation: EURUSD loses after realistic execution costs and appears sensitive to counter-trend entries.
+    evidence:
+      baseline_net_expectancy_r: -5.7638
+      failure_mode: cost_overwhelm
+    change: Require stronger HTF trend alignment before allowing an entry.
+    single_conceptual_dimension: true
+    expected_effect: Reduce false structure reads and cut drawdown.
+    overfitting_risk: Medium
+    minimum_sample_required: 80
+    status: proposed
+

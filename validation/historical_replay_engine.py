@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import datetime as dt
+import math
 import os
 import sys
 from dataclasses import dataclass, field
@@ -19,6 +20,7 @@ if str(SRC) not in sys.path:
 
 import smc_engine as e  # noqa: E402
 from live_signal import latest_signal  # noqa: E402
+from symbol_metadata import resolve_symbol, symbol_snapshot  # noqa: E402
 
 from validation.performance_metrics import compute_metrics
 
@@ -53,6 +55,35 @@ class TradeRecord:
     net_r: float
     outcome: str
     structure_key: str
+    symbol_metadata_version: str = "symbol-metadata-v1"
+    spread_price: float = 0.0
+    spread_points: float = 0.0
+    spread_pips: float = 0.0
+    entry_slippage_price: float = 0.0
+    exit_slippage_price: float = 0.0
+    commission: float = 0.0
+    spread_r: float = 0.0
+    slippage_r: float = 0.0
+    commission_r: float = 0.0
+    swap_r: float = 0.0
+    total_cost: float = 0.0
+    total_cost_r: float = 0.0
+    partial_taken: bool = False
+    break_even_activated: bool = False
+    ambiguous_bar: bool = False
+    unresolved_open_position: bool = False
+    management_events: tuple[dict[str, Any], ...] = field(default_factory=tuple)
+
+
+@dataclass(frozen=True)
+class CandidateRecord:
+    signal_time: str
+    stage: str
+    direction: str
+    structure_key: str | None
+    rejection_reason: str
+    symbol: str
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -63,8 +94,11 @@ class ReplayResult:
     caveat: str | None
     signals: tuple[SignalRecord, ...] = field(default_factory=tuple)
     trades: tuple[TradeRecord, ...] = field(default_factory=tuple)
+    rejected_candidates: tuple[CandidateRecord, ...] = field(default_factory=tuple)
+    management_events: tuple[dict[str, Any], ...] = field(default_factory=tuple)
     metrics: dict[str, Any] = field(default_factory=dict)
     assumptions: dict[str, Any] = field(default_factory=dict)
+    symbol_metadata: dict[str, Any] = field(default_factory=dict)
 
     @property
     def trade_rs(self) -> list[float]:
@@ -157,6 +191,27 @@ def _is_session_allowed(time_text: str, sessions: list[str], session_windows: di
     return False
 
 
+def _load_cost_profile(path: str | None = None) -> dict[str, Any]:
+    candidate = Path(path or ROOT / "config" / "research_costs.yaml")
+    if not candidate.exists():
+        return {}
+    data = yaml.safe_load(candidate.read_text(encoding="utf-8"))
+    return data if isinstance(data, dict) else {}
+
+
+def _lookup_cost_profile(symbol: str, asset_class: str, profile: dict[str, Any]) -> dict[str, Any]:
+    symbols = profile.get("symbols", {}) if isinstance(profile, dict) else {}
+    defaults = profile.get("defaults", {}) if isinstance(profile, dict) else {}
+    symbol_specific = symbols.get(symbol, {}) if isinstance(symbols, dict) else {}
+    asset_specific = defaults.get(asset_class, {}) if isinstance(defaults, dict) else {}
+    merged: dict[str, Any] = {}
+    if isinstance(asset_specific, dict):
+        merged.update(asset_specific)
+    if isinstance(symbol_specific, dict):
+        merged.update(symbol_specific)
+    return merged
+
+
 class HistoricalReplayEngine:
     def __init__(
         self,
@@ -165,9 +220,10 @@ class HistoricalReplayEngine:
         spread_points: float = 25.0,
         slippage_points: float = 3.0,
         commission_r: float = 0.0,
-        point_size: float = 0.0001,
+        point_size: float | None = None,
         stop_buffer_atr_mult: float = 0.15,
         warmup_bars: int = 40,
+        cost_profile_path: str | None = None,
     ) -> None:
         self.contract_path = contract_path
         self.contract = contract or _load_yaml(contract_path)
@@ -179,6 +235,8 @@ class HistoricalReplayEngine:
         self.point_size = point_size
         self.stop_buffer_atr_mult = stop_buffer_atr_mult
         self.warmup_bars = warmup_bars
+        self.cost_profile = _load_cost_profile(cost_profile_path)
+        self.metadata_snapshot = symbol_snapshot()
 
     @property
     def sessions(self) -> list[str]:
@@ -357,29 +415,88 @@ class HistoricalReplayEngine:
         target = max(levels) if levels else fallback
         return min(target, fallback)
 
-    def simulate_trade(
+    def _metadata_for_symbol(self, symbol: str | None) -> Any:
+        if not symbol:
+            return resolve_symbol("EURUSD")
+        try:
+            return resolve_symbol(symbol)
+        except KeyError:
+            return resolve_symbol("EURUSD")
+
+    def _cost_to_r(self, symbol: str | None, entry: float, stop: float) -> tuple[Any, dict[str, float]]:
+        meta = self._metadata_for_symbol(symbol)
+        profile = _lookup_cost_profile(symbol or meta.canonical_symbol, meta.asset_class, self.cost_profile)
+        risk = abs(entry - stop)
+        if risk <= 0:
+            raise ValueError("invalid zero-risk trade")
+        point_size = float(meta.point_size)
+        pip_size = float(meta.pip_size)
+        spread_points = float(profile.get("spread_points", self.spread_points))
+        slippage_points = float(profile.get("slippage_points", self.slippage_points))
+        commission_per_lot = float(profile.get("commission_per_lot_usd_round_turn", self.commission_r))
+        spread_price = spread_points * point_size
+        slippage_price = slippage_points * point_size
+        spread_r = spread_price / risk
+        slippage_r = slippage_price / risk
+        commission_r = commission_per_lot / (risk * meta.contract_size) if meta.contract_size > 0 else 0.0
+        total_cost_price = spread_price + slippage_price + commission_per_lot
+        total_cost_r = spread_r + slippage_r + commission_r
+        return meta, {
+            "spread_price": round(spread_price, 10),
+            "spread_points": spread_points,
+            "spread_pips": round(spread_price / pip_size, 10) if pip_size else 0.0,
+            "entry_slippage_price": round(slippage_price, 10),
+            "exit_slippage_price": round(slippage_price, 10),
+            "commission": round(commission_per_lot, 10),
+            "spread_r": round(spread_r, 10),
+            "slippage_r": round(slippage_r, 10),
+            "commission_r": round(commission_r, 10),
+            "swap_r": 0.0,
+            "total_cost": round(total_cost_price, 10),
+            "total_cost_r": round(total_cost_r, 10),
+        }
+
+    def _simulate_trade_detail(
         self,
         signal: SignalRecord,
         m5: list[dict[str, Any]],
         entry_index: int,
         exit_search_start: int | None = None,
-    ) -> TradeRecord:
+        symbol: str | None = None,
+    ) -> dict[str, Any]:
         start = exit_search_start if exit_search_start is not None else entry_index
         forward = m5[start:]
         if not forward:
             raise ValueError("no forward candles available for trade simulation")
-        direction = signal.direction
+        direction = "long" if str(signal.direction).lower() in {"long", "buy"} else "short"
         risk = abs(signal.entry - signal.stop)
         if risk <= 0:
             raise ValueError("invalid zero-risk trade")
+
+        meta, cost = self._cost_to_r(symbol, signal.entry, signal.stop)
         exit_price = forward[-1]["close"]
         exit_index = len(m5) - 1
-        outcome = "TIMEOUT"
+        outcome = "TIME_STOP"
+        partial_taken = False
+        break_even_activated = False
+        ambiguous_bar = False
+        unresolved_open_position = False
+        management_events: list[dict[str, Any]] = []
+        one_r_level = signal.entry + risk if direction == "long" else signal.entry - risk
+        current_stop = signal.stop
+
         for offset, candle in enumerate(forward):
-            hit_stop = candle["low"] <= signal.stop if direction == "long" else candle["high"] >= signal.stop
+            hit_stop = candle["low"] <= current_stop if direction == "long" else candle["high"] >= current_stop
             hit_target = candle["high"] >= signal.target if direction == "long" else candle["low"] <= signal.target
+            hit_one_r = candle["high"] >= one_r_level if direction == "long" else candle["low"] <= one_r_level
+            if hit_stop and hit_target:
+                ambiguous_bar = True
+                exit_price = current_stop
+                exit_index = start + offset
+                outcome = "STOP"
+                break
             if hit_stop:
-                exit_price = signal.stop
+                exit_price = current_stop
                 exit_index = start + offset
                 outcome = "STOP"
                 break
@@ -388,33 +505,90 @@ class HistoricalReplayEngine:
                 exit_index = start + offset
                 outcome = "TARGET"
                 break
-        gross_r = ((exit_price - signal.entry) / risk) if direction == "long" else ((signal.entry - exit_price) / risk)
-        cost_r = self._cost_to_r(risk)
-        net_r = gross_r - cost_r
-        return TradeRecord(
-            signal_index=signal.index,
-            signal_time=signal.time,
-            entry_index=entry_index,
-            entry_time=m5[entry_index]["time"],
-            exit_index=exit_index,
-            exit_time=m5[exit_index]["time"],
-            direction=direction,
-            entry=round(signal.entry, 5),
-            stop=round(signal.stop, 5),
-            target=round(signal.target, 5),
-            exit_price=round(exit_price, 5),
-            gross_r=round(gross_r, 4),
-            cost_r=round(cost_r, 4),
-            net_r=round(net_r, 4),
-            outcome=outcome,
-            structure_key=signal.structure_key,
-        )
+            if hit_one_r and not partial_taken:
+                partial_taken = True
+                break_even_activated = True
+                current_stop = signal.entry
+                management_events.append({"event": "+1R_REACHED", "bar": offset})
+                management_events.append({"event": "PARTIAL_TAKEN", "fraction": 0.5, "bar": offset})
+                management_events.append({"event": "BREAK_EVEN_ACTIVATED", "new_stop": round(signal.entry, 5), "bar": offset})
+        else:
+            unresolved_open_position = True
 
-    def _cost_to_r(self, risk: float) -> float:
-        if risk <= 0:
-            return 0.0
-        round_trip_price = (self.spread_points + self.slippage_points) * self.point_size
-        return round_trip_price / risk + self.commission_r
+        final_leg_r = ((exit_price - signal.entry) / risk) if direction == "long" else ((signal.entry - exit_price) / risk)
+        gross_r = (0.5 * 1.0 + 0.5 * final_leg_r) if partial_taken else final_leg_r
+        net_r = gross_r - cost["total_cost_r"]
+        return {
+            "signal_index": signal.index,
+            "signal_time": signal.time,
+            "entry_index": entry_index,
+            "entry_time": m5[entry_index]["time"],
+            "exit_index": exit_index,
+            "exit_time": m5[exit_index]["time"],
+            "direction": direction,
+            "entry": round(signal.entry, 5),
+            "stop": round(signal.stop, 5),
+            "target": round(signal.target, 5),
+            "exit_price": round(exit_price, 5),
+            "gross_r": round(gross_r, 6),
+            "cost_r": round(cost["total_cost_r"], 6),
+            "net_r": round(net_r, 6),
+            "outcome": outcome,
+            "structure_key": signal.structure_key,
+            "symbol_metadata_version": meta.version,
+            "partial_taken": partial_taken,
+            "break_even_activated": break_even_activated,
+            "ambiguous_bar": ambiguous_bar,
+            "unresolved_open_position": unresolved_open_position,
+            "management_events": tuple(management_events),
+            **cost,
+        }
+
+    def simulate_trade(
+        self,
+        signal: SignalRecord,
+        m5: list[dict[str, Any]],
+        entry_index: int,
+        exit_search_start: int | None = None,
+        symbol: str | None = None,
+    ) -> TradeRecord:
+        detail = self._simulate_trade_detail(signal, m5, entry_index, exit_search_start=exit_search_start, symbol=symbol)
+        return TradeRecord(
+            signal_index=detail["signal_index"],
+            signal_time=detail["signal_time"],
+            entry_index=detail["entry_index"],
+            entry_time=detail["entry_time"],
+            exit_index=detail["exit_index"],
+            exit_time=detail["exit_time"],
+            direction=detail["direction"],
+            entry=detail["entry"],
+            stop=detail["stop"],
+            target=detail["target"],
+            exit_price=detail["exit_price"],
+            gross_r=detail["gross_r"],
+            cost_r=detail["cost_r"],
+            net_r=detail["net_r"],
+            outcome=detail["outcome"],
+            structure_key=detail["structure_key"],
+            symbol_metadata_version=detail["symbol_metadata_version"],
+            spread_price=detail["spread_price"],
+            spread_points=detail["spread_points"],
+            spread_pips=detail["spread_pips"],
+            entry_slippage_price=detail["entry_slippage_price"],
+            exit_slippage_price=detail["exit_slippage_price"],
+            commission=detail["commission"],
+            spread_r=detail["spread_r"],
+            slippage_r=detail["slippage_r"],
+            commission_r=detail["commission_r"],
+            swap_r=detail["swap_r"],
+            total_cost=detail["total_cost"],
+            total_cost_r=detail["total_cost_r"],
+            partial_taken=detail["partial_taken"],
+            break_even_activated=detail["break_even_activated"],
+            ambiguous_bar=detail["ambiguous_bar"],
+            unresolved_open_position=detail["unresolved_open_position"],
+            management_events=detail["management_events"],
+        )
 
     def replay(self, m5: list[dict[str, Any]], h1: list[dict[str, Any]] | None = None, d1: list[dict[str, Any]] | None = None, symbol: str = "ST-C1") -> ReplayResult:
         _assert_chronological(m5, "<m5>")
@@ -437,7 +611,7 @@ class HistoricalReplayEngine:
                 continue
             consumed.add(signal.structure_key)
             signals.append(signal)
-            trade = self.simulate_trade(signal, m5, entry_index=i + 1)
+            trade = self.simulate_trade(signal, m5, entry_index=i + 1, symbol=symbol)
             trades.append(trade)
             i = max(trade.exit_index + 1, i + 1)
 
@@ -448,16 +622,19 @@ class HistoricalReplayEngine:
             caveat=None if trades else "No trades were generated on the supplied replay data.",
             signals=tuple(signals),
             trades=tuple(trades),
+            management_events=tuple(event for trade in trades for event in trade.management_events),
             metrics=compute_metrics([t.net_r for t in trades]),
             assumptions={
                 "entry": "next candle after signal",
-                "exit": "contract-defined SL/TP with stop-first conservative fills",
+                "exit": "next candle after signal with stop-first conservative fills, managed partials and break-even",
                 "costs": {
                     "spread_points": self.spread_points,
                     "slippage_points": self.slippage_points,
                     "commission_r": self.commission_r,
                 },
+                "symbol_metadata": self._metadata_for_symbol(symbol).snapshot(),
             },
+            symbol_metadata=self._metadata_for_symbol(symbol).snapshot(),
         )
         return result
 

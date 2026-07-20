@@ -1,0 +1,102 @@
+version: 1
+track: research
+status: baseline
+promotion_stage: research_only
+symbol: EURUSD
+htf: H4
+entry_tf: M15
+ltf_confirm: M1
+swing_lookback: 2
+equal_level_tol_pips: 2
+min_fvg_pips: 3
+risk_pct: 1.0
+min_rr: 2.0
+sessions: [london, ny]
+
+strategy:
+  strategy_id: ST-C1
+  name: London SMC Reversal
+  version: 1.0.0
+  status: candidate
+  source:
+    specification: docs/strategy/SMC-LSS-v3.6-SIGNAL-SPEC.md
+    research_spec: specs/v3.6.yaml
+    execution_spec: specs/v1.yaml
+  validation:
+    status: pending
+    approval_status: pending
+    qualification: not_started
+
+market_universe:
+  asset_class: [forex, metals]
+  instruments: [EURUSD, GBPUSD, XAUUSD]
+  sessions: [London, NewYork]
+  timezone: UTC
+  timeframes:
+    bias: H1
+    setup: H1
+    confirmation: M5
+    execution: M5
+
+parameters:
+  swing_lookback_bars: 2
+  swing_confirmation_bars: 2
+  e1_gap_max_age_d1_bars: 10
+  e1_reaction_window_h1_bars: 6
+  e1_reaction_wick_ratio_min: 0.4
+  e2_poi_max_age_h1_bars: 60
+  e2_reaction_wick_ratio_min: 0.4
+  e3_range_lookback_h1_bars: 40
+  e3_sweep_wick_ratio_min: 0.5
+  e3_reclaim_window_h1_bars: 1
+  displacement_atr_period: 14
+  displacement_atr_mult: 1.5
+  displacement_body_ratio_min: 0.5
+  displacement_start_offset_bars: 2
+  displacement_max_run_bars: 3
+  max_e_to_m_h1_bars: 12
+  signal_ttl_bars: 1
+  session_timezone: UTC
+  london_session_utc: ["06:00", "10:00"]
+  new_york_session_utc: ["11:30", "15:00"]
+  primary_target_search_lookback_h1_bars: 100
+  risk_pct_demo: 0.5
+  risk_pct_live: 1.0
+  min_rr: 2.0
+  daily_loss_pct: 2.0
+  weekly_loss_pct: 5.0
+  max_positions: 1
+  portfolio_heat_pct: 4.0
+  max_spread_points: 25
+  max_stale_price_seconds: 5
+  break_even_activation_r: 1.0
+  partial_take_r: 1.0
+  partial_take_fraction: 0.5
+  time_stop_intraday_hours: 12
+  time_stop_overnight_hours: 24
+  time_stop_intraweek_hours: 120
+  time_stop_multi_horizon_hours: 120
+
+research_metadata:
+  strategy_id: ST-C1
+  strategy_version: 1.0.0
+  parent_spec: specs/v1.yaml
+  parent_contract: strategies/candidates/ST-C1_v1.yaml
+  git_sha: 50b763d9c3d90cf5c7d6582a7d1854c71e2f5be3
+  dataset_ids: []
+  symbols: [EURUSD, GBPUSD, XAUUSD]
+  timeframes: [M5, H1, D1]
+  cost_profile: config/research_costs.yaml
+  execution_assumptions:
+    entry: next-bar-open
+    stop_first: true
+    partial_take_fraction: 0.5
+    break_even_activation_r: 1.0
+    time_stop_hours: 12
+  random_seed: 7
+  generated_utc: "2026-07-20T00:00:00Z"
+
+approval:
+  research: pending
+  demo: false
+  live: false

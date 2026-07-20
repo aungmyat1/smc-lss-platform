@@ -11,6 +11,7 @@ Usage:
 import argparse, json, math
 import config
 import smc_engine as e
+from symbol_metadata import resolve_symbol
 
 
 def latest_signal(c, k, window):
@@ -46,6 +47,13 @@ def size(sig, equity, risk_pct, rr, pip, pip_value, lot_step, min_rr):
             "rr": rr, "decision": "GO" if not reasons else "NO-GO", "reasons": reasons}
 
 
+def _canonical_symbol_meta(sym_name: str):
+    try:
+        return resolve_symbol(sym_name)
+    except KeyError:
+        return None
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--data", default="data/EURUSD_H1.csv")
@@ -62,7 +70,10 @@ if __name__ == "__main__":
                "symbol": sym.mt5, "bars": len(c), "last_close": c[-1]["close"]}
     else:
         risk_pct = cfg.risk.risk_pct_for(a.env)
-        s = size(sig, a.equity, risk_pct, cfg.risk.min_rr, pip=sym.pip, pip_value=sym.pip_value_per_lot,
+        meta = _canonical_symbol_meta(sym.mt5) or _canonical_symbol_meta(sym.name)
+        pip = meta.pip_size if meta else sym.pip
+        pip_value = meta.pip_value_per_lot if meta else sym.pip_value_per_lot
+        s = size(sig, a.equity, risk_pct, cfg.risk.min_rr, pip=pip, pip_value=pip_value,
                  lot_step=cfg.execution.lot_step, min_rr=cfg.risk.min_rr)
         out = {"signal": sig, "sizing": s, "symbol": sym.mt5,
                "order_payload": None if s["decision"] != "GO" else {
