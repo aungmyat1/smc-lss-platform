@@ -3,9 +3,12 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
 from typing import Any, Iterable
+
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def sha256_file(path: str | Path) -> str:
@@ -14,6 +17,22 @@ def sha256_file(path: str | Path) -> str:
         for chunk in iter(lambda: fh.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def _repo_relative(path: str | Path) -> str:
+    candidate = Path(path)
+    try:
+        return str(candidate.resolve().relative_to(ROOT))
+    except Exception:
+        return str(candidate)
+
+
+def _git_dirty_worktree() -> bool:
+    try:
+        result = subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True)
+    except Exception:
+        return False
+    return bool(result.strip())
 
 
 @dataclass(frozen=True)
@@ -32,6 +51,8 @@ class DatasetManifest:
     random_seed: int
     spec_path: str
     cost_profile_path: str
+    runner_fingerprint: str | None = None
+    dirty_worktree: bool = False
     datasets: tuple[DatasetArtifact, ...] = field(default_factory=tuple)
     symbols: tuple[str, ...] = field(default_factory=tuple)
     timeframes: tuple[str, ...] = field(default_factory=tuple)
@@ -53,13 +74,19 @@ def build_dataset_manifest(
     random_seed: int,
     spec_path: str,
     cost_profile_path: str,
+    runner_fingerprint: str | None = None,
+    dirty_worktree: bool | None = None,
     dataset_paths: Iterable[str | Path],
     symbols: Iterable[str],
     timeframes: Iterable[str],
     date_ranges: dict[str, Any],
     execution_assumptions: dict[str, Any],
 ) -> DatasetManifest:
-    datasets = tuple(DatasetArtifact(path=str(path), sha256=sha256_file(path)) for path in dataset_paths if Path(path).exists())
+    datasets = tuple(
+        DatasetArtifact(path=_repo_relative(path), sha256=sha256_file(path))
+        for path in dataset_paths
+        if Path(path).exists()
+    )
     return DatasetManifest(
         strategy_id=strategy_id,
         strategy_version=strategy_version,
@@ -68,6 +95,8 @@ def build_dataset_manifest(
         random_seed=random_seed,
         spec_path=str(spec_path),
         cost_profile_path=str(cost_profile_path),
+        runner_fingerprint=runner_fingerprint,
+        dirty_worktree=_git_dirty_worktree() if dirty_worktree is None else dirty_worktree,
         datasets=datasets,
         symbols=tuple(symbols),
         timeframes=tuple(timeframes),
@@ -81,4 +110,3 @@ def write_manifest(path: str | Path, manifest: DatasetManifest) -> str:
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(manifest.to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return str(target)
-

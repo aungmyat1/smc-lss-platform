@@ -6,7 +6,9 @@ import argparse
 import hashlib
 import json
 import os
+import shutil
 import time
+import tempfile
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Iterable, Sequence
@@ -60,6 +62,7 @@ class BatchValidationResult:
     target: ValidationTarget
     cache_path: str
     dataset_hash: str
+    runner_fingerprint: str
     strategy_version: str
     execution_params: dict[str, Any]
     result: ReplayResult
@@ -129,11 +132,14 @@ def _trade_to_dict(trade: TradeRecord) -> dict[str, Any]:
         "spread_pips": trade.spread_pips,
         "entry_slippage_price": trade.entry_slippage_price,
         "exit_slippage_price": trade.exit_slippage_price,
+        "slippage_price_round_trip": trade.slippage_price_round_trip,
+        "commission_usd_round_turn": trade.commission_usd_round_turn,
         "commission": trade.commission,
         "spread_r": trade.spread_r,
         "slippage_r": trade.slippage_r,
         "commission_r": trade.commission_r,
         "swap_r": trade.swap_r,
+        "price_cost_round_trip": trade.price_cost_round_trip,
         "total_cost": trade.total_cost,
         "total_cost_r": trade.total_cost_r,
         "partial_taken": trade.partial_taken,
@@ -181,11 +187,14 @@ def _trade_from_dict(payload: dict[str, Any]) -> TradeRecord:
         spread_pips=float(payload.get("spread_pips", 0.0)),
         entry_slippage_price=float(payload.get("entry_slippage_price", 0.0)),
         exit_slippage_price=float(payload.get("exit_slippage_price", 0.0)),
+        slippage_price_round_trip=float(payload.get("slippage_price_round_trip", 0.0)),
+        commission_usd_round_turn=float(payload.get("commission_usd_round_turn", payload.get("commission", 0.0))),
         commission=float(payload.get("commission", 0.0)),
         spread_r=float(payload.get("spread_r", 0.0)),
         slippage_r=float(payload.get("slippage_r", 0.0)),
         commission_r=float(payload.get("commission_r", 0.0)),
         swap_r=float(payload.get("swap_r", 0.0)),
+        price_cost_round_trip=float(payload.get("price_cost_round_trip", payload.get("total_cost", 0.0))),
         total_cost=float(payload.get("total_cost", 0.0)),
         total_cost_r=float(payload.get("total_cost_r", 0.0)),
         partial_taken=bool(payload.get("partial_taken", False)),
@@ -206,6 +215,7 @@ def _result_to_dict(result: ReplayResult) -> dict[str, Any]:
         "trades": [_trade_to_dict(trade) for trade in result.trades],
         "rejected_candidates": [asdict(item) for item in result.rejected_candidates],
         "management_events": list(result.management_events),
+        "funnel_counts": dict(getattr(result, "funnel_counts", {})),
         "metrics": dict(result.metrics),
         "assumptions": dict(result.assumptions),
         "symbol_metadata": dict(result.symbol_metadata),
@@ -222,6 +232,7 @@ def _result_from_dict(payload: dict[str, Any]) -> ReplayResult:
         trades=tuple(_trade_from_dict(item) for item in payload.get("trades", [])),
         rejected_candidates=tuple(CandidateRecord(**item) for item in payload.get("rejected_candidates", [])),
         management_events=tuple(dict(item) for item in payload.get("management_events", [])),
+        funnel_counts=dict(payload.get("funnel_counts", {})),
         metrics=dict(payload.get("metrics", {})),
         assumptions=dict(payload.get("assumptions", {})),
         symbol_metadata=dict(payload.get("symbol_metadata", {})),
@@ -262,12 +273,36 @@ def _default_progress_sink(progress: ValidationProgress) -> None:
     )
 
 
+def _default_funnel_counts() -> dict[str, int]:
+    return {
+        "evaluated": 0,
+        "session_pass": 0,
+        "signal_pass": 0,
+        "bias_pass": 0,
+        "sweep_pass": 0,
+        "poi_pass": 0,
+        "candidate_ready": 0,
+        "duplicate_structure": 0,
+        "skipped_open_trade": 0,
+        "executed_trade": 0,
+        "rejected_session": 0,
+        "rejected_signal": 0,
+        "rejected_bias": 0,
+        "rejected_sweep": 0,
+        "rejected_poi": 0,
+        "rejected_risk": 0,
+        "rejected_target": 0,
+    }
+
+
 @dataclass
 class _RuntimeState:
     next_index: int
     consumed: set[str] = field(default_factory=set)
     signals: list[SignalRecord] = field(default_factory=list)
     trades: list[TradeRecord] = field(default_factory=list)
+    rejected_candidates: list[CandidateRecord] = field(default_factory=list)
+    funnel_counts: dict[str, int] = field(default_factory=dict)
     candles_processed: int = 0
     signals_detected: int = 0
     trades_generated: int = 0
@@ -315,6 +350,7 @@ class BatchValidationRunner:
             "warmup_bars": warmup_bars,
         }
         self.strategy_version = self._strategy_version()
+        self.runner_fingerprint = self._runner_fingerprint()
 
     def _strategy_version(self) -> str:
         contract = self.engine.contract
@@ -333,21 +369,31 @@ class BatchValidationRunner:
             paths.append(target.d1_path)
         return _combine_hashes(_sha256_file(path) for path in paths)
 
+    def _runner_fingerprint(self) -> str:
+        components = [
+            _sha256_file(Path(__file__).resolve()),
+            _sha256_file(ROOT / "validation" / "historical_replay_engine.py"),
+            _sha256_file(ROOT / "validation" / "performance_metrics.py"),
+            _sha256_file(ROOT / "src" / "smc_engine.py"),
+            _sha256_file(self.contract_path),
+            _sha256_file(self.cost_profile_path) if self.cost_profile_path.exists() else "missing",
+        ]
+        return _combine_hashes(components)
+
     def _cache_path(self, target: ValidationTarget, dataset_hash: str) -> Path:
         safe_symbol = target.display_symbol.replace("/", "_")
         safe_tf = target.timeframe.replace("/", "_")
         source_symbol = target.source_symbol or target.display_symbol
         canonical_symbol = resolve_symbol(source_symbol).canonical_symbol if source_symbol else target.display_symbol
         metadata = self.engine._metadata_for_symbol(source_symbol)
-        cost_profile_hash = _sha256_file(self.cost_profile_path) if self.cost_profile_path.exists() else "missing"
         cache_parts = [
+            self.runner_fingerprint,
             _stable_json(self.execution_params),
             self.strategy_version,
             dataset_hash,
             source_symbol,
             canonical_symbol,
             getattr(metadata, "version", "unknown"),
-            cost_profile_hash,
             _stable_json(self.engine.assumptions if hasattr(self.engine, "assumptions") else {}),
         ]
         exec_hash = _combine_hashes(cache_parts)
@@ -375,6 +421,7 @@ class BatchValidationRunner:
             "complete": complete,
             "target": asdict(target),
             "dataset_hash": dataset_hash,
+            "runner_fingerprint": self.runner_fingerprint,
             "strategy_version": self.strategy_version,
             "execution_params": dict(self.execution_params),
             "cache_path": str(cache_path),
@@ -386,6 +433,8 @@ class BatchValidationRunner:
             "consumed": sorted(state.consumed),
             "signals": [_signal_to_dict(signal) for signal in state.signals],
             "trades": [_trade_to_dict(trade) for trade in state.trades],
+            "rejected_candidates": [asdict(item) for item in state.rejected_candidates],
+            "funnel_counts": dict(state.funnel_counts),
         }
         if result is not None:
             payload["result"] = _result_to_dict(result)
@@ -397,6 +446,8 @@ class BatchValidationRunner:
             consumed=set(str(item) for item in payload.get("consumed", [])),
             signals=[_signal_from_dict(item) for item in payload.get("signals", [])],
             trades=[_trade_from_dict(item) for item in payload.get("trades", [])],
+            rejected_candidates=[CandidateRecord(**item) for item in payload.get("rejected_candidates", [])],
+            funnel_counts={str(key): int(value) for key, value in payload.get("funnel_counts", {}).items()},
             candles_processed=int(payload.get("candles_processed", 0)),
             signals_detected=int(payload.get("signals_detected", 0)),
             trades_generated=int(payload.get("trades_generated", 0)),
@@ -419,6 +470,10 @@ class BatchValidationRunner:
         self.progress_sink(progress)
 
     def _final_result(self, target: ValidationTarget, state: _RuntimeState, cache_path: Path, start_time: float) -> BatchValidationResult:
+        funnel_counts = dict(state.funnel_counts)
+        funnel_counts["executed_trade"] = int(funnel_counts.get("executed_trade", len(state.trades)))
+        funnel_counts["duplicate_structure"] = int(funnel_counts.get("duplicate_structure", 0))
+        funnel_counts["skipped_open_trade"] = int(funnel_counts.get("skipped_open_trade", 0))
         result = ReplayResult(
             contract_path=self.contract_path,
             symbol=target.display_symbol,
@@ -426,6 +481,9 @@ class BatchValidationRunner:
             caveat=None if state.trades else "No trades were generated on the supplied replay data.",
             signals=tuple(state.signals),
             trades=tuple(state.trades),
+            rejected_candidates=tuple(state.rejected_candidates),
+            management_events=tuple(event for trade in state.trades for event in trade.management_events),
+            funnel_counts=funnel_counts,
             metrics=compute_metrics([trade.net_r for trade in state.trades]),
             assumptions={
                 "entry": "next candle after signal",
@@ -434,7 +492,9 @@ class BatchValidationRunner:
                 "dataset_hash": self._dataset_hash(target),
                 "strategy_version": self.strategy_version,
                 "source_symbol": target.source_symbol or target.display_symbol,
+                "runner_fingerprint": self.runner_fingerprint,
             },
+            symbol_metadata=self.engine._metadata_for_symbol(target.source_symbol or target.display_symbol).snapshot(),
         )
         elapsed = time.perf_counter() - start_time
         payload = self._build_state_payload(target, result.assumptions["dataset_hash"], cache_path, state, complete=True, result=result, elapsed_seconds=elapsed)
@@ -443,6 +503,7 @@ class BatchValidationRunner:
             target=target,
             cache_path=str(cache_path),
             dataset_hash=str(result.assumptions["dataset_hash"]),
+            runner_fingerprint=self.runner_fingerprint,
             strategy_version=self.strategy_version,
             execution_params=dict(self.execution_params),
             result=result,
@@ -470,6 +531,7 @@ class BatchValidationRunner:
                 target=target,
                 cache_path=str(cache_path),
                 dataset_hash=dataset_hash,
+                runner_fingerprint=str(cached.get("runner_fingerprint", self.runner_fingerprint)),
                 strategy_version=self.strategy_version,
                 execution_params=dict(self.execution_params),
                 result=result,
@@ -492,24 +554,37 @@ class BatchValidationRunner:
         next_checkpoint = max(state.next_index, self.engine.warmup_bars) + self.progress_every
 
         self._emit_progress(target, state, len(m5), start_time, phase="resume" if resumed else "start")
+        state.funnel_counts = {**_default_funnel_counts(), **state.funnel_counts}
         i = state.next_index
         while i < len(m5) - 1:
             previous_trade_count = state.trades_generated
-            signal = self.engine.generate_signal(i, m5, h1=h1, d1=d1)
+            signal = self.engine.generate_signal(
+                i,
+                m5,
+                h1=h1,
+                d1=d1,
+                symbol=target.source_symbol or target.display_symbol,
+                rejected_candidates=state.rejected_candidates,
+                funnel_counts=state.funnel_counts,
+            )
             if signal is None:
                 i += 1
                 state.candles_processed = i
             else:
                 if signal.structure_key in state.consumed:
+                    state.funnel_counts["duplicate_structure"] = int(state.funnel_counts.get("duplicate_structure", 0)) + 1
                     i += 1
                     state.candles_processed = i
                 else:
                     state.consumed.add(signal.structure_key)
                     state.signals.append(signal)
                     state.signals_detected += 1
-                    trade = self.engine.simulate_trade(signal, m5, entry_index=i + 1)
+                    trade = self.engine.simulate_trade(signal, m5, entry_index=i + 1, symbol=target.source_symbol or target.display_symbol)
                     state.trades.append(trade)
                     state.trades_generated += 1
+                    state.funnel_counts["executed_trade"] = int(state.funnel_counts.get("executed_trade", 0)) + 1
+                    if trade.unresolved_open_position:
+                        state.funnel_counts["skipped_open_trade"] = int(state.funnel_counts.get("skipped_open_trade", 0)) + 1
                     i = max(trade.exit_index + 1, i + 1)
                     state.candles_processed = i
             state.next_index = i
@@ -523,6 +598,8 @@ class BatchValidationRunner:
                 next_checkpoint = state.candles_processed + self.progress_every
 
         state.complete = True
+        state.funnel_counts = {**_default_funnel_counts(), **state.funnel_counts}
+        assert int(state.funnel_counts.get("executed_trade", len(state.trades))) == len(state.trades)
         result = ReplayResult(
             contract_path=self.contract_path,
             symbol=target.display_symbol,
@@ -530,6 +607,9 @@ class BatchValidationRunner:
             caveat=None if state.trades else "No trades were generated on the supplied replay data.",
             signals=tuple(state.signals),
             trades=tuple(state.trades),
+            rejected_candidates=tuple(state.rejected_candidates),
+            management_events=tuple(event for trade in state.trades for event in trade.management_events),
+            funnel_counts=dict(state.funnel_counts),
             metrics=compute_metrics([trade.net_r for trade in state.trades]),
             assumptions={
                 "entry": "next candle after signal",
@@ -538,7 +618,9 @@ class BatchValidationRunner:
                 "dataset_hash": dataset_hash,
                 "strategy_version": self.strategy_version,
                 "source_symbol": target.source_symbol or target.display_symbol,
+                "runner_fingerprint": self.runner_fingerprint,
             },
+            symbol_metadata=self.engine._metadata_for_symbol(target.source_symbol or target.display_symbol).snapshot(),
         )
         payload = self._build_state_payload(target, dataset_hash, cache_path, state, complete=True, result=result, elapsed_seconds=time.perf_counter() - start_time)
         self._save_state(cache_path, payload)
@@ -547,6 +629,7 @@ class BatchValidationRunner:
             target=target,
             cache_path=str(cache_path),
             dataset_hash=dataset_hash,
+            runner_fingerprint=self.runner_fingerprint,
             strategy_version=self.strategy_version,
             execution_params=dict(self.execution_params),
             result=result,
@@ -569,14 +652,31 @@ class BatchValidationRunner:
         completed = [item for item in results if item.complete]
         replay_results = [item.result for item in completed]
         combined_metrics = compute_metrics([trade.net_r for result in replay_results for trade in result.trades])
+        trade_breakdown = {
+            "trade_count": sum(len(result.trades) for result in replay_results),
+            "gross_r": round(sum(float(trade.gross_r) for result in replay_results for trade in result.trades), 6),
+            "net_r": round(sum(float(trade.net_r) for result in replay_results for trade in result.trades), 6),
+            "spread_r": round(sum(float(trade.spread_r) for result in replay_results for trade in result.trades), 6),
+            "slippage_r": round(sum(float(trade.slippage_r) for result in replay_results for trade in result.trades), 6),
+            "commission_r": round(sum(float(trade.commission_r) for result in replay_results for trade in result.trades), 6),
+            "swap_r": round(sum(float(trade.swap_r) for result in replay_results for trade in result.trades), 6),
+            "total_cost_drag_r": round(sum(float(trade.cost_r) for result in replay_results for trade in result.trades), 6),
+        }
         stability = build_stability_summary(replay_results, session_windows=self.engine.session_windows)
         total_trades = int(combined_metrics.get("total_trades") or 0)
         ready = bool(completed) and len(completed) == len(results) and total_trades > 0
+        funnel_totals: dict[str, int] = {}
+        for item in replay_results:
+            for key, value in getattr(item, "funnel_counts", {}).items():
+                funnel_totals[key] = funnel_totals.get(key, 0) + int(value)
+        funnel_totals["executed_trade"] = total_trades
+        assert funnel_totals["executed_trade"] == total_trades
         lines = [
             "# ST-C1 Real Data Statistical Validation Report",
             "",
             f"- Contract: `{self.contract_path}`",
             f"- Strategy version: `{self.strategy_version}`",
+            f"- Runner fingerprint: `{self.runner_fingerprint}`",
             f"- Status: `{ 'READY_FOR_ROBUSTNESS_VALIDATION' if ready else 'BLOCKED' }`",
             f"- Replay jobs completed: `{len(completed)}/{len(results)}`",
             "",
@@ -626,6 +726,24 @@ class BatchValidationRunner:
         )
         for key in ("total_trades", "win_rate_pct", "profit_factor", "expectancy_r", "average_r", "maximum_drawdown_r", "sharpe_ratio"):
             lines.append(f"- {key}: `{_format_metric(combined_metrics.get(key))}`")
+        lines.extend(
+            [
+                "",
+                "### R Breakdown",
+                "",
+            ]
+        )
+        for key in ("trade_count", "gross_r", "net_r", "spread_r", "slippage_r", "commission_r", "swap_r", "total_cost_drag_r"):
+            lines.append(f"- {key}: `{_format_metric(trade_breakdown.get(key))}`")
+        lines.extend(
+            [
+                "",
+                "### Funnel",
+                "",
+            ]
+        )
+        for key in ("candidate_ready", "duplicate_structure", "skipped_open_trade", "executed_trade"):
+            lines.append(f"- {key}: `{funnel_totals.get(key, 0)}`")
         lines.extend(
             [
                 "",
