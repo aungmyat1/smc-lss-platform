@@ -121,6 +121,24 @@ def _trade_to_dict(trade: TradeRecord) -> dict[str, Any]:
         "net_r": trade.net_r,
         "outcome": trade.outcome,
         "structure_key": trade.structure_key,
+        "symbol_metadata_version": trade.symbol_metadata_version,
+        "spread_price": trade.spread_price,
+        "spread_points": trade.spread_points,
+        "spread_pips": trade.spread_pips,
+        "entry_slippage_price": trade.entry_slippage_price,
+        "exit_slippage_price": trade.exit_slippage_price,
+        "commission": trade.commission,
+        "spread_r": trade.spread_r,
+        "slippage_r": trade.slippage_r,
+        "commission_r": trade.commission_r,
+        "swap_r": trade.swap_r,
+        "total_cost": trade.total_cost,
+        "total_cost_r": trade.total_cost_r,
+        "partial_taken": trade.partial_taken,
+        "break_even_activated": trade.break_even_activated,
+        "ambiguous_bar": trade.ambiguous_bar,
+        "unresolved_open_position": trade.unresolved_open_position,
+        "management_events": list(trade.management_events),
     }
 
 
@@ -155,6 +173,24 @@ def _trade_from_dict(payload: dict[str, Any]) -> TradeRecord:
         net_r=float(payload["net_r"]),
         outcome=str(payload["outcome"]),
         structure_key=str(payload["structure_key"]),
+        symbol_metadata_version=str(payload.get("symbol_metadata_version", "symbol-metadata-v1")),
+        spread_price=float(payload.get("spread_price", 0.0)),
+        spread_points=float(payload.get("spread_points", 0.0)),
+        spread_pips=float(payload.get("spread_pips", 0.0)),
+        entry_slippage_price=float(payload.get("entry_slippage_price", 0.0)),
+        exit_slippage_price=float(payload.get("exit_slippage_price", 0.0)),
+        commission=float(payload.get("commission", 0.0)),
+        spread_r=float(payload.get("spread_r", 0.0)),
+        slippage_r=float(payload.get("slippage_r", 0.0)),
+        commission_r=float(payload.get("commission_r", 0.0)),
+        swap_r=float(payload.get("swap_r", 0.0)),
+        total_cost=float(payload.get("total_cost", 0.0)),
+        total_cost_r=float(payload.get("total_cost_r", 0.0)),
+        partial_taken=bool(payload.get("partial_taken", False)),
+        break_even_activated=bool(payload.get("break_even_activated", False)),
+        ambiguous_bar=bool(payload.get("ambiguous_bar", False)),
+        unresolved_open_position=bool(payload.get("unresolved_open_position", False)),
+        management_events=tuple(dict(item) for item in payload.get("management_events", [])),
     )
 
 
@@ -166,8 +202,11 @@ def _result_to_dict(result: ReplayResult) -> dict[str, Any]:
         "caveat": result.caveat,
         "signals": [_signal_to_dict(signal) for signal in result.signals],
         "trades": [_trade_to_dict(trade) for trade in result.trades],
+        "rejected_candidates": [asdict(item) for item in result.rejected_candidates],
+        "management_events": list(result.management_events),
         "metrics": dict(result.metrics),
         "assumptions": dict(result.assumptions),
+        "symbol_metadata": dict(result.symbol_metadata),
     }
 
 
@@ -179,8 +218,11 @@ def _result_from_dict(payload: dict[str, Any]) -> ReplayResult:
         caveat=payload.get("caveat"),
         signals=tuple(_signal_from_dict(item) for item in payload.get("signals", [])),
         trades=tuple(_trade_from_dict(item) for item in payload.get("trades", [])),
+        rejected_candidates=tuple(CandidateRecord(**item) for item in payload.get("rejected_candidates", [])),
+        management_events=tuple(dict(item) for item in payload.get("management_events", [])),
         metrics=dict(payload.get("metrics", {})),
         assumptions=dict(payload.get("assumptions", {})),
+        symbol_metadata=dict(payload.get("symbol_metadata", {})),
     )
 
 

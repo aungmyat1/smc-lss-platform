@@ -1,0 +1,36 @@
+# Conservative default execution cost profile for research replay.
+# Costs are intentionally explicit and symbol-aware.
+version: 1
+defaults:
+  forex:
+    spread_points: 25.0
+    slippage_points: 3.0
+    commission_per_lot_usd_round_turn: 0.0
+    swap_per_lot_usd_per_day: 0.0
+  metals:
+    spread_points: 25.0
+    slippage_points: 5.0
+    commission_per_lot_usd_round_turn: 0.0
+    swap_per_lot_usd_per_day: 0.0
+  crypto:
+    spread_points: 50.0
+    slippage_points: 10.0
+    commission_per_lot_usd_round_turn: 0.0
+    swap_per_lot_usd_per_day: 0.0
+symbols:
+  EURUSD:
+    spread_points: 25.0
+    slippage_points: 3.0
+    commission_per_lot_usd_round_turn: 0.0
+  GBPUSD:
+    spread_points: 25.0
+    slippage_points: 3.0
+    commission_per_lot_usd_round_turn: 0.0
+  XAUUSD:
+    spread_points: 25.0
+    slippage_points: 5.0
+    commission_per_lot_usd_round_turn: 0.0
+  BTCUSD:
+    spread_points: 50.0
+    slippage_points: 10.0
+    commission_per_lot_usd_round_turn: 0.0
