@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 import os
+import sys
 import shutil
 import time
 import tempfile
@@ -22,10 +23,15 @@ from validation.historical_replay_engine import (
 )
 from validation.performance_metrics import compute_metrics
 from validation.statistical_validation import build_stability_summary
-from symbol_metadata import resolve_symbol
 
 
 ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
+
+from symbol_metadata import resolve_symbol
+
 DEFAULT_CONTRACT_PATH = ROOT / "strategies" / "candidates" / "ST-C1_v1.yaml"
 DEFAULT_REPORT_PATH = ROOT / "reports" / "ST-C1_REAL_DATA_STATISTICAL_VALIDATION.md"
 DEFAULT_CACHE_DIR = ROOT / "validation" / "cache"

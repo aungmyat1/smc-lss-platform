@@ -5,6 +5,7 @@ import argparse
 import csv
 import datetime as dt
 import json
+import sys
 import shutil
 import subprocess
 import tempfile
@@ -15,7 +16,6 @@ from typing import Any, Iterable
 import pandas as pd
 import yaml
 
-from symbol_metadata import resolve_symbol
 from validation.batch_validation_runner import BatchValidationRunner, ValidationTarget
 
 from .dataset_manifest import build_dataset_manifest, sha256_file, write_manifest
@@ -26,6 +26,11 @@ from .trade_recorder import candidate_rows, event_rows, trade_rows, write_csv
 
 
 ROOT = Path(__file__).resolve().parents[2]
+SRC = ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
+
+from symbol_metadata import resolve_symbol
 DEFAULT_COST_PROFILE = ROOT / "config" / "research_costs.yaml"
 DEFAULT_CACHE_DIR = ROOT / "validation" / "cache" / "baseline"
 DEPRECATED_TIMEFRAME_KEYS = {
