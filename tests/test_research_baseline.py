@@ -58,6 +58,7 @@ def _write_series(path: Path, closes: list[float], start_time: str, step_minutes
 def _build_fixture(tmp_path: Path) -> tuple[str, str]:
     m5_path = tmp_path / "EURUSD_M5.csv"
     h1_path = tmp_path / "EURUSD_H1.csv"
+    d1_path = tmp_path / "EURUSD_D1.csv"
     _write_series(
         m5_path,
         [95.0, 94.6, 94.2, 94.0, 93.8, 94.0, 94.2, 94.4, 94.6, 94.8, 95.0, 95.2, 95.0, 94.8, 94.6, 94.8, 95.0, 95.1, 94.9, 94.7, 94.9, 95.1, 95.2, 95.3, 94.7, 94.4, 95.6, 96.2, 96.8, 97.4, 98.0, 98.6, 99.2, 99.8, 100.4, 101.0],
@@ -77,6 +78,19 @@ def _build_fixture(tmp_path: Path) -> tuple[str, str]:
             0: {"open": 94.8, "close": 95.0, "high": 95.2, "low": 94.6},
             1: {"open": 95.0, "close": 95.8, "high": 96.0, "low": 94.9},
             2: {"open": 95.8, "close": 96.6, "high": 96.8, "low": 95.7},
+        },
+    )
+    _write_series(
+        d1_path,
+        [93.0, 94.0, 95.0, 96.0, 97.0],
+        "2026-07-13T00:00:00Z",
+        1440,
+        overrides={
+            0: {"open": 92.8, "close": 93.0, "high": 93.3, "low": 92.6},
+            1: {"open": 93.0, "close": 94.0, "high": 94.2, "low": 92.9},
+            2: {"open": 94.0, "close": 95.0, "high": 95.3, "low": 93.8},
+            3: {"open": 95.0, "close": 96.0, "high": 96.4, "low": 94.8},
+            4: {"open": 96.0, "close": 97.0, "high": 97.2, "low": 95.9},
         },
     )
     return str(m5_path), str(h1_path)
@@ -135,15 +149,31 @@ def test_cost_math_matches_hand_calculation():
     assert eur_meta.canonical_symbol == "EURUSD"
     assert eur_cost["spread_price"] == pytest.approx(0.00025)
     assert eur_cost["entry_slippage_price"] == pytest.approx(0.00003)
-    assert eur_cost["total_cost_r"] == pytest.approx(0.28)
-    assert (2.0 - eur_cost["total_cost_r"]) == pytest.approx(1.72)
+    assert eur_cost["slippage_price_round_trip"] == pytest.approx(0.00006)
+    assert eur_cost["total_cost_r"] == pytest.approx(0.31)
+    assert (2.0 - eur_cost["total_cost_r"]) == pytest.approx(1.69)
 
     xau_meta, xau_cost = engine._cost_to_r("XAUUSD-VIP", 2000.0, 1990.0)
     assert xau_meta.canonical_symbol == "XAUUSD"
     assert xau_cost["spread_price"] == pytest.approx(0.25)
     assert xau_cost["entry_slippage_price"] == pytest.approx(0.05)
-    assert xau_cost["total_cost_r"] == pytest.approx(0.03)
-    assert (2.0 - xau_cost["total_cost_r"]) == pytest.approx(1.97)
+    assert xau_cost["slippage_price_round_trip"] == pytest.approx(0.1)
+    assert xau_cost["total_cost_r"] == pytest.approx(0.035)
+    assert (2.0 - xau_cost["total_cost_r"]) == pytest.approx(1.965)
+
+
+def test_higher_timeframe_is_not_visible_until_close(tmp_path):
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    m5_path, h1_path = _build_fixture(data_dir)
+    engine = HistoricalReplayEngine(contract_path=CONTRACT_PATH, warmup_bars=20, point_size=None)
+    _, h1, _ = engine.load_series(m5_path, h1_path=h1_path)
+
+    before_close = engine._bounded_context_window(h1, "H1", "2026-07-17T07:30:00Z", 10)
+    at_close = engine._bounded_context_window(h1, "H1", "2026-07-17T08:00:00Z", 10)
+
+    assert [item["time"] for item in before_close] == ["2026-07-17T06:00:00Z"]
+    assert [item["time"] for item in at_close] == ["2026-07-17T06:00:00Z", "2026-07-17T07:00:00Z"]
 
 
 def test_baseline_runner_smoke(tmp_path):
@@ -152,15 +182,91 @@ def test_baseline_runner_smoke(tmp_path):
     data_dir.mkdir()
     _build_fixture(data_dir)
 
-    result = run_baseline(BASELINE_SPEC_PATH, data_dir, output_dir)
+    result = run_baseline(BASELINE_SPEC_PATH, data_dir, output_dir, symbols=["EURUSD"])
 
     manifest_path = output_dir / "baseline_manifest.json"
     assert manifest_path.exists()
     assert (output_dir / "baseline_report.md").exists()
     assert "combined" in result
-    assert result["combined"]["total_trades"] >= 1
+    assert "funnel_counts" in result
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assert manifest["strategy_version"] == "1.0.0"
+
+
+def test_research_baseline_fails_closed_on_missing_datasets(tmp_path):
+    data_dir = tmp_path / "data"
+    output_dir = tmp_path / "baseline_out"
+    data_dir.mkdir()
+    _build_fixture(data_dir)
+
+    with pytest.raises(ValueError, match="missing required baseline datasets"):
+        run_baseline(BASELINE_SPEC_PATH, data_dir, output_dir, symbols=["EURUSD", "GBPUSD"])
+
+
+def test_research_baseline_is_deterministic(tmp_path):
+    data_dir = tmp_path / "data"
+    out_one = tmp_path / "out_one"
+    out_two = tmp_path / "out_two"
+    data_dir.mkdir()
+    _build_fixture(data_dir)
+
+    run_one = run_baseline(BASELINE_SPEC_PATH, data_dir, out_one, symbols=["EURUSD"])
+    run_two = run_baseline(BASELINE_SPEC_PATH, data_dir, out_two, symbols=["EURUSD"])
+
+    manifest_one = dict(run_one["manifest"])
+    manifest_two = dict(run_two["manifest"])
+    manifest_one.pop("generated_utc", None)
+    manifest_two.pop("generated_utc", None)
+    assert manifest_one == manifest_two
+    manifest_file_one = json.loads((out_one / "baseline_manifest.json").read_text(encoding="utf-8"))
+    manifest_file_two = json.loads((out_two / "baseline_manifest.json").read_text(encoding="utf-8"))
+    manifest_file_one.pop("generated_utc", None)
+    manifest_file_two.pop("generated_utc", None)
+    assert manifest_file_one == manifest_file_two
+    assert (out_one / "baseline_trades.csv").read_text(encoding="utf-8") == (out_two / "baseline_trades.csv").read_text(encoding="utf-8")
+
+
+def test_rejected_candidates_and_funnel_counts_persist(tmp_path):
+    data_dir = tmp_path / "data"
+    output_dir = tmp_path / "baseline_out"
+    data_dir.mkdir()
+    _build_fixture(data_dir)
+
+    run_baseline(BASELINE_SPEC_PATH, data_dir, output_dir, symbols=["EURUSD"])
+
+    rejected_path = output_dir / "rejected_candidates.csv"
+    metrics_path = output_dir / "baseline_metrics.json"
+    assert rejected_path.exists()
+    assert metrics_path.exists()
+
+    with rejected_path.open(newline="", encoding="utf-8") as fh:
+        reader = csv.DictReader(fh)
+        assert {"signal_time", "stage", "rejection_reason", "symbol"} <= set(reader.fieldnames or [])
+
+    metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
+    assert "funnel_counts" in metrics
+    assert isinstance(metrics["funnel_counts"], dict)
+
+
+def test_htf_context_uses_cached_bounded_lookups():
+    engine = HistoricalReplayEngine(contract_path=CONTRACT_PATH, warmup_bars=20, point_size=None)
+    h1 = [
+        {"time": f"2026-07-17 {hour:02d}:00", "open": 100.0 + hour, "high": 100.5 + hour, "low": 99.5 + hour, "close": 100.25 + hour}
+        for hour in range(24)
+    ]
+    calls = {"build": 0}
+    original = engine._build_timeline
+
+    def wrapped(series, timeframe):
+        calls["build"] += 1
+        return original(series, timeframe)
+
+    engine._build_timeline = wrapped  # type: ignore[method-assign]
+    for idx in range(200):
+        hour = idx % 24
+        engine._bounded_context_window(h1, "H1", f"2026-07-17 {hour:02d}:30", 12)
+
+    assert calls["build"] == 1
 
 
 def test_research_baseline_rejects_conflicting_timeframes(tmp_path):

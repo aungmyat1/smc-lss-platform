@@ -1,0 +1,71 @@
+{
+  "by_symbol": {
+    "XAUUSD": {
+      "average_r": -0.0724,
+      "cost_drag_r": null,
+      "drawdown_duration_trades": 93,
+      "expectancy_r": -0.0724,
+      "gross_loss_r": 54.0031,
+      "gross_profit_r": 46.5471,
+      "longest_loss_streak": 6,
+      "longest_win_streak": 4,
+      "losses": 54,
+      "mae_distribution": null,
+      "maximum_drawdown_r": -19.0043,
+      "mfe_distribution": null,
+      "net_profit_r": -7.456,
+      "payoff_ratio": 0.9499,
+      "profit_factor": 0.8619,
+      "recovery_factor": -0.3923,
+      "sharpe_ratio": -0.0694,
+      "sortino_ratio": -1810.32,
+      "total_R": -7.456,
+      "total_trades": 103,
+      "trade_count_adequacy_warning": false,
+      "win_rate_pct": 47.57,
+      "wins": 49
+    }
+  },
+  "combined": {
+    "average_r": -0.0724,
+    "cost_drag_r": null,
+    "drawdown_duration_trades": 93,
+    "expectancy_r": -0.0724,
+    "gross_loss_r": 54.0031,
+    "gross_profit_r": 46.5471,
+    "longest_loss_streak": 6,
+    "longest_win_streak": 4,
+    "losses": 54,
+    "mae_distribution": null,
+    "maximum_drawdown_r": -19.0043,
+    "mfe_distribution": null,
+    "net_profit_r": -7.456,
+    "payoff_ratio": 0.9499,
+    "profit_factor": 0.8619,
+    "recovery_factor": -0.3923,
+    "sharpe_ratio": -0.0694,
+    "sortino_ratio": -1810.32,
+    "total_R": -7.456,
+    "total_trades": 103,
+    "trade_count_adequacy_warning": false,
+    "win_rate_pct": 47.57,
+    "wins": 49
+  },
+  "failure_counts": {
+    "loss": 54,
+    "win": 49
+  },
+  "funnel_counts": {
+    "bias_pass": 311,
+    "evaluated": 78669,
+    "poi_pass": 141,
+    "rejected_bias": 1085,
+    "rejected_session": 52925,
+    "rejected_signal": 24348,
+    "rejected_sweep": 170,
+    "session_pass": 25744,
+    "signal_pass": 1396,
+    "sweep_pass": 141,
+    "trade_pass": 141
+  }
+}

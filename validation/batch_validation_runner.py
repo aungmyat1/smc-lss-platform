@@ -129,11 +129,14 @@ def _trade_to_dict(trade: TradeRecord) -> dict[str, Any]:
         "spread_pips": trade.spread_pips,
         "entry_slippage_price": trade.entry_slippage_price,
         "exit_slippage_price": trade.exit_slippage_price,
+        "slippage_price_round_trip": trade.slippage_price_round_trip,
+        "commission_usd_round_turn": trade.commission_usd_round_turn,
         "commission": trade.commission,
         "spread_r": trade.spread_r,
         "slippage_r": trade.slippage_r,
         "commission_r": trade.commission_r,
         "swap_r": trade.swap_r,
+        "price_cost_round_trip": trade.price_cost_round_trip,
         "total_cost": trade.total_cost,
         "total_cost_r": trade.total_cost_r,
         "partial_taken": trade.partial_taken,
@@ -181,11 +184,14 @@ def _trade_from_dict(payload: dict[str, Any]) -> TradeRecord:
         spread_pips=float(payload.get("spread_pips", 0.0)),
         entry_slippage_price=float(payload.get("entry_slippage_price", 0.0)),
         exit_slippage_price=float(payload.get("exit_slippage_price", 0.0)),
+        slippage_price_round_trip=float(payload.get("slippage_price_round_trip", 0.0)),
+        commission_usd_round_turn=float(payload.get("commission_usd_round_turn", payload.get("commission", 0.0))),
         commission=float(payload.get("commission", 0.0)),
         spread_r=float(payload.get("spread_r", 0.0)),
         slippage_r=float(payload.get("slippage_r", 0.0)),
         commission_r=float(payload.get("commission_r", 0.0)),
         swap_r=float(payload.get("swap_r", 0.0)),
+        price_cost_round_trip=float(payload.get("price_cost_round_trip", payload.get("total_cost", 0.0))),
         total_cost=float(payload.get("total_cost", 0.0)),
         total_cost_r=float(payload.get("total_cost_r", 0.0)),
         partial_taken=bool(payload.get("partial_taken", False)),
@@ -206,6 +212,7 @@ def _result_to_dict(result: ReplayResult) -> dict[str, Any]:
         "trades": [_trade_to_dict(trade) for trade in result.trades],
         "rejected_candidates": [asdict(item) for item in result.rejected_candidates],
         "management_events": list(result.management_events),
+        "funnel_counts": dict(getattr(result, "funnel_counts", {})),
         "metrics": dict(result.metrics),
         "assumptions": dict(result.assumptions),
         "symbol_metadata": dict(result.symbol_metadata),
@@ -222,6 +229,7 @@ def _result_from_dict(payload: dict[str, Any]) -> ReplayResult:
         trades=tuple(_trade_from_dict(item) for item in payload.get("trades", [])),
         rejected_candidates=tuple(CandidateRecord(**item) for item in payload.get("rejected_candidates", [])),
         management_events=tuple(dict(item) for item in payload.get("management_events", [])),
+        funnel_counts=dict(payload.get("funnel_counts", {})),
         metrics=dict(payload.get("metrics", {})),
         assumptions=dict(payload.get("assumptions", {})),
         symbol_metadata=dict(payload.get("symbol_metadata", {})),
@@ -268,6 +276,8 @@ class _RuntimeState:
     consumed: set[str] = field(default_factory=set)
     signals: list[SignalRecord] = field(default_factory=list)
     trades: list[TradeRecord] = field(default_factory=list)
+    rejected_candidates: list[CandidateRecord] = field(default_factory=list)
+    funnel_counts: dict[str, int] = field(default_factory=dict)
     candles_processed: int = 0
     signals_detected: int = 0
     trades_generated: int = 0
@@ -295,6 +305,7 @@ class BatchValidationRunner:
         self.cache_dir = Path(cache_dir)
         self.report_path = Path(report_path)
         self.cost_profile_path = ROOT / "config" / "research_costs.yaml"
+        self.cache_schema_version = "batch-validation-v2"
         self.progress_every = max(1, int(progress_every))
         self.progress_sink = progress_sink or _default_progress_sink
         self.engine = HistoricalReplayEngine(
@@ -341,6 +352,7 @@ class BatchValidationRunner:
         metadata = self.engine._metadata_for_symbol(source_symbol)
         cost_profile_hash = _sha256_file(self.cost_profile_path) if self.cost_profile_path.exists() else "missing"
         cache_parts = [
+            self.cache_schema_version,
             _stable_json(self.execution_params),
             self.strategy_version,
             dataset_hash,
@@ -386,6 +398,8 @@ class BatchValidationRunner:
             "consumed": sorted(state.consumed),
             "signals": [_signal_to_dict(signal) for signal in state.signals],
             "trades": [_trade_to_dict(trade) for trade in state.trades],
+            "rejected_candidates": [asdict(item) for item in state.rejected_candidates],
+            "funnel_counts": dict(state.funnel_counts),
         }
         if result is not None:
             payload["result"] = _result_to_dict(result)
@@ -397,6 +411,8 @@ class BatchValidationRunner:
             consumed=set(str(item) for item in payload.get("consumed", [])),
             signals=[_signal_from_dict(item) for item in payload.get("signals", [])],
             trades=[_trade_from_dict(item) for item in payload.get("trades", [])],
+            rejected_candidates=[CandidateRecord(**item) for item in payload.get("rejected_candidates", [])],
+            funnel_counts={str(key): int(value) for key, value in payload.get("funnel_counts", {}).items()},
             candles_processed=int(payload.get("candles_processed", 0)),
             signals_detected=int(payload.get("signals_detected", 0)),
             trades_generated=int(payload.get("trades_generated", 0)),
@@ -495,7 +511,15 @@ class BatchValidationRunner:
         i = state.next_index
         while i < len(m5) - 1:
             previous_trade_count = state.trades_generated
-            signal = self.engine.generate_signal(i, m5, h1=h1, d1=d1)
+            signal = self.engine.generate_signal(
+                i,
+                m5,
+                h1=h1,
+                d1=d1,
+                symbol=target.source_symbol or target.display_symbol,
+                rejected_candidates=state.rejected_candidates,
+                funnel_counts=state.funnel_counts,
+            )
             if signal is None:
                 i += 1
                 state.candles_processed = i
@@ -530,6 +554,8 @@ class BatchValidationRunner:
             caveat=None if state.trades else "No trades were generated on the supplied replay data.",
             signals=tuple(state.signals),
             trades=tuple(state.trades),
+            rejected_candidates=tuple(state.rejected_candidates),
+            funnel_counts=dict(state.funnel_counts),
             metrics=compute_metrics([trade.net_r for trade in state.trades]),
             assumptions={
                 "entry": "next candle after signal",

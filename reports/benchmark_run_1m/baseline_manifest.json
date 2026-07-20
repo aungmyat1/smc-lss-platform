@@ -1,0 +1,110 @@
+{
+  "cost_profile_path": "D:\\ddev\\smc-lss-platform\\config\\research_costs.yaml",
+  "datasets": [
+    {
+      "bar_semantics": "M5 bar-open timestamp; visible only after close",
+      "first_timestamp": "2026-06-16T17:50:00Z",
+      "last_timestamp": "2026-07-17T17:50:00Z",
+      "path": "D:\\ddev\\smc-lss-platform\\reports\\benchmark_slice_1m\\EURUSD_M5.csv",
+      "rows": 6625,
+      "sha256": "dde7971c7f13f0cd9bf8f3f450bf2c171a16f28e925ec6e590a43f911e7ff440",
+      "source_symbol": "EURUSD",
+      "symbol": "EURUSD",
+      "timeframe": "M5",
+      "timezone": "UTC"
+    },
+    {
+      "bar_semantics": "H1 bar-open timestamp; visible only after close",
+      "first_timestamp": "2026-06-16T17:00:00Z",
+      "last_timestamp": "2026-07-17T17:00:00Z",
+      "path": "D:\\ddev\\smc-lss-platform\\reports\\benchmark_slice_1m\\EURUSD_H1.csv",
+      "rows": 553,
+      "sha256": "f654cfb6de7f25855e7a99e14f644d9d347bd405ec82b42a26a32a15ec8b21ba",
+      "source_symbol": "EURUSD",
+      "symbol": "EURUSD",
+      "timeframe": "H1",
+      "timezone": "UTC"
+    },
+    {
+      "bar_semantics": "D1 bar-open timestamp; visible only after close",
+      "first_timestamp": "2026-06-16T00:00:00Z",
+      "last_timestamp": "2026-07-17T00:00:00Z",
+      "path": "D:\\ddev\\smc-lss-platform\\reports\\benchmark_slice_1m\\EURUSD_D1.csv",
+      "rows": 24,
+      "sha256": "8d249bd59c05d6c48472d42ccbe04d9bd7c96ad386627e2e7af78934f8a8c3fa",
+      "source_symbol": "EURUSD",
+      "symbol": "EURUSD",
+      "timeframe": "D1",
+      "timezone": "UTC"
+    },
+    {
+      "bar_semantics": "M5 bar-open timestamp; visible only after close",
+      "first_timestamp": "2026-06-16T17:50:00Z",
+      "last_timestamp": "2026-07-17T17:50:00Z",
+      "path": "D:\\ddev\\smc-lss-platform\\reports\\benchmark_slice_1m\\XAUUSD-VIP_M5.csv",
+      "rows": 6253,
+      "sha256": "6e87e87b80e93c2b4131749fc7009a439e8cd275de6ead005907e4a48c24cf61",
+      "source_symbol": "XAUUSD-VIP",
+      "symbol": "XAUUSD",
+      "timeframe": "M5",
+      "timezone": "UTC"
+    },
+    {
+      "bar_semantics": "H1 bar-open timestamp; visible only after close",
+      "first_timestamp": "2026-06-16T17:00:00Z",
+      "last_timestamp": "2026-07-17T17:00:00Z",
+      "path": "D:\\ddev\\smc-lss-platform\\reports\\benchmark_slice_1m\\XAUUSD-VIP_H1.csv",
+      "rows": 522,
+      "sha256": "b6e9d2bb20b116a4224eff03baef6478c1b72c5738004bb013fb731cc776d393",
+      "source_symbol": "XAUUSD-VIP",
+      "symbol": "XAUUSD",
+      "timeframe": "H1",
+      "timezone": "UTC"
+    },
+    {
+      "bar_semantics": "D1 bar-open timestamp; visible only after close",
+      "first_timestamp": "2026-06-16T00:00:00Z",
+      "last_timestamp": "2026-07-17T00:00:00Z",
+      "path": "D:\\ddev\\smc-lss-platform\\reports\\benchmark_slice_1m\\XAUUSD-VIP_D1.csv",
+      "rows": 24,
+      "sha256": "9959f6c0dd7bcf362a601a8cf3f8521e94ff32b263e810c9ca95d93f3f70f43b",
+      "source_symbol": "XAUUSD-VIP",
+      "symbol": "XAUUSD",
+      "timeframe": "D1",
+      "timezone": "UTC"
+    }
+  ],
+  "date_ranges": {
+    "EURUSD": {
+      "end": "2026-07-17T17:50:00Z",
+      "start": "2026-06-16T17:50:00Z"
+    },
+    "XAUUSD": {
+      "end": "2026-07-17T17:50:00Z",
+      "start": "2026-06-16T17:50:00Z"
+    }
+  },
+  "execution_assumptions": {
+    "breakeven": true,
+    "commission_unit": "usd_round_turn",
+    "entry": "next-bar-open",
+    "managed_partial": true,
+    "slippage_convention": "per_side",
+    "stop_first": true
+  },
+  "generated_utc": "2026-07-20T14:08:37Z",
+  "git_sha": "c7c415ef179726fe14c135bb6e7e0b3b53e041e2",
+  "random_seed": 7,
+  "spec_path": "specs/research/v1_baseline.yaml",
+  "strategy_id": "ST-C1",
+  "strategy_version": "1.0.0",
+  "symbols": [
+    "EURUSD",
+    "XAUUSD"
+  ],
+  "timeframes": [
+    "M5",
+    "H1",
+    "D1"
+  ]
+}

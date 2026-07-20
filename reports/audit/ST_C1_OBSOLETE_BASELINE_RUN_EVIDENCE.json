@@ -1,0 +1,21 @@
+{
+  "artifact_folder": "reports/refinement/baseline",
+  "captured_utc": "2026-07-20T00:00:00Z",
+  "last_observed_process": {
+    "command": "python -m src.research.run_baseline --spec specs\\research\\v1_baseline.yaml --data-dir data --output reports\\refinement\\baseline",
+    "cpu_seconds": 418.5625,
+    "pid": 19748,
+    "start_time_local": "2026-07-20T14:29:56+06:30"
+  },
+  "output_timestamps_local": {
+    "baseline_equity.csv": "2026-07-20T19:56:03.7387784+06:30",
+    "baseline_manifest.json": "2026-07-20T19:56:03.7517972+06:30",
+    "baseline_metrics.json": "2026-07-20T19:56:03.7638475+06:30",
+    "baseline_report.md": "2026-07-20T19:56:03.7773415+06:30",
+    "baseline_trades.csv": "2026-07-20T19:56:03.7839305+06:30",
+    "management_events.csv": "2026-07-20T19:56:03.7954085+06:30",
+    "rejected_candidates.csv": "2026-07-20T19:56:03.8005910+06:30"
+  },
+  "status": "obsolete",
+  "note": "No live baseline process was running when this evidence file was written; the timestamps above capture the stale committed artifact set that must not be reused."
+}

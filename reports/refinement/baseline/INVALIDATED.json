@@ -1,0 +1,8 @@
+{
+  "artifact_folder": "reports/refinement/baseline",
+  "status": "invalid",
+  "reason": "stale_pre_repair_baseline_artifacts",
+  "superseded_by_branch": "research/st-c1-baseline-runner-v2",
+  "superseded_at_utc": "2026-07-20T00:00:00Z",
+  "evidence_file": "reports/audit/ST_C1_OBSOLETE_BASELINE_RUN_EVIDENCE.json"
+}

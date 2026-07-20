@@ -1,0 +1,83 @@
+{
+  "cache_path": "D:\\ddev\\smc-lss-platform\\validation\\cache\\EURUSD_M5_708ec4e399894b59b8f9cc30.json",
+  "candles_processed": 0,
+  "complete": true,
+  "consumed": [],
+  "dataset_hash": "27354b28ec88cdba2a7dd6e0d8b9a04f5cc93e557aba546f08311f71d3ba25e1",
+  "elapsed_seconds": 0.0012952999986737268,
+  "execution_params": {
+    "commission_r": 0.0,
+    "point_size": 0.0001,
+    "slippage_points": 3.0,
+    "spread_points": 25.0,
+    "stop_buffer_atr_mult": 0.15,
+    "warmup_bars": 40
+  },
+  "next_index": 40,
+  "result": {
+    "assumptions": {
+      "costs": {
+        "commission_r": 0.0,
+        "point_size": 0.0001,
+        "slippage_points": 3.0,
+        "spread_points": 25.0,
+        "stop_buffer_atr_mult": 0.15,
+        "warmup_bars": 40
+      },
+      "dataset_hash": "27354b28ec88cdba2a7dd6e0d8b9a04f5cc93e557aba546f08311f71d3ba25e1",
+      "entry": "next candle after signal",
+      "exit": "contract-defined SL/TP with stop-first conservative fills",
+      "source_symbol": "EURUSD",
+      "strategy_version": "1.0.0:21f874e75b4864aa"
+    },
+    "caveat": "No trades were generated on the supplied replay data.",
+    "contract_path": "D:\\ddev\\smc-lss-platform\\strategies\\candidates\\ST-C1_v1.yaml",
+    "funnel_counts": {},
+    "management_events": [],
+    "metrics": {
+      "average_r": null,
+      "cost_drag_r": null,
+      "drawdown_duration_trades": null,
+      "expectancy_r": null,
+      "gross_loss_r": 0,
+      "gross_profit_r": 0,
+      "longest_loss_streak": null,
+      "longest_win_streak": null,
+      "losses": 0,
+      "mae_distribution": null,
+      "maximum_drawdown_r": 0.0,
+      "mfe_distribution": null,
+      "net_profit_r": 0.0,
+      "payoff_ratio": null,
+      "profit_factor": null,
+      "recovery_factor": null,
+      "sharpe_ratio": null,
+      "sortino_ratio": null,
+      "total_R": 0.0,
+      "total_trades": 0,
+      "trade_count_adequacy_warning": true,
+      "win_rate_pct": null,
+      "wins": 0
+    },
+    "rejected_candidates": [],
+    "signals": [],
+    "status": "READY_FOR_STATISTICAL_VALIDATION",
+    "symbol": "EURUSD",
+    "symbol_metadata": {},
+    "trades": []
+  },
+  "schema_version": 1,
+  "signals": [],
+  "signals_detected": 0,
+  "strategy_version": "1.0.0:21f874e75b4864aa",
+  "target": {
+    "d1_path": "C:\\Users\\aungp\\AppData\\Local\\Temp\\pytest-of-aungp\\pytest-41\\test_baseline_runner_smoke0\\data\\EURUSD_D1.csv",
+    "h1_path": "C:\\Users\\aungp\\AppData\\Local\\Temp\\pytest-of-aungp\\pytest-41\\test_baseline_runner_smoke0\\data\\EURUSD_H1.csv",
+    "m5_path": "C:\\Users\\aungp\\AppData\\Local\\Temp\\pytest-of-aungp\\pytest-41\\test_baseline_runner_smoke0\\data\\EURUSD_M5.csv",
+    "source_symbol": "EURUSD",
+    "symbol": "EURUSD",
+    "timeframe": "M5"
+  },
+  "trades": [],
+  "trades_generated": 0
+}

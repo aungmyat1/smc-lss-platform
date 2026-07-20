@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import datetime as dt
+from bisect import bisect_right
 import math
 import os
 import sys
@@ -23,6 +24,13 @@ from live_signal import latest_signal  # noqa: E402
 from symbol_metadata import resolve_symbol, symbol_snapshot  # noqa: E402
 
 from validation.performance_metrics import compute_metrics
+
+
+TIMEFRAME_DELTA = {
+    "M5": dt.timedelta(minutes=5),
+    "H1": dt.timedelta(hours=1),
+    "D1": dt.timedelta(days=1),
+}
 
 
 @dataclass(frozen=True)
@@ -61,11 +69,14 @@ class TradeRecord:
     spread_pips: float = 0.0
     entry_slippage_price: float = 0.0
     exit_slippage_price: float = 0.0
+    slippage_price_round_trip: float = 0.0
+    commission_usd_round_turn: float = 0.0
     commission: float = 0.0
     spread_r: float = 0.0
     slippage_r: float = 0.0
     commission_r: float = 0.0
     swap_r: float = 0.0
+    price_cost_round_trip: float = 0.0
     total_cost: float = 0.0
     total_cost_r: float = 0.0
     partial_taken: bool = False
@@ -96,6 +107,7 @@ class ReplayResult:
     trades: tuple[TradeRecord, ...] = field(default_factory=tuple)
     rejected_candidates: tuple[CandidateRecord, ...] = field(default_factory=tuple)
     management_events: tuple[dict[str, Any], ...] = field(default_factory=tuple)
+    funnel_counts: dict[str, int] = field(default_factory=dict)
     metrics: dict[str, Any] = field(default_factory=dict)
     assumptions: dict[str, Any] = field(default_factory=dict)
     symbol_metadata: dict[str, Any] = field(default_factory=dict)
@@ -103,6 +115,17 @@ class ReplayResult:
     @property
     def trade_rs(self) -> list[float]:
         return [t.net_r for t in self.trades]
+
+
+@dataclass(frozen=True)
+class _SeriesTimeline:
+    times: tuple[dt.datetime, ...]
+    close_times: tuple[dt.datetime, ...]
+    timeframe: str
+
+    @property
+    def last_index(self) -> int:
+        return len(self.times) - 1
 
 
 def _load_yaml(path: str) -> dict[str, Any]:
@@ -237,6 +260,7 @@ class HistoricalReplayEngine:
         self.warmup_bars = warmup_bars
         self.cost_profile = _load_cost_profile(cost_profile_path)
         self.metadata_snapshot = symbol_snapshot()
+        self._timeline_cache: dict[int, _SeriesTimeline] = {}
 
     @property
     def sessions(self) -> list[str]:
@@ -254,7 +278,52 @@ class HistoricalReplayEngine:
         m5 = _load_candles(m5_path)
         h1 = _load_candles(h1_path) if h1_path else None
         d1 = _load_candles(d1_path) if d1_path else None
+        self._register_series(m5, "M5")
+        if h1 is not None:
+            self._register_series(h1, "H1")
+        if d1 is not None:
+            self._register_series(d1, "D1")
         return m5, h1, d1
+
+    def _register_series(self, candles: list[dict[str, Any]], timeframe: str) -> None:
+        self._timeline_cache[id(candles)] = self._build_timeline(candles, timeframe)
+
+    def _build_timeline(self, candles: list[dict[str, Any]], timeframe: str) -> _SeriesTimeline:
+        delta = TIMEFRAME_DELTA.get(timeframe.upper())
+        if delta is None:
+            raise ValueError(f"unsupported timeframe: {timeframe}")
+        times = tuple(_parse_time(candle["time"]) for candle in candles)
+        close_times = tuple(time + delta for time in times)
+        return _SeriesTimeline(times=times, close_times=close_times, timeframe=timeframe.upper())
+
+    def _timeline(self, candles: list[dict[str, Any]], timeframe: str) -> _SeriesTimeline:
+        cached = self._timeline_cache.get(id(candles))
+        if cached is not None:
+            return cached
+        timeline = self._build_timeline(candles, timeframe)
+        self._timeline_cache[id(candles)] = timeline
+        return timeline
+
+    def _available_index(self, candles: list[dict[str, Any]], timeframe: str, asof: str) -> int:
+        timeline = self._timeline(candles, timeframe)
+        cutoff = _parse_time(asof)
+        idx = bisect_right(timeline.close_times, cutoff) - 1
+        return min(idx, timeline.last_index)
+
+    def _bounded_context_window(
+        self,
+        candles: list[dict[str, Any]] | None,
+        timeframe: str,
+        asof: str,
+        lookback_bars: int,
+    ) -> list[dict[str, Any]]:
+        if not candles:
+            return []
+        available = self._available_index(candles, timeframe, asof)
+        if available < 0:
+            return []
+        start = max(0, available - max(1, lookback_bars) + 1)
+        return candles[start : available + 1]
 
     def evaluate_features(
         self,
@@ -311,47 +380,97 @@ class HistoricalReplayEngine:
         m5: list[dict[str, Any]],
         h1: list[dict[str, Any]] | None = None,
         d1: list[dict[str, Any]] | None = None,
+        *,
+        symbol: str | None = None,
+        rejected_candidates: list[CandidateRecord] | None = None,
+        funnel_counts: dict[str, int] | None = None,
     ) -> SignalRecord | None:
         k = int(self.params.get("swing_lookback_bars", 2))
         if index < max(self.warmup_bars, 3 * k + 2):
             return None
 
+        symbol_name = symbol or self._metadata_for_symbol(None).canonical_symbol
+
+        def bump(key: str, amount: int = 1) -> None:
+            if funnel_counts is not None:
+                funnel_counts[key] = int(funnel_counts.get(key, 0)) + amount
+
+        def reject(stage: str, reason: str, *, metadata: dict[str, Any] | None = None) -> None:
+            bump(f"rejected_{stage}")
+            if rejected_candidates is not None:
+                rejected_candidates.append(
+                    CandidateRecord(
+                        signal_time=m5[index]["time"],
+                        stage=stage,
+                        direction=str(metadata.get("direction")) if metadata else "unknown",
+                        structure_key=metadata.get("structure_key") if metadata else None,
+                        rejection_reason=reason,
+                        symbol=str(metadata.get("symbol")) if metadata and metadata.get("symbol") else symbol_name,
+                        metadata=dict(metadata or {}),
+                    )
+                )
+
+        bump("evaluated")
         m5_window = _window(m5, index, max(60, self.warmup_bars))
-        h1_window = _context_window(h1, m5_window[-1]["time"]) if h1 else None
-        d1_window = _context_window(d1, m5_window[-1]["time"]) if d1 else None
+        asof_time = m5[index + 1]["time"] if index + 1 < len(m5) else m5_window[-1]["time"]
+        h1_lookback = max(
+            int(self.params.get("e1_reaction_window_h1_bars", 6)),
+            int(self.params.get("e2_poi_max_age_h1_bars", 60)),
+            int(self.params.get("e3_range_lookback_h1_bars", 40)),
+            int(self.params.get("max_e_to_m_h1_bars", 12)),
+            120,
+        )
+        d1_lookback = max(int(self.params.get("e1_gap_max_age_d1_bars", 10)), 20)
+        h1_window = self._bounded_context_window(h1, "H1", asof_time, h1_lookback) if h1 else None
+        d1_window = self._bounded_context_window(d1, "D1", asof_time, d1_lookback) if d1 else None
         features = self.evaluate_features(m5_window, h1_window, d1_window)
 
         if not features["session_allowed"]:
+            reject("session", "outside allowed session", metadata={"symbol": symbol_name, "direction": "unknown"})
             return None
+        bump("session_pass")
         signal = features["signal"]
         if not signal:
+            reject("signal", "no qualifying signal structure")
             return None
+        bump("signal_pass")
         direction = signal["dir"]
         if direction == "long" and features["bias"] != "BULLISH":
+            reject("bias", "bullish alignment failed", metadata={"direction": direction, "symbol": symbol_name})
             return None
         if direction == "short" and features["bias"] != "BEARISH":
+            reject("bias", "bearish alignment failed", metadata={"direction": direction, "symbol": symbol_name})
             return None
+        bump("bias_pass")
 
         sweep_dir = "bull" if direction == "long" else "bear"
         if not any(s["dir"] == sweep_dir for s in features["sweeps"][-3:]):
+            reject("sweep", "missing matching liquidity sweep", metadata={"direction": direction, "symbol": symbol_name})
             return None
+        bump("sweep_pass")
 
         poi_dir = sweep_dir
         has_ob = any(o["dir"] == poi_dir for o in features["order_blocks"])
         has_fvg = any(f["dir"] == poi_dir for f in features["fvgs"])
         if not (has_ob or has_fvg):
+            reject("poi", "missing order block or FVG confirmation", metadata={"direction": direction, "symbol": symbol_name})
             return None
+        bump("poi_pass")
 
         entry = m5[index + 1]["open"]
         stop = self._determine_stop(direction, m5_window, features, entry)
         if stop is None:
+            reject("risk", "could not determine stop", metadata={"direction": direction, "symbol": symbol_name})
             return None
         risk = abs(entry - stop)
         if risk <= 0:
+            reject("risk", "zero or negative risk", metadata={"direction": direction, "symbol": symbol_name})
             return None
         target = self._determine_target(direction, m5_window, features, entry, stop)
         if target is None:
+            reject("target", "could not determine target", metadata={"direction": direction, "symbol": symbol_name})
             return None
+        bump("trade_pass")
 
         structure_key = self._structure_key(direction, features)
         reason_codes = (
@@ -433,26 +552,30 @@ class HistoricalReplayEngine:
         pip_size = float(meta.pip_size)
         spread_points = float(profile.get("spread_points", self.spread_points))
         slippage_points = float(profile.get("slippage_points", self.slippage_points))
-        commission_per_lot = float(profile.get("commission_per_lot_usd_round_turn", self.commission_r))
+        commission_usd_round_turn = float(profile.get("commission_per_lot_usd_round_turn", self.commission_r))
         spread_price = spread_points * point_size
-        slippage_price = slippage_points * point_size
+        slippage_price_per_side = slippage_points * point_size
+        slippage_price_round_trip = slippage_price_per_side * 2.0
         spread_r = spread_price / risk
-        slippage_r = slippage_price / risk
-        commission_r = commission_per_lot / (risk * meta.contract_size) if meta.contract_size > 0 else 0.0
-        total_cost_price = spread_price + slippage_price + commission_per_lot
+        slippage_r = slippage_price_round_trip / risk
+        commission_r = commission_usd_round_turn / (risk * meta.contract_size) if meta.contract_size > 0 else 0.0
+        price_cost_round_trip = spread_price + slippage_price_round_trip
         total_cost_r = spread_r + slippage_r + commission_r
         return meta, {
             "spread_price": round(spread_price, 10),
             "spread_points": spread_points,
             "spread_pips": round(spread_price / pip_size, 10) if pip_size else 0.0,
-            "entry_slippage_price": round(slippage_price, 10),
-            "exit_slippage_price": round(slippage_price, 10),
-            "commission": round(commission_per_lot, 10),
+            "entry_slippage_price": round(slippage_price_per_side, 10),
+            "exit_slippage_price": round(slippage_price_per_side, 10),
+            "slippage_price_round_trip": round(slippage_price_round_trip, 10),
+            "commission_usd_round_turn": round(commission_usd_round_turn, 10),
+            "commission": round(commission_usd_round_turn, 10),
             "spread_r": round(spread_r, 10),
             "slippage_r": round(slippage_r, 10),
             "commission_r": round(commission_r, 10),
             "swap_r": 0.0,
-            "total_cost": round(total_cost_price, 10),
+            "price_cost_round_trip": round(price_cost_round_trip, 10),
+            "total_cost": round(price_cost_round_trip, 10),
             "total_cost_r": round(total_cost_r, 10),
         }
 
@@ -576,11 +699,14 @@ class HistoricalReplayEngine:
             spread_pips=detail["spread_pips"],
             entry_slippage_price=detail["entry_slippage_price"],
             exit_slippage_price=detail["exit_slippage_price"],
+            slippage_price_round_trip=detail["slippage_price_round_trip"],
+            commission_usd_round_turn=detail["commission_usd_round_turn"],
             commission=detail["commission"],
             spread_r=detail["spread_r"],
             slippage_r=detail["slippage_r"],
             commission_r=detail["commission_r"],
             swap_r=detail["swap_r"],
+            price_cost_round_trip=detail["price_cost_round_trip"],
             total_cost=detail["total_cost"],
             total_cost_r=detail["total_cost_r"],
             partial_taken=detail["partial_taken"],
@@ -599,10 +725,35 @@ class HistoricalReplayEngine:
 
         signals: list[SignalRecord] = []
         trades: list[TradeRecord] = []
+        rejected_candidates: list[CandidateRecord] = []
+        funnel_counts: dict[str, int] = {
+            "evaluated": 0,
+            "session_pass": 0,
+            "signal_pass": 0,
+            "bias_pass": 0,
+            "sweep_pass": 0,
+            "poi_pass": 0,
+            "trade_pass": 0,
+            "rejected_session": 0,
+            "rejected_signal": 0,
+            "rejected_bias": 0,
+            "rejected_sweep": 0,
+            "rejected_poi": 0,
+            "rejected_risk": 0,
+            "rejected_target": 0,
+        }
         consumed: set[str] = set()
         i = self.warmup_bars
         while i < len(m5) - 1:
-            signal = self.generate_signal(i, m5, h1=h1, d1=d1)
+            signal = self.generate_signal(
+                i,
+                m5,
+                h1=h1,
+                d1=d1,
+                symbol=symbol,
+                rejected_candidates=rejected_candidates,
+                funnel_counts=funnel_counts,
+            )
             if signal is None:
                 i += 1
                 continue
@@ -622,17 +773,20 @@ class HistoricalReplayEngine:
             caveat=None if trades else "No trades were generated on the supplied replay data.",
             signals=tuple(signals),
             trades=tuple(trades),
+            rejected_candidates=tuple(rejected_candidates),
             management_events=tuple(event for trade in trades for event in trade.management_events),
+            funnel_counts=dict(funnel_counts),
             metrics=compute_metrics([t.net_r for t in trades]),
             assumptions={
                 "entry": "next candle after signal",
                 "exit": "next candle after signal with stop-first conservative fills, managed partials and break-even",
                 "costs": {
                     "spread_points": self.spread_points,
-                    "slippage_points": self.slippage_points,
+                    "slippage_points_per_side": self.slippage_points,
                     "commission_r": self.commission_r,
                 },
                 "symbol_metadata": self._metadata_for_symbol(symbol).snapshot(),
+                "slippage_convention": "per_side",
             },
             symbol_metadata=self._metadata_for_symbol(symbol).snapshot(),
         )

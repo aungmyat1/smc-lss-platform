@@ -1,0 +1,69 @@
+{
+  "cost_profile_path": "D:\\ddev\\smc-lss-platform\\config\\research_costs.yaml",
+  "datasets": [
+    {
+      "bar_semantics": "M5 bar-open timestamp; visible only after close",
+      "first_timestamp": "2025-06-20T22:55:00Z",
+      "last_timestamp": "2026-07-17T17:50:00Z",
+      "path": "data\\EURUSD_M5.csv",
+      "rows": 80000,
+      "sha256": "f0f873d26914f1a2db3f89858ae62930d45026ad63775f53f6c1fb582f8a816a",
+      "source_symbol": "EURUSD",
+      "symbol": "EURUSD",
+      "timeframe": "M5",
+      "timezone": "UTC"
+    },
+    {
+      "bar_semantics": "H1 bar-open timestamp; visible only after close",
+      "first_timestamp": "2025-02-05T18:00:00Z",
+      "last_timestamp": "2026-07-17T17:00:00Z",
+      "path": "data\\EURUSD_H1.csv",
+      "rows": 9000,
+      "sha256": "42029dcf95b72120dbc60c4f35fddbbc416dd2733b720ff393c77bc85c4a747f",
+      "source_symbol": "EURUSD",
+      "symbol": "EURUSD",
+      "timeframe": "H1",
+      "timezone": "UTC"
+    },
+    {
+      "bar_semantics": "D1 bar-open timestamp; visible only after close",
+      "first_timestamp": "2024-08-13T00:00:00Z",
+      "last_timestamp": "2026-07-17T00:00:00Z",
+      "path": "data\\EURUSD_D1.csv",
+      "rows": 500,
+      "sha256": "d5b09911596b48edcb395e6d3cbab01c4f1be28b81d9b3a9a1b7c89a893992a5",
+      "source_symbol": "EURUSD",
+      "symbol": "EURUSD",
+      "timeframe": "D1",
+      "timezone": "UTC"
+    }
+  ],
+  "date_ranges": {
+    "EURUSD": {
+      "end": "2026-07-17T17:50:00Z",
+      "start": "2025-06-20T22:55:00Z"
+    }
+  },
+  "execution_assumptions": {
+    "breakeven": true,
+    "commission_unit": "usd_round_turn",
+    "entry": "next-bar-open",
+    "managed_partial": true,
+    "slippage_convention": "per_side",
+    "stop_first": true
+  },
+  "generated_utc": "2026-07-20T14:14:59Z",
+  "git_sha": "c7c415ef179726fe14c135bb6e7e0b3b53e041e2",
+  "random_seed": 7,
+  "spec_path": "specs/research/v1_baseline.yaml",
+  "strategy_id": "ST-C1",
+  "strategy_version": "1.0.0",
+  "symbols": [
+    "EURUSD"
+  ],
+  "timeframes": [
+    "M5",
+    "H1",
+    "D1"
+  ]
+}
