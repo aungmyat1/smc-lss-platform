@@ -12,7 +12,11 @@ hypotheses:
     expected_effect: Reduce the number of low-quality trades and preserve the surviving edge.
     overfitting_risk: Medium
     minimum_sample_required: 50
-    status: proposed
+    status: superseded_pending_corrected_baseline
+    evidence_source: pre-correction baseline
+    evidence_model_version: merged-pr2-pre-audit
+    evidence_validity: historical_only
+    superseded_by: corrected-baseline-audit
   - id: STC1-H002
     symbol_scope: EURUSD
     title: Demand stronger HTF alignment before entry
@@ -25,5 +29,8 @@ hypotheses:
     expected_effect: Reduce false structure reads and cut drawdown.
     overfitting_risk: Medium
     minimum_sample_required: 80
-    status: proposed
-
+    status: superseded_pending_corrected_baseline
+    evidence_source: pre-correction baseline
+    evidence_model_version: merged-pr2-pre-audit
+    evidence_validity: historical_only
+    superseded_by: corrected-baseline-audit

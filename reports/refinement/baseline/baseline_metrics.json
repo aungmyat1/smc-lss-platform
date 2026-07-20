@@ -1,0 +1,29 @@
+{
+  "by_symbol": {},
+  "combined": {
+    "average_r": null,
+    "cost_drag_r": null,
+    "drawdown_duration_trades": null,
+    "expectancy_r": null,
+    "gross_loss_r": 0,
+    "gross_profit_r": 0,
+    "longest_loss_streak": null,
+    "longest_win_streak": null,
+    "losses": 0,
+    "mae_distribution": null,
+    "maximum_drawdown_r": 0.0,
+    "mfe_distribution": null,
+    "net_profit_r": 0.0,
+    "payoff_ratio": null,
+    "profit_factor": null,
+    "recovery_factor": null,
+    "sharpe_ratio": null,
+    "sortino_ratio": null,
+    "total_R": 0.0,
+    "total_trades": 0,
+    "trade_count_adequacy_warning": true,
+    "win_rate_pct": null,
+    "wins": 0
+  },
+  "failure_counts": {}
+}

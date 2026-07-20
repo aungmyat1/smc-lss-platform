@@ -4,9 +4,7 @@ from __future__ import annotations
 import argparse
 import csv
 import datetime as dt
-import hashlib
 import json
-import os
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -26,6 +24,7 @@ from .trade_recorder import candidate_rows, event_rows, trade_rows, write_csv
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_COST_PROFILE = ROOT / "config" / "research_costs.yaml"
+DEPRECATED_TIMEFRAME_KEYS = {"version", "track", "status", "promotion_stage", "symbol", "htf", "entry_tf", "ltf_confirm", "swing_lookback", "equal_level_tol_pips", "min_fvg_pips", "risk_pct", "min_rr", "sessions"}
 
 
 def _git_sha() -> str:
@@ -40,6 +39,27 @@ def _load_spec(path: str | Path) -> dict[str, Any]:
     if not isinstance(data, dict):
         raise ValueError(f"{path}: expected a mapping")
     return data
+
+
+def _validate_spec_shape(spec: dict[str, Any], spec_path: str | Path) -> None:
+    legacy_keys = sorted(key for key in spec.keys() if key in DEPRECATED_TIMEFRAME_KEYS)
+    if legacy_keys:
+        raise ValueError(
+            f"{spec_path}: deprecated top-level timeframe/spec keys are not allowed: {', '.join(legacy_keys)}. "
+            "Use market_universe.timeframes as the authoritative model."
+        )
+    market = spec.get("market_universe")
+    if not isinstance(market, dict):
+        raise ValueError(f"{spec_path}: missing market_universe mapping")
+    timeframes = market.get("timeframes")
+    if not isinstance(timeframes, dict):
+        raise ValueError(f"{spec_path}: missing market_universe.timeframes mapping")
+    required = {"bias", "setup", "confirmation", "execution"}
+    missing = sorted(required - set(timeframes))
+    if missing:
+        raise ValueError(f"{spec_path}: market_universe.timeframes missing keys: {', '.join(missing)}")
+    if len({str(timeframes[key]) for key in required}) < 2:
+        raise ValueError(f"{spec_path}: market_universe.timeframes must contain a multi-timeframe model, not one repeated label")
 
 
 def _dataset_paths(data_dir: Path, symbols: list[str]) -> list[Path]:
@@ -65,6 +85,7 @@ def _frame_from_rows(rows: list[dict[str, Any]]) -> pd.DataFrame:
 
 def run_baseline(spec_path: str | Path, data_dir: str | Path, output_dir: str | Path, random_seed: int = 7) -> dict[str, Any]:
     spec = _load_spec(spec_path)
+    _validate_spec_shape(spec, spec_path)
     strategy = spec.get("strategy", {})
     market = spec.get("market_universe", {})
     instruments = list(market.get("instruments", []))
@@ -114,7 +135,7 @@ def run_baseline(spec_path: str | Path, data_dir: str | Path, output_dir: str | 
         strategy_id=strategy.get("strategy_id", "ST-C1"),
         strategy_version=str(strategy.get("version", "unknown")),
         git_sha=_git_sha(),
-        generated_utc=dt.datetime.utcnow().replace(microsecond=0).isoformat() + "Z",
+        generated_utc=dt.datetime.now(dt.UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         random_seed=random_seed,
         spec_path=str(spec_path),
         cost_profile_path=str(DEFAULT_COST_PROFILE),

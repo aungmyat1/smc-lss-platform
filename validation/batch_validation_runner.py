@@ -16,9 +16,11 @@ from validation.historical_replay_engine import (
     ReplayResult,
     SignalRecord,
     TradeRecord,
+    CandidateRecord,
 )
 from validation.performance_metrics import compute_metrics
 from validation.statistical_validation import build_stability_summary
+from symbol_metadata import resolve_symbol
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -292,6 +294,7 @@ class BatchValidationRunner:
         self.contract_path = str(contract_path)
         self.cache_dir = Path(cache_dir)
         self.report_path = Path(report_path)
+        self.cost_profile_path = ROOT / "config" / "research_costs.yaml"
         self.progress_every = max(1, int(progress_every))
         self.progress_sink = progress_sink or _default_progress_sink
         self.engine = HistoricalReplayEngine(
@@ -333,7 +336,21 @@ class BatchValidationRunner:
     def _cache_path(self, target: ValidationTarget, dataset_hash: str) -> Path:
         safe_symbol = target.display_symbol.replace("/", "_")
         safe_tf = target.timeframe.replace("/", "_")
-        exec_hash = _combine_hashes([_stable_json(self.execution_params), self.strategy_version, dataset_hash, target.source_symbol or target.display_symbol])
+        source_symbol = target.source_symbol or target.display_symbol
+        canonical_symbol = resolve_symbol(source_symbol).canonical_symbol if source_symbol else target.display_symbol
+        metadata = self.engine._metadata_for_symbol(source_symbol)
+        cost_profile_hash = _sha256_file(self.cost_profile_path) if self.cost_profile_path.exists() else "missing"
+        cache_parts = [
+            _stable_json(self.execution_params),
+            self.strategy_version,
+            dataset_hash,
+            source_symbol,
+            canonical_symbol,
+            getattr(metadata, "version", "unknown"),
+            cost_profile_hash,
+            _stable_json(self.engine.assumptions if hasattr(self.engine, "assumptions") else {}),
+        ]
+        exec_hash = _combine_hashes(cache_parts)
         return self.cache_dir / f"{safe_symbol}_{safe_tf}_{exec_hash[:24]}.json"
 
     def _load_state(self, cache_path: Path) -> dict[str, Any] | None:
