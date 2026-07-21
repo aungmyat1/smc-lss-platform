@@ -9,6 +9,9 @@ reports/audit/phase_a_gate/
 reports/audit/phase_a_debug_*/
 reports/audit/phase_a_final_*/
 reports/audit/phase_a_manual_*/
+reports/refinement/baseline_2sym_*/
+validation/cache/*.json
+validation/cache/baseline_*/
 validation/cache/phase_a_*/
 .DS_Store
 *.log

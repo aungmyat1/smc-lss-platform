@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import datetime as dt
 import json
 import subprocess
 from dataclasses import dataclass
@@ -10,7 +11,7 @@ from pathlib import Path
 from typing import Any, Iterable, Sequence
 
 from src.research.report_builder import render_table, write_markdown
-from src.research.run_baseline import REQUIRED_TIMEFRAMES, _resolve_artifact_path, _validate_dataset_file, resolve_latest_run
+from src.research.run_baseline import REQUIRED_TIMEFRAMES, _parse_time, _resolve_artifact_path, _validate_dataset_file, resolve_latest_run
 from src.research.dataset_manifest import sha256_file
 from symbol_metadata import resolve_symbol
 
@@ -80,8 +81,10 @@ class PhaseAStopReport:
     changed_files_by_group: dict[str, tuple[str, ...]]
     required_symbols: tuple[str, ...]
     required_timeframes: tuple[str, ...]
+    focused_status: str
     suite_status: str
     ci_status: str
+    ci_head: str
     ci_links: tuple[str, ...]
     clean_a: RunSnapshot
     clean_b: RunSnapshot
@@ -116,8 +119,10 @@ class PhaseAStopReport:
             "",
             "## Validation Status",
             "",
+            f"- Focused tests status: `{self.focused_status}`",
             f"- Full suite status: `{self.suite_status}`",
             f"- CI status: `{self.ci_status}`",
+            f"- CI HEAD: `{self.ci_head}`",
             f"- Coverage complete: `{self.coverage_complete}`",
             f"- Clean runs match: `{self.comparison.clean_metrics_match and self.comparison.clean_trades_hash_match and self.comparison.clean_management_hash_match and self.comparison.clean_rejected_hash_match and self.comparison.clean_equity_hash_match and self.comparison.clean_censored_hash_match and self.comparison.clean_cost_legs_hash_match and self.comparison.clean_funnel_report_hash_match and self.comparison.clean_artifact_schema_hash_match and self.comparison.clean_manifest_normalized_match and self.comparison.clean_latest_normalized_match}`",
             f"- Resumed run supplied: `{self.resumed is not None}`",
@@ -159,7 +164,23 @@ class PhaseAStopReport:
                 "## Required Coverage",
                 "",
                 render_table(
-                    ["Symbol", "Timeframe", "Status", "Source Symbol", "Path", "Rows", "Validation"],
+                    [
+                        "Symbol",
+                        "Timeframe",
+                        "Status",
+                        "Source Symbol",
+                        "Path",
+                        "Start UTC",
+                        "End UTC",
+                        "Rows",
+                        "SHA256",
+                        "Duplicate",
+                        "Out-of-order",
+                        "Expected gaps",
+                        "Synthetic",
+                        "Provenance",
+                        "Validation",
+                    ],
                     [
                         [
                             row.get("symbol"),
@@ -167,7 +188,15 @@ class PhaseAStopReport:
                             row.get("status"),
                             row.get("source_symbol"),
                             row.get("path"),
+                            row.get("start_utc"),
+                            row.get("end_utc"),
                             row.get("rows"),
+                            row.get("sha256"),
+                            row.get("duplicate_count"),
+                            row.get("out_of_order_count"),
+                            row.get("expected_interval_gap_count"),
+                            row.get("synthetic_repaired_candle_count"),
+                            row.get("provenance"),
                             row.get("validation"),
                         ]
                         for row in self.coverage_rows
@@ -236,7 +265,7 @@ def _run_git(args: Sequence[str]) -> str:
 
 def _run_git_optional(args: Sequence[str]) -> str | None:
     try:
-        return _run_git(args)
+        return subprocess.check_output(["git", *args], cwd=ROOT, text=True, stderr=subprocess.DEVNULL).strip()
     except Exception:
         return None
 
@@ -329,11 +358,52 @@ def _resolve_data_path(data_dir: Path, symbol: str, timeframe: str) -> tuple[str
     return None, None
 
 
+def _load_repair_counts() -> dict[tuple[str, str], int]:
+    repair_path = ROOT / "reports" / "audit" / "phase_a_data_repair_latest.json"
+    if not repair_path.exists():
+        return {}
+    try:
+        payload = json.loads(repair_path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    counts: dict[tuple[str, str], int] = {}
+    for item in payload.get("repairs", []):
+        path = Path(str(item.get("path", "")))
+        stem = path.stem
+        if "_" not in stem:
+            continue
+        symbol, timeframe = stem.rsplit("_", 1)
+        key = (symbol.replace("-VIP", ""), timeframe)
+        counts[key] = counts.get(key, 0) + 1
+    return counts
+
+
+def _csv_order_counts(path: Path) -> tuple[int, int]:
+    with path.open(newline="", encoding="utf-8") as fh:
+        rows = list(csv.DictReader(fh))
+    seen: set[str] = set()
+    duplicates = 0
+    out_of_order = 0
+    previous: dt.datetime | None = None
+    for row in rows:
+        raw = str(row.get("time", ""))
+        if raw in seen:
+            duplicates += 1
+        seen.add(raw)
+        current = _parse_time(raw)
+        if previous is not None and current < previous:
+            out_of_order += 1
+        previous = current
+    return duplicates, out_of_order
+
+
 def _coverage_rows(data_dir: Path, required_symbols: Iterable[str], required_timeframes: Iterable[str]) -> tuple[dict[str, Any], ...]:
     rows: list[dict[str, Any]] = []
+    repair_counts = _load_repair_counts()
     for symbol in required_symbols:
         for timeframe in required_timeframes:
             source_symbol, path = _resolve_data_path(data_dir, symbol, timeframe)
+            repair_key = (symbol, timeframe)
             if path is None:
                 rows.append(
                     {
@@ -342,13 +412,23 @@ def _coverage_rows(data_dir: Path, required_symbols: Iterable[str], required_tim
                         "status": "missing",
                         "source_symbol": None,
                         "path": None,
+                        "start_utc": None,
+                        "end_utc": None,
                         "rows": None,
+                        "sha256": None,
+                        "duplicate_count": None,
+                        "out_of_order_count": None,
+                        "expected_interval_gap_count": None,
+                        "synthetic_repaired_candle_count": repair_counts.get(repair_key, 0),
+                        "provenance": "raw market CSV; local gitignored input required",
                         "validation": "missing required dataset",
                     }
                 )
                 continue
             try:
                 stats = _validate_dataset_file(path, symbol=symbol, source_symbol=source_symbol or symbol, timeframe=timeframe)
+                duplicates, out_of_order = _csv_order_counts(path)
+                gap_count = sum(int(value) for value in stats.get("gap_counts", {}).values())
                 rows.append(
                     {
                         "symbol": symbol,
@@ -356,11 +436,24 @@ def _coverage_rows(data_dir: Path, required_symbols: Iterable[str], required_tim
                         "status": "valid",
                         "source_symbol": source_symbol,
                         "path": stats["path"],
+                        "start_utc": stats["first_timestamp"],
+                        "end_utc": stats["last_timestamp"],
                         "rows": stats["rows"],
+                        "sha256": sha256_file(path),
+                        "duplicate_count": duplicates,
+                        "out_of_order_count": out_of_order,
+                        "expected_interval_gap_count": gap_count,
+                        "synthetic_repaired_candle_count": repair_counts.get(repair_key, 0),
+                        "provenance": "raw market CSV; local gitignored input",
                         "validation": "ok" if not stats.get("gap_counts") else f"ok; gaps={stats['gap_counts']}",
                     }
                 )
             except Exception as exc:
+                try:
+                    duplicates, out_of_order = _csv_order_counts(path)
+                    file_hash = sha256_file(path)
+                except Exception:
+                    duplicates, out_of_order, file_hash = None, None, None
                 rows.append(
                     {
                         "symbol": symbol,
@@ -368,7 +461,15 @@ def _coverage_rows(data_dir: Path, required_symbols: Iterable[str], required_tim
                         "status": "invalid",
                         "source_symbol": source_symbol,
                         "path": str(path),
+                        "start_utc": None,
+                        "end_utc": None,
                         "rows": None,
+                        "sha256": file_hash,
+                        "duplicate_count": duplicates,
+                        "out_of_order_count": out_of_order,
+                        "expected_interval_gap_count": None,
+                        "synthetic_repaired_candle_count": repair_counts.get(repair_key, 0),
+                        "provenance": "raw market CSV; local gitignored input",
                         "validation": str(exc),
                     }
                 )
@@ -553,7 +654,9 @@ def build_phase_a_stop_report(
     required_symbols: Iterable[str] = DEFAULT_REQUIRED_SYMBOLS,
     required_timeframes: Iterable[str] = REQUIRED_TIMEFRAMES,
     suite_status: str = "unknown",
+    focused_status: str = "not_run",
     ci_status: str = "unknown",
+    ci_head: str | None = None,
     ci_links: Iterable[str] = (),
     test_command: str | None = None,
     test_duration_seconds: float | None = None,
@@ -567,12 +670,18 @@ def build_phase_a_stop_report(
     coverage_rows = _coverage_rows(Path(data_dir), required_symbols, required_timeframes)
     coverage_complete = all(row["status"] == "valid" for row in coverage_rows)
     comparison = _comparison_summary(clean_a, clean_b, resumed)
+    report_head = str(git["head"])
+    effective_ci_status = ci_status
+    if ci_status == "passed" and ci_head != report_head:
+        effective_ci_status = "blocked"
 
     reasons: list[str] = []
     if suite_status != "passed":
         reasons.append(f"Full suite status is {suite_status!r}.")
-    if ci_status != "passed":
-        reasons.append(f"CI status is {ci_status!r}.")
+    if effective_ci_status != "passed":
+        reasons.append(f"CI status is {effective_ci_status!r}.")
+    if ci_status == "passed" and ci_head != report_head:
+        reasons.append("CI pass was not observed for the exact report HEAD.")
     if not coverage_complete:
         reasons.append("Required dataset coverage is incomplete or invalid.")
     if not comparison.clean_manifest_normalized_match:
@@ -634,8 +743,10 @@ def build_phase_a_stop_report(
         changed_files_by_group={group: _truncate_files(paths) for group, paths in _group_changed_files(git["changed_files"]).items()},
         required_symbols=tuple(required_symbols),
         required_timeframes=tuple(required_timeframes),
+        focused_status=focused_status,
         suite_status=suite_status,
-        ci_status=ci_status,
+        ci_status=effective_ci_status,
+        ci_head=str(ci_head or "unknown"),
         ci_links=tuple(ci_links),
         clean_a=clean_a,
         clean_b=clean_b,
@@ -669,7 +780,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--required-symbols", default=",".join(DEFAULT_REQUIRED_SYMBOLS))
     parser.add_argument("--required-timeframes", default=",".join(REQUIRED_TIMEFRAMES))
     parser.add_argument("--suite-status", default="unknown", choices=("passed", "blocked", "unknown"))
+    parser.add_argument("--focused-status", default="not_run", choices=("passed", "blocked", "unknown", "not_run"))
     parser.add_argument("--ci-status", default="unknown", choices=("passed", "blocked", "unknown"))
+    parser.add_argument("--ci-head")
     parser.add_argument("--ci-link", action="append", default=[])
     parser.add_argument("--test-command")
     parser.add_argument("--test-duration-seconds", type=float)
@@ -684,7 +797,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         required_symbols=_parse_csv_list(args.required_symbols),
         required_timeframes=_parse_csv_list(args.required_timeframes),
         suite_status=args.suite_status,
+        focused_status=args.focused_status,
         ci_status=args.ci_status,
+        ci_head=args.ci_head,
         ci_links=args.ci_link,
         test_command=args.test_command,
         test_duration_seconds=args.test_duration_seconds,

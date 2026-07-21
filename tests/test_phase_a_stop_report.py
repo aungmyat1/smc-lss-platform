@@ -296,6 +296,7 @@ def test_phase_a_stop_report_blocks_when_gbpusd_data_is_missing(tmp_path):
         data_dir=data_dir,
         suite_status="passed",
         ci_status="passed",
+        ci_head="deadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
         git_state={
             "branch": "research/st-c1-baseline-runner-v2-clean",
             "head": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
@@ -344,6 +345,7 @@ def test_phase_a_stop_report_can_pass_with_complete_coverage(tmp_path):
         data_dir=data_dir,
         suite_status="passed",
         ci_status="passed",
+        ci_head="deadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
         git_state={
             "branch": "research/st-c1-baseline-runner-v2-clean",
             "head": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
@@ -387,3 +389,54 @@ def test_phase_a_gate_writes_blocked_preflight_report_for_missing_data(tmp_path)
     assert "Decision: `BLOCKED`" in text
     assert "GBPUSD" in text
     assert "Baseline replay was not started" in text
+
+
+def test_phase_a_gate_blocks_when_full_suite_fails(tmp_path):
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    _write_data_dir(data_dir, ["EURUSD", "GBPUSD", "XAUUSD"])
+
+    result = run_phase_a_gate(
+        data_dir=data_dir,
+        gate_root=tmp_path / "gate",
+        cache_root=tmp_path / "cache",
+        required_symbols=("EURUSD", "GBPUSD", "XAUUSD"),
+        required_timeframes=("M5", "H1", "D1"),
+        test_command="python -m pytest tests/does_not_exist.py -q",
+        focused_test_command="python --version",
+        ci_status="passed",
+        ci_head="not-the-current-head",
+    )
+
+    reports = list((tmp_path / "gate").glob("*/phase_a_stop_report.md"))
+    assert result == 2
+    assert len(reports) == 1
+    text = reports[0].read_text(encoding="utf-8")
+    assert "Focused tests status: `passed`" in text
+    assert "Full suite status: `blocked`" in text
+    assert "Baseline replay was not started" in text
+
+
+def test_phase_a_gate_blocks_unknown_ci_before_baseline(tmp_path):
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    _write_data_dir(data_dir, ["EURUSD", "GBPUSD", "XAUUSD"])
+
+    result = run_phase_a_gate(
+        data_dir=data_dir,
+        gate_root=tmp_path / "gate",
+        cache_root=tmp_path / "cache",
+        required_symbols=("EURUSD", "GBPUSD", "XAUUSD"),
+        required_timeframes=("M5", "H1", "D1"),
+        test_command="python --version",
+        ci_status="unknown",
+    )
+
+    reports = list((tmp_path / "gate").glob("*/phase_a_stop_report.md"))
+    assert result == 2
+    assert len(reports) == 1
+    assert not (reports[0].parent / "clean_a").exists()
+    text = reports[0].read_text(encoding="utf-8")
+    assert "Full suite status: `passed`" in text
+    assert "CI status: `unknown`" in text
+    assert "exact-HEAD CI evidence is required" in text
