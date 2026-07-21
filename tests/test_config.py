@@ -2,6 +2,7 @@
 Run: python -m pytest -q"""
 import os, sys, textwrap
 import pytest
+import yaml
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 import config as cfgmod
@@ -10,6 +11,7 @@ ROOT = os.path.dirname(os.path.dirname(__file__))
 WATCHLIST = os.path.join(ROOT, "config", "watchlist.yaml")
 SPEC_V1 = os.path.join(ROOT, "specs", "v1.yaml")
 RESEARCH_SPEC = os.path.join(ROOT, "specs", "v3.6.yaml")
+V39_SPEC = os.path.join(ROOT, "specs", "v3.9.yaml")
 
 
 def _write(path, text):
@@ -265,3 +267,39 @@ def test_strategy_spec_must_match_loaded_spec_path(tmp_path, cfg_files):
     _write(broken_path, broken)
     with pytest.raises(cfgmod.ConfigError):
         cfgmod.load(str(broken_path), spec)
+
+
+# --- governance consistency: contradictory fail-closed fields must fail CI ---
+# Added for the ST-C1 v3.9 governance/conformance task. v3.9 is a pending
+# research candidate (engine_implements_spec: false everywhere) and must
+# stay that way until a conformant engine and its full test suite exist.
+# This test fails CI the moment any of these interlocks silently drift to a
+# less restrictive state, instead of relying on prose in status docs.
+
+def test_real_repo_autonomy_flags_are_fail_closed():
+    cfg = cfgmod.load(WATCHLIST, SPEC_V1)
+    assert cfg.autonomy.demo != "auto_on_engine_ready"
+    assert cfg.autonomy.demo != "auto"
+    assert cfg.autonomy.live == "disabled"
+    assert cfg.autonomy.engine_implements_spec is False
+    assert cfg.autonomy.promote_to_live is False
+
+
+def test_v39_spec_still_declares_engine_not_implemented():
+    with open(V39_SPEC, "r", encoding="utf-8") as fh:
+        v39 = yaml.safe_load(fh)
+    assert v39["implementation_status"]["engine_implements_spec"] is False
+    assert v39["status"] in ("draft", "candidate", "research_candidate")
+    assert v39["track"] == "research"
+
+
+def test_watchlist_research_spec_does_not_point_at_unconformant_v39():
+    cfg = cfgmod.load(WATCHLIST, SPEC_V1)
+    with open(V39_SPEC, "r", encoding="utf-8") as fh:
+        v39 = yaml.safe_load(fh)
+    if cfg.research_spec_path.replace("\\", "/").endswith("v3.9.yaml"):
+        assert v39["implementation_status"]["engine_implements_spec"] is True, (
+            "config/watchlist.yaml points research_spec at specs/v3.9.yaml, "
+            "but v3.9 declares engine_implements_spec: false — the config "
+            "must not adopt an unconformant research spec as active."
+        )

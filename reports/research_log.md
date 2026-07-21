@@ -169,3 +169,25 @@ INCONCLUSIVE regardless of population numbers.
 filed template. `specs/v3.9.yaml` and `strategies/candidates/ST-C1_v1.2.0.yaml`
 are created as candidate-only, `engine_implements_spec: false` — pending a
 `backtest-researcher` run before any ACCEPT/REJECT verdict.
+
+## Addendum: fourth relaxation disclosed (2026-07-22) — RETRACTED, see below
+
+During the v3.9 governance/conformance audit
+(`reports/audit/ST_C1_V39_CONFORMANCE_MATRIX.md`), found that
+`specs/v3.9.yaml`'s `e3_reclaim_window_h1_bars: 0` removes the v3.6/v3.8
+same-bar/next-bar E3 reclaim window entirely — a fourth relaxation not named
+among the three the RCR above states it is testing. No spec/code value was
+changed; see the addendum appended to `ST_C1_V39_CLEAN_SMC_RCR.md` for the
+full disclosure and its effect on how the Phase 6 population result must be
+attributed.
+
+## Correction: reclaim-window addendum retracted (2026-07-22)
+
+Direct testing while building `tests/test_signal_v39.py` showed
+`E3_RECLAIM_WINDOW_H1_BARS` has no observable effect at any value (0, 1, or
+50 all produce identical `_e3_trigger` output on the same fixture) —
+`smc_engine.liquidity_sweeps()` already requires same-bar reclaim by
+definition, making the downstream window loop dead code. The addendum above
+is retracted: this is not a fourth relaxation, just a no-op parameter
+inherited unchanged from v3.6/v3.7/v3.8. See the correction appended to
+`ST_C1_V39_CLEAN_SMC_RCR.md` for full detail.

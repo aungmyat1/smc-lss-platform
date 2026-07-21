@@ -48,6 +48,15 @@ for this strategy line, regardless of the M1-M2.3 scaffold work described
 below.
 
 
+**2026-07-22 addendum:** a v3.9 governance/conformance/population task is in
+progress on local branch `research/st-c1-v39-governance-conformance`. It
+audits v3.9 in its own E1/E2/E3+M1/M2/M3 terms (not the parked G1-G10
+pipeline — see `reports/audit/ST_C1_V39_GOVERNANCE_CONFORMANCE_PRE_EDIT_FINDINGS.md`
+§3c), implements a conformant point-in-time engine only if that audit is
+complete, and runs the same population-feasibility floor used in R2.1
+before any statistical or profitability claim. Still research/validation
+work; Phase 3 remains out of scope regardless of outcome.
+
 Deliverables:
 - closed-candle-only backtest harness
 - realistic spread / commission / slippage simulation

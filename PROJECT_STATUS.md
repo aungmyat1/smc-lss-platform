@@ -177,3 +177,32 @@ the newer 10-gate (G1-G10) conformance research line:
   used for diagnosis across the v3.7 and v3.8 research tasks. It must not be
   described as a pristine, unseen OOS partition in any future validation of
   this strategy family.
+- **v3.9 governance/conformance task started (2026-07-22), local branch
+  `research/st-c1-v39-governance-conformance`:** Phase 0 preflight found
+  `NEXT_ACTION.md` stale (pointed at Phase 3 execution work — corrected) and
+  a framework conflict: the task's requested "G1-G10 conformance matrix"
+  does not fit v3.9, which deliberately uses the E1/E2/E3+M1/M2/M3 schema,
+  not the parked G1-G10 pipeline. Owner decision: audit v3.9 in its own
+  E1/E2/E3+M1/M2/M3 terms, not G1-G10 labels. See
+  `reports/audit/ST_C1_V39_GOVERNANCE_CONFORMANCE_PRE_EDIT_FINDINGS.md`.
+  `research_spec` in `config/watchlist.yaml` still correctly points at
+  `specs/v3.6.yaml` (v3.9 is not yet an approved research spec) and no
+  autonomy/promotion flag has changed.
+- **v3.9 conformance + population-feasibility task completed (2026-07-22):**
+  canonical engine built (`src/signal_v39.py`,
+  `validation/historical_replay_engine_v39.py`), conformance matrix closed
+  (`reports/audit/ST_C1_V39_CONFORMANCE_MATRIX.md`), 26 new tests pass
+  (162/162 full suite). **Population-feasibility gate PASSES decisively**:
+  138 completed trades across EURUSD (47) + GBPUSD (37) + XAUUSD (54) vs.
+  the 30-total/5-per-symbol floor — see
+  `reports/audit/ST_C1_V39_POPULATION_ABLATION_SPEC.md` for full results
+  and raw evidence in `reports/ablation/st_c1_v39_B{0,1}_*_raw.json`. A
+  v3.6-control comparison confirms the population growth traces to the
+  intended relaxations (EURUSD/GBPUSD go from 2 trades under v3.6 to 47/37
+  under v3.9). **Caveat, not yet resolved:** the same run shows EURUSD/GBPUSD
+  deeply net-cost-negative (PF 0.03/0.14) and XAUUSD only marginally
+  positive and *worse* than its own v3.6 control (PF 1.06 vs 1.96) — a
+  real quantity/quality tradeoff that must be investigated (own
+  pre-registered RCR) before any Phase-7-equivalent profitability read.
+  `engine_implements_spec` remains `false`; no autonomy/promotion flag
+  changed; all work uncommitted on the local branch above.

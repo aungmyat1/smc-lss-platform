@@ -2,32 +2,67 @@
 
 **One milestone at a time. This is the next one.**
 
-## → PHASE 3 · M3: Execution Layer Skeleton
+**Correction (2026-07-22):** this file previously named "PHASE 3 · M3:
+Execution Layer Skeleton" as the next milestone. That contradicted
+`PROJECT_STATUS.md` §5 and `ROADMAP.md` Phase 2/3, both of which state Phase
+3 (execution layer) is explicitly out of scope until a research candidate
+clears Phase 2's evidence gates, and neither has cleared them. This file was
+simply stale — corrected below, no execution-authority change involved.
 
-*Build the canonical execution pipeline after the strategy approval and statistical
-validation gates are in place.*
+## → PHASE 2 (research/validation): ST-C1 v3.9 conformance + population feasibility
+
+*Close the v3.9 "Clean SMC" research-candidate gaps: an E1/E2/E3+M1/M2/M3
+conformance audit (not the parked v3.7 G1-G10 pipeline), a conformant
+point-in-time engine, and a controlled population-feasibility check. This is
+strategy research only — no execution, demo, or live authority changes.*
 
 ### Why this now
-The approved-strategy path now has mechanical validation, replay, and statistical
-validation scaffolding. The next step is to build the execution skeleton without
-letting it rewrite strategy logic.
+`specs/v3.9.yaml` / `strategies/candidates/ST-C1_v1.2.0.yaml` were filed
+(2026-07-22, `reports/audit/ST_C1_V39_CLEAN_SMC_RCR.md`) as the directed
+follow-up to the v3.8 R2.1 population-feasibility rejection, but
+`engine_implements_spec: false` and no conformant engine or backtest exists
+yet. Population feasibility must be established before any statistical or
+profitability read is meaningful.
 
 ### Scope (smallest working solution)
-1. Define the canonical order pipeline.
-2. Add the execution risk gate.
-3. Add broker adapter boundaries.
-4. Add reconciliation and journaling hooks.
-5. Keep live trading blocked until approval and execution controls are complete.
+1. Audit v3.9 gate-by-gate in its own E1/E2/E3 + M1/M2/M3 + displacement
+   terms (see `reports/audit/ST_C1_V39_GOVERNANCE_CONFORMANCE_PRE_EDIT_FINDINGS.md`
+   §3c for why the G1-G10 framing does not apply to this spec).
+2. Implement the canonical v3.9 point-in-time signal engine, isolated from
+   broker/execution imports, only once the conformance audit is complete.
+3. Add positive/negative/mirror/cutoff-invariance/determinism tests before
+   the broader suite.
+4. Run the precommitted population-feasibility ablation (>=30 completed
+   sequences overall, >=5 in >=2 symbols) per the RCR's criteria.
+5. Keep `engine_implements_spec: false` and all demo/live/promotion flags
+   unchanged until the evidence above exists.
 
 ### Acceptance criteria
-- [ ] Execution consumes approved strategy versions only.
-- [ ] Strategy logic remains immutable in the execution layer.
-- [ ] Demo/live promotion still requires validation gates.
+- [ ] v3.9 conformance matrix complete, numeric, and deterministic.
+- [ ] Canonical engine implements the full v3.9 contract with gate evidence.
+- [ ] `engine_implements_spec` flips to true only after the full conformance
+      suite passes; otherwise stays false with partial coverage reported.
+- [ ] Population-feasibility gate result reported (pass or fail), funnel
+      preserved with explicit rejection codes.
 - [ ] `python -m pytest -q` passes after any supporting doc/test updates.
+- [ ] No execution, demo, or live autonomy flag changed.
 
 ### Estimated complexity / time
-Small to medium. The hard part is preserving the approved-strategy boundary while
-adding the order pipeline and safety checks.
+Medium to large. The conformance audit and canonical engine are the hard
+parts; population feasibility is a gate, not a profitability judgment.
 
-### After M3
-Proceed to **M4 demo integration**, then M5 live promotion gate.
+### Outcome (2026-07-22)
+Population feasibility **PASSED decisively** (138 completed trades vs. the
+30-total/5-per-symbol floor; see `reports/audit/ST_C1_V39_POPULATION_ABLATION_SPEC.md`).
+But the same run surfaced deeply negative net expectancy for EURUSD/GBPUSD
+and a quality regression on XAUUSD relative to its own v3.6 control — a
+real cost/quality concern, not a population problem.
+
+### After this milestone
+**Do not** proceed straight to a Phase-7-equivalent profitability read.
+Next milestone: a small, pre-registered (per `docs/RESEARCH-CHARTER.md`)
+investigation into why so many v3.9 trades carry stop distances tiny
+enough that fixed spread/slippage costs dominate R — is the ATR*0.15 stop
+buffer convention wrong for this preset, or does E2/E3's zeroed wick-ratio
+filter admit zones too tight to trade net of cost? Still research-only;
+Phase 3 execution work remains out of scope regardless.

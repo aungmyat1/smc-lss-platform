@@ -108,3 +108,54 @@ filed. `specs/v3.9.yaml` and `strategies/candidates/ST-C1_v1.2.0.yaml` are
 created as RESEARCH_CANDIDATE / candidate-only artifacts with
 `engine_implements_spec: false` — this RCR does not itself constitute a
 backtest run or an ACCEPT verdict.
+
+---
+
+## Addendum (2026-07-22) — disclosing a fourth, previously unnamed relaxation
+
+Found during the v3.9 governance/conformance audit
+(`reports/audit/ST_C1_V39_CONFORMANCE_MATRIX.md`, E3 row): `specs/v3.9.yaml`
+sets `e3_reclaim_window_h1_bars: 0` (disabled), which removes the v3.6/v3.8
+bound requiring an E3 sweep's reclaim to occur same-bar or the next H1 bar
+only. This numeric value was already present in the committed spec (no code
+or spec value is changed by this addendum) but was **not named** among the
+three relaxations this RCR's "Why" section states above (E1 disabled, E2/E3
+wick filters zeroed, displacement body-ratio-only). An unbounded reclaim
+window is a fourth, materially relevant relaxation: it can grow the E3
+population independently of the displacement-definition hypothesis this RCR
+is testing.
+
+**Disclosure, not a new proposal:** this addendum does not change
+`specs/v3.9.yaml`, `ST-C1_v1.2.0.yaml`, or any numeric value — it corrects
+the RCR's own account of what is being tested, so that Phase 6 population
+results are attributed correctly. If the population-feasibility floor is met,
+the Phase 6/7 report must state whether population growth depended on the
+unbounded reclaim window specifically (e.g. via a controlled cell that
+restores a 1-bar window), not attribute the result solely to the three
+originally-named relaxations. No rollback/success criteria above are
+changed; this only sharpens what "the hypothesis" being tested actually
+covers.
+
+## Correction (2026-07-22) — the above addendum was wrong; retracted
+
+Built during `src/signal_v39.py` test development
+(`tests/test_signal_v39.py`): `E3_RECLAIM_WINDOW_H1_BARS` has **no
+observable effect on outcomes at any value** (verified directly — running
+`signal_v35._e3_trigger` on an identical fixture with the module constant
+set to 0, 1, and 50 produces the identical result every time). Root cause:
+`smc_engine.liquidity_sweeps()` already requires the reclaim close to occur
+on the *same* bar as the sweep wick, by definition (its own docstring:
+"body closes back ABOVE it" describes one candle, not a window) — so the
+downstream "reclaim window" loop in `_e3_trigger` always matches on its
+very first iteration (`k == sweep_i`) regardless of the configured window
+size. There is no code path today that can produce a "delayed reclaim N
+bars later" signal at all.
+
+**This means the addendum above is retracted: `e3_reclaim_window_h1_bars:
+0` in `specs/v3.9.yaml` is not a fourth relaxation** — it is a no-op
+parameter change with no behavioral consequence, inherited unchanged from
+v3.6/v3.7/v3.8. The RCR's original account (three relaxations: E1 disabled,
+E2/E3 wick filters zeroed, displacement body-ratio-only) was correct as
+originally written; no amendment to the funnel-attribution requirement is
+needed. Left in place (not deleted) per research-log discipline — a wrong
+finding, corrected once tested, is itself part of the audit trail.

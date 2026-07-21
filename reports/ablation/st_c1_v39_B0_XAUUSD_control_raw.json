@@ -1,0 +1,42 @@
+{
+  "symbol": "XAUUSD",
+  "cell": "B0_v36_control",
+  "elapsed_seconds": 1269.0,
+  "m5_bars": 80000,
+  "h1_bars": 9000,
+  "funnel_counts": {
+    "evaluated": 79565,
+    "signal_pass": 131,
+    "candidate_ready": 131,
+    "duplicate_structure": 82,
+    "executed_trade": 49,
+    "rejected_signal": 79434
+  },
+  "num_signals": 49,
+  "num_trades": 49,
+  "metrics": {
+    "total_trades": 49,
+    "wins": 30,
+    "losses": 19,
+    "win_rate_pct": 61.22,
+    "profit_factor": 1.9632,
+    "expectancy_r": 0.2453,
+    "average_r": 0.2453,
+    "gross_profit_r": 24.4967,
+    "gross_loss_r": 12.478,
+    "net_profit_r": 12.0188,
+    "maximum_drawdown_r": -3.8722,
+    "drawdown_duration_trades": 14,
+    "sharpe_ratio": 0.3003,
+    "sortino_ratio": 0.4931,
+    "recovery_factor": 3.1039,
+    "payoff_ratio": 1.2434,
+    "total_R": 12.0188,
+    "longest_win_streak": 9,
+    "longest_loss_streak": 3,
+    "trade_count_adequacy_warning": false,
+    "mae_distribution": null,
+    "mfe_distribution": null,
+    "cost_drag_r": null
+  }
+}

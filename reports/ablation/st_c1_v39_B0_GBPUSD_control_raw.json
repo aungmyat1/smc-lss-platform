@@ -1,0 +1,42 @@
+{
+  "symbol": "GBPUSD",
+  "cell": "B0_v36_control",
+  "elapsed_seconds": 1295.4,
+  "m5_bars": 80015,
+  "h1_bars": 9000,
+  "funnel_counts": {
+    "evaluated": 79660,
+    "signal_pass": 3,
+    "candidate_ready": 3,
+    "duplicate_structure": 1,
+    "executed_trade": 2,
+    "rejected_signal": 79657
+  },
+  "num_signals": 2,
+  "num_trades": 2,
+  "metrics": {
+    "total_trades": 2,
+    "wins": 0,
+    "losses": 2,
+    "win_rate_pct": 0.0,
+    "profit_factor": 0.0,
+    "expectancy_r": -0.8535,
+    "average_r": -0.8535,
+    "gross_profit_r": 0,
+    "gross_loss_r": 1.707,
+    "net_profit_r": -1.707,
+    "maximum_drawdown_r": -1.707,
+    "drawdown_duration_trades": 2,
+    "sharpe_ratio": -2.2587,
+    "sortino_ratio": -2.2587,
+    "recovery_factor": -1.0,
+    "payoff_ratio": null,
+    "total_R": -1.707,
+    "longest_win_streak": 0,
+    "longest_loss_streak": 2,
+    "trade_count_adequacy_warning": true,
+    "mae_distribution": null,
+    "mfe_distribution": null,
+    "cost_drag_r": null
+  }
+}
