@@ -2,9 +2,20 @@
 from __future__ import annotations
 
 import csv
+import json
 from dataclasses import asdict
 from pathlib import Path
 from typing import Any, Iterable
+
+
+def _stable_cell(value: Any) -> Any:
+    if isinstance(value, (dict, list, tuple)):
+        return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+    return value
+
+
+def _stable_row(row: dict[str, Any]) -> dict[str, Any]:
+    return {key: _stable_cell(value) for key, value in row.items()}
 
 
 def trade_rows(result: Any, experiment_id: str | None = None) -> list[dict[str, Any]]:
@@ -16,14 +27,14 @@ def trade_rows(result: Any, experiment_id: str | None = None) -> list[dict[str, 
         row["strategy_id"] = assumptions.get("strategy_id")
         row["strategy_version"] = assumptions.get("strategy_version")
         row["symbol"] = getattr(result, "symbol", None)
-        rows.append(row)
+        rows.append(_stable_row(row))
     return rows
 
 
 def event_rows(result: Any, experiment_id: str | None = None) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for event in getattr(result, "management_events", []):
-        rows.append({"experiment_id": experiment_id, **dict(event)})
+        rows.append(_stable_row({"experiment_id": experiment_id, **dict(event)}))
     return rows
 
 
@@ -32,7 +43,7 @@ def candidate_rows(result: Any, experiment_id: str | None = None) -> list[dict[s
     for item in getattr(result, "rejected_candidates", []):
         row = asdict(item) if hasattr(item, "__dataclass_fields__") else dict(item)
         row["experiment_id"] = experiment_id
-        rows.append(row)
+        rows.append(_stable_row(row))
     return rows
 
 

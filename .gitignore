@@ -6,6 +6,10 @@ data/*.csv
 !data/.gitkeep
 reports/_scratch/
 reports/audit/phase_a_gate/
+reports/audit/phase_a_debug_*/
+reports/audit/phase_a_final_*/
+reports/audit/phase_a_manual_*/
+validation/cache/phase_a_*/
 .DS_Store
 *.log
 .env

@@ -128,6 +128,8 @@ def _classify_gap(previous: dt.datetime, current: dt.datetime, timeframe: str) -
         return "weekend"
     if timeframe in {"M5", "H1"} and previous.hour == 23 and current.hour == 1 and current.date() > previous.date():
         return "daily_market_maintenance"
+    if timeframe in {"M5", "H1"} and previous.weekday() == 4 and delta_minutes >= 60:
+        return "scheduled_market_closure"
     if delta_minutes >= expected * 4 and timeframe in {"M5", "H1"} and current.hour in {0, 1}:
         return "scheduled_market_closure"
     if timeframe == "D1" and delta_minutes >= expected * 2:
