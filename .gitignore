@@ -5,6 +5,7 @@ env/
 data/*.csv
 !data/.gitkeep
 reports/_scratch/
+reports/audit/phase_a_gate/
 .DS_Store
 *.log
 .env

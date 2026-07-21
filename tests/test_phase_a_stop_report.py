@@ -16,6 +16,7 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 
 from src.research.dataset_manifest import build_dataset_manifest, sha256_file, write_manifest  # noqa: E402
 from src.research.phase_a_stop_report import build_phase_a_stop_report  # noqa: E402
+from src.research.run_phase_a_gate import run_phase_a_gate  # noqa: E402
 from src.research.trade_recorder import write_csv  # noqa: E402
 
 
@@ -207,6 +208,44 @@ def _write_run(
     _write_equity_rows(run_dir / "baseline_equity.csv")
     _write_empty_csv(run_dir / "management_events.csv", ["experiment_id", "event"])
     _write_empty_csv(run_dir / "rejected_candidates.csv", ["signal_time", "stage", "direction", "structure_key", "rejection_reason", "symbol", "metadata", "experiment_id"])
+    _write_empty_csv(run_dir / "censored_trades.csv", ["schema_version", "signal_index", "signal_time", "entry_index", "entry_time", "exit_index", "exit_time", "direction", "entry", "stop", "target", "exit_price", "gross_r", "cost_r", "net_r", "outcome", "structure_key", "symbol_metadata_version", "spread_price", "spread_points", "spread_pips", "entry_slippage_price", "exit_slippage_price", "slippage_price_round_trip", "commission_usd_round_turn", "commission", "spread_r", "slippage_r", "commission_r", "swap_r", "price_cost_round_trip", "total_cost", "total_cost_r", "partial_taken", "break_even_activated", "ambiguous_bar", "unresolved_open_position", "management_events", "experiment_id", "strategy_id", "strategy_version", "symbol"])
+    write_csv(
+        run_dir / "cost_legs.csv",
+        [
+            {"schema_version": 1, "trade_id": "fixture:1", "symbol": "EURUSD", "entry_time": "2026-07-20T00:05:00Z", "leg": "spread", "cost_r": 0.25, "source_column": "spread_r", "experiment_id": "baseline"},
+            {"schema_version": 1, "trade_id": "fixture:1", "symbol": "EURUSD", "entry_time": "2026-07-20T00:05:00Z", "leg": "slippage", "cost_r": 0.05, "source_column": "slippage_r", "experiment_id": "baseline"},
+            {"schema_version": 1, "trade_id": "fixture:1", "symbol": "EURUSD", "entry_time": "2026-07-20T00:05:00Z", "leg": "commission", "cost_r": 0.0, "source_column": "commission_r", "experiment_id": "baseline"},
+            {"schema_version": 1, "trade_id": "fixture:1", "symbol": "EURUSD", "entry_time": "2026-07-20T00:05:00Z", "leg": "swap", "cost_r": 0.0, "source_column": "swap_r", "experiment_id": "baseline"},
+        ],
+        fieldnames=["schema_version", "trade_id", "symbol", "entry_time", "leg", "cost_r", "source_column", "experiment_id"],
+    )
+    write_csv(
+        run_dir / "funnel_report.csv",
+        [{"schema_version": 1, "metric": key, "count": value} for key, value in sorted(metrics["funnel_counts"].items())],
+        fieldnames=["schema_version", "metric", "count"],
+    )
+    (run_dir / "artifact_schema.json").write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "artifacts": {
+                    "trades": {"path": "baseline_trades.csv"},
+                    "equity": {"path": "baseline_equity.csv"},
+                    "management_events": {"path": "management_events.csv"},
+                    "rejected_candidates": {"path": "rejected_candidates.csv"},
+                    "censored_trades": {"path": "censored_trades.csv"},
+                    "cost_legs": {"path": "cost_legs.csv"},
+                    "funnel_report": {"path": "funnel_report.csv"},
+                    "manifest": {"path": "baseline_manifest.json"},
+                    "metrics": {"path": "baseline_metrics.json"},
+                },
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
 
     latest = {
         "run_id": run_id,
@@ -229,6 +268,10 @@ def _write_run(
         "equity": sha256_file(run_dir / "baseline_equity.csv"),
         "management_events": sha256_file(run_dir / "management_events.csv"),
         "rejected_candidates": sha256_file(run_dir / "rejected_candidates.csv"),
+        "censored_trades": sha256_file(run_dir / "censored_trades.csv"),
+        "cost_legs": sha256_file(run_dir / "cost_legs.csv"),
+        "funnel_report": sha256_file(run_dir / "funnel_report.csv"),
+        "artifact_schema": sha256_file(run_dir / "artifact_schema.json"),
     }
     (output_root / "LATEST.json").write_text(json.dumps(latest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return run_dir
@@ -320,3 +363,27 @@ def test_phase_a_stop_report_can_pass_with_complete_coverage(tmp_path):
     assert report.comparison.resumed_metrics_match is True
     assert report.comparison.trade_reconciliation["gross_minus_cost_minus_net_r"] == pytest.approx(0.0)
     assert report.comparison.trade_reconciliation["component_minus_cost_drag_r"] == pytest.approx(0.0)
+
+
+def test_phase_a_gate_writes_blocked_preflight_report_for_missing_data(tmp_path):
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    _write_data_dir(data_dir, ["EURUSD", "XAUUSD"])
+
+    result = run_phase_a_gate(
+        data_dir=data_dir,
+        gate_root=tmp_path / "gate",
+        cache_root=tmp_path / "cache",
+        required_symbols=("EURUSD", "GBPUSD", "XAUUSD"),
+        required_timeframes=("M5", "H1", "D1"),
+        test_command="",
+        ci_status="passed",
+    )
+
+    reports = list((tmp_path / "gate").glob("*/phase_a_stop_report.md"))
+    assert result == 2
+    assert len(reports) == 1
+    text = reports[0].read_text(encoding="utf-8")
+    assert "Decision: `BLOCKED`" in text
+    assert "GBPUSD" in text
+    assert "Baseline replay was not started" in text

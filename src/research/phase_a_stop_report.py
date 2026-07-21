@@ -47,6 +47,10 @@ class ComparisonSummary:
     clean_management_hash_match: bool
     clean_rejected_hash_match: bool
     clean_equity_hash_match: bool
+    clean_censored_hash_match: bool
+    clean_cost_legs_hash_match: bool
+    clean_funnel_report_hash_match: bool
+    clean_artifact_schema_hash_match: bool
     resumed_manifest_raw_match: bool | None
     resumed_manifest_normalized_match: bool | None
     resumed_latest_normalized_match: bool | None
@@ -55,6 +59,10 @@ class ComparisonSummary:
     resumed_management_hash_match: bool | None
     resumed_rejected_hash_match: bool | None
     resumed_equity_hash_match: bool | None
+    resumed_censored_hash_match: bool | None
+    resumed_cost_legs_hash_match: bool | None
+    resumed_funnel_report_hash_match: bool | None
+    resumed_artifact_schema_hash_match: bool | None
     trade_reconciliation: dict[str, float]
     cost_reconciliation: dict[str, float]
 
@@ -111,7 +119,7 @@ class PhaseAStopReport:
             f"- Full suite status: `{self.suite_status}`",
             f"- CI status: `{self.ci_status}`",
             f"- Coverage complete: `{self.coverage_complete}`",
-            f"- Clean runs match: `{self.comparison.clean_metrics_match and self.comparison.clean_trades_hash_match and self.comparison.clean_management_hash_match and self.comparison.clean_rejected_hash_match and self.comparison.clean_equity_hash_match and self.comparison.clean_manifest_normalized_match and self.comparison.clean_latest_normalized_match}`",
+            f"- Clean runs match: `{self.comparison.clean_metrics_match and self.comparison.clean_trades_hash_match and self.comparison.clean_management_hash_match and self.comparison.clean_rejected_hash_match and self.comparison.clean_equity_hash_match and self.comparison.clean_censored_hash_match and self.comparison.clean_cost_legs_hash_match and self.comparison.clean_funnel_report_hash_match and self.comparison.clean_artifact_schema_hash_match and self.comparison.clean_manifest_normalized_match and self.comparison.clean_latest_normalized_match}`",
             f"- Resumed run supplied: `{self.resumed is not None}`",
         ]
 
@@ -179,6 +187,10 @@ class PhaseAStopReport:
                         ["clean management hash", self.comparison.clean_management_hash_match],
                         ["clean rejected hash", self.comparison.clean_rejected_hash_match],
                         ["clean equity hash", self.comparison.clean_equity_hash_match],
+                        ["clean censored hash", self.comparison.clean_censored_hash_match],
+                        ["clean cost legs hash", self.comparison.clean_cost_legs_hash_match],
+                        ["clean funnel report hash", self.comparison.clean_funnel_report_hash_match],
+                        ["clean artifact schema hash", self.comparison.clean_artifact_schema_hash_match],
                         ["resumed manifest raw hash", self.comparison.resumed_manifest_raw_match],
                         ["resumed manifest normalized", self.comparison.resumed_manifest_normalized_match],
                         ["resumed latest normalized", self.comparison.resumed_latest_normalized_match],
@@ -187,6 +199,10 @@ class PhaseAStopReport:
                         ["resumed management hash", self.comparison.resumed_management_hash_match],
                         ["resumed rejected hash", self.comparison.resumed_rejected_hash_match],
                         ["resumed equity hash", self.comparison.resumed_equity_hash_match],
+                        ["resumed censored hash", self.comparison.resumed_censored_hash_match],
+                        ["resumed cost legs hash", self.comparison.resumed_cost_legs_hash_match],
+                        ["resumed funnel report hash", self.comparison.resumed_funnel_report_hash_match],
+                        ["resumed artifact schema hash", self.comparison.resumed_artifact_schema_hash_match],
                     ],
                 ),
                 "",
@@ -341,7 +357,7 @@ def _coverage_rows(data_dir: Path, required_symbols: Iterable[str], required_tim
                         "source_symbol": source_symbol,
                         "path": stats["path"],
                         "rows": stats["rows"],
-                        "validation": "ok",
+                        "validation": "ok" if not stats.get("gap_counts") else f"ok; gaps={stats['gap_counts']}",
                     }
                 )
             except Exception as exc:
@@ -443,6 +459,10 @@ def _comparison_summary(clean_a: RunSnapshot, clean_b: RunSnapshot, resumed: Run
     clean_management_hash_match = clean_a.latest["artifact_hashes"]["management_events"] == clean_b.latest["artifact_hashes"]["management_events"]
     clean_rejected_hash_match = clean_a.latest["artifact_hashes"]["rejected_candidates"] == clean_b.latest["artifact_hashes"]["rejected_candidates"]
     clean_equity_hash_match = clean_a.latest["artifact_hashes"]["equity"] == clean_b.latest["artifact_hashes"]["equity"]
+    clean_censored_hash_match = clean_a.latest["artifact_hashes"]["censored_trades"] == clean_b.latest["artifact_hashes"]["censored_trades"]
+    clean_cost_legs_hash_match = clean_a.latest["artifact_hashes"]["cost_legs"] == clean_b.latest["artifact_hashes"]["cost_legs"]
+    clean_funnel_report_hash_match = clean_a.latest["artifact_hashes"]["funnel_report"] == clean_b.latest["artifact_hashes"]["funnel_report"]
+    clean_artifact_schema_hash_match = clean_a.latest["artifact_hashes"]["artifact_schema"] == clean_b.latest["artifact_hashes"]["artifact_schema"]
     clean_metrics_match = clean_a.metrics == clean_b.metrics
 
     resumed_manifest_raw_match = None
@@ -453,6 +473,10 @@ def _comparison_summary(clean_a: RunSnapshot, clean_b: RunSnapshot, resumed: Run
     resumed_management_hash_match = None
     resumed_rejected_hash_match = None
     resumed_equity_hash_match = None
+    resumed_censored_hash_match = None
+    resumed_cost_legs_hash_match = None
+    resumed_funnel_report_hash_match = None
+    resumed_artifact_schema_hash_match = None
 
     if resumed is not None:
         resumed_manifest_raw_match = clean_a.manifest == resumed.manifest
@@ -463,6 +487,10 @@ def _comparison_summary(clean_a: RunSnapshot, clean_b: RunSnapshot, resumed: Run
         resumed_management_hash_match = clean_a.latest["artifact_hashes"]["management_events"] == resumed.latest["artifact_hashes"]["management_events"]
         resumed_rejected_hash_match = clean_a.latest["artifact_hashes"]["rejected_candidates"] == resumed.latest["artifact_hashes"]["rejected_candidates"]
         resumed_equity_hash_match = clean_a.latest["artifact_hashes"]["equity"] == resumed.latest["artifact_hashes"]["equity"]
+        resumed_censored_hash_match = clean_a.latest["artifact_hashes"]["censored_trades"] == resumed.latest["artifact_hashes"]["censored_trades"]
+        resumed_cost_legs_hash_match = clean_a.latest["artifact_hashes"]["cost_legs"] == resumed.latest["artifact_hashes"]["cost_legs"]
+        resumed_funnel_report_hash_match = clean_a.latest["artifact_hashes"]["funnel_report"] == resumed.latest["artifact_hashes"]["funnel_report"]
+        resumed_artifact_schema_hash_match = clean_a.latest["artifact_hashes"]["artifact_schema"] == resumed.latest["artifact_hashes"]["artifact_schema"]
 
     return ComparisonSummary(
         clean_manifest_raw_match=clean_a.manifest == clean_b.manifest,
@@ -473,6 +501,10 @@ def _comparison_summary(clean_a: RunSnapshot, clean_b: RunSnapshot, resumed: Run
         clean_management_hash_match=clean_management_hash_match,
         clean_rejected_hash_match=clean_rejected_hash_match,
         clean_equity_hash_match=clean_equity_hash_match,
+        clean_censored_hash_match=clean_censored_hash_match,
+        clean_cost_legs_hash_match=clean_cost_legs_hash_match,
+        clean_funnel_report_hash_match=clean_funnel_report_hash_match,
+        clean_artifact_schema_hash_match=clean_artifact_schema_hash_match,
         resumed_manifest_raw_match=resumed_manifest_raw_match,
         resumed_manifest_normalized_match=resumed_manifest_normalized_match,
         resumed_latest_normalized_match=resumed_latest_normalized_match,
@@ -481,6 +513,10 @@ def _comparison_summary(clean_a: RunSnapshot, clean_b: RunSnapshot, resumed: Run
         resumed_management_hash_match=resumed_management_hash_match,
         resumed_rejected_hash_match=resumed_rejected_hash_match,
         resumed_equity_hash_match=resumed_equity_hash_match,
+        resumed_censored_hash_match=resumed_censored_hash_match,
+        resumed_cost_legs_hash_match=resumed_cost_legs_hash_match,
+        resumed_funnel_report_hash_match=resumed_funnel_report_hash_match,
+        resumed_artifact_schema_hash_match=resumed_artifact_schema_hash_match,
         trade_reconciliation=_trade_reconciliation(clean_a.trades),
         cost_reconciliation=_cost_reconciliation(clean_a.metrics, clean_a.trades),
     )
@@ -553,6 +589,14 @@ def build_phase_a_stop_report(
         reasons.append("Clean run rejected-candidate artifacts do not match.")
     if not comparison.clean_equity_hash_match:
         reasons.append("Clean run equity artifacts do not match.")
+    if not comparison.clean_censored_hash_match:
+        reasons.append("Clean run censored-trade artifacts do not match.")
+    if not comparison.clean_cost_legs_hash_match:
+        reasons.append("Clean run cost-leg artifacts do not match.")
+    if not comparison.clean_funnel_report_hash_match:
+        reasons.append("Clean run funnel-report artifacts do not match.")
+    if not comparison.clean_artifact_schema_hash_match:
+        reasons.append("Clean run artifact-schema artifacts do not match.")
     if resumed is None:
         reasons.append("Interrupted/resumed replay was not supplied.")
     else:
@@ -564,6 +608,10 @@ def build_phase_a_stop_report(
             comparison.resumed_management_hash_match,
             comparison.resumed_rejected_hash_match,
             comparison.resumed_equity_hash_match,
+            comparison.resumed_censored_hash_match,
+            comparison.resumed_cost_legs_hash_match,
+            comparison.resumed_funnel_report_hash_match,
+            comparison.resumed_artifact_schema_hash_match,
         ]
         if not all(check is True for check in checks):
             reasons.append("Resumed replay does not match the clean baseline.")

@@ -51,6 +51,20 @@ DEPRECATED_TIMEFRAME_KEYS = {
 }
 REQUIRED_TIMEFRAMES = ("M5", "H1", "D1")
 TIMEFRAME_MINUTES = {"M5": 5, "H1": 60, "D1": 1440}
+ARTIFACT_SCHEMA_VERSION = 1
+ARTIFACT_FILE_NAMES = {
+    "artifact_schema": "artifact_schema.json",
+    "manifest": "baseline_manifest.json",
+    "metrics": "baseline_metrics.json",
+    "report": "baseline_report.md",
+    "trades": "baseline_trades.csv",
+    "equity": "baseline_equity.csv",
+    "management_events": "management_events.csv",
+    "rejected_candidates": "rejected_candidates.csv",
+    "censored_trades": "censored_trades.csv",
+    "cost_legs": "cost_legs.csv",
+    "funnel_report": "funnel_report.csv",
+}
 
 
 def _git_sha() -> str:
@@ -105,6 +119,22 @@ def _bar_semantics(timeframe: str) -> str:
     return f"{timeframe.upper()} bar-open timestamp; visible only after close"
 
 
+def _classify_gap(previous: dt.datetime, current: dt.datetime, timeframe: str) -> str:
+    delta_minutes = int((current - previous).total_seconds() / 60)
+    expected = TIMEFRAME_MINUTES[timeframe]
+    if delta_minutes == expected:
+        return "none"
+    if previous.weekday() == 4 and current.weekday() == 0:
+        return "weekend"
+    if timeframe in {"M5", "H1"} and previous.hour == 23 and current.hour == 1 and current.date() > previous.date():
+        return "daily_market_maintenance"
+    if delta_minutes >= expected * 4 and timeframe in {"M5", "H1"} and current.hour in {0, 1}:
+        return "scheduled_market_closure"
+    if timeframe == "D1" and delta_minutes >= expected * 2:
+        return "scheduled_market_closure"
+    return "unexpected"
+
+
 def _repo_relative(path: str | Path) -> str:
     candidate = Path(path)
     try:
@@ -132,6 +162,7 @@ def _validate_dataset_file(path: Path, *, symbol: str, source_symbol: str, timef
     seen: set[str] = set()
     first_timestamp = last_timestamp = None
     step_minutes = TIMEFRAME_MINUTES[timeframe]
+    gap_counts: dict[str, int] = {"weekend": 0, "daily_market_maintenance": 0, "scheduled_market_closure": 0, "unexpected": 0}
     for row in rows:
         ts = _parse_time(row["time"])
         if row["time"] in seen:
@@ -149,6 +180,14 @@ def _validate_dataset_file(path: Path, *, symbol: str, source_symbol: str, timef
             delta_minutes = int((ts - prev_time).total_seconds() / 60)
             if delta_minutes < step_minutes:
                 raise ValueError(f"{path}: timeframe spacing smaller than expected for {timeframe}")
+            if delta_minutes > step_minutes:
+                gap_class = _classify_gap(prev_time, ts, timeframe)
+                gap_counts[gap_class] = int(gap_counts.get(gap_class, 0)) + 1
+                if gap_class == "unexpected":
+                    raise ValueError(
+                        f"{path}: unexpected gap from {prev_time.isoformat()} to {ts.isoformat()} "
+                        f"({delta_minutes} minutes)"
+                    )
         prev_time = ts
         first_timestamp = first_timestamp or ts
         last_timestamp = ts
@@ -162,6 +201,8 @@ def _validate_dataset_file(path: Path, *, symbol: str, source_symbol: str, timef
         "last_timestamp": last_timestamp.isoformat().replace("+00:00", "Z") if last_timestamp else None,
         "timezone": "UTC",
         "bar_semantics": _bar_semantics(timeframe),
+        "gap_counts": {key: value for key, value in gap_counts.items() if value},
+        "unexpected_gap_count": int(gap_counts.get("unexpected", 0)),
     }
 
 
@@ -214,15 +255,7 @@ def _aggregate_trade_components(results: Iterable[Any]) -> dict[str, float | int
 
 
 def _artifact_hashes(run_dir: Path) -> dict[str, str]:
-    mapping = {
-        "manifest": run_dir / "baseline_manifest.json",
-        "metrics": run_dir / "baseline_metrics.json",
-        "report": run_dir / "baseline_report.md",
-        "trades": run_dir / "baseline_trades.csv",
-        "equity": run_dir / "baseline_equity.csv",
-        "management_events": run_dir / "management_events.csv",
-        "rejected_candidates": run_dir / "rejected_candidates.csv",
-    }
+    mapping = {name: run_dir / file_name for name, file_name in ARTIFACT_FILE_NAMES.items()}
     return {name: _artifact_sha256(path) for name, path in mapping.items() if path.exists()}
 
 
@@ -256,20 +289,15 @@ def resolve_latest_run(output_root: str | Path) -> dict[str, Any]:
     artifact_hashes = latest.get("artifact_hashes", {})
     if not isinstance(artifact_hashes, dict):
         raise ValueError(f"{latest_path}: artifact_hashes must be a mapping")
+    missing_hashes = sorted(set(ARTIFACT_FILE_NAMES) - set(artifact_hashes))
+    if missing_hashes:
+        raise ValueError(f"{latest_path}: missing required artifact hashes: {', '.join(missing_hashes)}")
     for rel_key in ("manifest_path", "metrics_path", "report_path", "run_dir"):
         file_path = _resolve_artifact_path(root, str(latest[rel_key]))
         if not file_path.exists():
             raise FileNotFoundError(f"{latest_path}: missing artifact {file_path}")
     for artifact_name, expected_hash in artifact_hashes.items():
-        file_name = {
-            "manifest": "baseline_manifest.json",
-            "metrics": "baseline_metrics.json",
-            "report": "baseline_report.md",
-            "trades": "baseline_trades.csv",
-            "equity": "baseline_equity.csv",
-            "management_events": "management_events.csv",
-            "rejected_candidates": "rejected_candidates.csv",
-        }.get(artifact_name)
+        file_name = ARTIFACT_FILE_NAMES.get(artifact_name)
         if not file_name:
             continue
         file_path = run_dir / file_name
@@ -292,6 +320,42 @@ def _frame_from_rows(rows: list[dict[str, Any]]) -> pd.DataFrame:
     if not df.empty and "entry_time" in df.columns:
         df = df.sort_values(by=["entry_time", "signal_time", "entry_index"], kind="stable")
     return df
+
+
+def _cost_leg_rows(rows: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
+    output: list[dict[str, Any]] = []
+    for trade_number, row in enumerate(rows, start=1):
+        trade_id = row.get("structure_key") or f"trade-{trade_number}"
+        for leg, column in (
+            ("spread", "spread_r"),
+            ("slippage", "slippage_r"),
+            ("commission", "commission_r"),
+            ("swap", "swap_r"),
+        ):
+            output.append(
+                {
+                    "schema_version": ARTIFACT_SCHEMA_VERSION,
+                    "trade_id": trade_id,
+                    "symbol": row.get("symbol"),
+                    "entry_time": row.get("entry_time"),
+                    "leg": leg,
+                    "cost_r": row.get(column, 0.0),
+                    "source_column": column,
+                    "experiment_id": row.get("experiment_id"),
+                }
+            )
+    return output
+
+
+def _funnel_report_rows(funnel_counts: dict[str, int]) -> list[dict[str, Any]]:
+    return [
+        {
+            "schema_version": ARTIFACT_SCHEMA_VERSION,
+            "metric": key,
+            "count": int(value),
+        }
+        for key, value in sorted(funnel_counts.items())
+    ]
 
 
 def run_baseline(
@@ -472,6 +536,7 @@ def run_baseline(
             "strategy_version",
             "symbol",
         ]
+        censored_trade_columns = ["schema_version", *trade_columns]
         event_columns = [
             "experiment_id",
             "event",
@@ -488,6 +553,17 @@ def run_baseline(
             "reason",
         ]
         equity_columns = ["entry_time", "cum_net_r"]
+        cost_leg_columns = [
+            "schema_version",
+            "trade_id",
+            "symbol",
+            "entry_time",
+            "leg",
+            "cost_r",
+            "source_column",
+            "experiment_id",
+        ]
+        funnel_report_columns = ["schema_version", "metric", "count"]
         candidate_columns = [
             "signal_time",
             "stage",
@@ -510,6 +586,32 @@ def run_baseline(
         write_csv(staging_dir / "baseline_equity.csv", equity_frame.to_dict(orient="records"), fieldnames=equity_columns)
         write_csv(staging_dir / "management_events.csv", event_rows_all, fieldnames=event_columns)
         candidate_frame.to_csv(staging_dir / "rejected_candidates.csv", index=False, columns=candidate_columns)
+        censored_rows = [
+            {"schema_version": ARTIFACT_SCHEMA_VERSION, **row}
+            for row in trade_rows_all
+            if str(row.get("outcome", "")).upper() == "CENSORED_END_OF_DATA"
+        ]
+        write_csv(staging_dir / "censored_trades.csv", censored_rows, fieldnames=censored_trade_columns)
+        write_csv(staging_dir / "cost_legs.csv", _cost_leg_rows(trade_rows_all), fieldnames=cost_leg_columns)
+        write_csv(staging_dir / "funnel_report.csv", _funnel_report_rows(funnel_counts), fieldnames=funnel_report_columns)
+        artifact_schema = {
+            "schema_version": ARTIFACT_SCHEMA_VERSION,
+            "artifacts": {
+                "trades": {"path": "baseline_trades.csv", "columns": trade_columns},
+                "equity": {"path": "baseline_equity.csv", "columns": equity_columns},
+                "management_events": {"path": "management_events.csv", "columns": event_columns},
+                "rejected_candidates": {"path": "rejected_candidates.csv", "columns": candidate_columns},
+                "censored_trades": {"path": "censored_trades.csv", "columns": censored_trade_columns},
+                "cost_legs": {"path": "cost_legs.csv", "columns": cost_leg_columns},
+                "funnel_report": {"path": "funnel_report.csv", "columns": funnel_report_columns},
+                "manifest": {"path": "baseline_manifest.json", "type": "json"},
+                "metrics": {"path": "baseline_metrics.json", "type": "json"},
+            },
+        }
+        (staging_dir / "artifact_schema.json").write_text(
+            json.dumps(artifact_schema, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
 
         lines = [
             "# ST-C1 Corrected Baseline Report",

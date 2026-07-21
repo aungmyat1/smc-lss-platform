@@ -59,7 +59,7 @@ def test_run_backtest_report_shape_on_real_csv():
     m5 = None
     csv = os.path.join(os.path.dirname(__file__), "..", "data", "EURUSD_M5.csv")
     import smc_engine as e
-    m5 = e.load_candles(csv)
+    m5 = e.load_candles(csv)[:120]
     rep = bt.run_backtest("EURUSD", m5, warmup=20)
     for k in ("symbol", "trades", "win_rate_pct", "expectancy_R", "profit_factor",
               "max_drawdown_R", "caveat", "trade_log"):

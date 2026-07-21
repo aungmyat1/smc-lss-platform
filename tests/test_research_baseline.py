@@ -234,6 +234,17 @@ def test_dataset_validation_and_latest_pointer_resolution(tmp_path):
     assert latest["complete"] is True
     assert "artifact_hashes" in latest
     assert latest["artifact_hashes"]["manifest"]
+    for artifact in (
+        "artifact_schema",
+        "censored_trades",
+        "cost_legs",
+        "funnel_report",
+        "trades",
+        "equity",
+        "management_events",
+        "rejected_candidates",
+    ):
+        assert latest["artifact_hashes"][artifact]
 
     bad_dataset = tmp_path / "bad.csv"
     bad_dataset.write_text(
@@ -244,6 +255,16 @@ def test_dataset_validation_and_latest_pointer_resolution(tmp_path):
     )
     with pytest.raises(ValueError, match="duplicate timestamp"):
         _validate_dataset_file(bad_dataset, symbol="EURUSD", source_symbol="EURUSD", timeframe="M5")
+
+    gap_dataset = tmp_path / "gap.csv"
+    gap_dataset.write_text(
+        "time,open,high,low,close\n"
+        "2026-07-17T06:00:00Z,1,1.5,0.5,1.1\n"
+        "2026-07-17T06:10:00Z,1.1,1.5,0.5,1.2\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="unexpected gap"):
+        _validate_dataset_file(gap_dataset, symbol="EURUSD", source_symbol="EURUSD", timeframe="M5")
 
 
 def test_baseline_runner_smoke(tmp_path):
@@ -266,6 +287,10 @@ def test_baseline_runner_smoke(tmp_path):
     latest_path = output_dir / "LATEST.json"
     assert manifest_path.exists()
     assert (run_dir / "baseline_report.md").exists()
+    assert (run_dir / "artifact_schema.json").exists()
+    assert (run_dir / "censored_trades.csv").exists()
+    assert (run_dir / "cost_legs.csv").exists()
+    assert (run_dir / "funnel_report.csv").exists()
     assert latest_path.exists()
     latest = json.loads(latest_path.read_text(encoding="utf-8"))
     assert latest["run_id"] == result["run_id"]
@@ -275,6 +300,12 @@ def test_baseline_runner_smoke(tmp_path):
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assert manifest["strategy_version"] == "1.0.0"
     assert manifest["runner_fingerprint"]
+    artifact_schema = json.loads((run_dir / "artifact_schema.json").read_text(encoding="utf-8"))
+    assert artifact_schema["schema_version"] == 1
+    assert artifact_schema["artifacts"]["cost_legs"]["columns"][0] == "schema_version"
+    assert list(csv.DictReader((run_dir / "censored_trades.csv").open(newline="", encoding="utf-8"))) == []
+    funnel_rows = list(csv.DictReader((run_dir / "funnel_report.csv").open(newline="", encoding="utf-8")))
+    assert any(row["metric"] == "executed_trade" for row in funnel_rows)
 
 
 def test_batch_runner_persists_management_events_and_funnel_counts(tmp_path):
