@@ -191,3 +191,35 @@ definition, making the downstream window loop dead code. The addendum above
 is retracted: this is not a fourth relaxation, just a no-op parameter
 inherited unchanged from v3.6/v3.7/v3.8. See the correction appended to
 `ST_C1_V39_CLEAN_SMC_RCR.md` for full detail.
+
+## Change: "ST-C1 Reversal Capture" preset (spec version: v3.9 (parked as historical control) -> v3.10, contract v1.2.0 -> v1.3.0)
+Date: 2026-07-22
+Author: Claude (research agent), on behalf of owner-supplied preset
+
+### Why
+Owner directed a new objective: capture reversal trades where price fills
+(at least partially) a D1 gap while H4 trend still points the other way,
+confirmed by a lower-timeframe CHoCH + displacement flipping supply to
+demand (or vice versa). v3.9 is continuation-only and cannot express this
+(E1 is disabled entirely there, and E2/E3 carry no HTF-bias-divergence
+check) — a materially different trade thesis, hence a new spec version
+(v3.10) rather than an edit to v3.9, which is retained unmodified as an
+immutable prior candidate/control.
+
+### Evidence
+No prior backtest evidence exists for this exact design in this repo —
+disclosed as a limitation, not concealed. The "expected improvement" is a
+design intent (owner-supplied preset), not a number derived from prior
+backtest data, unlike v3.9's reaction to the v3.7/v3.8 funnel diagnosis.
+
+### Hypothesis / expected improvement / success / rollback
+See `reports/audit/ST_C1_V310_REVERSAL_CAPTURE_RCR.md` for the full filed
+template, including the disclosed limitation that no population-feasibility
+floor was precommitted for this specific preset (deferred to a follow-up
+addendum once initial signal counts are observed).
+
+**Resolution:** `specs/v3.10.yaml` and
+`strategies/candidates/ST-C1_v1.3.0.yaml` created as candidate-only,
+`engine_implements_spec: false` until the dedicated engine and its tests
+are built and pass — pending a `backtest-researcher` run before any
+ACCEPT/REJECT verdict.

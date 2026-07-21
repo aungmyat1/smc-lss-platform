@@ -1,0 +1,143 @@
+# ST-C1 candidate strategy contract — v1.3.0 ("Reversal Capture" preset v1)
+# Normalized from specs/v3.10.yaml.
+# Status: candidate only, not approved for execution.
+#
+# IMPORTANT — this does NOT continue v1.2.0's continuation-only ("Clean SMC")
+# lineage. v1.2.0/v3.9 is retained UNCHANGED as a prior, independently open
+# candidate/control (its own cost/quality question from the population
+# ablation, see PROJECT_STATUS.md §5, is unresolved and unaffected by this
+# file). This file introduces a reversal trade thesis: E1 (D1 gap reaction)
+# re-enabled with a partial-fill tolerance, an H4 trend-bias gate the entry
+# must DIVERGE from, a 3-bar demand/supply-zone hold confirmation, internal
+# (not just external) liquidity sweeps, auto-detected displacement
+# direction, and a dynamic, displacement-length-scaled R:R target.
+
+strategy:
+  strategy_id: ST-C1
+  name: London SMC Reversal ("Reversal Capture" preset v1)
+  version: 1.3.0
+  status: candidate
+  source:
+    specification: reports/audit/ST_C1_V310_REVERSAL_CAPTURE_RCR.md
+    research_spec: specs/v3.10.yaml
+    execution_spec: specs/v1.yaml
+    supersedes_candidate: null   # does not edit v1.2.0 in place; retained as independent prior candidate/control
+    parked_candidates: []         # v1.2.0 is not parked -- it remains open, separately unresolved
+  validation:
+    status: pending
+    approval_status: pending
+    qualification: not_started   # existence check (>=1 signal per symbol) not yet run
+
+market_universe:
+  asset_class: [forex, metals]
+  instruments: [EURUSD, GBPUSD, XAUUSD]
+  sessions: [London, NewYork]
+  timezone: UTC
+  timeframes:
+    bias: H4
+    setup: H1
+    confirmation: M5
+    execution: M5
+
+parameters:
+  swing_lookback_bars: 3
+  swing_confirmation_bars: 2
+
+  # HTF trend bias (NEW) — reversal must diverge from this
+  trend_bias_h4_bars: 20
+  reversal_requires_divergence: true
+
+  # E1 — RE-ENABLED for reversal capture
+  e1_gap_max_age_d1_bars: 20
+  e1_reaction_window_h1_bars: 12
+  e1_reaction_wick_ratio_min: 0.30
+  e1_gap_reversal_tolerance_pct: 0.25
+
+  # E2 — hold-confirmed demand/supply shift
+  e2_poi_max_age_h1_bars: 120
+  e2_reaction_wick_ratio_min: 0.0
+  e2_demand_zone_confirmation_bars: 3
+
+  # E3 — internal liquidity accepted
+  e3_range_lookback_h1_bars: 60
+  e3_sweep_wick_ratio_min: 0.0
+  e3_reclaim_window_h1_bars: 0
+  e3_internal_liquidity_trigger: true
+
+  # Displacement — body-ratio-only, auto direction
+  displacement_atr_period: 0
+  displacement_atr_mult: 0.0
+  displacement_body_ratio_min: 0.6
+  displacement_start_offset_bars: 0
+  displacement_max_run_bars: 12
+  displacement_direction: auto
+
+  # Timing / session (UTC)
+  london_session_open_utc: "07:00"
+  london_session_close_utc: "16:00"
+  new_york_session_open_utc: "12:00"
+  new_york_session_close_utc: "21:00"
+  max_e_to_m_h1_bars: 0
+  signal_ttl_bars: 0
+
+  # Execution / spread gates
+  max_spread_points: 20
+  max_stale_price_seconds: 3
+  entry_mode: reversal
+  confirmation_tf: M5
+
+  # Risk / management
+  risk_pct_per_trade: 0.5
+  min_rr: 3.0
+  dynamic_rr: true
+  break_even_activation_r: 1.0
+  partial_take_r: 1.0
+  partial_take_fraction: 0.5
+  daily_loss_pct: 3.0
+  weekly_loss_pct: 6.0
+  max_positions: 3
+  portfolio_heat_pct: 3.0
+  time_stop_h1_bars: 0
+
+model:
+  primary: E1M2   # D1 gap reversal reaction + M5 CHoCH-confirmed supply/demand shift (the owner-supplied reversal example)
+  entry_rule: "H4 bias diverges from the E1 gap-reaction direction; price fills 75-100% of the D1 gap; M5 CHoCH + body-ratio displacement confirms supply->demand (or demand->supply) shift after a 3-bar hold; entry at next-bar-open after the M5 close-through"
+  stop_rule: "structure-based only — nearest of [origin zone far boundary, inducement/swept liquidity extreme] minus/plus buffer; time-stop disabled, invalidation is structural only"
+  target_rule: "dynamic: target distance scales with the displacement leg length (dynamic_rr), floor at min_rr=3.0; falls back to nearest unswept HTF liquidity if the dynamic target would fall short of the floor; REJECT_NO_TARGET on no valid target — no synthetic fixed-R substitute below the floor"
+
+risk_contract:
+  risk_per_trade: {demo: 0.5, live: 0.5}
+  max_daily_loss_pct: 3.0
+  max_weekly_loss_pct: 6.0
+  max_positions: 3
+  portfolio_heat_pct: 3.0
+  minimum_rr: 3.0
+  position_sizing:
+    mode: config_driven
+    method: risk_pct_by_stop_distance
+    lot_rounding: round_down_to_broker_step
+  execution_limits:
+    max_spread_points: 20
+    max_stale_price_seconds: 3
+    duplicate_order_prevention: true
+    stop_widening_allowed: false
+
+machine_validation:
+  every_rule_measurable: true
+  every_parameter_externalizable: true
+  no_subjective_language: true
+  entry_conditions_boolean: true
+  exit_conditions_deterministic: true
+  risk_rules_explicit: true
+  strategy_codable_without_interpretation: true
+
+notes:
+  - Candidate contract only.
+  - Not approved for execution.
+  - No population-feasibility floor precommitted for this preset yet — see
+    reports/audit/ST_C1_V310_REVERSAL_CAPTURE_RCR.md; an existence check
+    (>=1 signal per symbol) is the interim acceptance bar until a follow-up
+    RCR addendum sets one, once initial signal counts are observed.
+  - ST-C1_v1.2.0.yaml (v3.9, "Clean SMC") remains retained, unmodified, as an
+    independent prior candidate/control and is not superseded in place by
+    this file.

@@ -1,0 +1,280 @@
+# SMC-LSS strategy spec v3.10 ("ST-C1 Reversal Capture" preset v1)
+# Source of truth: this file + reports/audit/ST_C1_V310_REVERSAL_CAPTURE_RCR.md
+# Status: RESEARCH_CANDIDATE — spec only. engine_implements_spec stays false
+# until an engine implementing this exact schema is built and backtested via
+# backtest-researcher.
+#
+# WHY A NEW VERSION (not a v3.9 edit): v3.9 ("Clean SMC") is continuation-only
+# — E1 (D1 gap reaction) is disabled entirely there, and E2/E3 carry no
+# higher-timeframe bias-divergence check, so it structurally cannot express
+# a reversal trade thesis. v3.9 is retained immutable as a prior
+# candidate/control (its own open cost/quality question from the population
+# ablation, see PROJECT_STATUS.md §5, is unresolved and unaffected by this
+# file). v3.10 re-enables E1 with a partial-fill reversal tolerance, adds an
+# H4 trend-bias gate that a reversal setup must DIVERGE from (not agree
+# with), a 3-bar demand/supply-zone hold confirmation on E2, acceptance of
+# internal (not just external) liquidity sweeps on E3, an auto-detected
+# displacement direction, and a dynamic, displacement-length-scaled R:R
+# target — an owner-supplied preset ("ST-C1 UPGRADE CONFIG v2"), reproduced
+# here verbatim as the parameter source of truth.
+version: 3.10
+track: research                # research-only, never executes trades
+status: draft
+promotion_stage: research
+supersedes: null                # does not edit v3.9 in place; v3.9 remains immutable/retained as prior candidate
+parked_predecessor_lines: []     # v3.9 is not parked — it remains an independently open candidate/control, not superseded
+
+confirmation:
+  closed_candles_only: true
+  require_stage1_and_stage2: true
+  utc_normalization_required: true
+
+governance:
+  schema_version: 1
+  config_version: 3.10.0
+  approval_package_required: true
+  dataset_version: pending
+  code_commit: pending
+  build_identifier: pending
+  registry_version: 3.10.0
+  config_hash: pending
+  fail_closed: true
+  single_source_of_truth: true
+
+direction_locked_per_variant: false
+
+# ---------------------------------------------------------------------------
+# Swing / structure detection
+# ---------------------------------------------------------------------------
+swing:
+  swing_lookback_bars: 3
+  swing_confirmation_bars: 2
+
+# ---------------------------------------------------------------------------
+# HTF trend bias (NEW in v3.10) — a reversal setup must DIVERGE from this,
+# not agree with it (see behavioral logic in the RCR). Computed from H4
+# candles, a timeframe no prior spec version in this repo has used.
+# ---------------------------------------------------------------------------
+trend_bias:
+  timeframe: H4
+  trend_bias_h4_bars: 20         # bars used to infer macro direction (last ~20 H4 candles)
+  reversal_requires_divergence: true   # entry direction must OPPOSE the H4 bias, not match it
+
+# ---------------------------------------------------------------------------
+# E-triggers (STAGE 1 — HTF cause)
+# ---------------------------------------------------------------------------
+e_triggers:
+  E1:
+    desc: "D1 gap (3-candle D1 FVG) partial-or-full fill/reaction at H1 context — RE-ENABLED in v3.10 for reversal capture"
+    enabled: true
+    tf: [D1, H1]
+    gap_max_age_d1_bars: 20
+    reaction_window_h1_bars: 12
+    reaction_wick_ratio_min: 0.30
+    gap_reversal_tolerance_pct: 0.25   # reversal valid once 75-100% of the gap is filled (partial fill accepted)
+  E2:
+    desc: "H1 reaction at a fresh/mitigated H1 order-block/POI, now requiring a hold confirmation before qualifying"
+    enabled: true
+    tf: [H1]
+    poi_max_age_h1_bars: 120
+    reaction_wick_ratio_min: 0.0
+    demand_zone_confirmation_bars: 3   # price must hold on the reaction side for 3 bars before the zone qualifies
+  E3:
+    desc: "H1 liquidity sweep — now also accepting INTERNAL (minor) liquidity, not external-only"
+    enabled: true
+    tf: [H1]
+    range_lookback_h1_bars: 60
+    sweep_wick_ratio_min: 0.0
+    reclaim_window_h1_bars: 0        # proven a no-op in the engine (see ST_C1_V39_CLEAN_SMC_RCR.md's correction) — kept for spec-field fidelity only
+    internal_liquidity_trigger: true # sweeps of internal (non-dealing-range-extremity) highs/lows also qualify
+
+# ---------------------------------------------------------------------------
+# M-models (STAGE 2 — M5 confirmation + entry anchor), same geometry as
+# v3.9/v3.6 except M2 additionally requires the E2 hold-confirmation above
+# before its supply/demand shift qualifies.
+# ---------------------------------------------------------------------------
+m_models:
+  M1:
+    desc: "inducement (internal liquidity) sweep + character change -> pullback/FVG midpoint"
+    entry: "pullback / FVG midpoint"
+    stop_long: "min(anchor_low, inducement_low, swept_ssl) - buffer"
+    stop_short: "max(anchor_high, inducement_high, swept_bsl) + buffer"
+    retrace_max_bars: 30
+  M2:
+    desc: "supply/demand shift (CHoCH-confirmed) -> Gold Zone (OB ∩ FVG) -> overlap midpoint; primary reversal model"
+    entry: "OB/FVG overlap midpoint"
+    stop_long: "min(ob_low, fvg_low, swept_ssl) - buffer"
+    stop_short: "max(ob_high, fvg_high, swept_bsl) + buffer"
+    retrace_max_bars: 30
+  M3:
+    desc: "sweep + displacement -> IFVG inversion, entry after >=50% retrace"
+    entry: "IFVG midpoint (>=50% retrace)"
+    stop_long: "min(ifvg_low, swept_low, displacement_origin) - buffer"
+    stop_short: "max(ifvg_high, swept_high, displacement_origin) + buffer"
+    ifvg_max_age_m5_bars: 20
+    ifvg_retrace_max_bars: 30
+
+# ---------------------------------------------------------------------------
+# Displacement — body-ratio-only (unchanged from v3.9), with auto direction
+# detection (NEW): direction is inferred from candle close-vs-open rather
+# than required to match a pre-set bias, so a reversal run can be identified
+# independent of the H4 bias itself (the divergence check happens separately,
+# at the trend_bias gate above).
+# ---------------------------------------------------------------------------
+displacement:
+  atr_period: 0
+  atr_mult: 0.0
+  body_ratio_min: 0.6
+  start_offset_bars: 0
+  max_run_bars: 12
+  direction: auto
+
+sequencing:
+  enforce_order: true
+  first_qualifying_bar_only: true
+
+cross_stage:
+  max_e_to_m_h1_bars: 0
+
+# ---------------------------------------------------------------------------
+# Session / timing gates (UTC) — unchanged from v3.9's widened windows
+# ---------------------------------------------------------------------------
+session:
+  timezone: UTC
+  london_utc: ["07:00", "16:00"]
+  new_york_utc: ["12:00", "21:00"]
+  weekdays_only: true
+  dst_adjusted: false
+  news_filter: none
+
+entry:
+  type: confirmation_close_next_bar_open
+  resting_limit_orders: false
+  intrabar_market_fill: false
+  mode: reversal                       # NEW: engine only takes setups that diverge from H4 bias
+  confirmation_tf: M5                  # CHoCH + displacement confirmed on M5
+
+signal_lifecycle:
+  ttl_bars: 0
+  one_signal_per_structure: true
+  structure_key: [symbol, variant, structure_type, creation_index]
+  structure_types: [h1_poi, h1_sweep_level, ifvg, d1_gap]
+
+# ---------------------------------------------------------------------------
+# Execution / spread gates
+# ---------------------------------------------------------------------------
+execution_gates:
+  max_spread_points: 20
+  max_stale_price_seconds: 3
+
+horizons:
+  INTRADAY:      {max_hold_hours: 12}
+  OVERNIGHT:     {max_hold_hours: 24}
+  INTRAWEEK:     {max_hold_hours: 120}
+  MULTI_HORIZON: {max_hold_hours: 120, runner: true}
+
+variants:
+  E1M2: {horizon: MULTI_HORIZON}    # primary reversal variant: D1 gap reaction + CHoCH demand/supply shift
+  E2M1: {horizon: OVERNIGHT}
+  E2M2: {horizon: OVERNIGHT}
+  E2M3: {horizon: INTRAWEEK}
+  E3M1: {horizon: INTRADAY}
+  E3M2: {horizon: INTRADAY}
+  E3M3: {horizon: INTRADAY}
+
+# ---------------------------------------------------------------------------
+# Risk / management
+# ---------------------------------------------------------------------------
+risk:
+  strategy:
+    risk_pct_demo: 0.5
+    risk_pct_live: 0.5
+    min_rr: 3.0
+    stop_widening_allowed: false
+    dynamic_rr: true               # NEW: target distance scales with the displacement leg length, not fixed DOL-only
+  execution:
+    kill_switch: true
+    fail_closed: true
+    max_spread_points: 20
+    max_stale_price_seconds: 3
+    duplicate_order_prevention: true
+  portfolio:
+    daily_loss_pct: 3.0
+    weekly_loss_pct: 6.0
+    max_positions: 3
+    portfolio_heat_pct: 3.0
+    drawdown_cap_pct: 12.0
+
+trade_management:
+  initial_sl_required: true
+  break_even:
+    enabled: true
+    activation_r: 1.0
+  partial_take:
+    enabled: true
+    take_r: 1.0
+    fraction: 0.5
+  trailing_stop:
+    enabled: false
+    may_widen: false
+  time_stop:
+    enabled: false
+    max_hold_hours_by_horizon:
+      INTRADAY: 0
+      OVERNIGHT: 0
+      INTRAWEEK: 0
+      MULTI_HORIZON: 0
+  weekend_exit: true
+  forced_exit: true
+  invalidation_exit: true
+
+parameter_registry:
+  authoritative: true
+  fields: [parameter, type, units, default, range, owner, tunable, version, last_changed, reason]
+  parameters:
+    swing_lookback_bars:            {type: integer, units: bars, default: 3,    range: [1, 10],  owner: research, tunable: true,  version: 3.10, last_changed: 2026-07-22, reason: "classic 3-bar swing"}
+    swing_confirmation_bars:        {type: integer, units: bars, default: 2,    range: [1, 5],   owner: research, tunable: true,  version: 3.10, last_changed: 2026-07-22, reason: "swing confirmation delay"}
+    trend_bias_h4_bars:             {type: integer, units: bars, default: 20,   range: [5, 100], owner: research, tunable: true,  version: 3.10, last_changed: 2026-07-22, reason: "NEW: H4 macro-bias lookback; reversal must diverge from this"}
+    e1_gap_max_age_d1_bars:         {type: integer, units: bars, default: 20,   range: [0, 60],  owner: research, tunable: true,  version: 3.10, last_changed: 2026-07-22, reason: "E1 re-enabled in v3.10; freshness bound for reversal capture"}
+    e1_reaction_window_h1_bars:     {type: integer, units: bars, default: 12,   range: [1, 48],  owner: research, tunable: true,  version: 3.10, last_changed: 2026-07-22, reason: "E1 re-enabled; reaction window"}
+    e1_reaction_wick_ratio_min:     {type: number,  units: ratio, default: 0.30, range: [0, 1.0], owner: research, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "E1 re-enabled; wick-confirmed reaction"}
+    e1_gap_reversal_tolerance_pct:  {type: number,  units: ratio, default: 0.25, range: [0, 1.0], owner: research, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "NEW: partial-fill reversal tolerance (75-100% of gap filled qualifies)"}
+    e2_poi_max_age_h1_bars:         {type: integer, units: bars, default: 120,  range: [1, 240], owner: research, tunable: true,  version: 3.10, last_changed: 2026-07-22, reason: "unchanged from v3.9"}
+    e2_reaction_wick_ratio_min:     {type: number,  units: ratio, default: 0.0, range: [0, 1.0], owner: research, tunable: true,  version: 3.10, last_changed: 2026-07-22, reason: "unchanged from v3.9 — CHoCH-driven, not wick-driven"}
+    e2_demand_zone_confirmation_bars: {type: integer, units: bars, default: 3,  range: [1, 10],  owner: research, tunable: true,  version: 3.10, last_changed: 2026-07-22, reason: "NEW: hold-confirmation bars before the demand/supply zone qualifies"}
+    e3_range_lookback_h1_bars:      {type: integer, units: bars, default: 60,   range: [10, 200], owner: research, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "unchanged from v3.9"}
+    e3_sweep_wick_ratio_min:        {type: number,  units: ratio, default: 0.0, range: [0, 1.0], owner: research, tunable: true,  version: 3.10, last_changed: 2026-07-22, reason: "unchanged from v3.9"}
+    e3_reclaim_window_h1_bars:      {type: integer, units: bars, default: 0,    range: [0, 3],   owner: research, tunable: false, version: 3.10, last_changed: 2026-07-22, reason: "proven a no-op in the engine; kept for spec-field fidelity only"}
+    e3_internal_liquidity_trigger:  {type: boolean, units: flag, default: true, range: [false, true], owner: research, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "NEW: accept internal (minor) liquidity sweeps, not external-only"}
+    displacement_atr_period:        {type: integer, units: bars, default: 0,   range: [0, 30],  owner: research, tunable: true,  version: 3.10, last_changed: 2026-07-22, reason: "ATR-based displacement filter off, unchanged from v3.9"}
+    displacement_atr_mult:          {type: number, units: atr_mult, default: 0.0, range: [0.0, 3.0], owner: research, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "off, unchanged from v3.9"}
+    displacement_body_ratio_min:    {type: number, units: ratio, default: 0.6, range: [0.1, 0.9], owner: research, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "sole displacement qualifier, unchanged from v3.9"}
+    displacement_start_offset_bars: {type: integer, units: bars, default: 0, range: [0, 10], owner: research, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "evaluate current bar, unchanged from v3.9"}
+    displacement_max_run_bars:      {type: integer, units: bars, default: 12, range: [1, 30],  owner: research, tunable: true,  version: 3.10, last_changed: 2026-07-22, reason: "unchanged from v3.9"}
+    displacement_direction:         {type: string, units: enum, default: auto, range: [auto, bull, bear], owner: research, tunable: false, version: 3.10, last_changed: 2026-07-22, reason: "NEW: infer direction from candle close-vs-open rather than a fixed pre-set bias"}
+    london_session_open_utc:        {type: string, units: time, default: "07:00", range: ["00:00", "23:59"], owner: strategy, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "unchanged from v3.9"}
+    london_session_close_utc:       {type: string, units: time, default: "16:00", range: ["00:00", "23:59"], owner: strategy, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "unchanged from v3.9"}
+    new_york_session_open_utc:      {type: string, units: time, default: "12:00", range: ["00:00", "23:59"], owner: strategy, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "unchanged from v3.9"}
+    new_york_session_close_utc:     {type: string, units: time, default: "21:00", range: ["00:00", "23:59"], owner: strategy, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "unchanged from v3.9"}
+    max_e_to_m_h1_bars:             {type: integer, units: bars, default: 0,  range: [0, 48],  owner: research, tunable: true,  version: 3.10, last_changed: 2026-07-22, reason: "disabled, unchanged from v3.9"}
+    signal_ttl_bars:                {type: integer, units: bars, default: 0, range: [0, 5],   owner: strategy, tunable: false, version: 3.10, last_changed: 2026-07-22, reason: "disabled, unchanged from v3.9"}
+    max_spread_points:              {type: integer, units: points, default: 20, range: [1, 100], owner: execution, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "tune per symbol, unchanged from v3.9"}
+    max_stale_price_seconds:        {type: integer, units: seconds, default: 3, range: [1, 60], owner: execution, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "reject stale quotes, unchanged from v3.9"}
+    entry_mode:                     {type: string, units: enum, default: reversal, range: [reversal, continuation], owner: strategy, tunable: false, version: 3.10, last_changed: 2026-07-22, reason: "NEW: engine only accepts setups diverging from H4 bias"}
+    confirmation_tf:                {type: string, units: timeframe, default: M5, range: [M5], owner: strategy, tunable: false, version: 3.10, last_changed: 2026-07-22, reason: "NEW: CHoCH + displacement confirmed on M5, explicit"}
+    risk_pct_per_trade:             {type: number, units: percent, default: 0.5, range: [0.1, 5.0], owner: risk, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "per-trade risk, unchanged from v3.9"}
+    min_rr:                         {type: number, units: rr, default: 3.0, range: [1.0, 10.0], owner: strategy, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "hard floor: 3R minimum, unchanged from v3.9"}
+    dynamic_rr:                     {type: boolean, units: flag, default: true, range: [false, true], owner: strategy, tunable: false, version: 3.10, last_changed: 2026-07-22, reason: "NEW: target distance scales with displacement leg length"}
+    break_even_activation_r:        {type: number, units: rr, default: 1.0, range: [0.5, 5.0], owner: strategy, tunable: false, version: 3.10, last_changed: 2026-07-22, reason: "move to BE at +1R, unchanged from v3.9"}
+    partial_take_r:                 {type: number, units: rr, default: 1.0, range: [0.5, 5.0], owner: strategy, tunable: false, version: 3.10, last_changed: 2026-07-22, reason: "take partial at first target, unchanged from v3.9"}
+    partial_take_fraction:          {type: number, units: ratio, default: 0.5, range: [0.1, 1.0], owner: strategy, tunable: false, version: 3.10, last_changed: 2026-07-22, reason: "close 50% at T1, unchanged from v3.9"}
+    daily_loss_pct:                 {type: number, units: percent, default: 3.0, range: [0.1, 10.0], owner: risk, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "kill-switch, unchanged from v3.9"}
+    weekly_loss_pct:                {type: number, units: percent, default: 6.0, range: [0.1, 20.0], owner: risk, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "kill-switch, unchanged from v3.9"}
+    max_positions:                  {type: integer, units: positions, default: 3, range: [1, 10], owner: risk, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "concurrent trade cap, unchanged from v3.9"}
+    portfolio_heat_pct:             {type: number, units: percent, default: 3.0, range: [0.1, 20.0], owner: risk, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "total risk across open trades, unchanged from v3.9"}
+    time_stop_h1_bars:              {type: integer, units: bars, default: 0, range: [0, 500], owner: strategy, tunable: true, version: 3.10, last_changed: 2026-07-22, reason: "disabled — structure-based invalidation only, unchanged from v3.9"}
+
+implementation_status:
+  engine_implements_spec: false   # SAFETY INTERLOCK — nothing implements v3.10 yet
+  baseline: "No prior backtest evidence exists for this exact reversal-capture design (see RCR's disclosed limitation) — v3.9's continuation-only line has its own separate, unresolved cost/quality question (PROJECT_STATUS.md §5), not inherited by or resolved through this file."
+  next: "Build the engine (src/signal_v310.py) implementing H4 trend-bias divergence, E1 partial-fill reversal tolerance, E2 3-bar hold confirmation, E3 internal-liquidity acceptance, auto displacement direction, and dynamic R:R, with dedicated tests, then run at least an existence check (>=1 signal per symbol) via backtest-researcher per reports/audit/ST_C1_V310_REVERSAL_CAPTURE_RCR.md, BEFORE any profitability or population-feasibility claim."
