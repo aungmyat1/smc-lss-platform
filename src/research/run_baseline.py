@@ -226,6 +226,16 @@ def _artifact_hashes(run_dir: Path) -> dict[str, str]:
     return {name: _artifact_sha256(path) for name, path in mapping.items() if path.exists()}
 
 
+def _resolve_artifact_path(root: Path, raw_value: str) -> Path:
+    candidate = Path(raw_value)
+    search_paths = [candidate] if candidate.is_absolute() else [(root / candidate), (ROOT / candidate), candidate]
+    for path in search_paths:
+        resolved = path.resolve()
+        if resolved.exists():
+            return resolved
+    return search_paths[0].resolve()
+
+
 def resolve_latest_run(output_root: str | Path) -> dict[str, Any]:
     root = Path(output_root)
     latest_path = root / "LATEST.json"
@@ -240,14 +250,14 @@ def resolve_latest_run(output_root: str | Path) -> dict[str, Any]:
         raise ValueError(f"{latest_path}: missing keys: {', '.join(missing)}")
     if not latest.get("complete", False):
         raise ValueError(f"{latest_path}: incomplete run pointer")
-    run_dir = (root / str(latest["run_dir"])).resolve()
+    run_dir = _resolve_artifact_path(root, str(latest["run_dir"]))
     if not run_dir.exists():
         raise FileNotFoundError(f"{latest_path}: run directory missing: {run_dir}")
     artifact_hashes = latest.get("artifact_hashes", {})
     if not isinstance(artifact_hashes, dict):
         raise ValueError(f"{latest_path}: artifact_hashes must be a mapping")
     for rel_key in ("manifest_path", "metrics_path", "report_path", "run_dir"):
-        file_path = (root / str(latest[rel_key])).resolve()
+        file_path = _resolve_artifact_path(root, str(latest[rel_key]))
         if not file_path.exists():
             raise FileNotFoundError(f"{latest_path}: missing artifact {file_path}")
     for artifact_name, expected_hash in artifact_hashes.items():
