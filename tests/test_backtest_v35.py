@@ -1,6 +1,7 @@
 """Thin-slice tests for the v3.5 backtest harness (M2).
 Run: python -m pytest -q"""
 import os, sys
+import pytest
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 import backtest_v35 as bt
 
@@ -58,6 +59,8 @@ def test_dedup_one_signal_per_structure(monkeypatch):
 def test_run_backtest_report_shape_on_real_csv():
     m5 = None
     csv = os.path.join(os.path.dirname(__file__), "..", "data", "EURUSD_M5.csv")
+    if not os.path.exists(csv):
+        pytest.skip("requires local broker data/EURUSD_M5.csv")
     import smc_engine as e
     m5 = e.load_candles(csv)[:120]
     rep = bt.run_backtest("EURUSD", m5, warmup=20)

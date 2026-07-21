@@ -1,13 +1,23 @@
 """Tests for the Phase 0 research feature database (src/features.py).
 Run: python -m pytest -q"""
 import os, sys, time
+import pytest
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 import smc_engine as e
 import features as feat
 
 
+REAL_EURUSD_M5 = os.path.join(os.path.dirname(__file__), "..", "data", "EURUSD_M5.csv")
+
+
 def _bar(o, h, l, c, t="2026-01-01 00:00"):
     return {"time": t, "open": o, "high": h, "low": l, "close": c}
+
+
+def _require_real_eurusd_m5() -> str:
+    if not os.path.exists(REAL_EURUSD_M5):
+        pytest.skip("requires local broker data/EURUSD_M5.csv")
+    return REAL_EURUSD_M5
 
 
 def test_compute_features_returns_one_row_per_bar():
@@ -48,7 +58,7 @@ def test_choch_flags_reversal_after_established_bos_direction():
 
 
 def test_sweep_flags_only_on_the_sweep_bar():
-    csv_path = os.path.join(os.path.dirname(__file__), "..", "data", "EURUSD_M5.csv")
+    csv_path = _require_real_eurusd_m5()
     c = e.load_candles(csv_path)[:3000]
     rows = feat.compute_features(c)
     raw_sweeps = e.liquidity_sweeps(c)
@@ -58,7 +68,7 @@ def test_sweep_flags_only_on_the_sweep_bar():
 
 
 def test_performance_stays_roughly_linear_on_real_data():
-    csv_path = os.path.join(os.path.dirname(__file__), "..", "data", "EURUSD_M5.csv")
+    csv_path = _require_real_eurusd_m5()
     c = e.load_candles(csv_path)
     small = c[:3000]
     t0 = time.time()
