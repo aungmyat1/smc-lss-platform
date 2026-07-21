@@ -29,7 +29,24 @@ Completed:
 - `research/ST-C1_RESEARCH_CONTRACT.md`
 - `reports/ST-C1_NORMALIZATION_REPORT.md`
 
-## PHASE 2 — Validation & Packaging · 🟡 CURRENT
+## PHASE 2 — Validation & Packaging · 🟡 CURRENT (research/validation, not execution)
+
+**2026-07-22 note:** the ST-C1 10-gate (G1-G10) research line (`specs/v3.7.yaml`,
+`strategies/candidates/ST-C1_v1.1.0.yaml`) sits inside this phase, not Phase
+3. v3.7's locked ablation result is OVERFILTERED/statistically INCONCLUSIVE
+(zero trades in every cell); a follow-up R2.1 population-feasibility
+experiment rejected the G6 sweep-timing widening hypothesis within its
+tested range (see `PROJECT_STATUS.md` §5). **This v3.7/v3.8 line is now
+PARKED** (retained, not deleted) in favor of a new v3.9 "Clean SMC" preset
+(`specs/v3.9.yaml`, `strategies/candidates/ST-C1_v1.2.0.yaml`) filed as the
+directed follow-up RCR targeting the `REJECTED_NO_DISPLACEMENT` bottleneck —
+see `reports/audit/ST_C1_V39_CLEAN_SMC_RCR.md`. No candidate has been
+approved; the v3.9 candidate's own population-feasibility backtest has not
+yet run. Phase 3 (execution layer) remains explicitly out of scope until a
+candidate clears Phase 2's evidence gates — this phase is not yet complete
+for this strategy line, regardless of the M1-M2.3 scaffold work described
+below.
+
 
 Deliverables:
 - closed-candle-only backtest harness

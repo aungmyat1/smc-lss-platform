@@ -1,0 +1,261 @@
+# SMC-LSS strategy spec v3.9 ("ST-C1 Clean SMC" preset v1)
+# Source of truth: this file + reports/audit/ST_C1_V39_CLEAN_SMC_RCR.md
+# Status: RESEARCH_CANDIDATE — spec only. engine_implements_spec stays false
+# until an engine implementing this exact schema is built and backtested via
+# backtest-researcher.
+#
+# WHY A NEW VERSION (not a v3.6/v3.7 edit): v3.6 and v3.7 are left immutable
+# as historical controls (v3.6 = original E1/E2/E3 schema, v3.7 = G1-G10
+# gate-pipeline schema; the v3.7/v3.8 research line is PARKED, not deleted —
+# its locked ablation was OVERFILTERED/INCONCLUSIVE and its G6-population
+# follow-up (R2.1) was REJECTED within the tested range, see
+# PROJECT_STATUS.md §5). v3.9 returns to v3.6's E1/E2/E3 schema (same
+# parameter names, so it is directly comparable to ST-C1_v1.yaml v1.0.0) but
+# with a new "Clean SMC" parameter preset supplied by the owner, specifically
+# targeting the REJECTED_NO_DISPLACEMENT bottleneck identified in
+# reports/audit/ST_C1_V38_FINAL_VALIDATION_DECISION.md §13/§15:
+#   1. E1 (D1 gap reaction) is DISABLED (all e1_* thresholds zeroed) — removes
+#      the rarest HTF trigger from the funnel entirely.
+#   2. E2/E3 wick-ratio reaction/sweep filters are ZEROED — reactions qualify
+#      via CHoCH/structure confirmation, not wick geometry.
+#   3. Displacement is redefined as BODY-RATIO-ONLY (ATR-magnitude
+#      requirement removed via atr_period/atr_mult = 0; body_ratio_min
+#      raised 0.5 -> 0.6 to keep the gate discriminating). This is the exact
+#      change ST_C1_V38_FINAL_VALIDATION_DECISION.md §15 directed be tested
+#      next, instead of further sweep-timing widening.
+#   4. Session windows widened (London 07-16 UTC, NY 12-21 UTC) and several
+#      secondary timing gates (max_e_to_m_h1_bars, signal_ttl_bars,
+#      e3_reclaim_window_h1_bars, time_stop) disabled (0 = feature off), per
+#      the owner-supplied preset, to keep this a minimal/structural-only
+#      configuration for the population-feasibility test.
+version: 3.9
+track: research                # research-only, never executes trades
+status: draft
+promotion_stage: research
+supersedes: null                # does not edit v3.6/v3.7/v3.8; those remain immutable/parked
+parked_predecessor_lines: [3.7, 3.8]   # v3.7 (G1-G10) and the v3.8 R2.1 diagnostic-only line are parked, not active, pending this preset's own result
+
+confirmation:
+  closed_candles_only: true
+  require_stage1_and_stage2: true
+  utc_normalization_required: true
+
+governance:
+  schema_version: 1
+  config_version: 3.9.0
+  approval_package_required: true
+  dataset_version: pending
+  code_commit: pending
+  build_identifier: pending
+  registry_version: 3.9.0
+  config_hash: pending
+  fail_closed: true
+  single_source_of_truth: true
+
+direction_locked_per_variant: false
+
+# ---------------------------------------------------------------------------
+# Swing / structure detection
+# ---------------------------------------------------------------------------
+swing:
+  swing_lookback_bars: 3          # classic 3-bar swing (H1/D1)
+  swing_confirmation_bars: 2      # bars required to confirm a swing high/low
+
+# ---------------------------------------------------------------------------
+# E-triggers (STAGE 1 — HTF cause)
+# ---------------------------------------------------------------------------
+e_triggers:
+  E1:
+    desc: "D1 gap (3-candle D1 FVG) fill/reaction at H1 context — DISABLED in this preset"
+    enabled: false
+    tf: [D1, H1]
+    gap_max_age_d1_bars: 0        # 0 = feature off
+    reaction_window_h1_bars: 0    # 0 = feature off
+    reaction_wick_ratio_min: 0    # 0 = feature off
+  E2:
+    desc: "H1 reaction at a fresh/mitigated (not invalidated) H1 order-block/POI — minimal, CHoCH-driven"
+    enabled: true
+    tf: [H1]
+    poi_max_age_h1_bars: 120      # ~5 days on H1
+    reaction_wick_ratio_min: 0.0  # no wick filter — qualification is via CHoCH, not wick geometry
+  E3:
+    desc: "H1 liquidity sweep — structure-only"
+    enabled: true
+    tf: [H1]
+    range_lookback_h1_bars: 60    # ~2.5 days lookback for equal highs/lows
+    sweep_wick_ratio_min: 0.0     # disabled
+    reclaim_window_h1_bars: 0     # disabled
+
+# ---------------------------------------------------------------------------
+# M-models (STAGE 2 — M5 confirmation + entry anchor), unchanged geometry
+# from v3.6/ST-C1_v1.yaml; CHoCH-with-inducement (M1) is the primary model
+# this preset targets (per the owner-supplied E1+M1 example).
+# ---------------------------------------------------------------------------
+m_models:
+  M1:
+    desc: "inducement (internal liquidity) sweep + character change -> pullback/FVG midpoint"
+    entry: "pullback / FVG midpoint"
+    stop_long: "min(anchor_low, inducement_low, swept_ssl) - buffer"
+    stop_short: "max(anchor_high, inducement_high, swept_bsl) + buffer"
+    retrace_max_bars: 30
+  M2:
+    desc: "supply/demand shift -> Gold Zone (OB ∩ FVG) -> overlap midpoint"
+    entry: "OB/FVG overlap midpoint"
+    stop_long: "min(ob_low, fvg_low, swept_ssl) - buffer"
+    stop_short: "max(ob_high, fvg_high, swept_bsl) + buffer"
+    retrace_max_bars: 30
+  M3:
+    desc: "sweep + displacement -> IFVG inversion, entry after >=50% retrace"
+    entry: "IFVG midpoint (>=50% retrace)"
+    stop_long: "min(ifvg_low, swept_low, displacement_origin) - buffer"
+    stop_short: "max(ifvg_high, swept_high, displacement_origin) + buffer"
+    ifvg_max_age_m5_bars: 20
+    ifvg_retrace_max_bars: 30
+
+# ---------------------------------------------------------------------------
+# Displacement — BODY-RATIO-ONLY in this preset (§ header note 3)
+# ---------------------------------------------------------------------------
+displacement:
+  atr_period: 0                  # 0 = ATR-based magnitude filter OFF
+  atr_mult: 0.0                  # off (paired with atr_period)
+  body_ratio_min: 0.6            # body >= 60% of full candle range — sole displacement qualifier
+  start_offset_bars: 0           # evaluate current bar (no sweep -> displacement-start offset required)
+  max_run_bars: 12               # displacement leg max ~12 bars (H1)
+
+sequencing:
+  enforce_order: true
+  first_qualifying_bar_only: true
+
+cross_stage:
+  max_e_to_m_h1_bars: 0          # disabled
+
+# ---------------------------------------------------------------------------
+# Session / timing gates (UTC)
+# ---------------------------------------------------------------------------
+session:
+  timezone: UTC
+  london_utc: ["07:00", "16:00"]
+  new_york_utc: ["12:00", "21:00"]
+  weekdays_only: true
+  dst_adjusted: false
+  news_filter: none
+
+entry:
+  type: confirmation_close_next_bar_open
+  resting_limit_orders: false
+  intrabar_market_fill: false
+
+signal_lifecycle:
+  ttl_bars: 0                    # disabled
+  one_signal_per_structure: true
+  structure_key: [symbol, variant, structure_type, creation_index]
+  structure_types: [h1_poi, h1_sweep_level, ifvg]
+
+# ---------------------------------------------------------------------------
+# Execution / spread gates
+# ---------------------------------------------------------------------------
+execution_gates:
+  max_spread_points: 20           # tune per symbol; good default for major FX
+  max_stale_price_seconds: 3
+
+horizons:
+  INTRADAY:      {max_hold_hours: 12}
+  OVERNIGHT:     {max_hold_hours: 24}
+  INTRAWEEK:     {max_hold_hours: 120}
+  MULTI_HORIZON: {max_hold_hours: 120, runner: true}
+
+variants:
+  E2M1: {horizon: OVERNIGHT}
+  E2M2: {horizon: OVERNIGHT}
+  E2M3: {horizon: INTRAWEEK}
+  E3M1: {horizon: INTRADAY}
+  E3M2: {horizon: INTRADAY}
+  E3M3: {horizon: INTRADAY}
+
+# ---------------------------------------------------------------------------
+# Risk / management — minimal, structure-based invalidation only
+# ---------------------------------------------------------------------------
+risk:
+  strategy:
+    risk_pct_demo: 0.5
+    risk_pct_live: 0.5            # preset states 0.5% flat; live stays blocked regardless (Phase 3/CHARTER gates)
+    min_rr: 3.0                   # hard floor
+    stop_widening_allowed: false
+  execution:
+    kill_switch: true
+    fail_closed: true
+    max_spread_points: 20
+    max_stale_price_seconds: 3
+    duplicate_order_prevention: true
+  portfolio:
+    daily_loss_pct: 3.0
+    weekly_loss_pct: 6.0
+    max_positions: 3
+    portfolio_heat_pct: 3.0
+    drawdown_cap_pct: 12.0
+
+trade_management:
+  initial_sl_required: true
+  break_even:
+    enabled: true
+    activation_r: 1.0
+  partial_take:
+    enabled: true
+    take_r: 1.0
+    fraction: 0.5
+  trailing_stop:
+    enabled: false
+    may_widen: false
+  time_stop:
+    enabled: false                # disabled (all horizon fields 0) — structure-based invalidation only, per preset note
+    max_hold_hours_by_horizon:
+      INTRADAY: 0
+      OVERNIGHT: 0
+      INTRAWEEK: 0
+      MULTI_HORIZON: 0
+  weekend_exit: true
+  forced_exit: true
+  invalidation_exit: true
+
+parameter_registry:
+  authoritative: true
+  fields: [parameter, type, units, default, range, owner, tunable, version, last_changed, reason]
+  parameters:
+    swing_lookback_bars:        {type: integer, units: bars, default: 3,   range: [1, 10],  owner: research, tunable: true,  version: 3.9, last_changed: 2026-07-22, reason: "classic 3-bar swing"}
+    swing_confirmation_bars:    {type: integer, units: bars, default: 2,   range: [1, 5],   owner: research, tunable: true,  version: 3.9, last_changed: 2026-07-22, reason: "swing confirmation delay"}
+    e1_gap_max_age_d1_bars:     {type: integer, units: bars, default: 0,   range: [0, 30],  owner: research, tunable: true,  version: 3.9, last_changed: 2026-07-22, reason: "E1 disabled (0=off)"}
+    e1_reaction_window_h1_bars: {type: integer, units: bars, default: 0,   range: [0, 24],  owner: research, tunable: true,  version: 3.9, last_changed: 2026-07-22, reason: "E1 disabled (0=off)"}
+    e1_reaction_wick_ratio_min: {type: number,  units: ratio, default: 0,  range: [0, 1.0], owner: research, tunable: true,  version: 3.9, last_changed: 2026-07-22, reason: "E1 disabled (0=off)"}
+    e2_poi_max_age_h1_bars:     {type: integer, units: bars, default: 120, range: [1, 240], owner: research, tunable: true,  version: 3.9, last_changed: 2026-07-22, reason: "~5 days H1 POI freshness"}
+    e2_reaction_wick_ratio_min: {type: number,  units: ratio, default: 0.0, range: [0, 1.0], owner: research, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "no wick filter — CHoCH-driven instead"}
+    e3_range_lookback_h1_bars:  {type: integer, units: bars, default: 60,  range: [10, 200], owner: research, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "~2.5 day equal highs/lows lookback"}
+    e3_sweep_wick_ratio_min:    {type: number,  units: ratio, default: 0.0, range: [0, 1.0], owner: research, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "disabled — structure-only sweep"}
+    e3_reclaim_window_h1_bars:  {type: integer, units: bars, default: 0,   range: [0, 3],   owner: research, tunable: true,  version: 3.9, last_changed: 2026-07-22, reason: "disabled"}
+    displacement_atr_period:    {type: integer, units: bars, default: 0,  range: [0, 30],  owner: research, tunable: true,  version: 3.9, last_changed: 2026-07-22, reason: "ATR-based displacement filter off"}
+    displacement_atr_mult:      {type: number, units: atr_mult, default: 0.0, range: [0.0, 3.0], owner: research, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "off (paired with atr_period)"}
+    displacement_body_ratio_min: {type: number, units: ratio, default: 0.6, range: [0.1, 0.9], owner: research, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "sole displacement qualifier — REJECTED_NO_DISPLACEMENT target"}
+    displacement_start_offset_bars: {type: integer, units: bars, default: 0, range: [0, 10], owner: research, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "evaluate current bar"}
+    displacement_max_run_bars:  {type: integer, units: bars, default: 12, range: [1, 30],  owner: research, tunable: true,  version: 3.9, last_changed: 2026-07-22, reason: "max displacement leg length (H1)"}
+    london_session_open_utc:    {type: string, units: time, default: "07:00", range: ["00:00", "23:59"], owner: strategy, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "London core"}
+    london_session_close_utc:   {type: string, units: time, default: "16:00", range: ["00:00", "23:59"], owner: strategy, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "London core"}
+    new_york_session_open_utc:  {type: string, units: time, default: "12:00", range: ["00:00", "23:59"], owner: strategy, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "NY core"}
+    new_york_session_close_utc: {type: string, units: time, default: "21:00", range: ["00:00", "23:59"], owner: strategy, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "NY core"}
+    max_e_to_m_h1_bars:         {type: integer, units: bars, default: 0,  range: [0, 48],  owner: research, tunable: true,  version: 3.9, last_changed: 2026-07-22, reason: "disabled"}
+    signal_ttl_bars:             {type: integer, units: bars, default: 0, range: [0, 5],   owner: strategy, tunable: false, version: 3.9, last_changed: 2026-07-22, reason: "disabled"}
+    max_spread_points:           {type: integer, units: points, default: 20, range: [1, 100], owner: execution, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "tune per symbol"}
+    max_stale_price_seconds:     {type: integer, units: seconds, default: 3, range: [1, 60], owner: execution, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "reject stale quotes"}
+    risk_pct_per_trade:          {type: number, units: percent, default: 0.5, range: [0.1, 5.0], owner: risk, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "per-trade risk"}
+    min_rr:                      {type: number, units: rr, default: 3.0, range: [1.0, 10.0], owner: strategy, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "hard floor: 3R minimum, unchanged from v3.7 min_net_rr"}
+    break_even_activation_r:     {type: number, units: rr, default: 1.0, range: [0.5, 5.0], owner: strategy, tunable: false, version: 3.9, last_changed: 2026-07-22, reason: "move to BE at +1R"}
+    partial_take_r:              {type: number, units: rr, default: 1.0, range: [0.5, 5.0], owner: strategy, tunable: false, version: 3.9, last_changed: 2026-07-22, reason: "take partial at first target"}
+    partial_take_fraction:       {type: number, units: ratio, default: 0.5, range: [0.1, 1.0], owner: strategy, tunable: false, version: 3.9, last_changed: 2026-07-22, reason: "close 50% at T1"}
+    daily_loss_pct:               {type: number, units: percent, default: 3.0, range: [0.1, 10.0], owner: risk, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "kill-switch"}
+    weekly_loss_pct:              {type: number, units: percent, default: 6.0, range: [0.1, 20.0], owner: risk, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "kill-switch"}
+    max_positions:                {type: integer, units: positions, default: 3, range: [1, 10], owner: risk, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "concurrent trade cap"}
+    portfolio_heat_pct:            {type: number, units: percent, default: 3.0, range: [0.1, 20.0], owner: risk, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "total risk across open trades"}
+    time_stop_h1_bars:             {type: integer, units: bars, default: 0, range: [0, 500], owner: strategy, tunable: true, version: 3.9, last_changed: 2026-07-22, reason: "disabled — structure-based invalidation only"}
+
+implementation_status:
+  engine_implements_spec: false   # SAFETY INTERLOCK — nothing implements v3.9 yet
+  baseline: "See PROJECT_STATUS.md §5: v3.7 locked ablation OVERFILTERED/INCONCLUSIVE (zero trades, 12/12 cells); v3.8 R2.1 sweep-timing widening REJECTED within tested range (14/30 completed sequences at 144-bar ceiling), with REJECTED_NO_DISPLACEMENT identified as the now-dominant bottleneck."
+  next: "Build/adjust the engine to interpret this schema (E1 disabled, E2/E3 wick filters zeroed, body-ratio-only displacement), then run the same >=30-completed-sequence population-feasibility check used in R2.1 via backtest-researcher, per reports/audit/ST_C1_V39_CLEAN_SMC_RCR.md, BEFORE any profitability claim or interlock flip."

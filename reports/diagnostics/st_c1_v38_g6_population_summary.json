@@ -1,0 +1,727 @@
+[
+  {
+    "symbol": "EURUSD",
+    "cell": "B0",
+    "bound": 30,
+    "elapsed_s": 99.9,
+    "g5_qualified_distinct_poi": 121,
+    "decisions": {
+      "REJECTED_NO_TOUCH": 13,
+      "REJECTED_NO_SWEEP": 68,
+      "REJECTED_NO_DISPLACEMENT": 37,
+      "COMPLETED": 2,
+      "CENSORED_NO_TOUCH": 1
+    },
+    "completed": 2,
+    "g6_pass_rate_pct": 1.653,
+    "latency_summary": {
+      "latency_poi_creation_to_touch": {
+        "p50": 97.0,
+        "p75": 314.0,
+        "p90": 314.0,
+        "p95": 314.0,
+        "n": 2
+      },
+      "latency_touch_to_sweep": {
+        "p50": 0.0,
+        "p75": 13.0,
+        "p90": 13.0,
+        "p95": 13.0,
+        "n": 2
+      },
+      "latency_sweep_to_displacement": {
+        "p50": 1.0,
+        "p75": 2.0,
+        "p90": 2.0,
+        "p95": 2.0,
+        "n": 2
+      },
+      "latency_displacement_to_choch": {
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "n": 2
+      },
+      "latency_choch_to_retrace": {
+        "p50": 4.0,
+        "p75": 5.0,
+        "p90": 5.0,
+        "p95": 5.0,
+        "n": 2
+      }
+    },
+    "by_session": {
+      "NewYork": 1,
+      "London": 1
+    },
+    "by_year": {
+      "2025": 1,
+      "2026": 1
+    },
+    "by_direction": {
+      "short": 2
+    },
+    "funnel": {
+      "evaluated": 79963,
+      "rejected_session": 54439,
+      "rejected_g5": 7627,
+      "rejected_g1": 14369,
+      "g5_qualified_distinct_poi": 121,
+      "g6_rejected_no_touch": 13,
+      "duplicate_poi": 3407,
+      "g6_rejected_no_sweep": 68,
+      "g6_rejected_no_displacement": 37,
+      "g6_completed": 2,
+      "g6_censored_no_touch": 1
+    }
+  },
+  {
+    "symbol": "EURUSD",
+    "cell": "B1",
+    "bound": 72,
+    "elapsed_s": 86.2,
+    "g5_qualified_distinct_poi": 121,
+    "decisions": {
+      "REJECTED_NO_TOUCH": 13,
+      "REJECTED_NO_SWEEP": 35,
+      "REJECTED_NO_DISPLACEMENT": 68,
+      "COMPLETED": 3,
+      "REJECTED_NO_RETRACE": 1,
+      "CENSORED_NO_TOUCH": 1
+    },
+    "completed": 3,
+    "g6_pass_rate_pct": 2.479,
+    "latency_summary": {
+      "latency_poi_creation_to_touch": {
+        "p50": 314.0,
+        "p75": 552.0,
+        "p90": 552.0,
+        "p95": 552.0,
+        "n": 3
+      },
+      "latency_touch_to_sweep": {
+        "p50": 13.0,
+        "p75": 57.0,
+        "p90": 57.0,
+        "p95": 57.0,
+        "n": 3
+      },
+      "latency_sweep_to_displacement": {
+        "p50": 2.0,
+        "p75": 2.0,
+        "p90": 2.0,
+        "p95": 2.0,
+        "n": 3
+      },
+      "latency_displacement_to_choch": {
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "n": 3
+      },
+      "latency_choch_to_retrace": {
+        "p50": 5.0,
+        "p75": 9.0,
+        "p90": 9.0,
+        "p95": 9.0,
+        "n": 3
+      }
+    },
+    "by_session": {
+      "NewYork": 1,
+      "London": 2
+    },
+    "by_year": {
+      "2025": 1,
+      "2026": 2
+    },
+    "by_direction": {
+      "short": 3
+    },
+    "funnel": {
+      "evaluated": 79963,
+      "rejected_session": 54439,
+      "rejected_g5": 7627,
+      "rejected_g1": 14369,
+      "g5_qualified_distinct_poi": 121,
+      "g6_rejected_no_touch": 13,
+      "duplicate_poi": 3407,
+      "g6_rejected_no_sweep": 35,
+      "g6_rejected_no_displacement": 68,
+      "g6_completed": 3,
+      "g6_rejected_no_retrace": 1,
+      "g6_censored_no_touch": 1
+    }
+  },
+  {
+    "symbol": "EURUSD",
+    "cell": "B2",
+    "bound": 144,
+    "elapsed_s": 87.7,
+    "g5_qualified_distinct_poi": 121,
+    "decisions": {
+      "REJECTED_NO_TOUCH": 13,
+      "REJECTED_NO_DISPLACEMENT": 95,
+      "COMPLETED": 5,
+      "REJECTED_NO_SWEEP": 3,
+      "REJECTED_NO_RETRACE": 4,
+      "CENSORED_NO_TOUCH": 1
+    },
+    "completed": 5,
+    "g6_pass_rate_pct": 4.132,
+    "latency_summary": {
+      "latency_poi_creation_to_touch": {
+        "p50": 314.0,
+        "p75": 552.0,
+        "p90": 846.0,
+        "p95": 846.0,
+        "n": 5
+      },
+      "latency_touch_to_sweep": {
+        "p50": 57.0,
+        "p75": 107.0,
+        "p90": 139.0,
+        "p95": 139.0,
+        "n": 5
+      },
+      "latency_sweep_to_displacement": {
+        "p50": 1.0,
+        "p75": 2.0,
+        "p90": 2.0,
+        "p95": 2.0,
+        "n": 5
+      },
+      "latency_displacement_to_choch": {
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 3.0,
+        "p95": 3.0,
+        "n": 5
+      },
+      "latency_choch_to_retrace": {
+        "p50": 9.0,
+        "p75": 14.0,
+        "p90": 15.0,
+        "p95": 15.0,
+        "n": 5
+      }
+    },
+    "by_session": {
+      "NewYork": 3,
+      "London": 2
+    },
+    "by_year": {
+      "2025": 2,
+      "2026": 3
+    },
+    "by_direction": {
+      "short": 4,
+      "long": 1
+    },
+    "funnel": {
+      "evaluated": 79963,
+      "rejected_session": 54439,
+      "rejected_g5": 7627,
+      "rejected_g1": 14369,
+      "g5_qualified_distinct_poi": 121,
+      "g6_rejected_no_touch": 13,
+      "duplicate_poi": 3407,
+      "g6_rejected_no_displacement": 95,
+      "g6_completed": 5,
+      "g6_rejected_no_sweep": 3,
+      "g6_rejected_no_retrace": 4,
+      "g6_censored_no_touch": 1
+    }
+  },
+  {
+    "symbol": "GBPUSD",
+    "cell": "B0",
+    "bound": 30,
+    "elapsed_s": 70.3,
+    "g5_qualified_distinct_poi": 117,
+    "decisions": {
+      "REJECTED_NO_SWEEP": 53,
+      "REJECTED_NO_DISPLACEMENT": 40,
+      "REJECTED_NO_TOUCH": 17,
+      "COMPLETED": 3,
+      "REJECTED_NO_RETRACE": 1,
+      "REJECTED_NO_CHOCH": 1,
+      "CENSORED_NO_TOUCH": 2
+    },
+    "completed": 3,
+    "g6_pass_rate_pct": 2.564,
+    "latency_summary": {
+      "latency_poi_creation_to_touch": {
+        "p50": 48.0,
+        "p75": 54.0,
+        "p90": 54.0,
+        "p95": 54.0,
+        "n": 3
+      },
+      "latency_touch_to_sweep": {
+        "p50": 0.0,
+        "p75": 13.0,
+        "p90": 13.0,
+        "p95": 13.0,
+        "n": 3
+      },
+      "latency_sweep_to_displacement": {
+        "p50": 1.0,
+        "p75": 2.0,
+        "p90": 2.0,
+        "p95": 2.0,
+        "n": 3
+      },
+      "latency_displacement_to_choch": {
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "n": 3
+      },
+      "latency_choch_to_retrace": {
+        "p50": 2.0,
+        "p75": 27.0,
+        "p90": 27.0,
+        "p95": 27.0,
+        "n": 3
+      }
+    },
+    "by_session": {
+      "NewYork": 2,
+      "London": 1
+    },
+    "by_year": {
+      "2025": 2,
+      "2026": 1
+    },
+    "by_direction": {
+      "long": 1,
+      "short": 2
+    },
+    "funnel": {
+      "evaluated": 79974,
+      "rejected_session": 54450,
+      "rejected_g1": 15231,
+      "g5_qualified_distinct_poi": 117,
+      "g6_rejected_no_sweep": 53,
+      "duplicate_poi": 3565,
+      "rejected_g5": 6611,
+      "g6_rejected_no_displacement": 40,
+      "g6_rejected_no_touch": 17,
+      "g6_completed": 3,
+      "g6_rejected_no_retrace": 1,
+      "g6_rejected_no_choch": 1,
+      "g6_censored_no_touch": 2
+    }
+  },
+  {
+    "symbol": "GBPUSD",
+    "cell": "B1",
+    "bound": 72,
+    "elapsed_s": 87.1,
+    "g5_qualified_distinct_poi": 117,
+    "decisions": {
+      "REJECTED_NO_DISPLACEMENT": 63,
+      "REJECTED_NO_SWEEP": 26,
+      "REJECTED_NO_TOUCH": 17,
+      "COMPLETED": 3,
+      "REJECTED_NO_RETRACE": 3,
+      "REJECTED_NO_CHOCH": 3,
+      "CENSORED_NO_TOUCH": 2
+    },
+    "completed": 3,
+    "g6_pass_rate_pct": 2.564,
+    "latency_summary": {
+      "latency_poi_creation_to_touch": {
+        "p50": 48.0,
+        "p75": 54.0,
+        "p90": 54.0,
+        "p95": 54.0,
+        "n": 3
+      },
+      "latency_touch_to_sweep": {
+        "p50": 0.0,
+        "p75": 13.0,
+        "p90": 13.0,
+        "p95": 13.0,
+        "n": 3
+      },
+      "latency_sweep_to_displacement": {
+        "p50": 1.0,
+        "p75": 2.0,
+        "p90": 2.0,
+        "p95": 2.0,
+        "n": 3
+      },
+      "latency_displacement_to_choch": {
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "n": 3
+      },
+      "latency_choch_to_retrace": {
+        "p50": 2.0,
+        "p75": 27.0,
+        "p90": 27.0,
+        "p95": 27.0,
+        "n": 3
+      }
+    },
+    "by_session": {
+      "NewYork": 2,
+      "London": 1
+    },
+    "by_year": {
+      "2025": 2,
+      "2026": 1
+    },
+    "by_direction": {
+      "long": 1,
+      "short": 2
+    },
+    "funnel": {
+      "evaluated": 79974,
+      "rejected_session": 54450,
+      "rejected_g1": 15231,
+      "g5_qualified_distinct_poi": 117,
+      "g6_rejected_no_displacement": 63,
+      "duplicate_poi": 3565,
+      "g6_rejected_no_sweep": 26,
+      "rejected_g5": 6611,
+      "g6_rejected_no_touch": 17,
+      "g6_completed": 3,
+      "g6_rejected_no_retrace": 3,
+      "g6_rejected_no_choch": 3,
+      "g6_censored_no_touch": 2
+    }
+  },
+  {
+    "symbol": "GBPUSD",
+    "cell": "B2",
+    "bound": 144,
+    "elapsed_s": 72.6,
+    "g5_qualified_distinct_poi": 117,
+    "decisions": {
+      "REJECTED_NO_DISPLACEMENT": 79,
+      "REJECTED_NO_TOUCH": 17,
+      "REJECTED_NO_SWEEP": 9,
+      "COMPLETED": 4,
+      "REJECTED_NO_RETRACE": 3,
+      "REJECTED_NO_CHOCH": 3,
+      "CENSORED_NO_TOUCH": 2
+    },
+    "completed": 4,
+    "g6_pass_rate_pct": 3.419,
+    "latency_summary": {
+      "latency_poi_creation_to_touch": {
+        "p50": 48.0,
+        "p75": 48.0,
+        "p90": 54.0,
+        "p95": 54.0,
+        "n": 4
+      },
+      "latency_touch_to_sweep": {
+        "p50": 13.0,
+        "p75": 13.0,
+        "p90": 136.0,
+        "p95": 136.0,
+        "n": 4
+      },
+      "latency_sweep_to_displacement": {
+        "p50": 2.0,
+        "p75": 2.0,
+        "p90": 2.0,
+        "p95": 2.0,
+        "n": 4
+      },
+      "latency_displacement_to_choch": {
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "n": 4
+      },
+      "latency_choch_to_retrace": {
+        "p50": 8.0,
+        "p75": 8.0,
+        "p90": 27.0,
+        "p95": 27.0,
+        "n": 4
+      }
+    },
+    "by_session": {
+      "NewYork": 3,
+      "London": 1
+    },
+    "by_year": {
+      "2025": 2,
+      "2026": 2
+    },
+    "by_direction": {
+      "long": 1,
+      "short": 3
+    },
+    "funnel": {
+      "evaluated": 79974,
+      "rejected_session": 54450,
+      "rejected_g1": 15231,
+      "g5_qualified_distinct_poi": 117,
+      "g6_rejected_no_displacement": 79,
+      "duplicate_poi": 3565,
+      "rejected_g5": 6611,
+      "g6_rejected_no_touch": 17,
+      "g6_rejected_no_sweep": 9,
+      "g6_completed": 4,
+      "g6_rejected_no_retrace": 3,
+      "g6_rejected_no_choch": 3,
+      "g6_censored_no_touch": 2
+    }
+  },
+  {
+    "symbol": "XAUUSD",
+    "cell": "B0",
+    "bound": 30,
+    "elapsed_s": 86.9,
+    "g5_qualified_distinct_poi": 135,
+    "decisions": {
+      "REJECTED_NO_DISPLACEMENT": 49,
+      "REJECTED_NO_SWEEP": 64,
+      "REJECTED_NO_TOUCH": 17,
+      "COMPLETED": 3,
+      "REJECTED_NO_RETRACE": 1,
+      "CENSORED_NO_TOUCH": 1
+    },
+    "completed": 3,
+    "g6_pass_rate_pct": 2.222,
+    "latency_summary": {
+      "latency_poi_creation_to_touch": {
+        "p50": 438.0,
+        "p75": 453.0,
+        "p90": 453.0,
+        "p95": 453.0,
+        "n": 3
+      },
+      "latency_touch_to_sweep": {
+        "p50": 12.0,
+        "p75": 26.0,
+        "p90": 26.0,
+        "p95": 26.0,
+        "n": 3
+      },
+      "latency_sweep_to_displacement": {
+        "p50": 1.0,
+        "p75": 2.0,
+        "p90": 2.0,
+        "p95": 2.0,
+        "n": 3
+      },
+      "latency_displacement_to_choch": {
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "n": 3
+      },
+      "latency_choch_to_retrace": {
+        "p50": 4.0,
+        "p75": 9.0,
+        "p90": 9.0,
+        "p95": 9.0,
+        "n": 3
+      }
+    },
+    "by_session": {
+      "NewYork": 1,
+      "London": 2
+    },
+    "by_year": {
+      "2025": 2,
+      "2026": 1
+    },
+    "by_direction": {
+      "short": 3
+    },
+    "funnel": {
+      "evaluated": 79959,
+      "rejected_session": 53166,
+      "rejected_g1": 14298,
+      "g5_qualified_distinct_poi": 135,
+      "g6_rejected_no_displacement": 49,
+      "duplicate_poi": 4887,
+      "g6_rejected_no_sweep": 64,
+      "rejected_g5": 7473,
+      "g6_rejected_no_touch": 17,
+      "g6_completed": 3,
+      "g6_rejected_no_retrace": 1,
+      "g6_censored_no_touch": 1
+    }
+  },
+  {
+    "symbol": "XAUUSD",
+    "cell": "B1",
+    "bound": 72,
+    "elapsed_s": 101.4,
+    "g5_qualified_distinct_poi": 135,
+    "decisions": {
+      "REJECTED_NO_DISPLACEMENT": 81,
+      "REJECTED_NO_SWEEP": 27,
+      "REJECTED_NO_TOUCH": 17,
+      "COMPLETED": 5,
+      "REJECTED_NO_RETRACE": 2,
+      "REJECTED_NO_CHOCH": 2,
+      "CENSORED_NO_TOUCH": 1
+    },
+    "completed": 5,
+    "g6_pass_rate_pct": 3.704,
+    "latency_summary": {
+      "latency_poi_creation_to_touch": {
+        "p50": 59.0,
+        "p75": 438.0,
+        "p90": 453.0,
+        "p95": 453.0,
+        "n": 5
+      },
+      "latency_touch_to_sweep": {
+        "p50": 26.0,
+        "p75": 38.0,
+        "p90": 64.0,
+        "p95": 64.0,
+        "n": 5
+      },
+      "latency_sweep_to_displacement": {
+        "p50": 2.0,
+        "p75": 2.0,
+        "p90": 2.0,
+        "p95": 2.0,
+        "n": 5
+      },
+      "latency_displacement_to_choch": {
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "n": 5
+      },
+      "latency_choch_to_retrace": {
+        "p50": 4.0,
+        "p75": 9.0,
+        "p90": 15.0,
+        "p95": 15.0,
+        "n": 5
+      }
+    },
+    "by_session": {
+      "NewYork": 3,
+      "London": 2
+    },
+    "by_year": {
+      "2025": 3,
+      "2026": 2
+    },
+    "by_direction": {
+      "short": 4,
+      "long": 1
+    },
+    "funnel": {
+      "evaluated": 79959,
+      "rejected_session": 53166,
+      "rejected_g1": 14298,
+      "g5_qualified_distinct_poi": 135,
+      "g6_rejected_no_displacement": 81,
+      "duplicate_poi": 4887,
+      "g6_rejected_no_sweep": 27,
+      "rejected_g5": 7473,
+      "g6_rejected_no_touch": 17,
+      "g6_completed": 5,
+      "g6_rejected_no_retrace": 2,
+      "g6_rejected_no_choch": 2,
+      "g6_censored_no_touch": 1
+    }
+  },
+  {
+    "symbol": "XAUUSD",
+    "cell": "B2",
+    "bound": 144,
+    "elapsed_s": 95.2,
+    "g5_qualified_distinct_poi": 135,
+    "decisions": {
+      "REJECTED_NO_DISPLACEMENT": 101,
+      "REJECTED_NO_TOUCH": 17,
+      "REJECTED_NO_RETRACE": 3,
+      "COMPLETED": 5,
+      "REJECTED_NO_SWEEP": 6,
+      "REJECTED_NO_CHOCH": 2,
+      "CENSORED_NO_TOUCH": 1
+    },
+    "completed": 5,
+    "g6_pass_rate_pct": 3.704,
+    "latency_summary": {
+      "latency_poi_creation_to_touch": {
+        "p50": 59.0,
+        "p75": 438.0,
+        "p90": 453.0,
+        "p95": 453.0,
+        "n": 5
+      },
+      "latency_touch_to_sweep": {
+        "p50": 26.0,
+        "p75": 38.0,
+        "p90": 64.0,
+        "p95": 64.0,
+        "n": 5
+      },
+      "latency_sweep_to_displacement": {
+        "p50": 2.0,
+        "p75": 2.0,
+        "p90": 2.0,
+        "p95": 2.0,
+        "n": 5
+      },
+      "latency_displacement_to_choch": {
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "n": 5
+      },
+      "latency_choch_to_retrace": {
+        "p50": 4.0,
+        "p75": 9.0,
+        "p90": 15.0,
+        "p95": 15.0,
+        "n": 5
+      }
+    },
+    "by_session": {
+      "NewYork": 3,
+      "London": 2
+    },
+    "by_year": {
+      "2025": 3,
+      "2026": 2
+    },
+    "by_direction": {
+      "short": 4,
+      "long": 1
+    },
+    "funnel": {
+      "evaluated": 79959,
+      "rejected_session": 53166,
+      "rejected_g1": 14298,
+      "g5_qualified_distinct_poi": 135,
+      "g6_rejected_no_displacement": 101,
+      "duplicate_poi": 4887,
+      "rejected_g5": 7473,
+      "g6_rejected_no_touch": 17,
+      "g6_rejected_no_retrace": 3,
+      "g6_completed": 5,
+      "g6_rejected_no_sweep": 6,
+      "g6_rejected_no_choch": 2,
+      "g6_censored_no_touch": 1
+    }
+  }
+]

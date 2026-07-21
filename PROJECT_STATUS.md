@@ -1,8 +1,13 @@
 # PROJECT_STATUS.md — SMC-LSS Platform
 
-**Audit date:** 2026-07-19
-**Status:** Configuration governance complete; statistical validation scaffold ready
-**Current milestone:** Statistical Validation (M2.3)
+**Audit date:** 2026-07-22 (research-track update; see §5)
+**Status:** Configuration governance complete; ST-C1 strategy research/validation in
+progress. Execution layer remains blocked — nothing below changes that.
+**Current phase:** Strategy research and validation (not execution-layer work).
+**Current milestone:** ST-C1 v3.9 "Clean SMC" preset (v1.2.0 candidate) filed as
+the follow-up Research Change Request targeting the `REJECTED_NO_DISPLACEMENT`
+bottleneck — candidate created, population-feasibility backtest not yet run
+(see §5). Not execution-layer work.
 
 This status file reflects the current repository state after the governance audit
 and loader hardening work. It supersedes the older audit snapshot that described
@@ -121,3 +126,54 @@ risk gate, reconciliation, and journaling be completed.
 The repo now has the right governance foundation for strategy approval work.
 The next risk is no longer configuration drift. The next risk is strategy
 normalization quality and approval discipline.
+
+## 5. ST-C1 v3.7 / v3.8 research track (2026-07-21/22)
+
+Separate from and subordinate to the M1-M2.3 work above (§1-4), which
+concerns the original v3.6-derived approval scaffold. This section tracks
+the newer 10-gate (G1-G10) conformance research line:
+
+- **v3.7 result: OVERFILTERED / statistically INCONCLUSIVE.** A locked
+  12-cell ablation (`reports/ablation/ST_C1_V37_ABLATION_REPORT.md`) across
+  EURUSD/GBPUSD/XAUUSD full history produced **zero trades in every cell**,
+  including the loosest configuration. Root cause: G6 (the M5
+  poi-entry-to-sweep-to-displacement-to-CHoCH-to-retrace sequence)
+  saturates the funnel before the location/net-reward gates under test can
+  ever be exercised.
+- **v3.8 status: hypothesis REJECTED within tested range, no candidate
+  created.** A preregistered R2.1 experiment
+  (`reports/audit/ST_C1_V38_G6_POPULATION_RCR.md`,
+  `reports/audit/ST_C1_V38_FINAL_VALIDATION_DECISION.md`) tested whether
+  widening `poi_entry_to_sweep_max_m5_bars` (30 -> 72 -> 144) restores a
+  statistically usable G6 population. It does not, within the tested range:
+  even at 144 bars (the task ceiling), only 14 completed G6 sequences were
+  found across all three symbols over the full available history, short of
+  the precommitted 30-sequence floor. No `specs/v3.8.yaml` or
+  `strategies/candidates/ST-C1_v1.2.0.yaml` was created.
+- **Execution layer: blocked.** **Demo/live: blocked.** Nothing in this
+  research track changes `config/watchlist.yaml`'s autonomy block
+  (`demo: proposal_only`, `live: disabled`, `promote_to_live: false`) or any
+  approval/promotion flag.
+- **v3.9 "Clean SMC" preset filed (2026-07-22):** the follow-up Research
+  Change Request called for above. Owner supplied a fully specified
+  parameter preset that returns to the v3.6/`ST-C1_v1.yaml` E1/E2/E3 schema
+  (not v3.7's G1-G10 pipeline) with E1 disabled, E2/E3 wick-ratio filters
+  zeroed, and displacement redefined as body-ratio-only (ATR-magnitude
+  requirement removed) — directly targeting `REJECTED_NO_DISPLACEMENT`.
+  Filed per `docs/RESEARCH-CHARTER.md` in
+  `reports/audit/ST_C1_V39_CLEAN_SMC_RCR.md` and `reports/research_log.md`
+  BEFORE any backtest ran. Artifacts created: `specs/v3.9.yaml`
+  (`engine_implements_spec: false`) and
+  `strategies/candidates/ST-C1_v1.2.0.yaml` (`status: candidate`,
+  `validation.status: pending`). **The v3.7/v3.8 line is now PARKED** in
+  favor of this preset as the active research candidate — v3.7/v3.8 files
+  are retained unmodified as historical/parked, not deleted.
+- **Next milestone:** run the population-feasibility check (>=30 completed
+  sequences across EURUSD/GBPUSD/XAUUSD, >=5 in >=2 symbols — same floor as
+  R2.1) against `specs/v3.9.yaml`/`ST-C1_v1.2.0.yaml` via
+  `backtest-researcher`, per the precommitted criteria in
+  `ST_C1_V39_CLEAN_SMC_RCR.md`. NOT execution-layer work.
+- **Data note:** the full local EURUSD/GBPUSD/XAUUSD history has now been
+  used for diagnosis across the v3.7 and v3.8 research tasks. It must not be
+  described as a pristine, unseen OOS partition in any future validation of
+  this strategy family.

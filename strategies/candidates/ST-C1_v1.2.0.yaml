@@ -1,0 +1,131 @@
+# ST-C1 candidate strategy contract — v1.2.0 ("Clean SMC" preset v1)
+# Normalized from specs/v3.9.yaml.
+# Status: candidate only, not approved for execution.
+#
+# IMPORTANT — this does NOT continue v1.1.0's G1-G10 gate-pipeline lineage.
+# The v1.1.0/v3.7 line (and its v3.8 R2.1 follow-up) is PARKED: locked
+# ablation OVERFILTERED/INCONCLUSIVE, population-feasibility follow-up
+# REJECTED within its tested range (see PROJECT_STATUS.md §5,
+# reports/audit/ST_C1_V38_FINAL_VALIDATION_DECISION.md). This file returns
+# to the v1.0.0/v3.6 E1/E2/E3 schema with a new owner-supplied parameter
+# preset targeting the REJECTED_NO_DISPLACEMENT bottleneck that follow-up
+# identified. It occupies the v1.2.0 slot only as the next sequential
+# candidate version — it is a design return to v1.0.0, not a continuation
+# of v1.1.0.
+
+strategy:
+  strategy_id: ST-C1
+  name: London SMC Reversal ("Clean SMC" preset v1)
+  version: 1.2.0
+  status: candidate
+  source:
+    specification: reports/audit/ST_C1_V39_CLEAN_SMC_RCR.md
+    research_spec: specs/v3.9.yaml
+    execution_spec: specs/v1.yaml
+    supersedes_candidate: null   # does not edit v1.yaml or v1.1.0.yaml in place; both retained as historical/parked
+    parked_candidates: [strategies/candidates/ST-C1_v1.1.0.yaml]
+  validation:
+    status: pending
+    approval_status: pending
+    qualification: not_started   # population-feasibility check (>=30 completed sequences) not yet run
+
+market_universe:
+  asset_class: [forex, metals]
+  instruments: [EURUSD, GBPUSD, XAUUSD]
+  sessions: [London, NewYork]
+  timezone: UTC
+  timeframes:
+    bias: H1
+    setup: H1
+    confirmation: M5
+    execution: M5
+
+parameters:
+  swing_lookback_bars: 3
+  swing_confirmation_bars: 2
+
+  # E1 — disabled
+  e1_gap_max_age_d1_bars: 0
+  e1_reaction_window_h1_bars: 0
+  e1_reaction_wick_ratio_min: 0
+
+  # E2 — minimal, CHoCH-driven
+  e2_poi_max_age_h1_bars: 120
+  e2_reaction_wick_ratio_min: 0.0
+
+  # E3 — structure-only sweep
+  e3_range_lookback_h1_bars: 60
+  e3_sweep_wick_ratio_min: 0.0
+  e3_reclaim_window_h1_bars: 0
+
+  # Displacement — body-ratio-only
+  displacement_atr_period: 0
+  displacement_atr_mult: 0.0
+  displacement_body_ratio_min: 0.6
+  displacement_start_offset_bars: 0
+  displacement_max_run_bars: 12
+
+  # Timing / session (UTC)
+  london_session_open_utc: "07:00"
+  london_session_close_utc: "16:00"
+  new_york_session_open_utc: "12:00"
+  new_york_session_close_utc: "21:00"
+  max_e_to_m_h1_bars: 0
+  signal_ttl_bars: 0
+
+  # Execution / spread gates
+  max_spread_points: 20
+  max_stale_price_seconds: 3
+
+  # Risk / management
+  risk_pct_per_trade: 0.5
+  min_rr: 3.0
+  break_even_activation_r: 1.0
+  partial_take_r: 1.0
+  partial_take_fraction: 0.5
+  daily_loss_pct: 3.0
+  weekly_loss_pct: 6.0
+  max_positions: 3
+  portfolio_heat_pct: 3.0
+  time_stop_h1_bars: 0
+
+model:
+  primary: E2M1   # H1 POI/OB reaction + M5 CHoCH-with-inducement (the owner-supplied E1+M1 example uses this shape once E1 is disabled)
+  entry_rule: "H1 bias non-neutral; price reacts at an E2 (H1 POI) or E3 (H1 sweep) origin; M5 CHoCH with inducement confirms; entry at next-bar-open after the M5 close-through"
+  stop_rule: "structure-based only — nearest of [origin zone far boundary, inducement/swept liquidity extreme] minus/plus buffer; time-stop disabled, invalidation is structural only"
+  target_rule: "unchanged from v3.6/v1.0.0: nearest unswept external HTF liquidity beyond entry, M5 swing fallback flagged target_is_ltf_fallback, REJECT_NO_TARGET on no valid target — no synthetic fixed-R substitute"
+
+risk_contract:
+  risk_per_trade: {demo: 0.5, live: 0.5}
+  max_daily_loss_pct: 3.0
+  max_weekly_loss_pct: 6.0
+  max_positions: 3
+  portfolio_heat_pct: 3.0
+  minimum_rr: 3.0
+  position_sizing:
+    mode: config_driven
+    method: risk_pct_by_stop_distance
+    lot_rounding: round_down_to_broker_step
+  execution_limits:
+    max_spread_points: 20
+    max_stale_price_seconds: 3
+    duplicate_order_prevention: true
+    stop_widening_allowed: false
+
+machine_validation:
+  every_rule_measurable: true
+  every_parameter_externalizable: true
+  no_subjective_language: true
+  entry_conditions_boolean: true
+  exit_conditions_deterministic: true
+  risk_rules_explicit: true
+  strategy_codable_without_interpretation: true
+
+notes:
+  - Candidate contract only.
+  - Not approved for execution.
+  - Population-feasibility qualification (>=30 completed sequences across
+    EURUSD/GBPUSD/XAUUSD, >=5 in >=2 symbols) not yet run — see
+    reports/audit/ST_C1_V39_CLEAN_SMC_RCR.md for the precommitted criteria.
+  - ST-C1_v1.yaml (v1.0.0) and ST-C1_v1.1.0.yaml remain retained, unmodified,
+    as historical/parked lines and are not superseded in place by this file.
