@@ -229,6 +229,29 @@ def inducement(c, k=2):
             "bull_inducement": lo[-1][1] if lo else None}
 
 
+def resample(c, factor):
+    """Aggregate `factor` consecutive candles into one (e.g. factor=4 turns
+    H1 candles into H4): open = first bar's open, high/low = max/min over
+    the group, close = last bar's close, time = first bar's time (the
+    group's own opening timestamp, matching standard OHLC resampling
+    convention). Trailing candles that don't complete a full group are
+    dropped (a partial, still-forming bar must never be treated as closed).
+    Used when a dedicated higher-timeframe file is missing or too short
+    (e.g. no native H4 history) — deriving it from an already-available,
+    full-history lower timeframe rather than fabricating data."""
+    out = []
+    for start in range(0, len(c) - factor + 1, factor):
+        group = c[start:start + factor]
+        out.append({
+            "time": group[0]["time"],
+            "open": group[0]["open"],
+            "high": max(b["high"] for b in group),
+            "low": min(b["low"] for b in group),
+            "close": group[-1]["close"],
+        })
+    return out
+
+
 def mitigation_status(c, from_i, low, high, direction, upto_i=None):
     """Status of a POI zone [low,high] after bar from_i: FRESH / MITIGATED / INVALIDATED,
     evaluated using bars up to and including `upto_i` (default: the end of

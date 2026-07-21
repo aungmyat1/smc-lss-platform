@@ -176,6 +176,15 @@ must cite the spec/config field it came from.
 - **Risk negotiation**: you may propose risk-cap or portfolio-heat changes,
   but they only take effect once written into `specs/*.yaml` /
   `config/watchlist.yaml` through the normal research/governance process.
+- **`st-c1-scenario-classifier-agent`** and **`st-c1-conformance-kernel-agent`**:
+  as of 2026-07-22 these two feed this agent — the classifier turns a raw
+  signal into scenario JSON, and the kernel mechanically applies §3–4's
+  rules (scenario/displacement/SL/TP/session/whitelist/risk-cap validity)
+  against that JSON, producing an `APPROVED`/`REJECTED` decision. Consume
+  their output rather than re-deriving the same checks by hand; this
+  agent's own §3–4 remain the rules of record (what the kernel enforces),
+  but the mechanical evaluation itself lives in the kernel so the checks
+  aren't performed twice, independently, with room to disagree.
 - **Existing atomic skills** (`market-structure`, `liquidity-sweep`,
   `order-block`, `fair-value-gap`, `inducement`, `choch-bos`,
   `premium-discount`, `entry-confirmation`, `session-filter`,

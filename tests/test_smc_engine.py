@@ -82,3 +82,30 @@ def test_displacement_move_respects_start_offset():
     assert e.displacement_move(c, sweep_i, "bull", start_offset_bars=2) is None
     # but it IS found with a wider offset allowance
     assert e.displacement_move(c, sweep_i, "bull", start_offset_bars=3) is not None
+
+
+# --- resample() — added for the ST-C1 v3.10 "Reversal Capture" preset,
+# which needs H4 candles but this repo's H4 CSVs are missing or too short
+# for full-history replay (found while running v3.10's population/existence
+# check) — deriving H4 from the full-history H1 series instead.
+
+def test_resample_aggregates_ohlc_correctly():
+    c = [_bar(1, 5, 0, 2), _bar(2, 6, 1, 3), _bar(3, 4, 2, 4), _bar(4, 8, 3, 5)]
+    out = e.resample(c, 4)
+    assert len(out) == 1
+    grp = out[0]
+    assert grp["open"] == 1       # first bar's open
+    assert grp["close"] == 5      # last bar's close
+    assert grp["high"] == 8       # max high across the group
+    assert grp["low"] == 0        # min low across the group
+    assert grp["time"] == c[0]["time"]
+
+
+def test_resample_drops_incomplete_trailing_group():
+    c = [_bar(1, 2, 0, 1)] * 5   # 5 bars, factor=4 -> one full group + 1 leftover, dropped
+    out = e.resample(c, 4)
+    assert len(out) == 1
+
+
+def test_resample_empty_input():
+    assert e.resample([], 4) == []

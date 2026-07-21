@@ -288,10 +288,17 @@ def _e1_trigger_reversal(h1, d1, h4):
             body_hi, body_lo = max(c["open"], c["close"]), min(c["open"], c["close"])
             upper_wick = c["high"] - body_hi
             lower_wick = body_lo - c["low"]
+            # Auto-detected reaction direction from wick geometry alone (no
+            # close-vs-body-edge tiebreak): a long lower wick rejects further
+            # downside -> bullish reaction; a long upper wick rejects further
+            # upside -> bearish reaction. A doji-bodied bar (open == close)
+            # with a long lower wick is a textbook rejection candle and must
+            # still qualify -- an earlier draft's extra "close > body_lo"
+            # check excluded exactly that case (found via fixture testing).
             reaction_dir = None
-            if (lower_wick / rng) >= E1_REACTION_WICK_RATIO_MIN and c["close"] > body_lo:
+            if (lower_wick / rng) >= E1_REACTION_WICK_RATIO_MIN:
                 reaction_dir = "bull"
-            elif (upper_wick / rng) >= E1_REACTION_WICK_RATIO_MIN and c["close"] < body_hi:
+            elif (upper_wick / rng) >= E1_REACTION_WICK_RATIO_MIN:
                 reaction_dir = "bear"
             if reaction_dir is None:
                 continue
