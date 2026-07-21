@@ -1,0 +1,198 @@
+# ST-C1 candidate strategy contract — v1.1.0
+# Normalized from specs/v3.7.yaml (10-gate conformance framework).
+# Status: candidate only, not approved for execution.
+# ST-C1_v1.yaml (v1.0.0) is retained unmodified as the immutable historical
+# control for the v3.6-era surrogate baseline — this file supersedes it for
+# any NEW research work, it does not replace it in place.
+
+strategy:
+  strategy_id: ST-C1
+  name: London SMC Reversal (10-gate conformance)
+  version: 1.1.0
+  status: candidate
+  source:
+    specification: reports/audit/ST_C1_V37_RESEARCH_CHANGE_REQUEST.md
+    research_spec: specs/v3.7.yaml
+    execution_spec: specs/v1.yaml
+    supersedes_candidate: strategies/candidates/ST-C1_v1.yaml
+  validation:
+    status: pending
+    approval_status: pending
+    qualification: ablation_only   # A0-A3 locked ablation, not an approval attempt (see RCR)
+
+market_universe:
+  asset_class: [forex, metals]
+  instruments: [EURUSD, GBPUSD, XAUUSD]
+  sessions: [London, NewYork]
+  timezone: UTC
+  timeframes:
+    bias: H1
+    external_structure: H1
+    htf_poi: H1          # extendable to D1 for the D1_GAP poi_origin only
+    m5_trigger: M5
+    execution: M5
+
+parameters:
+  # Carried forward unchanged from v3.6/ST-C1 v1.0 where the underlying rule is unchanged:
+  swing_lookback_bars: 2
+  session_timezone: UTC
+  london_session_utc: ["06:00", "10:00"]
+  new_york_session_utc: ["11:30", "15:00"]
+  displacement_atr_period: 14
+  displacement_atr_mult: 1.5
+  displacement_body_ratio_min: 0.5
+  displacement_start_offset_bars: 2
+  displacement_max_run_bars: 3
+  signal_ttl_bars: 1
+  risk_pct_demo: 0.5
+  risk_pct_live: 1.0
+  daily_loss_pct: 2.0
+  weekly_loss_pct: 5.0
+  max_positions: 1
+  portfolio_heat_pct: 4.0
+  max_spread_points: 25
+  max_stale_price_seconds: 5
+  break_even_activation_r: 1.0
+  partial_take_r: 1.0
+  partial_take_fraction: 0.5
+  time_stop_intraday_hours: 12
+  time_stop_overnight_hours: 24
+  time_stop_intraweek_hours: 120
+  time_stop_multi_horizon_hours: 120
+  # New / changed for v1.1.0 (see specs/v3.7.yaml parameter_registry for full detail):
+  close_buffer_atr_mult: 0.10
+  dealing_range_lookback_h1_bars: 40
+  equal_high_low_tolerance_atr_mult: 0.05
+  minimum_gap_size_atr_mult: 0.10
+  htf_poi_max_age_h1_bars: 60
+  d1_gap_max_age_d1_bars: 10
+  d1_reaction_window_h1_bars: 6
+  h1_reclaim_window_h1_bars: 1
+  poi_entry_to_sweep_max_m5_bars: 30
+  displacement_to_choch_max_m5_bars: 5
+  choch_to_retrace_entry_max_m5_bars: 30
+  stop_buffer_atr_mult: 0.15
+  min_net_rr: 3.0                      # REPLACES v1.0's gross min_rr: 2.0 — see G8
+  min_rr: 2.0                          # gross fallback threshold, used only when ablation disables the net reward gate (A0/A1)
+  m5_poi_entry_search_bars: 3200         # sized to cover d1_gap_max_age_d1_bars (10 D1 days) in M5 bars; see historical_replay_engine_v37.py
+
+g1_bias:
+  bullish:
+    input_condition:
+      - H1 confirmed HH exists
+      - H1 confirmed HL exists
+      - most recent H1 break was a bullish BOS/CHoCH through the protected low
+    deterministic_rule: bullish_bias = true only when all conditions are true; anything else (including any conflicting read) is NEUTRAL
+    boolean_decision: true
+    trade_action: allow long-only setups
+  bearish:
+    input_condition:
+      - H1 confirmed LH exists
+      - H1 confirmed LL exists
+      - most recent H1 break was a bearish BOS/CHoCH through the protected high
+    deterministic_rule: bearish_bias = true only when all conditions are true; anything else is NEUTRAL
+    boolean_decision: true
+    trade_action: allow short-only setups
+  neutral:
+    deterministic_rule: neutral_bias = true whenever bullish_bias and bearish_bias are both false
+    boolean_decision: true
+    trade_action: REJECT — no candidate is evaluated further (hard gate, no fallback direction)
+
+g2_external_structure:
+  dealing_range:
+    input_condition: H1 confirmed swings exist within dealing_range_lookback_h1_bars
+    deterministic_rule: dealing_range_high/low = the single highest/lowest CONFIRMED H1 swing in the lookback window; persisted as range_id with anchor timestamps
+    boolean_decision: dealing_range_selected
+    trade_action: required precondition for G4/G5/G7/G9 — no candidate evaluation without a selected range
+  protected_swing:
+    deterministic_rule: the dealing_range extremity opposite the trade direction is the default G7 causal reference unless a closer POI/displacement structure applies
+    invalidation_rule: a later CONFIRMED swing beyond the current extremity supersedes it (INVALIDATED) and range_id is re-anchored
+
+g3_bos_choch:
+  input_condition: a confirmed protected level exists (G1/G2)
+  deterministic_rule: close-through by >= close_buffer_atr_mult * ATR14 in the continuation direction = BOS; the FIRST opposite-direction close-through = CHoCH; any later opposite break after a CHoCH = MSS; a wick beyond the level with close back inside = WICK_REJECTION (never advances state)
+  boolean_decision: bos_confirmed / choch_confirmed / mss_confirmed / wick_rejection
+  trade_action: CHoCH permits reversal entry evaluation; BOS/MSS/WICK_REJECTION do not by themselves
+  evidence: structure_id, level, prior_trend_state, breaking_bar_index, breaking_bar_time persisted for every event
+
+g4_premium_discount:
+  input_condition: dealing_range_selected (G2) is true
+  deterministic_rule: "equilibrium = dealing_range_low + 0.5 * (dealing_range_high - dealing_range_low); long requires actual_entry < equilibrium; short requires actual_entry > equilibrium; exact equality is NEUTRAL for both"
+  boolean_decision: entry_zone_valid
+  trade_action: permit only zone-aligned entries; OTE is advisory metadata only, not a gate
+  persisted_fields: [range_id, dealing_range_low, dealing_range_high, low_anchor_time, high_anchor_time, midpoint, location_classification]
+
+g5_htf_poi:
+  input_condition: G1 bias is non-neutral AND G2/G4 preconditions hold
+  deterministic_rule: "an H1 (or D1 for D1_GAP) 3-candle FVG, gap >= minimum_gap_size_atr_mult * ATR14, formed during/within 1 bar of a qualifying displacement move, in FRESH or MITIGATED (not INVALIDATED) state, age <= htf_poi_max_age_h1_bars"
+  poi_origin: one of [D1_GAP, H1_ORDER_BLOCK, H1_EXTERNAL_SWEEP] — see specs/v3.7.yaml g5_htf_poi.poi_origin for the causal test each requires
+  boolean_decision: htf_poi_confirmed
+  trade_action: allow G6 evaluation only while the POI is fresh/mitigated; an M5-timeframe FVG is never eligible as this field (mislabel guard)
+  mitigation_rule: reuse smc_engine.mitigation_status 3-state semantics (FRESH/MITIGATED/INVALIDATED), unchanged geometry
+
+g6_m5_trigger:
+  input_condition: htf_poi_confirmed (G5) is true and price has entered the POI zone
+  deterministic_rule: "required order: htf_context_confirmed -> price_enters_fresh_htf_poi -> m5_liquidity_sweep -> m5_displacement -> m5_close_confirmed_choch_or_bos -> permitted_retracement_or_entry_confirmation -> next_bar_open_entry; enforced strictly, first qualifying bar only, no zone-only entry"
+  boolean_decision: m5_trigger_confirmed
+  trade_action: create order intent only once every event in the sequence has fired in order with recorded bar_index/timestamp
+  confirmation_candle: M5 close
+  entry_price: next_bar_open after confirmation
+  timeout_bars: 1
+
+g7_structural_invalidation:
+  input_condition: m5_trigger_confirmed (G6) is true
+  deterministic_rule: "stop references the closest of [G2 protected_swing opposite side, G5 POI far boundary, G6 displacement origin]; final_stop = raw_level +/- (stop_buffer_atr_mult * ATR14); reject on non-strict stop geometry"
+  boolean_decision: stop_valid
+  trade_action: attach stop loss to the order intent; persist invalidation_structure_id, raw_level, buffer, final_stop, reason
+  emergency_exit: close at next bar's open if this structure is violated by a closing price before target/BE/time-stop (G10)
+
+g8_net_reward_gate:
+  input_condition: stop_valid (G7) is true and a G9 target has been preselected
+  deterministic_rule: "net_available_rr = (abs(target - actual_entry) - expected_round_trip_cost_price) / abs(actual_entry - final_stop), recomputed off the ACTUAL next-bar-open entry; require net_available_rr >= min_net_rr (3.0); reject on opening-gap violations of either the RR floor or G7 stop geometry"
+  boolean_decision: net_reward_valid
+  trade_action: "attach take profit only when net_reward_valid; costs = spread + entry/exit slippage + commission + swap, sourced from config/research_costs.yaml + src/symbol_metadata.py; zero commission/swap must be labeled costs_assumption_zero_commission_swap: true, not measured truth"
+
+g9_preselected_target:
+  input_condition: htf_poi_confirmed (G5) and m5_trigger_confirmed (G6)
+  deterministic_rule: "priority 1 = nearest unswept G2 external liquidity beyond entry (H1, D1-extended for INTRAWEEK/MULTI_HORIZON); priority 2 = nearest unswept M5 swing extremum beyond entry, flagged target_is_ltf_fallback: true; no valid target on either priority = REJECT_NO_TARGET, never a synthetic fixed-R substitute"
+  boolean_decision: target_valid
+  trade_action: attach take profit input to G8; REJECT_NO_TARGET halts the candidate before G8/G10
+
+g10_fixed_management:
+  input_condition: position is open (net_reward_valid true, order filled)
+  deterministic_rule: "move stop to breakeven at +1R and take 50% partial at +1R (no separate cost buffer at BE — see specs/v3.7.yaml g10_fixed_management.costs_included_before_be_reason); hold runner toward the G9 target via structure, no trailing beyond BE; exit on time-stop (by horizon), weekend close, or G7 invalidation, whichever first; same-bar stop+target ambiguity resolves stop-first"
+  boolean_decision: management_action_valid
+  trade_action: tighten stop, reduce exposure, or close position; every management event is logged with bar_index/timestamp
+
+risk_contract:
+  risk_per_trade: {demo: 0.5, live: 1.0}
+  max_daily_loss_pct: 2.0
+  max_weekly_loss_pct: 5.0
+  max_positions: 1
+  portfolio_heat_pct: 4.0
+  minimum_net_rr: 3.0                  # REPLACES v1.0's minimum_rr (gross): 2.0
+  position_sizing:
+    mode: config_driven
+    method: risk_pct_by_stop_distance
+    lot_rounding: round_down_to_broker_step
+  execution_limits:
+    max_spread_points: 25
+    max_stale_price_seconds: 5
+    duplicate_order_prevention: true
+    stop_widening_allowed: false
+
+machine_validation:
+  every_rule_measurable: true
+  every_parameter_externalizable: true
+  no_subjective_language: true
+  entry_conditions_boolean: true
+  exit_conditions_deterministic: true
+  risk_rules_explicit: true
+  strategy_codable_without_interpretation: true
+  every_gate_has_positive_and_negative_test_required: true   # new for v1.1.0 — see tests/test_st_c1_v37_gates.py
+
+notes:
+  - Candidate contract only.
+  - Not approved for execution.
+  - Ablation-only qualification for this task (A0-A3, locked, not optimized) — see reports/audit/ST_C1_V37_RESEARCH_CHANGE_REQUEST.md.
+  - ST-C1_v1.yaml (v1.0.0) remains the immutable historical control and is not modified by this file.

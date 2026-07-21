@@ -1,0 +1,303 @@
+# SMC-LSS strategy spec v3.7 (machine-testable, numeric, 10-gate conformance)
+# Source of truth: this file + reports/audit/ST_C1_V37_RESEARCH_CHANGE_REQUEST.md
+# Status: RESEARCH_CANDIDATE — spec only. engine_implements_spec stays false
+# until the canonical decision module + gate trace + tests are built AND the
+# locked A0-A3 ablation runs against this exact contract.
+#
+# WHY A NEW VERSION (not a v3.6 edit): v3.6 is left immutable as a historical
+# control (see specs/v3.6.yaml, unchanged by this task). v3.7 differs from
+# v3.6 in ways that materially change signal eligibility and trade outcomes,
+# not just implementation detail:
+#   1. Premium/discount (G4) becomes a HARD gate with a persisted, ID-anchored
+#      HTF dealing range, evaluated before entry — v3.6 never defined this as
+#      an executable rule (ST-C1_v1.yaml stated it in prose only).
+#   2. The 9-cell E-trigger x M-model VARIANT_TABLE is replaced by a single
+#      linear G1->G10 pipeline. The causal HTF-trigger taxonomy (D1 gap / H1
+#      POI reaction / H1 external sweep) is kept, but folded into G5's
+#      `poi_origin` rather than 9 separately-tracked variants — ST-C1 is one
+#      strategy with one entry model (long/short), matching
+#      strategies/candidates/ST-C1_v1.yaml, not 9 variants.
+#   3. G8 replaces the gross `min_rr >= 2.0` eligibility check with a NET
+#      reward gate (net_available_rr >= 3.0, costs included) computed off the
+#      ACTUAL next-bar-open entry, not the signal-bar close.
+#   4. G9 removes the silent gross-fallback target defect present in
+#      validation/historical_replay_engine.py::_determine_target: no target
+#      ever means REJECT_NO_TARGET, never a synthetic fixed-R substitute.
+#   5. G2 (external/protected structure) and G7 (causal structural
+#      invalidation with a persisted structure ID) did not exist as
+#      executable rules anywhere in the repo before this spec.
+version: 3.7
+track: research                # research-only, never executes trades
+status: draft
+promotion_stage: research
+supersedes: 3.6                # 3.6 remains immutable; this does not edit it
+
+confirmation:
+  closed_candles_only: true
+  require_all_gates_g1_to_g10: true
+  utc_normalization_required: true
+
+governance:
+  schema_version: 1
+  config_version: 3.7.0
+  approval_package_required: true
+  dataset_version: pending
+  code_commit: pending
+  build_identifier: pending
+  registry_version: 3.7.0
+  config_hash: pending
+  fail_closed: true
+  single_source_of_truth: true
+
+# ---------------------------------------------------------------------------
+# G1 — HTF bias
+# ---------------------------------------------------------------------------
+g1_htf_bias:
+  timeframe_precedence: [D1, H1]        # D1 context informs H1 bias when both confirm; H1 decides on conflict-free cases
+  pivot_left_bars: 2                    # smc_engine.swings(k=2): candidate pivot must be strict extreme vs k prior bars
+  pivot_right_bars: 2                   # ...and >= (highs) / <= (lows) the following k bars to CONFIRM
+  pivot_confirmation_rule: "a pivot is CONFIRMED only once pivot_right_bars additional closed bars exist after it (no look-ahead: unconfirmed pivots are invisible to every downstream gate)"
+  structure_classification: [HH, HL, LH, LL]
+  protected_high:
+    definition: "in an established bearish or neutral-turning-bearish state, the most recent CONFIRMED swing high that has not yet been broken by a closing price above it; its break (G3 close-through) invalidates the bearish read"
+  protected_low:
+    definition: "in an established bullish or neutral-turning-bullish state, the most recent CONFIRMED swing low that has not yet been broken by a closing price below it; its break (G3 close-through) invalidates the bullish read"
+  states: [BULLISH, BEARISH, NEUTRAL]
+  bullish_rule: "BULLISH only when confirmed HH and confirmed HL both exist on the precedence timeframe AND the most recent break was a bullish BOS/CHoCH (G3) through the relevant protected level"
+  bearish_rule: "BEARISH only when confirmed LH and confirmed LL both exist AND the most recent break was a bearish BOS/CHoCH through the relevant protected level"
+  neutral_rule: "any state that is not cleanly BULLISH or BEARISH (e.g. no confirmed opposite-pair swings yet, or the last break contradicts the established bias) is NEUTRAL"
+  neutral_or_conflicting_bias_rejects: true   # hard requirement — NEUTRAL never proceeds past G1
+  close_buffer_atr_mult: 0.10           # minimum close-through distance (fraction of H1 ATR14) required for a break to count in G1/G3, filters marginal closes
+  e_trigger_interaction: "an E-trigger reaction (G5 poi_origin) can be the EVIDENCE that a break occurred, but it never substitutes for the G1 bias state itself; a fresh E-trigger under a NEUTRAL or conflicting G1 bias still rejects at G1, before G5/G6 are evaluated"
+
+# ---------------------------------------------------------------------------
+# G2 — External / protected structure
+# ---------------------------------------------------------------------------
+g2_external_structure:
+  dealing_range_lookback_h1_bars: 40
+  external_swing:
+    definition: "the single highest CONFIRMED high (external high) and single lowest CONFIRMED low (external low) within dealing_range_lookback_h1_bars — the current dealing-range extremities"
+  internal_swing:
+    definition: "any CONFIRMED swing high/low within the lookback window that is NOT the external extremity on its side — minor/internal liquidity, eligible only as inducement (G6), never as the G9 primary target"
+  dealing_range_high: "external_swing high, persisted with its bar index + timestamp as range_id anchor"
+  dealing_range_low: "external_swing low, persisted with its bar index + timestamp as range_id anchor"
+  protected_swing_identity: "external_swing on the side opposite the trade direction becomes the G7 causal invalidation reference unless a closer causal structure (POI boundary, displacement origin) applies — see G7"
+  equal_high_low_tolerance_atr_mult: 0.05   # two swing extremes within this ATR-relative tolerance are treated as one pooled liquidity level, not two independent structures
+  structure_lifecycle: [ACTIVE, SWEPT, INVALIDATED]
+  structure_lifecycle_rule: "ACTIVE until price trades through the level (SWEPT, i.e. consumed as liquidity — see reusable/consumed below) or the opposing side's dealing range extremity moves past it, superseding it (INVALIDATED)"
+  reusable_vs_consumed_liquidity: "an external swing that has been swept (G6 m5_liquidity_sweep evidence references its own timeframe/level) is CONSUMED as a sweep target for that direction going forward within the same dealing range; a lookback window alone is NOT sufficient evidence of validity — the specific structure_id must not already be marked consumed for this range_id"
+
+# ---------------------------------------------------------------------------
+# G3 — BOS/CHoCH confirmation
+# ---------------------------------------------------------------------------
+g3_bos_choch:
+  close_through_rule: "a break is confirmed only when a candle CLOSES beyond the reference level by >= g1_htf_bias.close_buffer_atr_mult * ATR14 on that timeframe; a wick beyond the level with a close back on the origin side is a WICK_REJECTION, not a break"
+  wick_only_rejection: "WICK_REJECTION events are recorded (structure_id, level, evidence_time) but never advance G1/G3 state"
+  bos_continuation: "a close-through break in the SAME direction as the established G1 bias, through the same-side protected level — confirms continuation, does not change bias state"
+  first_counter_trend_choch: "the FIRST close-through break in the OPPOSITE direction from the established G1 bias, through the opposite-side protected level — flips bias state to the new direction (or NEUTRAL if criteria are incomplete) and is labeled CHOCH, never BOS"
+  later_market_structure_shift: "any subsequent opposite-direction break AFTER a CHoCH has already flipped bias — labeled MSS (market structure shift), distinct from the initiating CHoCH, for evidence/audit purposes only"
+  break_buffer_atr_mult: 0.10          # same numeric value as g1_htf_bias.close_buffer_atr_mult — one buffer definition, referenced by both
+  structure_id_and_evidence: "every BOS/CHoCH/MSS/WICK_REJECTION event persists: structure_id (symbol|timeframe|level|creation_index), the exact level broken, the prior trend state, the breaking candle's index and timestamp"
+
+# ---------------------------------------------------------------------------
+# G4 — Premium/discount location
+# ---------------------------------------------------------------------------
+g4_premium_discount:
+  htf_range_selection_timeframe: H1
+  range_selection_rule: "select ONE HTF dealing range (G2 dealing_range_low/high) as of the evaluation bar, BEFORE any G5/G6 evaluation — this is a precondition, not a per-candidate re-derivation"
+  equilibrium_formula: "equilibrium = low + 0.5 * (high - low)"
+  long_rule: "long candidates REQUIRE entry location strictly below equilibrium (discount)"
+  short_rule: "short candidates REQUIRE entry location strictly above equilibrium (premium)"
+  equilibrium_exact_tie_rule: "entry location exactly equal to equilibrium is NEUTRAL — rejected for both directions, never rounded in the candidate's favor"
+  persisted_fields: [range_id, dealing_range_low, dealing_range_high, low_anchor_time, high_anchor_time, midpoint, location_classification]
+  ote_policy: "OTE (optimal trade entry, e.g. a 62-79% retracement band) may be RECORDED as an advisory feature on the trade record for later research use, but is NOT a gate in this spec — no OTE band is defined or enforced; per this task's explicit instruction, inventing one without an approved Research Change Request amendment is out of scope"
+
+# ---------------------------------------------------------------------------
+# G5 — HTF area of interest (HTF POI)
+# ---------------------------------------------------------------------------
+g5_htf_poi:
+  timeframe: H1                          # HTF POI is ALWAYS H1 or D1 — never the M5 execution timeframe
+  fvg_formula_3candle: "bullish: high[i-2] < low[i]; bearish: low[i-2] > high[i] (identical geometry to smc_engine.fvgs, evaluated on the H1/D1 series only)"
+  minimum_gap_size_atr_mult: 0.10        # gap width must be >= 10% of that timeframe's ATR14 to exclude noise-level imbalances
+  displacement_requirement: "the H1/D1 FVG must form during or within 1 bar after a displacement move meeting g_displacement's atr_mult/body_ratio_min thresholds on that same timeframe — a 3-candle gap with no displacement behind it is not a valid HTF POI"
+  poi_origin:
+    enum: [D1_GAP, H1_ORDER_BLOCK, H1_EXTERNAL_SWEEP]
+    D1_GAP: "3-candle D1 FVG, max age d1_gap_max_age_d1_bars, H1 first-reaction-bar test (reaction_wick_ratio_min) within d1_reaction_window_h1_bars of the gap's H1-equivalent open"
+    H1_ORDER_BLOCK: "H1 order block (smc_engine.order_blocks geometry) fresh/mitigated (not INVALIDATED), max age h1_poi_max_age_h1_bars"
+    H1_EXTERNAL_SWEEP: "H1 sweep + reclaim of the G2 external_swing extremity, reclaim within h1_reclaim_window_h1_bars"
+  freshness_lifecycle: [FRESH, MITIGATED, INVALIDATED]     # identical 3-state semantics to smc_engine.mitigation_status — reused, not redefined
+  partial_mitigation: "MITIGATED: price has traded into [low, high] without closing beyond the zone's far boundary against its directional bias"
+  full_mitigation_or_invalidation: "INVALIDATED: a candle CLOSES beyond the zone's far boundary against its directional bias — the zone is no longer a valid POI"
+  max_age_h1_bars: 60
+  causal_relationship_required: true
+  causal_relationship_rule: "the HTF POI's zone-creation index must fall within [displacement.start, displacement.end + 1] of the HTF event that produced it (same causal-window pattern already implemented for M3 in src/signal_v35.py::detect_structure_m3, generalized to H1/D1)"
+  m5_fvg_mislabel_guard: "an M5-timeframe FVG is NEVER eligible as a g5_htf_poi record; the gate trace's g5_confluence field MUST cite an H1 or D1 timeframe tag on the POI's source series, or the gate fails closed"
+
+# ---------------------------------------------------------------------------
+# G6 — M5 trigger (required order)
+# ---------------------------------------------------------------------------
+g6_m5_trigger:
+  required_order:
+    - htf_context_confirmed        # G1+G2+G3+G4 all pass
+    - price_enters_fresh_htf_poi   # price trades into the G5 POI zone while it is FRESH or MITIGATED (not INVALIDATED)
+    - m5_liquidity_sweep           # M5-timeframe sweep of M5-internal or inducement liquidity inside the POI reaction
+    - m5_displacement              # ATR-qualified displacement move on M5 (g_displacement thresholds), starting within displacement_start_offset_bars of the sweep
+    - m5_close_confirmed_choch_or_bos   # M5 close-through break (G3 geometry, applied on M5) confirming the reaction
+    - permitted_retracement_or_entry_confirmation
+    - next_bar_open_entry
+  enforce_order: true
+  first_qualifying_bar_only: true       # no look-ahead scan across multiple candidate bars once the first qualifying sequence completes
+  poi_entry_to_sweep_max_m5_bars: 30
+  sweep_to_displacement_start_offset_m5_bars: 2      # shared with g_displacement.start_offset_bars
+  displacement_to_choch_max_m5_bars: 5
+  choch_to_retrace_entry_max_m5_bars: 30
+  event_recording_required: [poi_entry, sweep, displacement, choch_or_bos, retrace_entry]
+  event_recording_fields: [event_name, bar_index, timestamp]
+  no_zone_only_entry: true              # entering solely because price is inside a POI, with no sweep+displacement+CHoCH evidence, is never a valid signal
+
+g_displacement:                         # shared numeric block referenced by G5/G6 (kept from v3.6, unchanged values)
+  atr_period: 14
+  atr_mult: 1.5
+  body_ratio_min: 0.5
+  start_offset_bars: 2
+  max_run_bars: 3
+
+# ---------------------------------------------------------------------------
+# G7 — Structural invalidation
+# ---------------------------------------------------------------------------
+g7_structural_invalidation:
+  stop_reference_rule: "the stop MUST reference the setup's own causal invalidation structure: the G2 protected_swing_identity on the side opposite the trade direction, OR the G5 POI's far boundary, OR the G6 displacement origin — whichever is closest to entry on the correct side (tightest valid stop, never the loosest)"
+  buffer_atr_mult: 0.15                  # matches the existing HistoricalReplayEngine default (stop_buffer_atr_mult) — reused, not reinvented
+  persisted_fields: [invalidation_structure_id, raw_level, buffer, final_stop, reason]
+  reason_enum: [swept_liquidity_extreme, protected_swing, poi_boundary, displacement_origin]
+  invalid_stop_geometry_rule: "REJECT if final_stop is not strictly beyond entry on the risk side (long: stop < entry; short: stop > entry) or if risk (|entry - stop|) <= 0"
+
+# ---------------------------------------------------------------------------
+# G8 — Net reward gate
+# ---------------------------------------------------------------------------
+g8_net_reward_gate:
+  formula: "net_available_rr = (logical_target_distance - expected_round_trip_cost_price) / actual_entry_to_stop_distance"
+  logical_target_distance: "abs(G9 preselected target - actual_entry)"
+  actual_entry_to_stop_distance: "abs(actual_entry - G7 final_stop), using the ACTUAL next-bar-open entry price, not the signal-bar close"
+  min_net_available_rr: 3.0
+  recompute_on_actual_entry: true
+  opening_gap_rule: "if the actual next-bar-open entry makes net_available_rr < 3.0, OR invalidates G7 stop geometry (stop no longer on the correct side of the actual entry), REJECT — a favorable signal-bar read does not carry over silently past a gap"
+  cost_components: [spread, entry_slippage, exit_slippage, commission, swap]
+  cost_source: "config/research_costs.yaml (spread_points, slippage_points) + src/symbol_metadata.py (point/pip/contract-size) — the existing HistoricalReplayEngine._cost_to_r machinery, reused as-is; see ST_C1_V37_PRE_EDIT_FINDINGS.md §7"
+  zero_commission_swap_disclosure: "when commission_per_lot_usd_round_turn or swap_per_lot_usd_per_day is 0.0 in the active cost profile, the trade record and every report MUST label it costs_assumption_zero_commission_swap: true — never presented as measured broker truth"
+
+# ---------------------------------------------------------------------------
+# G9 — Preselected target
+# ---------------------------------------------------------------------------
+g9_preselected_target:
+  selection_timing: "selected BEFORE entry, from the state as of the signal bar, then re-validated (not re-selected) against G8 using the actual entry"
+  priority:
+    1: "nearest valid UNSWEPT external HTF liquidity beyond entry (G2 external_swing on the opposite side, at H1, extendable to D1 for INTRAWEEK/MULTI_HORIZON horizons)"
+    2: "approved lower-timeframe liquidity fallback: nearest unswept M5 swing extremum beyond entry — permitted by this spec, but every trade using it MUST set target_is_ltf_fallback: true on the record, distinguishing it from a primary HTF target for later analysis"
+  no_valid_target_rule: "if neither priority level yields a target, decision = REJECT_NO_TARGET — this is a hard rejection code, never a silent pass and never a synthetic fixed-R substitute (this is the exact defect fixed in src/signal_v35.py and NOT ported into validation/historical_replay_engine.py::_determine_target before this spec — see ST_C1_V37_PRE_EDIT_FINDINGS.md §5)"
+  synthetic_target_ban: true
+
+# ---------------------------------------------------------------------------
+# G10 — Fixed management (defined before testing, versioned)
+# ---------------------------------------------------------------------------
+g10_fixed_management:
+  tp1_rule: "entry +/- 1R (gross, before the G8 net-cost adjustment is realized at exit)"
+  partial_fraction: 0.5
+  break_even_trigger_r: 1.0
+  costs_included_before_be: false
+  costs_included_before_be_reason: "break-even moves the stop to the raw entry price; realized net R already nets true round-trip costs through the per-trade cost model at whichever exit actually occurs — no separate cost buffer is added to the BE stop price itself, to avoid double-counting cost against the same trade"
+  runner_target: "the G9 preselected target, held via structure (no additional trailing beyond break-even) unless a G7-referenced structure invalidates first"
+  trailing_stop:
+    enabled: false
+    may_widen: false
+  time_stop:
+    enabled: true
+    max_hold_hours_by_horizon:
+      INTRADAY: 12
+      OVERNIGHT: 24
+      INTRAWEEK: 120
+      MULTI_HORIZON: 120
+  session_close_weekend_behavior: "weekend_exit: true — force-close any open position before the weekly session close; no position is held into a weekend gap"
+  same_bar_ambiguity_policy: "stop_first — if a single bar's range touches both stop and target, resolve as a stop hit (conservative, matches existing HistoricalReplayEngine._simulate_trade_detail behavior)"
+  emergency_exit_behavior: "invalidation_exit: true — if G7's invalidation structure is violated by a closing price before TP1/target/time-stop, close at the next bar's open regardless of R state"
+
+# ---------------------------------------------------------------------------
+# Session, signal lifecycle (unchanged geometry from v3.6, restated here so
+# v3.7 is self-contained and does not require reading v3.6 to execute)
+# ---------------------------------------------------------------------------
+session:
+  timezone: UTC
+  london_utc: ["06:00", "10:00"]
+  new_york_utc: ["11:30", "15:00"]
+  weekdays_only: true
+  dst_adjusted: false
+  news_filter: none
+
+entry:
+  type: confirmation_close_next_bar_open
+  resting_limit_orders: false
+  intrabar_market_fill: false
+
+signal_lifecycle:
+  ttl_bars: 1
+  one_signal_per_structure: true
+  structure_key: [symbol, direction, range_id, poi_origin, structure_creation_index]
+
+horizons:
+  INTRADAY:      {max_hold_hours: 12}
+  OVERNIGHT:     {max_hold_hours: 24}
+  INTRAWEEK:     {max_hold_hours: 120}
+  MULTI_HORIZON: {max_hold_hours: 120, runner: true}
+
+poi_origin_horizon_map:                 # replaces the old 9-cell VARIANT_TABLE; horizon now keys off poi_origin only
+  D1_GAP: MULTI_HORIZON
+  H1_ORDER_BLOCK: OVERNIGHT
+  H1_EXTERNAL_SWEEP: INTRADAY
+
+risk:
+  strategy:
+    risk_pct_demo: 0.5
+    risk_pct_live: 1.0
+    min_net_rr: 3.0
+    stop_widening_allowed: false
+  execution:
+    kill_switch: true
+    fail_closed: true
+    max_spread_points: 25
+    max_stale_price_seconds: 5
+    duplicate_order_prevention: true
+  portfolio:
+    daily_loss_pct: 2.0
+    weekly_loss_pct: 5.0
+    max_positions: 1
+    portfolio_heat_pct: 4.0
+    drawdown_cap_pct: 12.0
+
+parameter_registry:
+  authoritative: true
+  fields: [parameter, type, units, default, range, owner, tunable, version, last_changed, reason]
+  parameters:
+    pivot_left_bars:            {type: integer, units: bars,   default: 2,    range: [1, 5],   owner: research, tunable: true, version: 3.7, last_changed: 2026-07-21, reason: "G1 pivot confirmation"}
+    pivot_right_bars:           {type: integer, units: bars,   default: 2,    range: [1, 5],   owner: research, tunable: true, version: 3.7, last_changed: 2026-07-21, reason: "G1 pivot confirmation"}
+    close_buffer_atr_mult:      {type: number,  units: atr_mult, default: 0.10, range: [0.0, 0.5], owner: research, tunable: true, version: 3.7, last_changed: 2026-07-21, reason: "G1/G3 minimum close-through distance"}
+    dealing_range_lookback_h1_bars: {type: integer, units: bars, default: 40, range: [10, 200], owner: research, tunable: true, version: 3.7, last_changed: 2026-07-21, reason: "G2 external structure lookback"}
+    equal_high_low_tolerance_atr_mult: {type: number, units: atr_mult, default: 0.05, range: [0.0, 0.5], owner: research, tunable: true, version: 3.7, last_changed: 2026-07-21, reason: "G2 pooled liquidity tolerance"}
+    minimum_gap_size_atr_mult:  {type: number,  units: atr_mult, default: 0.10, range: [0.0, 1.0], owner: research, tunable: true, version: 3.7, last_changed: 2026-07-21, reason: "G5 HTF FVG noise floor"}
+    htf_poi_max_age_h1_bars:    {type: integer, units: bars,   default: 60,   range: [1, 240], owner: research, tunable: true, version: 3.7, last_changed: 2026-07-21, reason: "G5 POI freshness bound"}
+    d1_gap_max_age_d1_bars:     {type: integer, units: bars,   default: 10,   range: [1, 30],  owner: research, tunable: true, version: 3.7, last_changed: 2026-07-21, reason: "G5 D1 gap freshness"}
+    d1_reaction_window_h1_bars: {type: integer, units: bars,   default: 6,    range: [1, 24],  owner: research, tunable: true, version: 3.7, last_changed: 2026-07-21, reason: "G5 D1 gap H1 reaction window"}
+    h1_reclaim_window_h1_bars:  {type: integer, units: bars,   default: 1,    range: [1, 3],   owner: research, tunable: true, version: 3.7, last_changed: 2026-07-21, reason: "G5 external sweep reclaim timing"}
+    poi_entry_to_sweep_max_m5_bars: {type: integer, units: bars, default: 30, range: [1, 100], owner: research, tunable: true, version: 3.7, last_changed: 2026-07-21, reason: "G6 sequencing bound"}
+    displacement_to_choch_max_m5_bars: {type: integer, units: bars, default: 5, range: [1, 30], owner: research, tunable: true, version: 3.7, last_changed: 2026-07-21, reason: "G6 sequencing bound"}
+    choch_to_retrace_entry_max_m5_bars: {type: integer, units: bars, default: 30, range: [1, 100], owner: research, tunable: true, version: 3.7, last_changed: 2026-07-21, reason: "G6 sequencing bound"}
+    displacement_atr_mult:      {type: number,  units: atr_mult, default: 1.5, range: [1.0, 3.0], owner: research, tunable: true, version: 3.7, last_changed: 2026-07-21, reason: "displacement threshold"}
+    displacement_body_ratio_min: {type: number,  units: ratio,  default: 0.5,  range: [0.1, 0.9], owner: research, tunable: true, version: 3.7, last_changed: 2026-07-21, reason: "displacement candle strength"}
+    stop_buffer_atr_mult:       {type: number,  units: atr_mult, default: 0.15, range: [0.0, 0.5], owner: research, tunable: true, version: 3.7, last_changed: 2026-07-21, reason: "G7 stop buffer"}
+    min_net_rr:                 {type: number,  units: rr,    default: 3.0,  range: [1.0, 10.0], owner: strategy, tunable: true, version: 3.7, last_changed: 2026-07-21, reason: "G8 net reward gate — replaces v3.6 gross min_rr=2.0"}
+    break_even_trigger_r:       {type: number,  units: rr,    default: 1.0,  range: [0.5, 5.0], owner: strategy, tunable: false, version: 3.7, last_changed: 2026-07-21, reason: "G10 BE trigger"}
+    partial_fraction:           {type: number,  units: ratio, default: 0.5,  range: [0.1, 1.0], owner: strategy, tunable: false, version: 3.7, last_changed: 2026-07-21, reason: "G10 partial take fraction"}
+
+implementation_status:
+  engine_implements_spec: false        # SAFETY INTERLOCK — nothing implements v3.7 yet
+  baseline: "Phase A surrogate (2026-07-21, PR #3): EURUSD+GBPUSD+XAUUSD M5, 363 trades, PF 0.4272, expectancy -0.4116R — produced by live_signal.py's v1 legacy signal inside historical_replay_engine.py, NOT by any v3.6/v3.7 gate. See ST_C1_V37_PRE_EDIT_FINDINGS.md."
+  next: "Build the canonical decision module implementing G1-G10 with a full gate trace, add positive/negative tests per gate, then run the locked A0-A3 ablation via backtest-researcher before any interlock flip."
