@@ -95,3 +95,44 @@ before this population feeds any future trial-count/deflated-Sharpe input.
 Both reads are diagnostic/statistical only — no code, spec, or promotion
 change made. Next step (v3.9-vs-v3.10 comparison, and the dedup-anomaly
 check) needs explicit sequencing, not started here.
+
+### Outcome (2026-07-22) — dedup bug found and fixed; both prior reads corrected; comparison complete
+
+Per `project-governance-agent`'s ruling (reject "close Phase 2/open Phase
+3", reject ADR-0004 for v40, run dedup check + comparison first), the
+`duplicate_structure` anomaly was investigated and confirmed to be a real
+bug, not a design property: `structure_key`'s `index_offset` was never
+wired up in either `validation/historical_replay_engine_v39.py` or
+`historical_replay_engine_v310.py`, causing cross-time key collisions that
+silently discarded valid trades (`src/backtest_v35.py` already did this
+correctly — the newer v3.9/v3.10 engines regressed it). Fixed (two-line
+change per engine); full suite re-run, 179 passed, no regressions.
+
+All six affected backtests (v3.9 B1 + v3.10, all three symbols) were
+re-run. Trade counts changed substantially (v3.9: 47/37/54 -> 80/78/81;
+v3.10: 135/112/120 -> 789/744/684). **Both prior committed analyses are
+superseded** — see `reports/audit/ST_C1_DEDUP_BUG_AND_CORRECTED_RESULTS.md`.
+Corrected picture is worse for both candidates than originally reported:
+XAUUSD is no longer cost-neutral (v3.9) or profitable (v3.10) — both
+candidates are now net-losing in **every** symbol, though the
+XAUUSD-best/EURUSD-worst ranking survives the fix in both engines.
+
+`reports/audit/ST_C1_V39_VS_V310_COMPARISON.md`: the v3.9-vs-v3.10
+comparison (using corrected data) found the symbol-level ranking is
+identical across both independently-built engines (evidence of a
+structural cost/instrument-scale effect, not an engine-specific flaw), and
+a striking scenario-population finding: **v3.10 executed zero E1-triggered
+trades in any symbol**, despite E1 (D1 gap-reversal) being the specific new
+mechanism the entire v3.10 candidate was built to test. v3.10's realized
+population is entirely E2/E3 continuation-family trades — the same
+trigger families v3.9 already uses.
+
+**Next step, not started here:** diagnose why v3.10 never executes an E1
+trade (prerequisite to judging the reversal-capture thesis at all). If a
+symbol-restriction hypothesis is pursued afterward, it must be framed as
+"reduces losses, does not yet produce a profitable candidate" (XAUUSD
+alone is still net-losing in both corrected reads) — not oversold as a
+fix. Drafting `specs/v40.yaml` remains **not authorized**: Phase 2 is not
+complete (neither candidate clears `ROADMAP.md`'s promotion bar), and any
+detection-logic change requires an RCR per `docs/RESEARCH-CHARTER.md`, not
+an ADR.

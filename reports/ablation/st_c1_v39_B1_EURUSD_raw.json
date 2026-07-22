@@ -1,6 +1,7 @@
 {
   "symbol": "EURUSD",
-  "elapsed_seconds": 1278.8,
+  "cell": "B1_v39_candidate",
+  "elapsed_seconds": 986.1,
   "m5_bars": 80004,
   "h1_bars": 9000,
   "m5_range": [
@@ -8,36 +9,35 @@
     "2026-07-21 09:20"
   ],
   "funnel_counts": {
-    "evaluated": 79522,
-    "signal_pass": 208,
-    "candidate_ready": 207,
-    "duplicate_structure": 160,
-    "executed_trade": 47,
-    "rejected_signal": 79314,
-    "rejected_risk": 1
+    "evaluated": 79330,
+    "signal_pass": 160,
+    "candidate_ready": 160,
+    "duplicate_structure": 80,
+    "executed_trade": 80,
+    "rejected_signal": 79170
   },
-  "num_signals": 47,
-  "num_trades": 47,
+  "num_signals": 80,
+  "num_trades": 80,
   "metrics": {
-    "total_trades": 47,
-    "wins": 7,
-    "losses": 40,
-    "win_rate_pct": 14.89,
-    "profit_factor": 0.0285,
-    "expectancy_r": -1.7887,
-    "average_r": -1.7887,
-    "gross_profit_r": 2.4649,
-    "gross_loss_r": 86.533,
-    "net_profit_r": -84.068,
-    "maximum_drawdown_r": -84.4329,
-    "drawdown_duration_trades": 44,
-    "sharpe_ratio": -0.4096,
-    "sortino_ratio": -0.3863,
-    "recovery_factor": -0.9957,
-    "payoff_ratio": 0.1628,
-    "total_R": -84.068,
-    "longest_win_streak": 2,
-    "longest_loss_streak": 20,
+    "total_trades": 80,
+    "wins": 8,
+    "losses": 72,
+    "win_rate_pct": 10.0,
+    "profit_factor": 0.0486,
+    "expectancy_r": -1.0989,
+    "average_r": -1.0989,
+    "gross_profit_r": 4.4931,
+    "gross_loss_r": 92.4056,
+    "net_profit_r": -87.9125,
+    "maximum_drawdown_r": -87.9125,
+    "drawdown_duration_trades": 80,
+    "sharpe_ratio": -0.8974,
+    "sortino_ratio": -0.9602,
+    "recovery_factor": -1.0,
+    "payoff_ratio": 0.4376,
+    "total_R": -87.9125,
+    "longest_win_streak": 1,
+    "longest_loss_streak": 32,
     "trade_count_adequacy_warning": false,
     "mae_distribution": null,
     "mfe_distribution": null,
@@ -53,7 +53,7 @@
       "gross_r": -0.083333,
       "cost_r": 0.258333,
       "net_r": -0.341667,
-      "structure_key": "('EURUSD', 'E2M1', 'zone', 299)"
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 1193)"
     },
     {
       "signal_time": "2025-07-03 18:55",
@@ -64,62 +64,51 @@
       "gross_r": 1.625,
       "cost_r": 1.291667,
       "net_r": 0.333333,
-      "structure_key": "('EURUSD', 'E2M2', 'zone', 299)"
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 2070)"
     },
     {
-      "signal_time": "2025-07-03 19:10",
-      "entry_time": "2025-07-03 19:15",
-      "exit_time": "2025-07-03 19:20",
-      "direction": "short",
-      "outcome": "TARGET",
-      "gross_r": 1.444444,
-      "cost_r": 1.148148,
-      "net_r": 0.296296,
-      "structure_key": "('EURUSD', 'E2M2', 'zone', 296)"
-    },
-    {
-      "signal_time": "2025-07-18 18:20",
-      "entry_time": "2025-07-18 18:25",
+      "signal_time": "2025-07-18 18:15",
+      "entry_time": "2025-07-18 18:20",
       "exit_time": "2025-07-18 18:30",
       "direction": "long",
+      "outcome": "STOP",
+      "gross_r": 0.5,
+      "cost_r": 0.837838,
+      "net_r": -0.337838,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 5230)"
+    },
+    {
+      "signal_time": "2025-07-23 07:00",
+      "entry_time": "2025-07-23 07:05",
+      "exit_time": "2025-07-23 07:05",
+      "direction": "short",
       "outcome": "TARGET",
-      "gross_r": 0.174603,
-      "cost_r": 0.492063,
-      "net_r": -0.31746,
-      "structure_key": "('EURUSD', 'E2M2', 'zone', 298)"
+      "gross_r": -0.4,
+      "cost_r": 0.563636,
+      "net_r": -0.963636,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 5959)"
     },
     {
-      "signal_time": "2025-07-18 18:35",
-      "entry_time": "2025-07-18 18:40",
-      "exit_time": "2025-07-18 18:45",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.574074,
-      "net_r": -1.574074,
-      "structure_key": "('EURUSD', 'E2M2', 'zone', 295)"
-    },
-    {
-      "signal_time": "2025-07-18 18:50",
-      "entry_time": "2025-07-18 18:55",
-      "exit_time": "2025-07-18 18:55",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 4.428571,
-      "net_r": -3.428571,
-      "structure_key": "('EURUSD', 'E2M2', 'zone', 292)"
-    },
-    {
-      "signal_time": "2025-07-29 20:50",
-      "entry_time": "2025-07-29 20:55",
+      "signal_time": "2025-07-29 20:40",
+      "entry_time": "2025-07-29 20:45",
       "exit_time": "2025-07-29 20:55",
       "direction": "short",
       "outcome": "TARGET",
-      "gross_r": 0.454545,
-      "cost_r": 0.939394,
-      "net_r": -0.484848,
-      "structure_key": "('EURUSD', 'E2M2', 'zone', 297)"
+      "gross_r": 2.107143,
+      "cost_r": 1.107143,
+      "net_r": 1.0,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 7275)"
+    },
+    {
+      "signal_time": "2025-08-08 13:15",
+      "entry_time": "2025-08-08 13:20",
+      "exit_time": "2025-08-08 13:20",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": -0.083333,
+      "cost_r": 0.645833,
+      "net_r": -0.729167,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 9490)"
     },
     {
       "signal_time": "2025-08-13 16:50",
@@ -130,29 +119,7 @@
       "gross_r": -0.054945,
       "cost_r": 0.340659,
       "net_r": -0.395604,
-      "structure_key": "('EURUSD', 'E2M1', 'zone', 294)"
-    },
-    {
-      "signal_time": "2025-08-13 17:00",
-      "entry_time": "2025-08-13 17:05",
-      "exit_time": "2025-08-13 17:05",
-      "direction": "long",
-      "outcome": "TARGET",
-      "gross_r": -0.14,
-      "cost_r": 0.31,
-      "net_r": -0.45,
-      "structure_key": "('EURUSD', 'E2M1', 'zone', 292)"
-    },
-    {
-      "signal_time": "2025-08-13 17:10",
-      "entry_time": "2025-08-13 17:15",
-      "exit_time": "2025-08-13 17:15",
-      "direction": "long",
-      "outcome": "TARGET",
-      "gross_r": -0.283333,
-      "cost_r": 0.258333,
-      "net_r": -0.541667,
-      "structure_key": "('EURUSD', 'E2M1', 'zone', 290)"
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 10392)"
     },
     {
       "signal_time": "2025-08-14 14:45",
@@ -163,139 +130,183 @@
       "gross_r": -1.0,
       "cost_r": 0.574074,
       "net_r": -1.574074,
-      "structure_key": "('EURUSD', 'E2M1', 'zone', 295)"
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 10656)"
     },
     {
-      "signal_time": "2025-08-21 20:30",
-      "entry_time": "2025-08-21 20:35",
+      "signal_time": "2025-08-18 10:15",
+      "entry_time": "2025-08-18 10:20",
+      "exit_time": "2025-08-18 10:20",
+      "direction": "long",
+      "outcome": "TARGET",
+      "gross_r": 1.285714,
+      "cost_r": 1.47619,
+      "net_r": -0.190476,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 11182)"
+    },
+    {
+      "signal_time": "2025-08-18 14:55",
+      "entry_time": "2025-08-18 15:00",
+      "exit_time": "2025-08-18 15:00",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": -0.58427,
+      "cost_r": 0.348315,
+      "net_r": -0.932584,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 11237)"
+    },
+    {
+      "signal_time": "2025-08-20 11:30",
+      "entry_time": "2025-08-20 11:35",
+      "exit_time": "2025-08-20 11:35",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": -0.054545,
+      "cost_r": 0.563636,
+      "net_r": -0.618182,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 11773)"
+    },
+    {
+      "signal_time": "2025-08-21 20:25",
+      "entry_time": "2025-08-21 20:30",
       "exit_time": "2025-08-21 20:45",
       "direction": "short",
       "outcome": "STOP",
       "gross_r": -1.0,
-      "cost_r": 0.815789,
-      "net_r": -1.815789,
-      "structure_key": "('EURUSD', 'E2M1', 'zone', 298)"
+      "cost_r": 0.738095,
+      "net_r": -1.738095,
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 12168)"
     },
     {
-      "signal_time": "2025-08-22 13:10",
-      "entry_time": "2025-08-22 13:15",
+      "signal_time": "2025-08-22 13:05",
+      "entry_time": "2025-08-22 13:10",
       "exit_time": "2025-08-22 13:15",
       "direction": "short",
       "outcome": "TARGET",
-      "gross_r": 0.7,
-      "cost_r": 1.55,
-      "net_r": -0.85,
-      "structure_key": "('EURUSD', 'E2M2', 'zone', 294)"
+      "gross_r": 0.888889,
+      "cost_r": 1.722222,
+      "net_r": -0.833333,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 12364)"
     },
     {
-      "signal_time": "2025-09-02 19:50",
-      "entry_time": "2025-09-02 19:55",
+      "signal_time": "2025-08-25 13:35",
+      "entry_time": "2025-08-25 13:40",
+      "exit_time": "2025-08-25 16:45",
+      "direction": "short",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.155,
+      "net_r": -1.155,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 12661)"
+    },
+    {
+      "signal_time": "2025-09-02 17:55",
+      "entry_time": "2025-09-02 18:00",
+      "exit_time": "2025-09-02 18:00",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": -0.295082,
+      "cost_r": 0.254098,
+      "net_r": -0.54918,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 14440)"
+    },
+    {
+      "signal_time": "2025-09-02 19:40",
+      "entry_time": "2025-09-02 19:45",
       "exit_time": "2025-09-02 21:00",
       "direction": "short",
       "outcome": "TARGET",
-      "gross_r": 0.542857,
-      "cost_r": 0.442857,
-      "net_r": 0.1,
-      "structure_key": "('EURUSD', 'E2M1', 'zone', 293)"
+      "gross_r": 0.513889,
+      "cost_r": 0.430556,
+      "net_r": 0.083333,
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 14459)"
     },
     {
-      "signal_time": "2025-09-05 07:10",
-      "entry_time": "2025-09-05 07:15",
+      "signal_time": "2025-09-05 07:00",
+      "entry_time": "2025-09-05 07:05",
       "exit_time": "2025-09-05 07:15",
       "direction": "long",
       "outcome": "STOP",
+      "gross_r": 0.5,
+      "cost_r": 4.428571,
+      "net_r": -3.928571,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 15171)"
+    },
+    {
+      "signal_time": "2025-09-15 18:15",
+      "entry_time": "2025-09-15 18:20",
+      "exit_time": "2025-09-15 18:20",
+      "direction": "long",
+      "outcome": "TARGET",
+      "gross_r": -0.296296,
+      "cost_r": 0.382716,
+      "net_r": -0.679012,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 17031)"
+    },
+    {
+      "signal_time": "2025-10-07 16:35",
+      "entry_time": "2025-10-07 16:40",
+      "exit_time": "2025-10-07 16:40",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": -0.558442,
+      "cost_r": 0.402597,
+      "net_r": -0.961039,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 21623)"
+    },
+    {
+      "signal_time": "2025-10-09 20:45",
+      "entry_time": "2025-10-09 20:50",
+      "exit_time": "2025-10-09 21:15",
+      "direction": "short",
+      "outcome": "STOP",
       "gross_r": -1.0,
-      "cost_r": 2.066667,
-      "net_r": -3.066667,
-      "structure_key": "('EURUSD', 'E2M2', 'zone', 293)"
+      "cost_r": 0.911765,
+      "net_r": -1.911765,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 22252)"
     },
     {
-      "signal_time": "2025-09-05 07:20",
-      "entry_time": "2025-09-05 07:25",
-      "exit_time": "2025-09-05 07:25",
-      "direction": "long",
+      "signal_time": "2025-10-10 18:45",
+      "entry_time": "2025-10-10 18:50",
+      "exit_time": "2025-10-10 23:50",
+      "direction": "short",
       "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 31.0,
-      "net_r": -30.0,
-      "structure_key": "('EURUSD', 'E2M2', 'zone', 291)"
+      "gross_r": 0.5,
+      "cost_r": 0.183432,
+      "net_r": 0.316568,
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 22516)"
     },
     {
-      "signal_time": "2025-09-05 07:30",
-      "entry_time": "2025-09-05 07:35",
-      "exit_time": "2025-09-05 07:35",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 2.066667,
-      "net_r": -1.066667,
-      "structure_key": "('EURUSD', 'E2M2', 'zone', 289)"
+      "signal_time": "2025-10-13 14:25",
+      "entry_time": "2025-10-13 14:30",
+      "exit_time": "2025-10-13 14:30",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": 0.26087,
+      "cost_r": 0.449275,
+      "net_r": -0.188406,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 22752)"
     },
     {
-      "signal_time": "2025-09-05 07:40",
-      "entry_time": "2025-09-05 07:45",
-      "exit_time": "2025-09-05 07:45",
+      "signal_time": "2025-10-15 07:00",
+      "entry_time": "2025-10-15 07:05",
+      "exit_time": "2025-10-15 07:05",
       "direction": "long",
-      "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 0.72093,
-      "net_r": 0.27907,
-      "structure_key": "('EURUSD', 'E2M2', 'zone', 287)"
+      "outcome": "TARGET",
+      "gross_r": -0.184211,
+      "cost_r": 0.815789,
+      "net_r": -1.0,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 23234)"
     },
     {
-      "signal_time": "2025-09-05 07:50",
-      "entry_time": "2025-09-05 07:55",
-      "exit_time": "2025-09-05 07:55",
+      "signal_time": "2025-10-15 12:35",
+      "entry_time": "2025-10-15 12:40",
+      "exit_time": "2025-10-15 12:40",
       "direction": "long",
       "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 0.673913,
-      "net_r": 0.326087,
-      "structure_key": "('EURUSD', 'E2M2', 'zone', 285)"
-    },
-    {
-      "signal_time": "2025-10-15 07:20",
-      "entry_time": "2025-10-15 07:25",
-      "exit_time": "2025-10-15 07:25",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 2.583333,
-      "net_r": -1.583333,
-      "structure_key": "('EURUSD', 'E2M2', 'zone', 290)"
-    },
-    {
-      "signal_time": "2025-10-15 07:30",
-      "entry_time": "2025-10-15 07:35",
-      "exit_time": "2025-10-15 07:35",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 2.384615,
-      "net_r": -1.384615,
-      "structure_key": "('EURUSD', 'E2M2', 'zone', 288)"
-    },
-    {
-      "signal_time": "2025-10-15 07:40",
-      "entry_time": "2025-10-15 07:45",
-      "exit_time": "2025-10-15 07:45",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 4.428571,
-      "net_r": -3.428571,
-      "structure_key": "('EURUSD', 'E2M2', 'zone', 286)"
-    },
-    {
-      "signal_time": "2025-10-15 07:50",
-      "entry_time": "2025-10-15 07:55",
-      "exit_time": "2025-10-15 07:55",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 4.428571,
-      "net_r": -3.428571,
-      "structure_key": "('EURUSD', 'E2M2', 'zone', 284)"
+      "gross_r": -1.0,
+      "cost_r": 1.107143,
+      "net_r": -2.107143,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 23306)"
     },
     {
       "signal_time": "2025-10-17 07:40",
@@ -306,18 +317,7 @@
       "gross_r": -1.0,
       "cost_r": 0.815789,
       "net_r": -1.815789,
-      "structure_key": "('EURUSD', 'E3M1', 'zone', 291)"
-    },
-    {
-      "signal_time": "2025-10-17 07:50",
-      "entry_time": "2025-10-17 07:55",
-      "exit_time": "2025-10-17 07:55",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 7.75,
-      "net_r": -6.75,
-      "structure_key": "('EURUSD', 'E3M1', 'zone', 289)"
+      "structure_key": "('EURUSD', 'E3M1', 'zone', 23815)"
     },
     {
       "signal_time": "2025-10-24 17:50",
@@ -328,7 +328,18 @@
       "gross_r": -0.109375,
       "cost_r": 0.484375,
       "net_r": -0.59375,
-      "structure_key": "('EURUSD', 'E3M2', 'zone', 299)"
+      "structure_key": "('EURUSD', 'E3M2', 'zone', 25385)"
+    },
+    {
+      "signal_time": "2025-10-30 13:15",
+      "entry_time": "2025-10-30 13:20",
+      "exit_time": "2025-10-30 13:20",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": 0.0,
+      "cost_r": 0.775,
+      "net_r": -0.775,
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 26476)"
     },
     {
       "signal_time": "2025-11-03 07:10",
@@ -339,40 +350,62 @@
       "gross_r": -1.0,
       "cost_r": 1.107143,
       "net_r": -2.107143,
-      "structure_key": "('EURUSD', 'E2M1', 'zone', 291)"
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 26977)"
     },
     {
-      "signal_time": "2025-11-03 07:40",
-      "entry_time": "2025-11-03 07:45",
-      "exit_time": "2025-11-03 07:45",
+      "signal_time": "2025-11-03 09:25",
+      "entry_time": "2025-11-03 09:30",
+      "exit_time": "2025-11-03 09:30",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": -0.025,
+      "cost_r": 0.775,
+      "net_r": -0.8,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 27010)"
+    },
+    {
+      "signal_time": "2025-11-03 14:00",
+      "entry_time": "2025-11-03 14:05",
+      "exit_time": "2025-11-03 14:05",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": 0.107143,
+      "cost_r": 1.107143,
+      "net_r": -1.0,
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 27061)"
+    },
+    {
+      "signal_time": "2025-11-04 08:35",
+      "entry_time": "2025-11-04 08:40",
+      "exit_time": "2025-11-04 08:40",
       "direction": "short",
       "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 3.444444,
-      "net_r": -2.444444,
-      "structure_key": "('EURUSD', 'E2M1', 'zone', 285)"
+      "gross_r": -1.0,
+      "cost_r": 6.2,
+      "net_r": -7.2,
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 27290)"
     },
     {
-      "signal_time": "2025-11-03 07:50",
-      "entry_time": "2025-11-03 07:55",
-      "exit_time": "2025-11-03 07:55",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 3.444444,
-      "net_r": -2.444444,
-      "structure_key": "('EURUSD', 'E2M1', 'zone', 283)"
-    },
-    {
-      "signal_time": "2025-11-07 18:20",
-      "entry_time": "2025-11-07 18:25",
+      "signal_time": "2025-11-07 18:10",
+      "entry_time": "2025-11-07 18:15",
       "exit_time": "2025-11-07 20:45",
       "direction": "long",
       "outcome": "STOP",
       "gross_r": -1.0,
-      "cost_r": 0.344444,
-      "net_r": -1.344444,
-      "structure_key": "('EURUSD', 'E2M1', 'zone', 297)"
+      "cost_r": 0.360465,
+      "net_r": -1.360465,
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 28269)"
+    },
+    {
+      "signal_time": "2025-11-10 08:20",
+      "entry_time": "2025-11-10 08:25",
+      "exit_time": "2025-11-10 08:25",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": -0.529412,
+      "cost_r": 0.911765,
+      "net_r": -1.441176,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 28439)"
     },
     {
       "signal_time": "2025-11-13 15:20",
@@ -383,18 +416,18 @@
       "gross_r": -0.336449,
       "cost_r": 0.28972,
       "net_r": -0.626168,
-      "structure_key": "('EURUSD', 'E2M1', 'zone', 286)"
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 29374)"
     },
     {
-      "signal_time": "2025-11-13 15:30",
-      "entry_time": "2025-11-13 15:35",
-      "exit_time": "2025-11-13 15:50",
+      "signal_time": "2025-11-14 20:25",
+      "entry_time": "2025-11-14 20:30",
+      "exit_time": "2025-11-14 20:30",
       "direction": "long",
       "outcome": "TARGET",
-      "gross_r": 0.163934,
-      "cost_r": 0.508197,
-      "net_r": -0.344262,
-      "structure_key": "('EURUSD', 'E2M1', 'zone', 284)"
+      "gross_r": -0.236842,
+      "cost_r": 0.815789,
+      "net_r": -1.052632,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 29734)"
     },
     {
       "signal_time": "2025-11-20 07:00",
@@ -405,51 +438,128 @@
       "gross_r": 1.0,
       "cost_r": 1.9375,
       "net_r": -0.9375,
-      "structure_key": "('EURUSD', 'E3M2', 'zone', 295)"
+      "structure_key": "('EURUSD', 'E3M2', 'zone', 30723)"
     },
     {
-      "signal_time": "2025-11-20 07:10",
-      "entry_time": "2025-11-20 07:15",
-      "exit_time": "2025-11-20 07:15",
+      "signal_time": "2025-12-03 15:10",
+      "entry_time": "2025-12-03 15:15",
+      "exit_time": "2025-12-03 15:15",
       "direction": "long",
-      "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 1.9375,
-      "net_r": -0.9375,
-      "structure_key": "('EURUSD', 'E3M2', 'zone', 293)"
+      "outcome": "TARGET",
+      "gross_r": -0.576923,
+      "cost_r": 0.397436,
+      "net_r": -0.974359,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 33417)"
     },
     {
-      "signal_time": "2025-11-20 07:20",
-      "entry_time": "2025-11-20 07:25",
-      "exit_time": "2025-11-20 07:25",
-      "direction": "long",
+      "signal_time": "2025-12-10 07:00",
+      "entry_time": "2025-12-10 07:05",
+      "exit_time": "2025-12-10 07:05",
+      "direction": "short",
       "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 1.47619,
-      "net_r": -0.47619,
-      "structure_key": "('EURUSD', 'E3M2', 'zone', 291)"
+      "gross_r": -1.0,
+      "cost_r": 5.166667,
+      "net_r": -6.166667,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 34759)"
     },
     {
-      "signal_time": "2025-11-20 07:30",
-      "entry_time": "2025-11-20 07:35",
-      "exit_time": "2025-11-20 07:35",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 1.068966,
-      "net_r": -0.068966,
-      "structure_key": "('EURUSD', 'E3M2', 'zone', 289)"
-    },
-    {
-      "signal_time": "2025-12-11 07:25",
-      "entry_time": "2025-12-11 07:30",
+      "signal_time": "2025-12-11 07:00",
+      "entry_time": "2025-12-11 07:05",
       "exit_time": "2025-12-11 07:55",
       "direction": "long",
       "outcome": "STOP",
       "gross_r": -1.0,
-      "cost_r": 1.068966,
-      "net_r": -2.068966,
-      "structure_key": "('EURUSD', 'E2M1', 'zone', 289)"
+      "cost_r": 0.659574,
+      "net_r": -1.659574,
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 35042)"
+    },
+    {
+      "signal_time": "2025-12-16 12:30",
+      "entry_time": "2025-12-16 12:35",
+      "exit_time": "2025-12-16 12:35",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": -0.122449,
+      "cost_r": 0.632653,
+      "net_r": -0.755102,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 35976)"
+    },
+    {
+      "signal_time": "2025-12-16 12:55",
+      "entry_time": "2025-12-16 13:00",
+      "exit_time": "2025-12-16 13:05",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": 1.388889,
+      "cost_r": 1.722222,
+      "net_r": -0.333333,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 35982)"
+    },
+    {
+      "signal_time": "2025-12-17 11:10",
+      "entry_time": "2025-12-17 11:15",
+      "exit_time": "2025-12-17 11:15",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": -0.027027,
+      "cost_r": 0.837838,
+      "net_r": -0.864865,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 36248)"
+    },
+    {
+      "signal_time": "2025-12-17 15:10",
+      "entry_time": "2025-12-17 15:15",
+      "exit_time": "2025-12-17 15:15",
+      "direction": "short",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 1.347826,
+      "net_r": -2.347826,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 36297)"
+    },
+    {
+      "signal_time": "2026-01-05 08:05",
+      "entry_time": "2026-01-05 08:10",
+      "exit_time": "2026-01-05 08:15",
+      "direction": "short",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.756098,
+      "net_r": -1.756098,
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 39380)"
+    },
+    {
+      "signal_time": "2026-01-05 09:05",
+      "entry_time": "2026-01-05 09:10",
+      "exit_time": "2026-01-05 09:20",
+      "direction": "short",
+      "outcome": "STOP",
+      "gross_r": 0.5,
+      "cost_r": 1.033333,
+      "net_r": -0.533333,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 39392)"
+    },
+    {
+      "signal_time": "2026-01-05 10:35",
+      "entry_time": "2026-01-05 10:40",
+      "exit_time": "2026-01-05 10:40",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": 0.44898,
+      "cost_r": 0.632653,
+      "net_r": -0.183673,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 39410)"
+    },
+    {
+      "signal_time": "2026-01-06 20:55",
+      "entry_time": "2026-01-06 21:00",
+      "exit_time": "2026-01-06 21:00",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": 0.472222,
+      "cost_r": 0.861111,
+      "net_r": -0.388889,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 39822)"
     },
     {
       "signal_time": "2026-01-19 18:40",
@@ -460,7 +570,40 @@
       "gross_r": 0.5,
       "cost_r": 0.794872,
       "net_r": -0.294872,
-      "structure_key": "('EURUSD', 'E3M1', 'zone', 299)"
+      "structure_key": "('EURUSD', 'E3M1', 'zone', 42387)"
+    },
+    {
+      "signal_time": "2026-01-22 07:40",
+      "entry_time": "2026-01-22 07:45",
+      "exit_time": "2026-01-22 07:45",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": -0.363636,
+      "cost_r": 1.409091,
+      "net_r": -1.772727,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 43118)"
+    },
+    {
+      "signal_time": "2026-01-26 08:35",
+      "entry_time": "2026-01-26 08:40",
+      "exit_time": "2026-01-26 08:45",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.861111,
+      "net_r": -1.861111,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 43706)"
+    },
+    {
+      "signal_time": "2026-02-06 18:30",
+      "entry_time": "2026-02-06 18:35",
+      "exit_time": "2026-02-06 18:35",
+      "direction": "long",
+      "outcome": "TARGET",
+      "gross_r": -0.205882,
+      "cost_r": 0.303922,
+      "net_r": -0.509804,
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 46407)"
     },
     {
       "signal_time": "2026-02-09 07:55",
@@ -471,7 +614,40 @@
       "gross_r": -1.0,
       "cost_r": 0.939394,
       "net_r": -1.939394,
-      "structure_key": "('EURUSD', 'E3M1', 'zone', 298)"
+      "structure_key": "('EURUSD', 'E3M1', 'zone', 46577)"
+    },
+    {
+      "signal_time": "2026-02-20 18:05",
+      "entry_time": "2026-02-20 18:10",
+      "exit_time": "2026-02-20 18:15",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.333333,
+      "net_r": -1.333333,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 49292)"
+    },
+    {
+      "signal_time": "2026-03-02 20:50",
+      "entry_time": "2026-03-02 20:55",
+      "exit_time": "2026-03-02 21:20",
+      "direction": "long",
+      "outcome": "TARGET",
+      "gross_r": 1.115854,
+      "cost_r": 0.378049,
+      "net_r": 0.737805,
+      "structure_key": "('EURUSD', 'E3M1', 'zone', 51053)"
+    },
+    {
+      "signal_time": "2026-03-05 17:55",
+      "entry_time": "2026-03-05 18:00",
+      "exit_time": "2026-03-05 18:05",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.206667,
+      "net_r": -1.206667,
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 51882)"
     },
     {
       "signal_time": "2026-03-23 17:55",
@@ -482,18 +658,73 @@
       "gross_r": 1.171103,
       "cost_r": 0.117871,
       "net_r": 1.053232,
-      "structure_key": "('EURUSD', 'E3M1', 'zone', 297)"
+      "structure_key": "('EURUSD', 'E3M1', 'zone', 55336)"
     },
     {
-      "signal_time": "2026-03-30 17:50",
-      "entry_time": "2026-03-30 17:55",
+      "signal_time": "2026-03-30 08:30",
+      "entry_time": "2026-03-30 08:35",
+      "exit_time": "2026-03-30 08:35",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": 0.428571,
+      "cost_r": 2.214286,
+      "net_r": -1.785714,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 56665)"
+    },
+    {
+      "signal_time": "2026-03-30 17:35",
+      "entry_time": "2026-03-30 17:40",
       "exit_time": "2026-03-30 18:05",
       "direction": "long",
       "outcome": "STOP",
       "gross_r": -1.0,
-      "cost_r": 0.224638,
-      "net_r": -1.224638,
-      "structure_key": "('EURUSD', 'E3M1', 'zone', 296)"
+      "cost_r": 0.348315,
+      "net_r": -1.348315,
+      "structure_key": "('EURUSD', 'E3M1', 'zone', 56774)"
+    },
+    {
+      "signal_time": "2026-04-03 14:15",
+      "entry_time": "2026-04-03 14:20",
+      "exit_time": "2026-04-03 14:25",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": 0.857143,
+      "cost_r": 2.214286,
+      "net_r": -1.357143,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 57886)"
+    },
+    {
+      "signal_time": "2026-04-06 20:55",
+      "entry_time": "2026-04-06 21:00",
+      "exit_time": "2026-04-06 21:10",
+      "direction": "long",
+      "outcome": "TARGET",
+      "gross_r": 1.72973,
+      "cost_r": 0.837838,
+      "net_r": 0.891892,
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 58248)"
+    },
+    {
+      "signal_time": "2026-04-09 13:05",
+      "entry_time": "2026-04-09 13:10",
+      "exit_time": "2026-04-09 13:20",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 1.47619,
+      "net_r": -2.47619,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 59024)"
+    },
+    {
+      "signal_time": "2026-04-09 14:10",
+      "entry_time": "2026-04-09 14:15",
+      "exit_time": "2026-04-09 14:15",
+      "direction": "long",
+      "outcome": "TARGET",
+      "gross_r": 1.166667,
+      "cost_r": 2.583333,
+      "net_r": -1.416667,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 59037)"
     },
     {
       "signal_time": "2026-04-13 07:00",
@@ -504,7 +735,29 @@
       "gross_r": -0.3,
       "cost_r": 0.62,
       "net_r": -0.92,
-      "structure_key": "('EURUSD', 'E2M1', 'zone', 273)"
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 59501)"
+    },
+    {
+      "signal_time": "2026-04-13 08:40",
+      "entry_time": "2026-04-13 08:45",
+      "exit_time": "2026-04-13 08:45",
+      "direction": "long",
+      "outcome": "TARGET",
+      "gross_r": 0.909091,
+      "cost_r": 2.818182,
+      "net_r": -1.909091,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 59547)"
+    },
+    {
+      "signal_time": "2026-04-23 20:55",
+      "entry_time": "2026-04-23 21:00",
+      "exit_time": "2026-04-23 21:00",
+      "direction": "long",
+      "outcome": "TARGET",
+      "gross_r": -0.56213,
+      "cost_r": 0.183432,
+      "net_r": -0.745562,
+      "structure_key": "('EURUSD', 'E3M2', 'zone', 61998)"
     },
     {
       "signal_time": "2026-04-27 15:55",
@@ -515,18 +768,18 @@
       "gross_r": -0.19403,
       "cost_r": 0.462687,
       "net_r": -0.656716,
-      "structure_key": "('EURUSD', 'E3M2', 'zone', 297)"
+      "structure_key": "('EURUSD', 'E3M2', 'zone', 62512)"
     },
     {
-      "signal_time": "2026-04-27 16:35",
-      "entry_time": "2026-04-27 16:40",
+      "signal_time": "2026-04-27 16:30",
+      "entry_time": "2026-04-27 16:35",
       "exit_time": "2026-04-27 16:40",
       "direction": "short",
       "outcome": "TARGET",
-      "gross_r": 1.0,
-      "cost_r": 1.148148,
-      "net_r": -0.148148,
-      "structure_key": "('EURUSD', 'E3M2', 'zone', 298)"
+      "gross_r": 1.16,
+      "cost_r": 1.24,
+      "net_r": -0.08,
+      "structure_key": "('EURUSD', 'E3M2', 'zone', 62521)"
     },
     {
       "signal_time": "2026-05-07 08:10",
@@ -537,7 +790,40 @@
       "gross_r": -0.607143,
       "cost_r": 1.107143,
       "net_r": -1.714286,
-      "structure_key": "('EURUSD', 'E2M1', 'zone', 287)"
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 64713)"
+    },
+    {
+      "signal_time": "2026-05-07 17:20",
+      "entry_time": "2026-05-07 17:25",
+      "exit_time": "2026-05-07 17:35",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 1.068966,
+      "net_r": -2.068966,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 64835)"
+    },
+    {
+      "signal_time": "2026-05-07 17:45",
+      "entry_time": "2026-05-07 17:50",
+      "exit_time": "2026-05-07 17:50",
+      "direction": "long",
+      "outcome": "TARGET",
+      "gross_r": -0.263158,
+      "cost_r": 0.54386,
+      "net_r": -0.807018,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 64838)"
+    },
+    {
+      "signal_time": "2026-05-15 18:55",
+      "entry_time": "2026-05-15 19:00",
+      "exit_time": "2026-05-15 19:00",
+      "direction": "long",
+      "outcome": "TARGET",
+      "gross_r": -0.073171,
+      "cost_r": 0.756098,
+      "net_r": -0.829268,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 66580)"
     },
     {
       "signal_time": "2026-05-15 20:05",
@@ -548,7 +834,40 @@
       "gross_r": -0.590909,
       "cost_r": 0.352273,
       "net_r": -0.943182,
-      "structure_key": "('EURUSD', 'E2M1', 'zone', 281)"
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 66578)"
+    },
+    {
+      "signal_time": "2026-05-19 14:05",
+      "entry_time": "2026-05-19 14:10",
+      "exit_time": "2026-05-19 15:05",
+      "direction": "short",
+      "outcome": "STOP",
+      "gross_r": 0.5,
+      "cost_r": 0.837838,
+      "net_r": -0.337838,
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 67095)"
+    },
+    {
+      "signal_time": "2026-05-28 10:55",
+      "entry_time": "2026-05-28 11:00",
+      "exit_time": "2026-05-28 11:00",
+      "direction": "short",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 1.033333,
+      "net_r": -2.033333,
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 69073)"
+    },
+    {
+      "signal_time": "2026-06-08 15:35",
+      "entry_time": "2026-06-08 15:40",
+      "exit_time": "2026-06-08 15:40",
+      "direction": "short",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.794872,
+      "net_r": -1.794872,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 71148)"
     },
     {
       "signal_time": "2026-06-15 08:55",
@@ -559,7 +878,51 @@
       "gross_r": 2.461538,
       "cost_r": 2.384615,
       "net_r": 0.076923,
-      "structure_key": "('EURUSD', 'E3M1', 'zone', 295)"
+      "structure_key": "('EURUSD', 'E3M1', 'zone', 72506)"
+    },
+    {
+      "signal_time": "2026-06-19 09:35",
+      "entry_time": "2026-06-19 09:40",
+      "exit_time": "2026-06-19 09:55",
+      "direction": "short",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.659574,
+      "net_r": -1.659574,
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 73670)"
+    },
+    {
+      "signal_time": "2026-06-26 15:30",
+      "entry_time": "2026-06-26 15:35",
+      "exit_time": "2026-06-26 15:35",
+      "direction": "long",
+      "outcome": "TARGET",
+      "gross_r": -0.05,
+      "cost_r": 0.775,
+      "net_r": -0.825,
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 75176)"
+    },
+    {
+      "signal_time": "2026-07-14 12:50",
+      "entry_time": "2026-07-14 12:55",
+      "exit_time": "2026-07-14 12:55",
+      "direction": "long",
+      "outcome": "TARGET",
+      "gross_r": 0.146341,
+      "cost_r": 0.756098,
+      "net_r": -0.609756,
+      "structure_key": "('EURUSD', 'E2M2', 'zone', 78605)"
+    },
+    {
+      "signal_time": "2026-07-14 19:15",
+      "entry_time": "2026-07-14 19:20",
+      "exit_time": "2026-07-14 20:05",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": 0.5,
+      "cost_r": 0.861111,
+      "net_r": -0.361111,
+      "structure_key": "('EURUSD', 'E2M1', 'zone', 78682)"
     }
   ]
 }

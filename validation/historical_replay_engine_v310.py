@@ -160,6 +160,7 @@ class HistoricalReplayEngineV310:
 
         bump("evaluated")
         m5_window = _window(m5, index, 300)
+        m5_window_start = max(0, index - 299)  # matches _window's own start=max(0,end-size+1)
         asof_time = m5[index + 1]["time"] if index + 1 < len(m5) else m5_window[-1]["time"]
         h1_lookback = max(v310.E2_POI_MAX_AGE_H1_BARS, v310.E3_RANGE_LOOKBACK_H1_BARS,
                           v310.E1_REACTION_WINDOW_H1_BARS) + 5
@@ -185,7 +186,7 @@ class HistoricalReplayEngineV310:
         else:
             h1_window = d1_window = h4_window = None
 
-        result = v310.analyze(symbol_name, m5_window, h1=h1_window, d1=d1_window, h4=h4_window, min_rr=self.min_rr)
+        result = v310.analyze(symbol_name, m5_window, h1=h1_window, d1=d1_window, h4=h4_window, index_offset=m5_window_start, min_rr=self.min_rr)
         if result.get("decision") != "SIGNAL":
             reject("signal", str(result.get("reason", result.get("decision", "no signal"))))
             return None

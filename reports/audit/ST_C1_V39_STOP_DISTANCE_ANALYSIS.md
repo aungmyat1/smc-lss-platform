@@ -1,3 +1,14 @@
+> **SUPERSEDED (2026-07-22).** A dedup bug in
+> `validation/historical_replay_engine_v39.py` (`structure_key`'s
+> `index_offset` was never wired up, causing cross-time key collisions
+> that silently discarded valid trades) was found and fixed after this
+> report was written. This report's per-symbol numbers, and its "XAUUSD is
+> cost-neutral" conclusion specifically, do not survive the fix. See
+> `reports/audit/ST_C1_DEDUP_BUG_AND_CORRECTED_RESULTS.md` for the
+> corrected numbers and full explanation. Original content preserved below
+> as historical record, per this repo's practice of not deleting prior
+> findings.
+
 # ST-C1 v3.9 Stop-Distance / Cost-Dominance Analysis
 
 Date: 2026-07-22

@@ -205,6 +205,7 @@ class HistoricalReplayEngineV39:
         # benefit (found via a performance probe: 8000 M5 bars did not finish
         # in 120s with the H1-scaled window).
         m5_window = _window(m5, index, 300)
+        m5_window_start = max(0, index - 299)  # matches _window's own start=max(0,end-size+1)
         asof_time = m5[index + 1]["time"] if index + 1 < len(m5) else m5_window[-1]["time"]
         h1_lookback = max(v39.E2_POI_MAX_AGE_H1_BARS, v39.E3_RANGE_LOOKBACK_H1_BARS) + 5
 
@@ -228,7 +229,7 @@ class HistoricalReplayEngineV39:
         else:
             h1_window = None
 
-        result = v39.analyze(symbol_name, m5_window, h1=h1_window, min_rr=self.min_rr)
+        result = v39.analyze(symbol_name, m5_window, h1=h1_window, index_offset=m5_window_start, min_rr=self.min_rr)
         if result.get("decision") != "SIGNAL":
             reject("signal", str(result.get("reason", result.get("decision", "no signal"))))
             return None

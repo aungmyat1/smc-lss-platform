@@ -1,3 +1,15 @@
+> **SUPERSEDED (2026-07-22).** The `duplicate_structure` anomaly flagged
+> below was investigated and confirmed to be a real bug in
+> `validation/historical_replay_engine_v310.py` (`structure_key`'s
+> `index_offset` was never wired up, causing cross-time key collisions
+> that silently discarded valid trades — trade counts grew 4.7-5.6x after
+> the fix). This report's "XAUUSD is net-profitable" conclusion does not
+> survive the fix. See
+> `reports/audit/ST_C1_DEDUP_BUG_AND_CORRECTED_RESULTS.md` for the
+> corrected numbers and full explanation. Original content preserved below
+> as historical record, per this repo's practice of not deleting prior
+> findings.
+
 # ST-C1 v3.10 "Reversal Capture" — Net-of-Cost Read
 
 Date: 2026-07-22
