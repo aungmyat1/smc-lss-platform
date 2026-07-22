@@ -94,3 +94,74 @@ constitute a backtest run or an ACCEPT verdict. `specs/v3.9.yaml` and
 `ST-C1_v1.2.0.yaml` are retained unmodified as the immutable prior
 candidate/control (its own open cost/quality question, logged in
 `PROJECT_STATUS.md` §5, remains open and unresolved by this RCR).
+
+---
+
+## Addendum (2026-07-22) — engine built, existence check result, a real data gap found and fixed
+
+`src/signal_v310.py` and `validation/historical_replay_engine_v310.py` are
+built; 14 dedicated tests pass (positive/negative/mirror for H4 bias, the
+divergence gate's fail-closed RANGING behavior, E1/E2/E3, dynamic R:R,
+cutoff-invariance, no-broker-import), plus 3 new tests for a new
+`smc_engine.resample()` helper (see below). Full repository suite: 178
+passed.
+
+**A real bug was found and fixed while building fixtures**, per this
+repo's established practice of constructing tests interactively against
+the actual functions rather than by inspection alone: `_e1_trigger_reversal`
+originally required `c["close"] > body_lo` in addition to the wick-ratio
+check for a bullish reaction — since `body_lo == close` whenever a candle's
+open equals its close (a doji), this silently excluded exactly the
+textbook doji-rejection-candle case a gap-reaction reversal setup should
+recognize. Fixed by removing the redundant condition; wick-ratio geometry
+alone is now the sole discriminator, matching the same pattern already
+established in `signal_v39.py`'s E2/E3 reaction logic.
+
+**A real data gap was found and worked around, not silently absorbed into
+a false result:** the first full-history existence-check attempt on
+EURUSD (the only symbol with any H4 file at all) produced **zero trades
+across the entire ~80k-bar M5 history**. Root cause: `data/EURUSD_H4.csv`
+contains only 18 bars spanning 3 days, and GBPUSD/XAUUSD have no H4 file
+whatsoever — so `trend_bias_h4_bars: 20`'s lookback window was empty for
+the overwhelming majority of the replay period, and the divergence gate's
+deliberate fail-closed-on-`RANGING` design (empty H4 window -> `RANGING`
+bias -> gate always rejects) then correctly, but misleadingly, rejected
+everything. **This was a data-availability confound, not evidence the
+preset's parameters are over-restrictive** — reported as such rather than
+either (a) silently accepting "zero trades -> REJECTED" per this RCR's own
+rollback criterion (which would have been a false negative caused by
+missing data, not the design), or (b) quietly loosening a parameter to
+compensate. Fix: added `smc_engine.resample()` (aggregates N consecutive
+candles, e.g. 4 H1 bars -> 1 H4 bar; new function, additive, does not
+change any existing engine's behavior) to derive full-history H4 from the
+already-available, full-history H1 series for all three symbols, rather
+than fabricating H4 data or reporting a confounded null result as a clean
+rejection.
+
+### Existence-check result (H1-derived H4, full local history per symbol)
+
+| Symbol | Trades |
+|---|---|
+| EURUSD | 135 |
+| GBPUSD | 112 |
+| XAUUSD | 120 |
+| **Total** | **367** |
+
+**Result: the existence-check success criterion (>=1 signal per symbol) is
+cleared decisively** for all three symbols, once the H4 data gap is fixed.
+This is population evidence, not yet cost/quality evidence — no gross/net
+R, win rate, or profit factor was computed in this pass (deferred to a
+follow-up run using the same cost model already validated for v3.9, before
+any profitability claim). `engine_implements_spec` is left `false` in
+`specs/v3.10.yaml` for now, matching this repo's conservative posture for
+v3.9 at the equivalent stage (full engine built and tested, population/
+existence evidence produced, but a full net-of-cost read not yet run).
+
+### Next step
+A population-feasibility floor was never precommitted for this preset (see
+the RCR's disclosed limitation above); given the existence check clears so
+decisively (367 total vs. an informal >=1 bar), the natural next step is
+the same net-cost read already applied to v3.9 — computing gross_r/net_r/
+profit factor per symbol via the existing, reused cost model — before any
+comparison to v3.9's own open cost/quality question. Not run in this pass;
+recorded as the immediate next milestone in `NEXT_ACTION.md`.

@@ -205,6 +205,21 @@ def test_m2_gold_zone_still_detects_with_displacement_range_recorded():
     assert st.displacement_range is not None   # recorded, even if 0.0 on this particular fixture
 
 
+# --- Cutoff-invariance: no bar beyond the supplied window is ever read ----
+
+def test_analyze_never_reads_beyond_supplied_window():
+    h1 = bearish_h1()
+    h4 = _bearish_h4_20()
+    m5 = [bar(1.0995, 1.1005, 1.0990, 1.1000, t=f"m5-{i}") for i in range(50)]
+    result_short = v310.analyze("EURUSD", list(m5), h1=list(h1), h4=list(h4))
+    future = [bar(9.0, 9.0, 9.0, 9.0, t=f"future-{i}") for i in range(5)]
+    m5_resliced = (m5 + future)[: len(m5)]
+    h1_resliced = (h1 + future)[: len(h1)]
+    h4_resliced = (h4 + future)[: len(h4)]
+    result_resliced = v310.analyze("EURUSD", m5_resliced, h1=h1_resliced, h4=h4_resliced)
+    assert result_short == result_resliced
+
+
 # --- No broker import (research-only, matching the v3.9 precedent) -----
 
 def test_no_broker_order_import():

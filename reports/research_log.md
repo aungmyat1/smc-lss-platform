@@ -223,3 +223,18 @@ addendum once initial signal counts are observed).
 `engine_implements_spec: false` until the dedicated engine and its tests
 are built and pass — pending a `backtest-researcher` run before any
 ACCEPT/REJECT verdict.
+
+## Addendum: engine built, existence check passed, data gap found and fixed (2026-07-22)
+
+`src/signal_v310.py` + `validation/historical_replay_engine_v310.py` built,
+14 dedicated tests pass, 178/178 full suite. One real bug found and fixed
+(a doji-candle edge case silently excluded valid E1 reactions). One real
+data gap found: this repo's H4 CSVs are missing/too short for full-history
+replay (EURUSD: 18 bars covering 3 days; GBPUSD/XAUUSD: none) — an initial
+existence-check attempt produced a false zero-trade result from this data
+gap, not from the preset being over-restrictive. Added
+`smc_engine.resample()` to derive full-history H4 from H1 instead. With
+that fix: EURUSD 135, GBPUSD 112, XAUUSD 120 trades (367 total) — the
+existence-check criterion clears decisively. See the addendum in
+`ST_C1_V310_REVERSAL_CAPTURE_RCR.md` for full detail. `engine_implements_spec`
+stays `false` pending a net-of-cost read (not run in this pass).

@@ -206,3 +206,21 @@ the newer 10-gate (G1-G10) conformance research line:
   pre-registered RCR) before any Phase-7-equivalent profitability read.
   `engine_implements_spec` remains `false`; no autonomy/promotion flag
   changed; all work uncommitted on the local branch above.
+- **ST-C1 v3.10 "Reversal Capture" filed (2026-07-22), same local branch:**
+  owner-directed new trade thesis — E1 (D1 gap reaction) re-enabled with a
+  partial-fill tolerance, gated behind an H4 trend-bias DIVERGENCE
+  requirement (entry must oppose H4 bias, not agree with it), E2 hold-
+  confirmation, E3 internal-liquidity acceptance, auto displacement
+  direction, dynamic R:R. Filed as `specs/v3.10.yaml` /
+  `strategies/candidates/ST-C1_v1.3.0.yaml` — v3.9 retained unmodified as
+  an independent prior candidate/control (its own cost/quality question
+  above is separate and unresolved). Engine built
+  (`src/signal_v310.py`, `validation/historical_replay_engine_v310.py`),
+  14 new tests pass, 178/178 full suite. Found and fixed a real bug (doji-
+  candle E1 reaction exclusion) and a real data gap (this repo's H4 CSVs
+  are missing/unusably short — added `smc_engine.resample()` to derive
+  full-history H4 from H1). Existence check (>=1 signal/symbol,
+  precommitted as the interim bar pending a population-floor addendum):
+  **cleared decisively** — EURUSD 135, GBPUSD 112, XAUUSD 120 (367 total).
+  No net-of-cost read run yet; `engine_implements_spec` stays `false`; no
+  autonomy/promotion flag changed; all uncommitted.

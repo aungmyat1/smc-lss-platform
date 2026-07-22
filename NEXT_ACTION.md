@@ -66,3 +66,13 @@ enough that fixed spread/slippage costs dominate R — is the ATR*0.15 stop
 buffer convention wrong for this preset, or does E2/E3's zeroed wick-ratio
 filter admit zones too tight to trade net of cost? Still research-only;
 Phase 3 execution work remains out of scope regardless.
+
+### Update (2026-07-22) — a second, parallel candidate now also queued
+Owner directed a new reversal-capture design (v3.10 / ST-C1_v1.3.0,
+`reports/audit/ST_C1_V310_REVERSAL_CAPTURE_RCR.md`) alongside v3.9. Its
+engine is built and its existence check passed decisively (367 trades
+across EURUSD/GBPUSD/XAUUSD combined). It has the **same open next step**
+as v3.9: a net-of-cost read via the reused cost model, not yet run.
+Both v3.9's cost/quality question and v3.10's net-of-cost read should be
+addressed before either candidate is compared to the other or considered
+for any further validation stage. Still research-only regardless of order.
