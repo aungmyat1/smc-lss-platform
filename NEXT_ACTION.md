@@ -76,3 +76,22 @@ as v3.9: a net-of-cost read via the reused cost model, not yet run.
 Both v3.9's cost/quality question and v3.10's net-of-cost read should be
 addressed before either candidate is compared to the other or considered
 for any further validation stage. Still research-only regardless of order.
+
+### Outcome (2026-07-22) — both open questions now answered
+
+`reports/audit/ST_C1_V39_STOP_DISTANCE_ANALYSIS.md`: v3.9's cost-dominance
+is not uniform — concentrated in EURUSD (net win rate 14.9%) and moderate
+in GBPUSD, while XAUUSD is cost-neutral (net_r +0.02R). Diagnostic only,
+two candidate hypotheses proposed for a future RCR, neither implemented.
+
+`reports/audit/ST_C1_V310_NET_OF_COST_ANALYSIS.md`: v3.10's net-of-cost
+read is now computed (367 trades, all three symbols). Same split shape as
+v3.9 — XAUUSD net-profitable (PF 1.68, +0.24R expectancy), EURUSD and
+GBPUSD both net losers (PF 0.62 and 0.42). One anomaly flagged, not yet
+resolved: `duplicate_structure` funnel counts are unusually high relative
+to `signal_pass` (~99% deduplicated vs. v3.9's ~77%) — worth checking
+before this population feeds any future trial-count/deflated-Sharpe input.
+
+Both reads are diagnostic/statistical only — no code, spec, or promotion
+change made. Next step (v3.9-vs-v3.10 comparison, and the dedup-anomaly
+check) needs explicit sequencing, not started here.
