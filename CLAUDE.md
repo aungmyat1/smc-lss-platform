@@ -5,12 +5,12 @@ Goal: a disciplined, config-driven MT5 demo trading loop, promoted to live only 
 evidence gates pass. Full detail lives in the docs below — this file is the index and
 the hard rules; don't duplicate their content here, keep it current instead.
 
-## Document authority (v2.1.1 — higher wins; read in this order too)
+## Document authority (v3.0.0 — higher wins; read in this order too)
 This file (`CLAUDE.md`) is read **first** as the entry index, but `MASTER_PLAN.md` is
 the **highest authority**. Full order:
-1. [`MASTER_PLAN.md`](MASTER_PLAN.md) — **AUTHORITATIVE (v2.1.1).** Scope, phase
-   priority, sequencing, non-negotiable rules, Definition of Done, success gates.
-   When any document conflicts with it, this file wins.
+1. [`MASTER_PLAN.md`](MASTER_PLAN.md) — **AUTHORITATIVE (v3.0.0, supersedes v2.1.x).**
+   Scope, phase priority, sequencing, non-negotiable rules, Definition of Done,
+   success gates. When any document conflicts with it, this file wins.
 2. [`CLAUDE.md`](CLAUDE.md) — this file: entry index + the hard rules below.
 3. [`docs/CHARTER.md`](docs/CHARTER.md) — trade-safety authority (subordinate to
    MASTER_PLAN): autonomy policy, risk envelope, demo→live promotion gates.
@@ -19,8 +19,10 @@ the **highest authority**. Full order:
    why/evidence/hypothesis/expected-improvement/success/rollback template, logged to
    `reports/research_log.md` before running the backtest.
 5. [`PROJECT_STATUS.md`](PROJECT_STATUS.md) — last audited state, ranked blockers.
-6. [`ROADMAP.md`](ROADMAP.md) — milestone sequence under MASTER_PLAN's **Phases 1–7**
-   (Risk Engine = Phase 3 = current priority; sub-milestones M1–M4).
+6. [`ROADMAP.md`](ROADMAP.md) — milestone sequence under MASTER_PLAN's **M1–M5**
+   (M1 Strategy Contract Normalization — complete; M2 Strategy Approval & Validation
+   — current, ST-C1 v3.9/v3.10 research sits here; M3 Execution Layer Skeleton;
+   M4 Demo Trading Integration; M5 Live Promotion Gate).
 7. [`NEXT_ACTION.md`](NEXT_ACTION.md) — the *one* milestone in flight right now.
 8. Source code.
 
@@ -29,15 +31,26 @@ override governance.
 
 > `docs/MASTER-PLAN.md` is **DEPRECATED** — superseded by the root `MASTER_PLAN.md`.
 
-## Owner directives (2026-07-18, override log)
-- **Priority:** Risk Engine (Phase 3) is the highest priority, built on the **locked
-  v1 engine** (`specs/v1.yaml`). Phase 3 sub-order: **M1 config loader → M2 risk
-  validator → M3 position sizing → M4 approval gate.** The v3.5 promotion track is
-  **parked** until demo success gates pass — never wire v3.5 into live execution.
-- **Skills (v2.1.1):** existing skills may continue, but **orchestration only** — they
-  MUST NOT replace Python modules, duplicate strategy logic, bypass validation, or
-  create alternative signal engines. New skills require justification. (This refines
-  the earlier owner authorization to continue skills.)
+## Owner directives (Updated 2026-07-22 — replaces 2026-07-18 text)
+- **Roadmap alignment:** the prior "Risk Engine = Phase 3" directive (2026-07-18,
+  drawn from `MASTER_PLAN.md` v2.1/v2.1.1) is **obsolete and removed** — `MASTER_PLAN.md`
+  v3.0.0 (2026-07-19) superseded that text the next day and defines no such phase.
+  Current roadmap, per `MASTER_PLAN.md` v3.0.0's Implementation Roadmap: **M1 Strategy
+  Contract Normalization (complete) → M2 Strategy Approval & Validation (current — all
+  ST-C1 v3.9/v3.10 research belongs here; no detection-logic change without an RCR
+  through `docs/RESEARCH-CHARTER.md`) → M3 Execution Layer Skeleton (not yet
+  authorized — no kernel/scenario-binding modules, audit logging, or execution-layer
+  code until sequenced by `project-governance-agent`) → M4 Demo Trading Integration →
+  M5 Live Promotion Gate.** The v3.5 promotion track remains **parked** until demo
+  success gates pass — never wire v3.5 into live execution.
+- **Skills/agents:** existing skills and agents may continue, but **orchestration
+  only** — they MUST NOT replace Python modules, duplicate strategy logic, bypass
+  validation, or create alternative signal engines. New skills or agent files require
+  justification and, where they claim governance/enforcement authority, an Accepted
+  ADR. (This refines the earlier owner authorization to continue skills.)
+- Note: `MASTER_PLAN.md`'s own "CURRENT PRIORITY" line is itself stale relative to
+  `ROADMAP.md`'s tracked Phase 1 ✅ / Phase 2 🟡 state — that requires an owner-approved
+  `MASTER_PLAN.md` version bump, not a fix here.
 
 ## Hard rules
 - Never hardcode strategy values (risk %, min RR, k, window, sessions) — everything
