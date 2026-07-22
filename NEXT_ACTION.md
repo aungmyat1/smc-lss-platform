@@ -161,3 +161,18 @@ with a falsifiable hypothesis and expected-improvement number stated
 before re-running — explicitly not conflating "does E1 fire" with "does
 the candidate become profitable" (both candidates remain net-losing across
 all three symbols regardless of this question).
+
+### Outcome (2026-07-22) — E1 diagnostic scan extended to all 3 symbols; tie-break RCR filed
+
+`ST_C1_V310_E1_LOCKOUT_DIAGNOSIS.md` extended to GBPUSD/XAUUSD (was
+EURUSD-only): E1 qualifies alone in 1.86% of checkpoints combined (371 of
+19,922) but loses `detect_e_trigger`'s tie-break to E2/E3 in **0/371**
+cases across all three symbols — the lockout is universal, not a EURUSD
+artifact. `reports/audit/ST_C1_V310_E1_TIEBREAK_RCR.md` filed (logged to
+`reports/research_log.md`) per `project-governance-agent`'s conditional
+approval: honestly scoped to "does E1 fire at all," explicitly NOT
+claiming this will fix v3.10's profitability (both candidates remain
+~10x below `ROADMAP.md`'s promotion bar in every symbol — a separate,
+larger go/no-go decision for the owner, unresolved by this RCR either
+way). RCR not yet backtested — awaiting owner/governance authorization to
+implement and run.

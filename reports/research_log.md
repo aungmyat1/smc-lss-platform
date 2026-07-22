@@ -238,3 +238,42 @@ that fix: EURUSD 135, GBPUSD 112, XAUUSD 120 trades (367 total) — the
 existence-check criterion clears decisively. See the addendum in
 `ST_C1_V310_REVERSAL_CAPTURE_RCR.md` for full detail. `engine_implements_spec`
 stays `false` pending a net-of-cost read (not run in this pass).
+
+## Addendum: dedup bug found and fixed, net-of-cost read run, both v3.9/v3.10 corrected (2026-07-22)
+
+A real bug (not a design property) was found in both
+`validation/historical_replay_engine_v39.py` and
+`historical_replay_engine_v310.py`: `structure_key`'s `index_offset` was
+never wired up (defaulted to 0), causing cross-time key collisions that
+silently discarded valid trades as false duplicates (`src/backtest_v35.py`
+already did this correctly; the newer engines regressed it). Fixed
+per the charter's bug-fix carve-out (no RCR required for the fix itself,
+confirmed by `project-governance-agent`); full suite re-run, 179 passed,
+no regressions. All six affected backtests re-run: v3.9 B1 trade counts
+grew 50-111% (47/37/54 -> 80/78/81), v3.10 grew 470-564% (135/112/120 ->
+789/744/684). Both prior committed analyses are superseded — see
+`ST_C1_DEDUP_BUG_AND_CORRECTED_RESULTS.md`. Corrected picture is worse for
+both candidates: v3.9 aggregate net PF 0.138, v3.10 aggregate net PF
+0.469 (both below `ROADMAP.md`'s PF >= 1.3 promotion bar by roughly an
+order of magnitude, in every symbol of both candidates). The
+XAUUSD-best/EURUSD-worst symbol ranking survives the fix in both
+independently-built engines — see `ST_C1_V39_VS_V310_COMPARISON.md`.
+
+## Addendum: E1 lockout diagnosed, tie-break RCR filed (2026-07-22)
+
+The v3.9-vs-v3.10 comparison found v3.10 executed zero E1-triggered trades
+in any symbol despite E1 being the specific new mechanism the candidate
+was built to test. A read-only diagnostic
+(`ST_C1_V310_E1_LOCKOUT_DIAGNOSIS.md`, all three symbols, 19,922
+checkpoints) found E1 qualifies on its own terms in 1.86% of checkpoints
+(371 total) but loses `detect_e_trigger`'s "most-recent-wins" tie-break to
+E2/E3 100% of the time (0/371) — E1 has never once been selected.
+`project-governance-agent` ruled this a design change (the tie-break was
+authored for v3.9's two-trigger world and never revisited for v3.10's
+three-trigger design; no already-agreed rule is being violated), not a
+bug — requiring this RCR before any change to the selection logic. See
+`ST_C1_V310_E1_TIEBREAK_RCR.md` for the full filed template. Explicitly
+scoped to "does E1 fire at all," not to fixing v3.10's profitability —
+both candidates remain net-losing in every symbol regardless of this
+RCR's outcome, per governance's explicit instruction not to conflate the
+two.

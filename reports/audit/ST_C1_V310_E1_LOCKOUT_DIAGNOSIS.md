@@ -17,26 +17,32 @@ design without anyone deciding what should happen when E1 also qualifies.
 
 ## Method
 
-Read-only instrumented scan (EURUSD, full local history, no repo files
-touched): called `signal_v310._e1_trigger_reversal`,
+Read-only instrumented scan (all three symbols, full local history, no
+repo files touched): called `signal_v310._e1_trigger_reversal`,
 `_e2_trigger_reversal`, and `_e3_trigger_reversal` individually at every
-unique H1-bar evaluation point the replay engine actually checks (6,639
-points, matching the engine's own caching granularity), plus
-`detect_e_trigger`'s actual combined selection.
+unique H1-bar evaluation point the replay engine actually checks (~6,640
+points per symbol, matching the engine's own caching granularity), plus
+`detect_e_trigger`'s actual combined selection. Initially run on EURUSD
+only; extended to GBPUSD and XAUUSD per `project-governance-agent`'s
+requirement that the evidence cover all three symbols before any RCR
+relying on it is considered complete.
 
-## Result
+## Result — consistent across all three symbols
 
-| Trigger | Qualifies (non-None) | Rate |
-|---|---|---|
-| E1 | 86 | 1.30% |
-| E2 | 1,747 | 26.31% |
-| E3 | 2,929 | 44.12% |
+| Symbol | Checkpoints | E1 qualifies | E2 qualifies | E3 qualifies | E1 wins tie-break |
+|---|---|---|---|---|---|
+| EURUSD | 6,639 | 86 (1.30%) | 1,747 (26.31%) | 2,929 (44.12%) | 0/86 |
+| GBPUSD | 6,640 | 138 (2.08%) | 1,731 (26.07%) | 2,890 (43.52%) | 0/138 |
+| XAUUSD | 6,643 | 147 (2.21%) | 1,427 (21.48%) | 2,570 (38.69%) | 0/147 |
+| **Total** | **19,922** | **371 (1.86%)** | **4,905 (24.62%)** | **8,389 (42.10%)** | **0/371 (0%)** |
 
-Of the 86 checkpoints where E1 qualified: **E1 won `detect_e_trigger`'s
-selection 0 times. E1 lost to E2 or E3 all 86 times (100%).**
+**E1 loses `detect_e_trigger`'s selection to E2 or E3 100% of the time it
+qualifies, in every symbol, with zero exceptions across 371 qualifying
+checkpoints.** This is not symbol-specific or a EURUSD artifact — the same
+mechanism holds identically everywhere the strategy trades.
 
 Overall selection distribution across all checkpoints where anything
-qualified: E3 1,954, E2 975, **E1 0.**
+qualified, combined across symbols: E3 5,564, E2 2,828, **E1 0.**
 
 ## Root cause
 
@@ -113,15 +119,16 @@ not actually fired once.
   `ST_C1_V39_VS_V310_COMPARISON.md` already established (net-losing in all
   three symbols).
 
-## Recommended next step (not started here)
+## Recommended next step
 
-If the E1 reversal-capture thesis is still worth testing, it needs its own
-RCR addressing, at minimum: (a) what the intended selection rule between
-concurrently-qualifying E1/E2/E3 candidates should be (e.g., prefer the
-rarer/more-specific trigger, run E1 as an independent parallel population
-rather than competing in the same selection, or something else), (b) a
-falsifiable hypothesis and expected-improvement number stated before
-re-running, and (c) explicit acknowledgment that both candidates are
-currently net-losing across all symbols, so "does changing the tie-break
-make E1 fire" is not the same question as "does it make the candidate
-profitable" — the RCR should not conflate the two.
+Per `project-governance-agent`'s ruling on this diagnosis: since both
+candidates already miss `ROADMAP.md`'s promotion bar by roughly an order
+of magnitude in every symbol (v3.9 aggregate PF 0.138, v3.10 aggregate PF
+0.469, versus a PF >= 1.3 bar), this RCR cannot be framed as fixing
+v3.10's profitability — E1's ~1.9% combined solo-qualification rate bounds
+any realistic population shift far too small to move the aggregate PF
+meaningfully. It is worth doing only as a narrow, honestly-scoped
+diagnostic: generating the first-ever E1-triggered trade population so the
+reversal-capture thesis can be evaluated on its own terms at all, since it
+has never once been observed. See
+`reports/research_log.md`'s corresponding entry for the filed RCR.
