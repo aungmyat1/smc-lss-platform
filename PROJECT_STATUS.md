@@ -224,3 +224,44 @@ the newer 10-gate (G1-G10) conformance research line:
   **cleared decisively** — EURUSD 135, GBPUSD 112, XAUUSD 120 (367 total).
   No net-of-cost read run yet; `engine_implements_spec` stays `false`; no
   autonomy/promotion flag changed; all uncommitted.
+- **ST-C1 v3.9/v3.10 diagnostic chain completed and PARKED (2026-07-22):**
+  a `structure_key` dedup bug (`index_offset` never wired up in either
+  replay engine) was found and fixed, correcting both candidates'
+  populations and results — see
+  `reports/audit/ST_C1_DEDUP_BUG_AND_CORRECTED_RESULTS.md`. Corrected
+  v3.9-vs-v3.10 comparison
+  (`reports/audit/ST_C1_V39_VS_V310_COMPARISON.md`) found the same
+  XAUUSD-best/EURUSD-worst symbol ranking in both independently-built
+  engines, and that v3.10 had never once executed an E1-triggered trade —
+  root-caused to a tie-break design gap
+  (`reports/audit/ST_C1_V310_E1_LOCKOUT_DIAGNOSIS.md`), fixed via an RCR
+  (`reports/audit/ST_C1_V310_E1_TIEBREAK_RCR.md`), result **INCONCLUSIVE**
+  (`reports/audit/ST_C1_V310_E1_TIEBREAK_RESULTS.md`: E1 fires, 56 trades,
+  but statistically indistinguishable from E2/E3; aggregate PF barely
+  moved, 0.469 -> 0.471, exactly as predicted). **Final corrected state:
+  v3.9 aggregate net PF 0.138, v3.10 aggregate net PF 0.471 — both
+  decisive misses against this file's PF >= 1.3 / expectancy >= +0.2R
+  promotion bar (v3.9 off by ~9.4x, v3.10 by ~2.8x), in every symbol of
+  both candidates.** No further open diagnostic plausibly rescues either
+  candidate under the validated cost model. Per `project-governance-agent`
+  ruling: **the ST-C1 v3.9/v3.10 line is PARKED**, same disposition as
+  v3.7/v3.8 — parked, not deleted; `specs/v3.9.yaml`, `specs/v3.10.yaml`,
+  and all associated engines/tests/reports retained unmodified as
+  historical record; `engine_implements_spec` stays `false` for both; no
+  autonomy/promotion flag changed (none existed to begin with). Phase 2
+  remains open — a parked line closes only that line within the phase, not
+  the phase itself.
+- **ST-C2 "Hybrid Liquidity-First Unified SMC Pipeline" proposed
+  (2026-07-22):** a new candidate, architecturally distinct from every
+  ST-C1 variant — a conjunctive "all stages must pass" sequential pipeline
+  (liquidity/inducement -> HTF bias -> OTE -> FVG alignment -> LTF CHoCH ->
+  execution) at a new timeframe triple (H4/M15/M3), replacing ST-C1's
+  disjunctive E1/E2/E3 branching at H4/H1/M5. `specs/st-c2.yaml` created
+  (owner-supplied). Per `project-governance-agent` ruling: **no RCR has
+  been filed yet** — required before any further work (scenario-classifier
+  design, conformance-kernel binding, population-feasibility testing,
+  net-of-cost validation), same precedent v3.9/v3.10 both followed despite
+  being equally "brand new, owner-supplied, zero prior evidence." Separate
+  ADR (0004) required only if dedicated ST-C2 agent files are wanted —
+  the research pipeline itself (RCR -> engine -> backtest) needs no new
+  ADR to proceed once the RCR is filed.

@@ -1,0 +1,169 @@
+id: ST-C2
+name: Hybrid Liquidity-First Unified SMC Pipeline
+version: 1.0.0
+status: candidate
+engine_implements_spec: false   # no engine exists yet; RCR required before implementation
+description: >
+  Unified liquidity-first SMC pipeline combining inducement, HTF bias,
+  OTE, FVG alignment, and LTF CHoCH confirmation into a single deterministic
+  sequence. Designed to replicate E-model + M-model entries seen in visual SMC.
+
+# ============================================================
+# 1. Instruments & Sessions
+# ============================================================
+instruments:
+  - symbol: XAUUSD
+    enabled: true
+  - symbol: EURUSD
+    enabled: false
+  - symbol: GBPUSD
+    enabled: false
+
+sessions:
+  london:
+    utc_open: "07:00"
+    utc_close: "11:00"
+  new_york:
+    utc_open: "12:00"
+    utc_close: "16:00"
+
+# ============================================================
+# 2. Timeframes
+# ============================================================
+timeframes:
+  htf: H4      # Bias, external structure, major liquidity
+  mf: M15      # OTE, HTF FVG refinement, POI alignment
+  ltf: M3      # CHoCH, BOS, execution
+
+# ============================================================
+# 3. Unified Pipeline Stages
+# ============================================================
+pipeline:
+
+  # ------------------------------------------------------------
+  # 3.1 Liquidity / Inducement Stage
+  # ------------------------------------------------------------
+  liquidity_stage:
+    detect_external_liquidity:
+      lookback_bars_htf: 300
+      equal_highs_tolerance_pips: 5
+      equal_lows_tolerance_pips: 5
+
+    detect_sweep:
+      wick_ratio_min: 0.6
+      close_back_in_range_required: true
+      max_sweep_age_bars_htf: 20
+
+    poi_gap_reaction:
+      gap_min_points: 10
+      gap_max_age_bars_htf: 40
+      require_partial_fill: true
+
+  # ------------------------------------------------------------
+  # 3.2 HTF Bias Stage
+  # ------------------------------------------------------------
+  htf_bias_stage:
+    bos:
+      confirmation_bars: 2
+      close_beyond_structure_required: true
+
+    choch:
+      displacement_body_ratio_min: 0.6
+      reclaim_window_bars: 5
+
+    bias_rules:
+      long_bias_requires_discount: true
+      short_bias_requires_premium: true
+
+  # ------------------------------------------------------------
+  # 3.3 OTE / Premium-Discount Stage (MF)
+  # ------------------------------------------------------------
+  ote_stage:
+    fib_anchor_mode: swing_extremes
+    discount_threshold: 0.5
+    premium_threshold: 0.5
+    long_only_in_discount: true
+    short_only_in_premium: true
+    max_retrace_pct: 0.786
+
+  # ------------------------------------------------------------
+  # 3.4 FVG Alignment Stage
+  # ------------------------------------------------------------
+  fvg_stage:
+    htf_fvg:
+      min_displacement_bars: 3
+      max_age_bars: 60
+
+    mf_fvg:
+      must_overlap_htf_fvg: true
+      max_distance_pips: 10
+
+    ltf_fvg:
+      required_for_entry: true
+      max_age_bars: 20
+
+  # ------------------------------------------------------------
+  # 3.5 LTF Confirmation Stage
+  # ------------------------------------------------------------
+  ltf_confirmation_stage:
+    choch:
+      internal_bos_required: true
+      break_structure_close_required: true
+      displacement_body_ratio_min: 0.5
+
+    stronger_choch:
+      lower_high_or_higher_low_required: true
+      max_setup_bars: 20
+
+    entry_window_bars: 15
+
+  # ------------------------------------------------------------
+  # 3.6 Execution Stage
+  # ------------------------------------------------------------
+  execution_stage:
+    entry:
+      type: limit_into_fvg
+      max_slippage_points: 5
+
+    stop:
+      mode: structural_invalidation
+      buffer_pips: 2
+
+    targets:
+      t1_liquidity:
+        rr_min: 2.0
+      t2_deeper_liquidity:
+        rr_min: 3.0
+      t3_extension:
+        rr_min: 5.0
+        enabled: false
+
+# ============================================================
+# 4. Risk & Portfolio
+# ============================================================
+risk:
+  per_trade_risk_pct: 0.5
+  min_rr: 3.0
+  max_positions: 3
+  portfolio_heat_pct: 3.0
+  daily_loss_pct: 3.0
+  weekly_loss_pct: 7.0
+
+management:
+  break_even_activation_r: 1.5
+  partial_take_r: 2.0
+  partial_take_fraction: 0.5
+  runner_enabled: true
+
+# ============================================================
+# 5. Conformance & Diagnostics
+# ============================================================
+conformance:
+  require_all_stages_pass: true
+  max_pipeline_latency_seconds: 2
+  log_level: info
+
+diagnostics:
+  enable_audit_logs: true
+  record_rejected_setups: true
+  store_structure_snapshots: true

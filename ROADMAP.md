@@ -57,6 +57,25 @@ complete, and runs the same population-feasibility floor used in R2.1
 before any statistical or profitability claim. Still research/validation
 work; Phase 3 remains out of scope regardless of outcome.
 
+**2026-07-22 update — v3.9/v3.10 diagnostic chain complete, line PARKED:**
+a dedup bug was found and fixed (corrected both candidates' populations
+and results — `reports/audit/ST_C1_DEDUP_BUG_AND_CORRECTED_RESULTS.md`),
+the v3.9-vs-v3.10 comparison ran on corrected data, v3.10's E1 lockout was
+root-caused and an RCR-authorized fix implemented — result INCONCLUSIVE
+(`reports/audit/ST_C1_V310_E1_TIEBREAK_RESULTS.md`). **Final: v3.9
+aggregate net PF 0.138, v3.10 aggregate net PF 0.471, both decisive misses
+against this phase's PF >= 1.3 / expectancy >= +0.2R bar, in every symbol
+of both candidates.** Per `project-governance-agent` ruling, **the ST-C1
+v3.9/v3.10 line is PARKED** — same disposition as v3.7/v3.8, retained not
+deleted. This phase remains 🟡 CURRENT and open: a parked line closes only
+that line, not the phase. A new candidate, ST-C2 ("Hybrid Liquidity-First
+Unified SMC Pipeline," `specs/st-c2.yaml`), has been proposed —
+architecturally distinct from every ST-C1 variant (conjunctive
+all-stages-must-pass pipeline vs. ST-C1's disjunctive E1/E2/E3 branching).
+Per governance ruling, an RCR must be filed before any implementation,
+population-feasibility, or net-of-cost work on ST-C2 begins — not yet
+filed as of this entry.
+
 Deliverables:
 - closed-candle-only backtest harness
 - realistic spread / commission / slippage simulation

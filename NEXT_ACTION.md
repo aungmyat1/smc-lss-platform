@@ -196,3 +196,30 @@ PF 0.138) and v3.10 (PF 0.471) remain net-losing in every symbol, roughly
 10x below `ROADMAP.md`'s promotion bar. That park-or-continue decision for
 the ST-C1 v3.9/v3.10 line remains open, unresolved by this RCR, and is
 the largest unaddressed item at this point.
+
+### Outcome (2026-07-22) — ST-C1 v3.9/v3.10 line PARKED; ST-C2 proposed
+
+Per `project-governance-agent` ruling: **the ST-C1 v3.9/v3.10 line is
+PARKED** — same disposition as v3.7/v3.8, retained not deleted. No further
+open diagnostic plausibly rescues either candidate under the validated
+cost model. Recorded in `PROJECT_STATUS.md` §5 and `ROADMAP.md`'s Phase 2
+section.
+
+A new candidate, **ST-C2** ("Hybrid Liquidity-First Unified SMC
+Pipeline," `specs/st-c2.yaml`), has been proposed — a conjunctive
+all-stages-must-pass pipeline at a new H4/M15/M3 timeframe triple,
+architecturally distinct from ST-C1's disjunctive E1/E2/E3 branching at
+H4/H1/M5.
+
+## → PHASE 2 (research/validation): file the ST-C2 RCR before any implementation
+
+Per `project-governance-agent` ruling: no RCR has been filed for ST-C2
+yet. Required before any further work — scenario-classifier design,
+conformance-kernel binding, population-feasibility testing, or net-of-cost
+validation — per the same precedent `ST_C1_V39_CLEAN_SMC_RCR.md` and
+`ST_C1_V310_REVERSAL_CAPTURE_RCR.md` both followed despite being equally
+"brand new, owner-supplied, zero prior evidence." `specs/st-c2.yaml` needs
+`engine_implements_spec: false` added for consistency with that
+precedent. Separately, dedicated ST-C2 agent files (e.g. a
+scenario-classifier agent) require their own new ADR before they exist —
+that question is separable and does not block the RCR/research path.
