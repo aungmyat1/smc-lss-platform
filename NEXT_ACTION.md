@@ -136,3 +136,28 @@ fix. Drafting `specs/v40.yaml` remains **not authorized**: Phase 2 is not
 complete (neither candidate clears `ROADMAP.md`'s promotion bar), and any
 detection-logic change requires an RCR per `docs/RESEARCH-CHARTER.md`, not
 an ADR.
+
+### Outcome (2026-07-22) — E1 lockout diagnosed (design question, not a bug)
+
+`reports/audit/ST_C1_V310_E1_LOCKOUT_DIAGNOSIS.md`: a read-only diagnostic
+scan (EURUSD, full history, no code changed) found E1 qualifies only 1.30%
+of the time on its own (86/6,639 checkpoints) and, of those, loses
+`detect_e_trigger`'s `max(confirm_i)` "freshest wins" tie-break to E2/E3
+**100% of the time** — E1 has never once been selected. Root cause: that
+tie-break was authored for v3.9's two-trigger (E2/E3) world and carried
+unchanged into v3.10's three-trigger design; neither the code nor the RCR
+ever decided what should happen when E1 also qualifies. Per
+`project-governance-agent`'s ruling, this is a **design change, not a bug**
+(no already-agreed rule is being violated) — fixing it requires a
+six-question RCR before any change to the selection logic is backtested.
+No code changed. Also newly flagged: the RCR's existence check
+(367 trades, reported cleared) never actually validated the
+reversal-capture-via-E1 thesis, since zero of those trades were
+E1-triggered.
+
+**Next step, not started here:** if the E1 thesis is still worth testing,
+file an RCR addressing what the intended E1/E2/E3 selection rule should be,
+with a falsifiable hypothesis and expected-improvement number stated
+before re-running — explicitly not conflating "does E1 fire" with "does
+the candidate become profitable" (both candidates remain net-losing across
+all three symbols regardless of this question).
