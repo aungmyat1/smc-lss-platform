@@ -417,9 +417,23 @@ def _e3_trigger_reversal(h1, h4):
 
 def detect_e_trigger(h1, d1=None, h4=None):
     """v3.10: E1 is re-enabled; all three E-triggers are gated behind H4
-    bias divergence, so only reversal-shaped setups ever qualify."""
+    bias divergence, so only reversal-shaped setups ever qualify.
+
+    E1 is prioritized outright when it qualifies, per
+    reports/audit/ST_C1_V310_E1_TIEBREAK_RCR.md: a plain recency-based
+    max(confirm_i) tie-break across all three candidates (the original
+    rule, inherited unchanged from v3.9's two-trigger E2/E3-only world --
+    see signal_v39.detect_e_trigger) causes E1 to lose to E2/E3 100% of
+    the time it qualifies, because E1's confirmation is anchored to a
+    reaction within a bounded window after an aging D1 gap, structurally
+    older than E2/E3's continuous live re-confirmation (diagnosed in
+    reports/audit/ST_C1_V310_E1_LOCKOUT_DIAGNOSIS.md: 0/371 qualifying
+    checkpoints won, across all three symbols). E2/E3 still use
+    recency-based tie-break between each other when E1 does not qualify."""
+    e1_candidate = _e1_trigger_reversal(h1, d1, h4)
+    if e1_candidate is not None:
+        return e1_candidate
     candidates = [t for t in (
-        _e1_trigger_reversal(h1, d1, h4),
         _e2_trigger_reversal(h1, h4),
         _e3_trigger_reversal(h1, h4),
     ) if t is not None]

@@ -277,3 +277,22 @@ scoped to "does E1 fire at all," not to fixing v3.10's profitability —
 both candidates remain net-losing in every symbol regardless of this
 RCR's outcome, per governance's explicit instruction not to conflate the
 two.
+
+## Addendum: E1 tie-break RCR implemented, run, INCONCLUSIVE (2026-07-22)
+
+Authorized by `project-governance-agent` after verifying
+`ST_C1_V310_E1_TIEBREAK_RCR.md` met every condition set (three-symbol
+evidence, honestly-bounded expected improvement, correctly-scoped success
+criteria). Implemented: `detect_e_trigger` now returns E1 outright when it
+qualifies, rather than competing on recency against E2/E3. 3 new tests,
+full suite 182 passed. Re-ran v3.10 for all three symbols: E1 fires for
+the first time (56 trades: 16 EURUSD/24 GBPUSD/16 XAUUSD), clearing the
+existence criterion. But E1's net_r/win-rate profile is statistically
+indistinguishable from E2/E3's (Welch's t=0.407, z=-0.704 on win rate,
+both far below the ~1.96 significance threshold) — per the RCR's own
+pre-declared rollback criteria, this is **INCONCLUSIVE**, not
+ACCEPT/REJECT. Aggregate PF barely moved (0.469 -> 0.471), exactly as
+predicted — confirms this was never going to be a profitability fix. See
+`ST_C1_V310_E1_TIEBREAK_RESULTS.md`. Both candidates remain net-losing in
+every symbol; the park-or-continue decision for the ST-C1 v3.9/v3.10 line
+remains open and is now the largest unaddressed item.

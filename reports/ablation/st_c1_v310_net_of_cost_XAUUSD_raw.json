@@ -1,7 +1,7 @@
 {
   "symbol": "XAUUSD",
   "cell": "v310_candidate_net_of_cost",
-  "elapsed_seconds": 351.6,
+  "elapsed_seconds": 216.2,
   "m5_bars": 80000,
   "h1_bars": 9000,
   "d1_bars": 500,
@@ -11,33 +11,33 @@
     "2026-07-21 09:20"
   ],
   "funnel_counts": {
-    "evaluated": 51988,
-    "signal_pass": 1521,
-    "candidate_ready": 1521,
-    "duplicate_structure": 837,
-    "executed_trade": 684,
-    "rejected_signal": 50467
+    "evaluated": 52423,
+    "signal_pass": 1467,
+    "candidate_ready": 1467,
+    "duplicate_structure": 808,
+    "executed_trade": 659,
+    "rejected_signal": 50956
   },
-  "num_signals": 684,
-  "num_trades": 684,
+  "num_signals": 659,
+  "num_trades": 659,
   "metrics": {
-    "total_trades": 684,
-    "wins": 359,
-    "losses": 325,
-    "win_rate_pct": 52.49,
-    "profit_factor": 0.7344,
-    "expectancy_r": -0.1717,
-    "average_r": -0.1717,
-    "gross_profit_r": 324.7339,
-    "gross_loss_r": 442.1858,
-    "net_profit_r": -117.4519,
-    "maximum_drawdown_r": -145.8647,
-    "drawdown_duration_trades": 568,
-    "sharpe_ratio": -0.0399,
-    "sortino_ratio": -0.0286,
-    "recovery_factor": -0.8052,
-    "payoff_ratio": 0.6648,
-    "total_R": -117.4519,
+    "total_trades": 659,
+    "wins": 342,
+    "losses": 317,
+    "win_rate_pct": 51.9,
+    "profit_factor": 0.9488,
+    "expectancy_r": -0.0253,
+    "average_r": -0.0253,
+    "gross_profit_r": 309.258,
+    "gross_loss_r": 325.9541,
+    "net_profit_r": -16.6962,
+    "maximum_drawdown_r": -54.2874,
+    "drawdown_duration_trades": 531,
+    "sharpe_ratio": -0.0204,
+    "sortino_ratio": -0.0262,
+    "recovery_factor": -0.3076,
+    "payoff_ratio": 0.8794,
+    "total_R": -16.6962,
     "longest_win_streak": 8,
     "longest_loss_streak": 11,
     "trade_count_adequacy_warning": false,
@@ -1430,40 +1430,18 @@
       "gross_r": 0.330106,
       "cost_r": 0.10406,
       "net_r": 0.226046,
-      "structure_key": "('XAUUSD', 'E3M2', 'zone', 16561)"
+      "structure_key": "('XAUUSD', 'E1M2', 'zone', 16561)"
     },
     {
-      "signal_time": "2025-08-27 07:25",
-      "entry_time": "2025-08-27 07:30",
-      "exit_time": "2025-08-27 11:05",
+      "signal_time": "2025-08-27 10:10",
+      "entry_time": "2025-08-27 10:15",
+      "exit_time": "2025-08-27 10:15",
       "direction": "short",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.057792,
-      "net_r": -1.057792,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 16567)"
-    },
-    {
-      "signal_time": "2025-08-27 11:10",
-      "entry_time": "2025-08-27 11:15",
-      "exit_time": "2025-08-27 11:15",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 0.126052,
-      "net_r": 0.873948,
-      "structure_key": "('XAUUSD', 'E2M1', 'zone', 16597)"
-    },
-    {
-      "signal_time": "2025-08-27 11:35",
-      "entry_time": "2025-08-27 11:40",
-      "exit_time": "2025-08-27 12:00",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.130408,
-      "net_r": -1.130408,
-      "structure_key": "('XAUUSD', 'E2M1', 'zone', 16617)"
+      "outcome": "TARGET",
+      "gross_r": 0.025146,
+      "cost_r": 0.075779,
+      "net_r": -0.050633,
+      "structure_key": "('XAUUSD', 'E1M2', 'zone', 16599)"
     },
     {
       "signal_time": "2025-08-27 12:45",
@@ -1474,29 +1452,18 @@
       "gross_r": 0.944004,
       "cost_r": 0.089725,
       "net_r": 0.854278,
-      "structure_key": "('XAUUSD', 'E2M2', 'zone', 16628)"
+      "structure_key": "('XAUUSD', 'E1M2', 'zone', 16628)"
     },
     {
-      "signal_time": "2025-08-27 13:00",
-      "entry_time": "2025-08-27 13:05",
-      "exit_time": "2025-08-27 17:55",
+      "signal_time": "2025-08-27 13:30",
+      "entry_time": "2025-08-27 13:35",
+      "exit_time": "2025-08-27 17:50",
       "direction": "short",
       "outcome": "STOP",
       "gross_r": -1.0,
-      "cost_r": 0.03999,
-      "net_r": -1.03999,
-      "structure_key": "('XAUUSD', 'E2M1', 'zone', 16633)"
-    },
-    {
-      "signal_time": "2025-08-27 18:50",
-      "entry_time": "2025-08-27 18:55",
-      "exit_time": "2025-08-27 19:15",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.121152,
-      "net_r": -1.121152,
-      "structure_key": "('XAUUSD', 'E2M1', 'zone', 16704)"
+      "cost_r": 0.035539,
+      "net_r": -1.035539,
+      "structure_key": "('XAUUSD', 'E1M2', 'zone', 16640)"
     },
     {
       "signal_time": "2025-08-28 07:00",
@@ -2995,92 +2962,37 @@
       "structure_key": "('XAUUSD', 'E3M1', 'zone', 30076)"
     },
     {
-      "signal_time": "2025-11-04 16:15",
-      "entry_time": "2025-11-04 16:20",
-      "exit_time": "2025-11-04 16:25",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.037178,
-      "net_r": -1.037178,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 30164)"
-    },
-    {
-      "signal_time": "2025-11-04 16:55",
-      "entry_time": "2025-11-04 17:00",
-      "exit_time": "2025-11-05 12:05",
+      "signal_time": "2025-11-05 07:00",
+      "entry_time": "2025-11-05 07:05",
+      "exit_time": "2025-11-06 19:20",
       "direction": "long",
       "outcome": "STOP",
       "gross_r": 0.5,
-      "cost_r": 0.011737,
-      "net_r": 0.488263,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 30172)"
+      "cost_r": 0.011535,
+      "net_r": 0.488465,
+      "structure_key": "('XAUUSD', 'E3M1', 'zone', 30325)"
     },
     {
-      "signal_time": "2025-11-05 13:40",
-      "entry_time": "2025-11-05 13:45",
-      "exit_time": "2025-11-05 13:50",
-      "direction": "long",
-      "outcome": "TARGET",
-      "gross_r": 0.697224,
-      "cost_r": 0.056839,
-      "net_r": 0.640386,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 30409)"
-    },
-    {
-      "signal_time": "2025-11-07 07:25",
-      "entry_time": "2025-11-07 07:30",
-      "exit_time": "2025-11-07 08:20",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.069503,
-      "net_r": -1.069503,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 30886)"
-    },
-    {
-      "signal_time": "2025-11-07 09:25",
-      "entry_time": "2025-11-07 09:30",
-      "exit_time": "2025-11-07 10:10",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.052954,
-      "net_r": -1.052954,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 30910)"
-    },
-    {
-      "signal_time": "2025-11-07 10:25",
-      "entry_time": "2025-11-07 10:30",
-      "exit_time": "2025-11-07 11:00",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.066148,
-      "net_r": -1.066148,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 30922)"
-    },
-    {
-      "signal_time": "2025-11-07 11:35",
-      "entry_time": "2025-11-07 11:40",
-      "exit_time": "2025-11-07 14:00",
+      "signal_time": "2025-11-07 13:30",
+      "entry_time": "2025-11-07 13:35",
+      "exit_time": "2025-11-07 17:00",
       "direction": "short",
       "outcome": "STOP",
       "gross_r": 0.5,
-      "cost_r": 0.039007,
-      "net_r": 0.460993,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 30936)"
+      "cost_r": 0.027565,
+      "net_r": 0.472435,
+      "structure_key": "('XAUUSD', 'E1M2', 'zone', 30959)"
     },
     {
-      "signal_time": "2025-11-07 14:05",
-      "entry_time": "2025-11-07 14:10",
+      "signal_time": "2025-11-07 17:05",
+      "entry_time": "2025-11-07 17:10",
       "exit_time": "2025-11-07 18:25",
       "direction": "short",
       "outcome": "STOP",
-      "gross_r": 0.5,
-      "cost_r": 0.146367,
-      "net_r": 0.353633,
-      "structure_key": "('XAUUSD', 'E3M2', 'zone', 30961)"
+      "gross_r": -1.0,
+      "cost_r": 0.025535,
+      "net_r": -1.025535,
+      "structure_key": "('XAUUSD', 'E3M1', 'zone', 30996)"
     },
     {
       "signal_time": "2025-11-07 18:30",
@@ -3325,37 +3237,15 @@
       "structure_key": "('XAUUSD', 'E2M1', 'zone', 34010)"
     },
     {
-      "signal_time": "2025-11-25 15:55",
-      "entry_time": "2025-11-25 16:00",
-      "exit_time": "2025-11-25 19:00",
+      "signal_time": "2025-11-25 17:55",
+      "entry_time": "2025-11-25 18:00",
+      "exit_time": "2025-11-25 18:15",
       "direction": "short",
       "outcome": "STOP",
-      "gross_r": 0.5,
-      "cost_r": 0.093923,
-      "net_r": 0.406077,
-      "structure_key": "('XAUUSD', 'E2M1', 'zone', 34286)"
-    },
-    {
-      "signal_time": "2025-11-25 19:05",
-      "entry_time": "2025-11-25 19:10",
-      "exit_time": "2025-11-25 19:10",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 0.042835,
-      "net_r": 0.957165,
-      "structure_key": "('XAUUSD', 'E2M1', 'zone', 34335)"
-    },
-    {
-      "signal_time": "2025-11-25 19:55",
-      "entry_time": "2025-11-25 20:00",
-      "exit_time": "2025-11-26 03:20",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": 0.5,
-      "cost_r": 0.024746,
-      "net_r": 0.475254,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 34348)"
+      "gross_r": -1.0,
+      "cost_r": 0.028986,
+      "net_r": -1.028986,
+      "structure_key": "('XAUUSD', 'E1M2', 'zone', 34324)"
     },
     {
       "signal_time": "2025-11-26 07:00",
@@ -3424,37 +3314,26 @@
       "structure_key": "('XAUUSD', 'E3M2', 'zone', 34562)"
     },
     {
-      "signal_time": "2025-11-28 07:05",
-      "entry_time": "2025-11-28 07:10",
-      "exit_time": "2025-11-28 07:10",
-      "direction": "short",
-      "outcome": "TARGET",
-      "gross_r": -0.382752,
-      "cost_r": 0.048286,
-      "net_r": -0.431037,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 34992)"
-    },
-    {
-      "signal_time": "2025-11-28 07:15",
-      "entry_time": "2025-11-28 07:20",
+      "signal_time": "2025-11-28 07:10",
+      "entry_time": "2025-11-28 07:15",
       "exit_time": "2025-11-28 07:20",
       "direction": "short",
       "outcome": "STOP",
       "gross_r": -1.0,
-      "cost_r": 0.097114,
-      "net_r": -1.097114,
-      "structure_key": "('XAUUSD', 'E3M2', 'zone', 34993)"
+      "cost_r": 0.064861,
+      "net_r": -1.064861,
+      "structure_key": "('XAUUSD', 'E1M2', 'zone', 34993)"
     },
     {
-      "signal_time": "2025-11-28 08:00",
-      "entry_time": "2025-11-28 08:05",
+      "signal_time": "2025-11-28 07:55",
+      "entry_time": "2025-11-28 08:00",
       "exit_time": "2025-11-28 08:40",
       "direction": "short",
       "outcome": "STOP",
       "gross_r": -1.0,
-      "cost_r": 0.066646,
-      "net_r": -1.066646,
-      "structure_key": "('XAUUSD', 'E3M2', 'zone', 35003)"
+      "cost_r": 0.058759,
+      "net_r": -1.058759,
+      "structure_key": "('XAUUSD', 'E3M2', 'zone', 34993)"
     },
     {
       "signal_time": "2025-11-28 09:25",
@@ -3479,28 +3358,6 @@
       "structure_key": "('XAUUSD', 'E3M1', 'zone', 35026)"
     },
     {
-      "signal_time": "2025-11-28 17:15",
-      "entry_time": "2025-11-28 17:20",
-      "exit_time": "2025-11-28 18:25",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.01677,
-      "net_r": -1.01677,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 35082)"
-    },
-    {
-      "signal_time": "2025-11-28 18:40",
-      "entry_time": "2025-11-28 18:45",
-      "exit_time": "2025-11-28 19:05",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.069198,
-      "net_r": -1.069198,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 35099)"
-    },
-    {
       "signal_time": "2025-12-01 07:00",
       "entry_time": "2025-12-01 07:05",
       "exit_time": "2025-12-01 09:25",
@@ -3512,81 +3369,37 @@
       "structure_key": "('XAUUSD', 'E3M1', 'zone', 35187)"
     },
     {
-      "signal_time": "2025-12-01 09:30",
-      "entry_time": "2025-12-01 09:35",
-      "exit_time": "2025-12-01 09:35",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 0.201186,
-      "net_r": 0.798814,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 35232)"
-    },
-    {
-      "signal_time": "2025-12-01 10:30",
-      "entry_time": "2025-12-01 10:35",
-      "exit_time": "2025-12-01 12:00",
+      "signal_time": "2025-12-01 11:45",
+      "entry_time": "2025-12-01 11:50",
+      "exit_time": "2025-12-01 11:55",
       "direction": "short",
       "outcome": "STOP",
       "gross_r": -1.0,
-      "cost_r": 0.038591,
-      "net_r": -1.038591,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 35250)"
+      "cost_r": 0.114391,
+      "net_r": -1.114391,
+      "structure_key": "('XAUUSD', 'E1M2', 'zone', 35261)"
     },
     {
-      "signal_time": "2025-12-01 12:05",
-      "entry_time": "2025-12-01 12:10",
-      "exit_time": "2025-12-01 12:10",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 0.033437,
-      "net_r": 0.966563,
-      "structure_key": "('XAUUSD', 'E3M2', 'zone', 35261)"
-    },
-    {
-      "signal_time": "2025-12-01 12:20",
-      "entry_time": "2025-12-01 12:25",
-      "exit_time": "2025-12-01 14:55",
-      "direction": "short",
-      "outcome": "TARGET",
-      "gross_r": 1.238537,
-      "cost_r": 0.042343,
-      "net_r": 1.196194,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 35272)"
-    },
-    {
-      "signal_time": "2025-12-01 15:00",
-      "entry_time": "2025-12-01 15:05",
-      "exit_time": "2025-12-01 15:20",
+      "signal_time": "2025-12-01 14:10",
+      "entry_time": "2025-12-01 14:15",
+      "exit_time": "2025-12-01 15:30",
       "direction": "short",
       "outcome": "STOP",
       "gross_r": -1.0,
-      "cost_r": 0.08251,
-      "net_r": -1.08251,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 35303)"
+      "cost_r": 0.03741,
+      "net_r": -1.03741,
+      "structure_key": "('XAUUSD', 'E1M2', 'zone', 35294)"
     },
     {
-      "signal_time": "2025-12-01 15:50",
-      "entry_time": "2025-12-01 15:55",
-      "exit_time": "2025-12-01 16:05",
+      "signal_time": "2025-12-01 18:55",
+      "entry_time": "2025-12-01 19:00",
+      "exit_time": "2025-12-01 20:25",
       "direction": "short",
-      "outcome": "TARGET",
-      "gross_r": 0.993187,
-      "cost_r": 0.02846,
-      "net_r": 0.964727,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 35314)"
-    },
-    {
-      "signal_time": "2025-12-01 16:10",
-      "entry_time": "2025-12-01 16:15",
-      "exit_time": "2025-12-02 03:05",
-      "direction": "short",
-      "outcome": "TARGET",
-      "gross_r": 1.673291,
-      "cost_r": 0.019348,
-      "net_r": 1.653943,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 35316)"
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.023284,
+      "net_r": -1.023284,
+      "structure_key": "('XAUUSD', 'E1M2', 'zone', 35351)"
     },
     {
       "signal_time": "2025-12-04 07:10",
@@ -3875,15 +3688,15 @@
       "structure_key": "('XAUUSD', 'E3M1', 'zone', 38040)"
     },
     {
-      "signal_time": "2025-12-15 17:30",
-      "entry_time": "2025-12-15 17:35",
-      "exit_time": "2025-12-16 07:30",
+      "signal_time": "2025-12-15 18:00",
+      "entry_time": "2025-12-15 18:05",
+      "exit_time": "2025-12-15 18:10",
       "direction": "short",
       "outcome": "TARGET",
-      "gross_r": 1.552272,
-      "cost_r": 0.016724,
-      "net_r": 1.535548,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 38081)"
+      "gross_r": 0.281649,
+      "cost_r": 0.016415,
+      "net_r": 0.265234,
+      "structure_key": "('XAUUSD', 'E1M2', 'zone', 38100)"
     },
     {
       "signal_time": "2025-12-16 16:55",
@@ -3894,7 +3707,7 @@
       "gross_r": 0.272674,
       "cost_r": 0.006822,
       "net_r": 0.265853,
-      "structure_key": "('XAUUSD', 'E3M2', 'zone', 38357)"
+      "structure_key": "('XAUUSD', 'E1M2', 'zone', 38357)"
     },
     {
       "signal_time": "2025-12-22 12:25",
@@ -4590,28 +4403,6 @@
       "structure_key": "('XAUUSD', 'E3M1', 'zone', 46581)"
     },
     {
-      "signal_time": "2026-02-09 10:55",
-      "entry_time": "2026-02-09 11:00",
-      "exit_time": "2026-02-09 11:00",
-      "direction": "long",
-      "outcome": "TARGET",
-      "gross_r": 0.364543,
-      "cost_r": 0.043265,
-      "net_r": 0.321278,
-      "structure_key": "('XAUUSD', 'E2M1', 'zone', 48427)"
-    },
-    {
-      "signal_time": "2026-02-09 13:25",
-      "entry_time": "2026-02-09 13:30",
-      "exit_time": "2026-02-09 16:30",
-      "direction": "long",
-      "outcome": "TARGET",
-      "gross_r": 1.475963,
-      "cost_r": 0.018496,
-      "net_r": 1.457468,
-      "structure_key": "('XAUUSD', 'E2M1', 'zone', 48464)"
-    },
-    {
       "signal_time": "2026-02-10 11:55",
       "entry_time": "2026-02-10 12:00",
       "exit_time": "2026-02-10 12:20",
@@ -4808,28 +4599,6 @@
       "cost_r": 0.018397,
       "net_r": 0.481603,
       "structure_key": "('XAUUSD', 'E2M1', 'zone', 49769)"
-    },
-    {
-      "signal_time": "2026-02-19 07:00",
-      "entry_time": "2026-02-19 07:05",
-      "exit_time": "2026-02-19 08:30",
-      "direction": "long",
-      "outcome": "TARGET",
-      "gross_r": 1.231451,
-      "cost_r": 0.03036,
-      "net_r": 1.201091,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 50565)"
-    },
-    {
-      "signal_time": "2026-02-19 08:35",
-      "entry_time": "2026-02-19 08:40",
-      "exit_time": "2026-02-19 15:00",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.011595,
-      "net_r": -1.011595,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 50584)"
     },
     {
       "signal_time": "2026-02-20 07:00",
@@ -5808,7 +5577,7 @@
       "gross_r": 1.0,
       "cost_r": 0.064074,
       "net_r": 0.935926,
-      "structure_key": "('XAUUSD', 'E3M2', 'zone', 60218)"
+      "structure_key": "('XAUUSD', 'E1M2', 'zone', 60218)"
     },
     {
       "signal_time": "2026-04-10 07:30",
@@ -5819,40 +5588,18 @@
       "gross_r": 0.871348,
       "cost_r": 0.072053,
       "net_r": 0.799296,
-      "structure_key": "('XAUUSD', 'E3M2', 'zone', 60231)"
+      "structure_key": "('XAUUSD', 'E1M2', 'zone', 60231)"
     },
     {
-      "signal_time": "2026-04-13 12:55",
-      "entry_time": "2026-04-13 13:00",
-      "exit_time": "2026-04-13 13:25",
+      "signal_time": "2026-04-13 13:55",
+      "entry_time": "2026-04-13 14:00",
+      "exit_time": "2026-04-13 14:40",
       "direction": "long",
       "outcome": "STOP",
       "gross_r": -1.0,
-      "cost_r": 0.071184,
-      "net_r": -1.071184,
-      "structure_key": "('XAUUSD', 'E2M1', 'zone', 60547)"
-    },
-    {
-      "signal_time": "2026-04-13 13:35",
-      "entry_time": "2026-04-13 13:40",
-      "exit_time": "2026-04-13 14:35",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": 0.5,
-      "cost_r": 0.036425,
-      "net_r": 0.463575,
-      "structure_key": "('XAUUSD', 'E2M1', 'zone', 60580)"
-    },
-    {
-      "signal_time": "2026-04-13 14:40",
-      "entry_time": "2026-04-13 14:45",
-      "exit_time": "2026-04-13 14:45",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 109.034268,
-      "net_r": -108.034268,
-      "structure_key": "('XAUUSD', 'E3M1', 'zone', 60586)"
+      "cost_r": 0.024514,
+      "net_r": -1.024514,
+      "structure_key": "('XAUUSD', 'E3M1', 'zone', 60583)"
     },
     {
       "signal_time": "2026-04-13 15:10",
@@ -7208,59 +6955,37 @@
       "structure_key": "('XAUUSD', 'E3M1', 'zone', 75050)"
     },
     {
-      "signal_time": "2026-06-29 07:00",
-      "entry_time": "2026-06-29 07:05",
+      "signal_time": "2026-06-29 07:10",
+      "entry_time": "2026-06-29 07:15",
       "exit_time": "2026-06-29 07:15",
       "direction": "short",
       "outcome": "TARGET",
-      "gross_r": 0.653266,
-      "cost_r": 0.067324,
-      "net_r": 0.585942,
-      "structure_key": "('XAUUSD', 'E2M1', 'zone', 75598)"
+      "gross_r": -0.147334,
+      "cost_r": 0.057135,
+      "net_r": -0.204469,
+      "structure_key": "('XAUUSD', 'E1M2', 'zone', 75601)"
     },
     {
-      "signal_time": "2026-06-29 07:20",
-      "entry_time": "2026-06-29 07:25",
-      "exit_time": "2026-06-29 07:25",
+      "signal_time": "2026-06-29 08:05",
+      "entry_time": "2026-06-29 08:10",
+      "exit_time": "2026-06-29 17:15",
       "direction": "short",
       "outcome": "TARGET",
-      "gross_r": -0.361609,
-      "cost_r": 0.044432,
-      "net_r": -0.406041,
-      "structure_key": "('XAUUSD', 'E2M2', 'zone', 75601)"
+      "gross_r": 1.801636,
+      "cost_r": 0.020241,
+      "net_r": 1.781394,
+      "structure_key": "('XAUUSD', 'E1M2', 'zone', 75615)"
     },
     {
-      "signal_time": "2026-06-29 07:35",
-      "entry_time": "2026-06-29 07:40",
-      "exit_time": "2026-06-29 08:30",
-      "direction": "short",
-      "outcome": "TARGET",
-      "gross_r": 0.969353,
-      "cost_r": 0.023333,
-      "net_r": 0.94602,
-      "structure_key": "('XAUUSD', 'E2M1', 'zone', 75610)"
-    },
-    {
-      "signal_time": "2026-06-29 08:35",
-      "entry_time": "2026-06-29 08:40",
-      "exit_time": "2026-06-30 04:00",
-      "direction": "short",
-      "outcome": "TARGET",
-      "gross_r": 1.774424,
-      "cost_r": 0.013382,
-      "net_r": 1.761043,
-      "structure_key": "('XAUUSD', 'E2M1', 'zone', 75622)"
-    },
-    {
-      "signal_time": "2026-06-30 07:45",
-      "entry_time": "2026-06-30 07:50",
-      "exit_time": "2026-06-30 09:05",
+      "signal_time": "2026-06-29 17:20",
+      "entry_time": "2026-06-29 17:25",
+      "exit_time": "2026-06-30 09:30",
       "direction": "short",
       "outcome": "STOP",
       "gross_r": 0.5,
-      "cost_r": 0.036945,
-      "net_r": 0.463055,
-      "structure_key": "('XAUUSD', 'E2M1', 'zone', 75888)"
+      "cost_r": 0.01253,
+      "net_r": 0.48747,
+      "structure_key": "('XAUUSD', 'E2M2', 'zone', 75726)"
     },
     {
       "signal_time": "2026-06-30 11:10",

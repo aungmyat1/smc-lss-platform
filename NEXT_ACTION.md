@@ -176,3 +176,23 @@ claiming this will fix v3.10's profitability (both candidates remain
 larger go/no-go decision for the owner, unresolved by this RCR either
 way). RCR not yet backtested — awaiting owner/governance authorization to
 implement and run.
+
+### Outcome (2026-07-22) — E1 tie-break RCR implemented, run, INCONCLUSIVE
+
+Authorized by `project-governance-agent`. `detect_e_trigger` now
+prioritizes E1 outright when it qualifies (`src/signal_v310.py`); 3 new
+tests added, full suite 182 passed. Re-ran v3.10 for all three symbols:
+**E1 fires for the first time — 56 trades (16/24/16 across
+EURUSD/GBPUSD/XAUUSD)**, clearing the RCR's existence criterion. But its
+behavior is statistically indistinguishable from E2/E3's (Welch's t=0.407
+on net_r, z=-0.704 on win rate — both far below the ~1.96 significance
+threshold) — per the RCR's own pre-declared rollback criteria, this is
+**INCONCLUSIVE** on the reversal-capture thesis, not accept or reject.
+Aggregate PF barely moved (0.469 -> 0.471), exactly as the RCR predicted.
+See `reports/audit/ST_C1_V310_E1_TIEBREAK_RESULTS.md`.
+
+**This does not change the larger open decision:** both v3.9 (aggregate
+PF 0.138) and v3.10 (PF 0.471) remain net-losing in every symbol, roughly
+10x below `ROADMAP.md`'s promotion bar. That park-or-continue decision for
+the ST-C1 v3.9/v3.10 line remains open, unresolved by this RCR, and is
+the largest unaddressed item at this point.

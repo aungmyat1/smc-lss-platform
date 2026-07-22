@@ -162,6 +162,42 @@ def test_e3_internal_liquidity_positive_and_negative():
     assert v310._e3_trigger_reversal(h1, _bullish_h4_20()) is None
 
 
+# --- E-trigger selection: E1 must be prioritized, per
+# reports/audit/ST_C1_V310_E1_TIEBREAK_RCR.md ------------------------------
+
+def test_detect_e_trigger_prefers_e1_even_when_e2_e3_are_fresher(monkeypatch):
+    """Before the RCR fix, detect_e_trigger picked max(candidates,
+    key=confirm_i) across all three -- diagnosed in
+    ST_C1_V310_E1_LOCKOUT_DIAGNOSIS.md as causing E1 to lose to E2/E3 in
+    371/371 qualifying checkpoints across all three symbols, because E1's
+    confirm_i is structurally older (anchored to an aging D1 gap) than
+    E2/E3's continuous live re-confirmation. E1 must now win outright
+    whenever it qualifies, regardless of how much fresher E2/E3 are."""
+    e1_result = {"e_trigger": "E1", "bias": "BUY", "confirm_i": 1}
+    e2_result = {"e_trigger": "E2", "bias": "SELL", "confirm_i": 99}
+    e3_result = {"e_trigger": "E3", "bias": "SELL", "confirm_i": 100}
+    monkeypatch.setattr(v310, "_e1_trigger_reversal", lambda h1, d1, h4: e1_result)
+    monkeypatch.setattr(v310, "_e2_trigger_reversal", lambda h1, h4: e2_result)
+    monkeypatch.setattr(v310, "_e3_trigger_reversal", lambda h1, h4: e3_result)
+    assert v310.detect_e_trigger([], d1=[], h4=[]) == e1_result
+
+
+def test_detect_e_trigger_falls_back_to_recency_between_e2_and_e3():
+    """When E1 does not qualify, E2/E3 still resolve via the original
+    max(confirm_i) tie-break between each other -- unchanged behavior."""
+    h1 = _e3_sweep_fixture()
+    result = v310.detect_e_trigger(h1, d1=None, h4=_bearish_h4_20())
+    assert result is not None
+    assert result["e_trigger"] in ("E2", "E3")
+
+
+def test_detect_e_trigger_returns_none_when_nothing_qualifies(monkeypatch):
+    monkeypatch.setattr(v310, "_e1_trigger_reversal", lambda h1, d1, h4: None)
+    monkeypatch.setattr(v310, "_e2_trigger_reversal", lambda h1, h4: None)
+    monkeypatch.setattr(v310, "_e3_trigger_reversal", lambda h1, h4: None)
+    assert v310.detect_e_trigger([], d1=[], h4=[]) is None
+
+
 # --- Dynamic R:R target --------------------------------------------------
 
 def test_dynamic_rr_uses_displacement_range_when_larger_than_floor():

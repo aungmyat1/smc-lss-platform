@@ -1,7 +1,7 @@
 {
   "symbol": "GBPUSD",
   "cell": "v310_candidate_net_of_cost",
-  "elapsed_seconds": 384.1,
+  "elapsed_seconds": 242.5,
   "m5_bars": 80015,
   "h1_bars": 9000,
   "d1_bars": 500,
@@ -11,34 +11,34 @@
     "2026-07-21 09:20"
   ],
   "funnel_counts": {
-    "evaluated": 49349,
-    "signal_pass": 1644,
-    "candidate_ready": 1639,
-    "duplicate_structure": 895,
+    "evaluated": 50462,
+    "signal_pass": 1624,
+    "candidate_ready": 1619,
+    "duplicate_structure": 875,
     "executed_trade": 744,
-    "rejected_signal": 47705,
+    "rejected_signal": 48838,
     "rejected_risk": 5
   },
   "num_signals": 744,
   "num_trades": 744,
   "metrics": {
     "total_trades": 744,
-    "wins": 351,
-    "losses": 393,
-    "win_rate_pct": 47.18,
-    "profit_factor": 0.4604,
-    "expectancy_r": -0.428,
-    "average_r": -0.428,
-    "gross_profit_r": 271.6697,
-    "gross_loss_r": 590.0789,
-    "net_profit_r": -318.4092,
-    "maximum_drawdown_r": -320.1599,
+    "wins": 345,
+    "losses": 399,
+    "win_rate_pct": 46.37,
+    "profit_factor": 0.423,
+    "expectancy_r": -0.4698,
+    "average_r": -0.4698,
+    "gross_profit_r": 256.1799,
+    "gross_loss_r": 605.6753,
+    "net_profit_r": -349.4954,
+    "maximum_drawdown_r": -351.2461,
     "drawdown_duration_trades": 731,
-    "sharpe_ratio": -0.1912,
-    "sortino_ratio": -0.1666,
-    "recovery_factor": -0.9945,
-    "payoff_ratio": 0.5155,
-    "total_R": -318.4092,
+    "sharpe_ratio": -0.2088,
+    "sortino_ratio": -0.181,
+    "recovery_factor": -0.995,
+    "payoff_ratio": 0.4892,
+    "total_R": -349.4954,
     "longest_win_streak": 7,
     "longest_loss_streak": 7,
     "trade_count_adequacy_warning": false,
@@ -2017,39 +2017,6 @@
       "structure_key": "('GBPUSD', 'E3M1', 'zone', 21847)"
     },
     {
-      "signal_time": "2025-10-08 13:05",
-      "entry_time": "2025-10-08 13:10",
-      "exit_time": "2025-10-08 13:40",
-      "direction": "long",
-      "outcome": "TARGET",
-      "gross_r": 1.476471,
-      "cost_r": 0.364706,
-      "net_r": 1.111765,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 21883)"
-    },
-    {
-      "signal_time": "2025-10-08 13:45",
-      "entry_time": "2025-10-08 13:50",
-      "exit_time": "2025-10-08 18:45",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.113139,
-      "net_r": -1.113139,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 21891)"
-    },
-    {
-      "signal_time": "2025-10-08 19:45",
-      "entry_time": "2025-10-08 19:50",
-      "exit_time": "2025-10-08 21:10",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.276786,
-      "net_r": -1.276786,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 21963)"
-    },
-    {
       "signal_time": "2025-10-09 07:00",
       "entry_time": "2025-10-09 07:05",
       "exit_time": "2025-10-09 08:50",
@@ -2061,17 +2028,6 @@
       "structure_key": "('GBPUSD', 'E3M1', 'zone', 22094)"
     },
     {
-      "signal_time": "2025-10-09 08:55",
-      "entry_time": "2025-10-09 09:00",
-      "exit_time": "2025-10-09 09:00",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 0.738095,
-      "net_r": 0.261905,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 22112)"
-    },
-    {
       "signal_time": "2025-10-09 11:45",
       "entry_time": "2025-10-09 11:50",
       "exit_time": "2025-10-09 12:00",
@@ -2080,7 +2036,7 @@
       "gross_r": 0.802083,
       "cost_r": 0.322917,
       "net_r": 0.479167,
-      "structure_key": "('GBPUSD', 'E3M2', 'zone', 22155)"
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 22155)"
     },
     {
       "signal_time": "2025-10-09 12:05",
@@ -2091,40 +2047,7 @@
       "gross_r": 0.5,
       "cost_r": 0.143519,
       "net_r": 0.356481,
-      "structure_key": "('GBPUSD', 'E3M2', 'zone', 22159)"
-    },
-    {
-      "signal_time": "2025-10-09 14:15",
-      "entry_time": "2025-10-09 14:20",
-      "exit_time": "2025-10-09 15:35",
-      "direction": "long",
-      "outcome": "TARGET",
-      "gross_r": 1.245968,
-      "cost_r": 0.25,
-      "net_r": 0.995968,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 22185)"
-    },
-    {
-      "signal_time": "2025-10-09 15:40",
-      "entry_time": "2025-10-09 15:45",
-      "exit_time": "2025-10-09 16:30",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.201299,
-      "net_r": -1.201299,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 22201)"
-    },
-    {
-      "signal_time": "2025-10-09 18:50",
-      "entry_time": "2025-10-09 18:55",
-      "exit_time": "2025-10-09 20:05",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.161458,
-      "net_r": -1.161458,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 22240)"
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 22159)"
     },
     {
       "signal_time": "2025-10-09 20:35",
@@ -2171,48 +2094,59 @@
       "structure_key": "('GBPUSD', 'E3M1', 'zone', 22434)"
     },
     {
-      "signal_time": "2025-10-10 13:55",
-      "entry_time": "2025-10-10 14:00",
-      "exit_time": "2025-10-10 14:00",
+      "signal_time": "2025-10-10 15:05",
+      "entry_time": "2025-10-10 15:10",
+      "exit_time": "2025-10-10 16:00",
       "direction": "long",
       "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 0.136564,
-      "net_r": 0.863436,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 22462)"
+      "gross_r": -1.0,
+      "cost_r": 0.238462,
+      "net_r": -1.238462,
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 22483)"
     },
     {
-      "signal_time": "2025-10-10 14:15",
-      "entry_time": "2025-10-10 14:20",
-      "exit_time": "2025-10-10 17:55",
+      "signal_time": "2025-10-10 16:15",
+      "entry_time": "2025-10-10 16:20",
+      "exit_time": "2025-10-10 16:20",
       "direction": "long",
       "outcome": "TARGET",
-      "gross_r": 1.496599,
-      "cost_r": 0.210884,
-      "net_r": 1.285714,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 22473)"
+      "gross_r": 0.009091,
+      "cost_r": 0.281818,
+      "net_r": -0.272727,
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 22497)"
     },
     {
-      "signal_time": "2025-10-10 18:00",
-      "entry_time": "2025-10-10 18:05",
-      "exit_time": "2025-10-10 23:55",
+      "signal_time": "2025-10-10 16:25",
+      "entry_time": "2025-10-10 16:30",
+      "exit_time": "2025-10-10 16:30",
       "direction": "long",
-      "outcome": "WEEKEND_EXIT",
-      "gross_r": 0.535849,
-      "cost_r": 0.058491,
-      "net_r": 0.477358,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 22516)"
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 1.0,
+      "net_r": -2.0,
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 22498)"
     },
     {
-      "signal_time": "2025-10-13 18:15",
-      "entry_time": "2025-10-13 18:20",
+      "signal_time": "2025-10-10 17:10",
+      "entry_time": "2025-10-10 17:15",
+      "exit_time": "2025-10-10 18:00",
+      "direction": "long",
+      "outcome": "TARGET",
+      "gross_r": 1.441935,
+      "cost_r": 0.2,
+      "net_r": 1.241935,
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 22508)"
+    },
+    {
+      "signal_time": "2025-10-13 19:05",
+      "entry_time": "2025-10-13 19:10",
       "exit_time": "2025-10-14 09:00",
       "direction": "long",
       "outcome": "STOP",
-      "gross_r": 0.5,
-      "cost_r": 0.19375,
-      "net_r": 0.30625,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 22809)"
+      "gross_r": -1.0,
+      "cost_r": 0.184524,
+      "net_r": -1.184524,
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 22817)"
     },
     {
       "signal_time": "2025-10-15 07:00",
@@ -2490,59 +2424,26 @@
       "structure_key": "('GBPUSD', 'E3M1', 'zone', 27142)"
     },
     {
-      "signal_time": "2025-11-04 07:00",
-      "entry_time": "2025-11-04 07:05",
-      "exit_time": "2025-11-04 09:20",
+      "signal_time": "2025-11-04 10:25",
+      "entry_time": "2025-11-04 10:30",
+      "exit_time": "2025-11-04 14:20",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": 1.636986,
+      "cost_r": 0.141553,
+      "net_r": 1.495434,
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 27322)"
+    },
+    {
+      "signal_time": "2025-11-04 14:25",
+      "entry_time": "2025-11-04 14:30",
+      "exit_time": "2025-11-06 20:05",
       "direction": "short",
       "outcome": "STOP",
       "gross_r": -1.0,
-      "cost_r": 0.303922,
-      "net_r": -1.303922,
-      "structure_key": "('GBPUSD', 'E2M1', 'zone', 27282)"
-    },
-    {
-      "signal_time": "2025-11-04 09:35",
-      "entry_time": "2025-11-04 09:40",
-      "exit_time": "2025-11-04 10:00",
-      "direction": "short",
-      "outcome": "TARGET",
-      "gross_r": 0.923611,
-      "cost_r": 0.215278,
-      "net_r": 0.708333,
-      "structure_key": "('GBPUSD', 'E2M1', 'zone', 27313)"
-    },
-    {
-      "signal_time": "2025-11-04 10:05",
-      "entry_time": "2025-11-04 10:10",
-      "exit_time": "2025-11-04 16:35",
-      "direction": "short",
-      "outcome": "TARGET",
-      "gross_r": 1.584127,
-      "cost_r": 0.098413,
-      "net_r": 1.485714,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 27319)"
-    },
-    {
-      "signal_time": "2025-11-04 16:40",
-      "entry_time": "2025-11-04 16:45",
-      "exit_time": "2025-11-05 10:05",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": 0.5,
-      "cost_r": 0.126531,
-      "net_r": 0.373469,
-      "structure_key": "('GBPUSD', 'E2M1', 'zone', 27397)"
-    },
-    {
-      "signal_time": "2025-11-06 07:00",
-      "entry_time": "2025-11-06 07:05",
-      "exit_time": "2025-11-07 23:55",
-      "direction": "long",
-      "outcome": "WEEKEND_EXIT",
-      "gross_r": 1.647754,
-      "cost_r": 0.073286,
-      "net_r": 1.574468,
-      "structure_key": "('GBPUSD', 'E2M1', 'zone', 27840)"
+      "cost_r": 0.04454,
+      "net_r": -1.04454,
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 27371)"
     },
     {
       "signal_time": "2025-11-13 07:00",
@@ -3037,29 +2938,18 @@
       "gross_r": -1.0,
       "cost_r": 0.333333,
       "net_r": -1.333333,
-      "structure_key": "('GBPUSD', 'E3M2', 'zone', 31976)"
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 31976)"
     },
     {
-      "signal_time": "2025-11-26 15:35",
-      "entry_time": "2025-11-26 15:40",
-      "exit_time": "2025-11-26 17:15",
+      "signal_time": "2025-11-26 20:35",
+      "entry_time": "2025-11-26 20:40",
+      "exit_time": "2025-11-26 20:50",
       "direction": "short",
       "outcome": "STOP",
       "gross_r": -1.0,
-      "cost_r": 0.130252,
-      "net_r": -1.130252,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 31993)"
-    },
-    {
-      "signal_time": "2025-11-26 18:50",
-      "entry_time": "2025-11-26 18:55",
-      "exit_time": "2025-11-26 21:40",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.205298,
-      "net_r": -1.205298,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 32032)"
+      "cost_r": 0.911765,
+      "net_r": -1.911765,
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 32053)"
     },
     {
       "signal_time": "2025-11-27 07:00",
@@ -5908,149 +5798,61 @@
       "gross_r": 1.0,
       "cost_r": 1.148148,
       "net_r": -0.148148,
-      "structure_key": "('GBPUSD', 'E3M2', 'zone', 58667)"
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 58667)"
     },
     {
-      "signal_time": "2026-04-08 09:00",
-      "entry_time": "2026-04-08 09:05",
-      "exit_time": "2026-04-08 11:40",
+      "signal_time": "2026-04-08 10:10",
+      "entry_time": "2026-04-08 10:15",
+      "exit_time": "2026-04-08 10:35",
       "direction": "short",
-      "outcome": "TARGET",
-      "gross_r": 1.046392,
-      "cost_r": 0.159794,
-      "net_r": 0.886598,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 58698)"
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.219858,
+      "net_r": -1.219858,
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 58712)"
     },
     {
-      "signal_time": "2026-04-08 11:45",
-      "entry_time": "2026-04-08 11:50",
+      "signal_time": "2026-04-08 11:00",
+      "entry_time": "2026-04-08 11:05",
+      "exit_time": "2026-04-08 11:50",
+      "direction": "short",
+      "outcome": "STOP",
+      "gross_r": 0.5,
+      "cost_r": 0.322917,
+      "net_r": 0.177083,
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 58722)"
+    },
+    {
+      "signal_time": "2026-04-08 11:55",
+      "entry_time": "2026-04-08 12:00",
       "exit_time": "2026-04-08 12:10",
       "direction": "short",
       "outcome": "STOP",
       "gross_r": -1.0,
-      "cost_r": 0.202614,
-      "net_r": -1.202614,
-      "structure_key": "('GBPUSD', 'E3M2', 'zone', 58729)"
+      "cost_r": 0.418919,
+      "net_r": -1.418919,
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 58729)"
     },
     {
-      "signal_time": "2026-04-08 12:30",
-      "entry_time": "2026-04-08 12:35",
-      "exit_time": "2026-04-08 13:55",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.224638,
-      "net_r": -1.224638,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 58740)"
-    },
-    {
-      "signal_time": "2026-04-08 14:40",
-      "entry_time": "2026-04-08 14:45",
-      "exit_time": "2026-04-08 15:05",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.269565,
-      "net_r": -1.269565,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 58766)"
-    },
-    {
-      "signal_time": "2026-04-08 15:20",
-      "entry_time": "2026-04-08 15:25",
-      "exit_time": "2026-04-08 15:35",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.168478,
-      "net_r": -1.168478,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 58774)"
-    },
-    {
-      "signal_time": "2026-04-08 16:30",
-      "entry_time": "2026-04-08 16:35",
-      "exit_time": "2026-04-08 20:20",
-      "direction": "short",
-      "outcome": "TARGET",
-      "gross_r": 1.094828,
-      "cost_r": 0.106897,
-      "net_r": 0.987931,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 58788)"
-    },
-    {
-      "signal_time": "2026-04-08 20:25",
-      "entry_time": "2026-04-08 20:30",
-      "exit_time": "2026-04-08 21:50",
-      "direction": "short",
-      "outcome": "TARGET",
-      "gross_r": 1.662602,
-      "cost_r": 0.252033,
-      "net_r": 1.410569,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 58835)"
-    },
-    {
-      "signal_time": "2026-04-09 10:15",
-      "entry_time": "2026-04-09 10:20",
-      "exit_time": "2026-04-09 10:20",
-      "direction": "short",
-      "outcome": "TARGET",
-      "gross_r": 0.050761,
-      "cost_r": 0.15736,
-      "net_r": -0.106599,
-      "structure_key": "('GBPUSD', 'E2M1', 'zone', 59001)"
-    },
-    {
-      "signal_time": "2026-04-09 10:25",
-      "entry_time": "2026-04-09 10:30",
-      "exit_time": "2026-04-09 11:50",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.172222,
-      "net_r": -1.172222,
-      "structure_key": "('GBPUSD', 'E2M1', 'zone', 59002)"
-    },
-    {
-      "signal_time": "2026-04-09 12:50",
-      "entry_time": "2026-04-09 12:55",
-      "exit_time": "2026-04-09 14:30",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.316327,
-      "net_r": -1.316327,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 59032)"
-    },
-    {
-      "signal_time": "2026-04-09 15:10",
-      "entry_time": "2026-04-09 15:15",
-      "exit_time": "2026-04-09 16:15",
+      "signal_time": "2026-04-08 18:10",
+      "entry_time": "2026-04-08 18:15",
+      "exit_time": "2026-04-09 18:30",
       "direction": "short",
       "outcome": "STOP",
       "gross_r": 0.5,
-      "cost_r": 0.267241,
-      "net_r": 0.232759,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 59060)"
+      "cost_r": 0.080729,
+      "net_r": 0.419271,
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 58808)"
     },
     {
-      "signal_time": "2026-04-09 16:20",
-      "entry_time": "2026-04-09 16:25",
-      "exit_time": "2026-04-09 16:25",
+      "signal_time": "2026-04-09 18:35",
+      "entry_time": "2026-04-09 18:40",
+      "exit_time": "2026-04-09 18:40",
       "direction": "short",
       "outcome": "STOP",
       "gross_r": 1.0,
-      "cost_r": 4.428571,
-      "net_r": -3.428571,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 59062)"
-    },
-    {
-      "signal_time": "2026-04-09 17:35",
-      "entry_time": "2026-04-09 17:40",
-      "exit_time": "2026-04-09 18:20",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.208054,
-      "net_r": -1.208054,
+      "cost_r": 0.43662,
+      "net_r": 0.56338,
       "structure_key": "('GBPUSD', 'E3M1', 'zone', 59089)"
     },
     {
@@ -6571,59 +6373,48 @@
       "structure_key": "('GBPUSD', 'E2M1', 'zone', 65038)"
     },
     {
-      "signal_time": "2026-05-11 07:00",
-      "entry_time": "2026-05-11 07:05",
-      "exit_time": "2026-05-11 07:05",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 31.0,
-      "net_r": -32.0,
-      "structure_key": "('GBPUSD', 'E2M1', 'zone', 65295)"
-    },
-    {
-      "signal_time": "2026-05-11 08:05",
-      "entry_time": "2026-05-11 08:10",
-      "exit_time": "2026-05-11 09:15",
-      "direction": "long",
-      "outcome": "STOP",
-      "gross_r": 0.5,
-      "cost_r": 0.553571,
-      "net_r": -0.053571,
-      "structure_key": "('GBPUSD', 'E2M1', 'zone', 65311)"
-    },
-    {
-      "signal_time": "2026-05-11 09:20",
-      "entry_time": "2026-05-11 09:25",
-      "exit_time": "2026-05-11 16:05",
+      "signal_time": "2026-05-11 09:00",
+      "entry_time": "2026-05-11 09:05",
+      "exit_time": "2026-05-11 09:05",
       "direction": "long",
       "outcome": "TARGET",
-      "gross_r": 8.354167,
-      "cost_r": 1.291667,
-      "net_r": 7.0625,
-      "structure_key": "('GBPUSD', 'E2M1', 'zone', 65324)"
+      "gross_r": -0.357143,
+      "cost_r": 0.442857,
+      "net_r": -0.8,
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 65322)"
     },
     {
-      "signal_time": "2026-05-11 17:05",
-      "entry_time": "2026-05-11 17:10",
-      "exit_time": "2026-05-11 17:40",
+      "signal_time": "2026-05-11 09:55",
+      "entry_time": "2026-05-11 10:00",
+      "exit_time": "2026-05-11 10:00",
+      "direction": "short",
+      "outcome": "STOP",
+      "gross_r": 1.0,
+      "cost_r": 0.373494,
+      "net_r": 0.626506,
+      "structure_key": "('GBPUSD', 'E3M2', 'zone', 65326)"
+    },
+    {
+      "signal_time": "2026-05-11 11:40",
+      "entry_time": "2026-05-11 11:45",
+      "exit_time": "2026-05-11 12:55",
+      "direction": "short",
+      "outcome": "TARGET",
+      "gross_r": 1.22807,
+      "cost_r": 0.54386,
+      "net_r": 0.684211,
+      "structure_key": "('GBPUSD', 'E3M1', 'zone', 65354)"
+    },
+    {
+      "signal_time": "2026-05-11 13:00",
+      "entry_time": "2026-05-11 13:05",
+      "exit_time": "2026-05-11 14:30",
       "direction": "short",
       "outcome": "STOP",
       "gross_r": -1.0,
-      "cost_r": 0.292453,
-      "net_r": -1.292453,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 65419)"
-    },
-    {
-      "signal_time": "2026-05-11 19:05",
-      "entry_time": "2026-05-11 19:10",
-      "exit_time": "2026-05-11 21:30",
-      "direction": "short",
-      "outcome": "TARGET",
-      "gross_r": 1.194444,
-      "cost_r": 0.430556,
-      "net_r": 0.763889,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 65443)"
+      "cost_r": 0.173184,
+      "net_r": -1.173184,
+      "structure_key": "('GBPUSD', 'E3M1', 'zone', 65370)"
     },
     {
       "signal_time": "2026-05-12 07:00",
@@ -6634,18 +6425,249 @@
       "gross_r": 1.827465,
       "cost_r": 0.109155,
       "net_r": 1.71831,
-      "structure_key": "('GBPUSD', 'E3M2', 'zone', 65585)"
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 65585)"
     },
     {
-      "signal_time": "2026-05-12 11:15",
-      "entry_time": "2026-05-12 11:20",
-      "exit_time": "2026-05-15 23:55",
+      "signal_time": "2026-05-12 14:10",
+      "entry_time": "2026-05-12 14:15",
+      "exit_time": "2026-05-12 15:40",
       "direction": "short",
-      "outcome": "WEEKEND_EXIT",
-      "gross_r": 1.738532,
-      "cost_r": 0.040629,
-      "net_r": 1.697903,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 65636)"
+      "outcome": "STOP",
+      "gross_r": 0.5,
+      "cost_r": 0.177143,
+      "net_r": 0.322857,
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 65671)"
+    },
+    {
+      "signal_time": "2026-05-12 16:55",
+      "entry_time": "2026-05-12 17:00",
+      "exit_time": "2026-05-12 22:30",
+      "direction": "short",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.092814,
+      "net_r": -1.092814,
+      "structure_key": "('GBPUSD', 'E2M1', 'zone', 65705)"
+    },
+    {
+      "signal_time": "2026-05-13 18:35",
+      "entry_time": "2026-05-13 18:40",
+      "exit_time": "2026-05-13 20:45",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.194969,
+      "net_r": -1.194969,
+      "structure_key": "('GBPUSD', 'E3M2', 'zone', 66013)"
+    },
+    {
+      "signal_time": "2026-05-13 20:50",
+      "entry_time": "2026-05-13 20:55",
+      "exit_time": "2026-05-13 20:55",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 10.333333,
+      "net_r": -11.333333,
+      "structure_key": "('GBPUSD', 'E3M1', 'zone', 66032)"
+    },
+    {
+      "signal_time": "2026-05-14 07:00",
+      "entry_time": "2026-05-14 07:05",
+      "exit_time": "2026-05-14 07:05",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": 1.0,
+      "cost_r": 2.384615,
+      "net_r": -1.384615,
+      "structure_key": "('GBPUSD', 'E3M2', 'zone', 66157)"
+    },
+    {
+      "signal_time": "2026-05-14 07:10",
+      "entry_time": "2026-05-14 07:15",
+      "exit_time": "2026-05-14 07:45",
+      "direction": "long",
+      "outcome": "TARGET",
+      "gross_r": 0.807692,
+      "cost_r": 1.192308,
+      "net_r": -0.384615,
+      "structure_key": "('GBPUSD', 'E3M2', 'zone', 66164)"
+    },
+    {
+      "signal_time": "2026-05-14 08:50",
+      "entry_time": "2026-05-14 08:55",
+      "exit_time": "2026-05-14 09:45",
+      "direction": "long",
+      "outcome": "TARGET",
+      "gross_r": 1.818182,
+      "cost_r": 0.563636,
+      "net_r": 1.254545,
+      "structure_key": "('GBPUSD', 'E3M1', 'zone', 66184)"
+    },
+    {
+      "signal_time": "2026-05-14 09:50",
+      "entry_time": "2026-05-14 09:55",
+      "exit_time": "2026-05-14 10:15",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.209459,
+      "net_r": -1.209459,
+      "structure_key": "('GBPUSD', 'E3M1', 'zone', 66196)"
+    },
+    {
+      "signal_time": "2026-05-14 10:35",
+      "entry_time": "2026-05-14 10:40",
+      "exit_time": "2026-05-14 10:55",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.5,
+      "net_r": -1.5,
+      "structure_key": "('GBPUSD', 'E3M1', 'zone', 66205)"
+    },
+    {
+      "signal_time": "2026-05-14 11:15",
+      "entry_time": "2026-05-14 11:20",
+      "exit_time": "2026-05-14 14:55",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.27193,
+      "net_r": -1.27193,
+      "structure_key": "('GBPUSD', 'E3M1', 'zone', 66213)"
+    },
+    {
+      "signal_time": "2026-05-14 17:10",
+      "entry_time": "2026-05-14 17:15",
+      "exit_time": "2026-05-14 17:15",
+      "direction": "long",
+      "outcome": "TARGET",
+      "gross_r": 0.061224,
+      "cost_r": 0.316327,
+      "net_r": -0.255102,
+      "structure_key": "('GBPUSD', 'E3M2', 'zone', 66284)"
+    },
+    {
+      "signal_time": "2026-05-14 17:20",
+      "entry_time": "2026-05-14 17:25",
+      "exit_time": "2026-05-14 17:50",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.256198,
+      "net_r": -1.256198,
+      "structure_key": "('GBPUSD', 'E3M1', 'zone', 66285)"
+    },
+    {
+      "signal_time": "2026-05-14 20:00",
+      "entry_time": "2026-05-14 20:05",
+      "exit_time": "2026-05-14 20:15",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.233083,
+      "net_r": -1.233083,
+      "structure_key": "('GBPUSD', 'E3M1', 'zone', 66318)"
+    },
+    {
+      "signal_time": "2026-05-15 09:10",
+      "entry_time": "2026-05-15 09:15",
+      "exit_time": "2026-05-15 09:20",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.246032,
+      "net_r": -1.246032,
+      "structure_key": "('GBPUSD', 'E3M1', 'zone', 66476)"
+    },
+    {
+      "signal_time": "2026-05-15 09:35",
+      "entry_time": "2026-05-15 09:40",
+      "exit_time": "2026-05-15 10:10",
+      "direction": "long",
+      "outcome": "TARGET",
+      "gross_r": 0.847826,
+      "cost_r": 0.224638,
+      "net_r": 0.623188,
+      "structure_key": "('GBPUSD', 'E3M2', 'zone', 66481)"
+    },
+    {
+      "signal_time": "2026-05-15 10:15",
+      "entry_time": "2026-05-15 10:20",
+      "exit_time": "2026-05-15 12:00",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.109929,
+      "net_r": -1.109929,
+      "structure_key": "('GBPUSD', 'E3M1', 'zone', 66489)"
+    },
+    {
+      "signal_time": "2026-05-15 12:25",
+      "entry_time": "2026-05-15 12:30",
+      "exit_time": "2026-05-15 13:00",
+      "direction": "long",
+      "outcome": "TARGET",
+      "gross_r": 1.113821,
+      "cost_r": 0.252033,
+      "net_r": 0.861789,
+      "structure_key": "('GBPUSD', 'E3M1', 'zone', 66515)"
+    },
+    {
+      "signal_time": "2026-05-15 13:05",
+      "entry_time": "2026-05-15 13:10",
+      "exit_time": "2026-05-15 14:55",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": 0.5,
+      "cost_r": 0.096875,
+      "net_r": 0.403125,
+      "structure_key": "('GBPUSD', 'E3M1', 'zone', 66523)"
+    },
+    {
+      "signal_time": "2026-05-15 15:00",
+      "entry_time": "2026-05-15 15:05",
+      "exit_time": "2026-05-15 15:35",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.219858,
+      "net_r": -1.219858,
+      "structure_key": "('GBPUSD', 'E3M1', 'zone', 66532)"
+    },
+    {
+      "signal_time": "2026-05-15 15:55",
+      "entry_time": "2026-05-15 16:00",
+      "exit_time": "2026-05-15 16:45",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.223022,
+      "net_r": -1.223022,
+      "structure_key": "('GBPUSD', 'E3M1', 'zone', 66557)"
+    },
+    {
+      "signal_time": "2026-05-15 17:15",
+      "entry_time": "2026-05-15 17:20",
+      "exit_time": "2026-05-15 18:15",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": -1.0,
+      "cost_r": 0.111111,
+      "net_r": -1.111111,
+      "structure_key": "('GBPUSD', 'E3M1', 'zone', 66573)"
+    },
+    {
+      "signal_time": "2026-05-15 19:00",
+      "entry_time": "2026-05-15 19:05",
+      "exit_time": "2026-05-15 21:15",
+      "direction": "long",
+      "outcome": "STOP",
+      "gross_r": 0.5,
+      "cost_r": 0.392405,
+      "net_r": 0.107595,
+      "structure_key": "('GBPUSD', 'E3M1', 'zone', 66594)"
     },
     {
       "signal_time": "2026-05-26 10:05",
@@ -7660,37 +7682,15 @@
       "structure_key": "('GBPUSD', 'E2M1', 'zone', 75394)"
     },
     {
-      "signal_time": "2026-06-29 09:55",
-      "entry_time": "2026-06-29 10:00",
-      "exit_time": "2026-06-29 10:00",
+      "signal_time": "2026-06-29 10:50",
+      "entry_time": "2026-06-29 10:55",
+      "exit_time": "2026-06-29 12:30",
       "direction": "short",
       "outcome": "STOP",
-      "gross_r": 1.0,
-      "cost_r": 0.238462,
-      "net_r": 0.761538,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 75394)"
-    },
-    {
-      "signal_time": "2026-06-29 10:05",
-      "entry_time": "2026-06-29 10:10",
-      "exit_time": "2026-06-29 11:20",
-      "direction": "short",
-      "outcome": "TARGET",
-      "gross_r": 1.554054,
-      "cost_r": 0.418919,
-      "net_r": 1.135135,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 75415)"
-    },
-    {
-      "signal_time": "2026-06-29 11:25",
-      "entry_time": "2026-06-29 11:30",
-      "exit_time": "2026-06-29 14:00",
-      "direction": "short",
-      "outcome": "STOP",
-      "gross_r": -1.0,
-      "cost_r": 0.155,
-      "net_r": -1.155,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 75430)"
+      "gross_r": 0.5,
+      "cost_r": 0.3875,
+      "net_r": 0.1125,
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 75421)"
     },
     {
       "signal_time": "2026-06-29 14:45",
@@ -7701,7 +7701,7 @@
       "gross_r": -1.0,
       "cost_r": 0.516667,
       "net_r": -1.516667,
-      "structure_key": "('GBPUSD', 'E3M2', 'zone', 75471)"
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 75471)"
     },
     {
       "signal_time": "2026-06-29 15:45",
@@ -7712,7 +7712,7 @@
       "gross_r": -1.0,
       "cost_r": 0.462687,
       "net_r": -1.462687,
-      "structure_key": "('GBPUSD', 'E3M2', 'zone', 75482)"
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 75482)"
     },
     {
       "signal_time": "2026-06-29 17:45",
@@ -7723,28 +7723,28 @@
       "gross_r": -1.0,
       "cost_r": 0.313131,
       "net_r": -1.313131,
-      "structure_key": "('GBPUSD', 'E3M2', 'zone', 75507)"
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 75507)"
     },
     {
-      "signal_time": "2026-06-29 20:00",
-      "entry_time": "2026-06-29 20:05",
-      "exit_time": "2026-06-29 20:35",
+      "signal_time": "2026-06-29 20:15",
+      "entry_time": "2026-06-29 20:20",
+      "exit_time": "2026-06-29 20:20",
       "direction": "short",
-      "outcome": "STOP",
-      "gross_r": 0.5,
-      "cost_r": 0.72093,
-      "net_r": -0.22093,
-      "structure_key": "('GBPUSD', 'E3M1', 'zone', 75534)"
+      "outcome": "TARGET",
+      "gross_r": 0.355556,
+      "cost_r": 0.688889,
+      "net_r": -0.333333,
+      "structure_key": "('GBPUSD', 'E1M2', 'zone', 75536)"
     },
     {
-      "signal_time": "2026-06-29 20:40",
-      "entry_time": "2026-06-29 20:45",
-      "exit_time": "2026-06-29 20:50",
+      "signal_time": "2026-06-29 20:55",
+      "entry_time": "2026-06-29 21:00",
+      "exit_time": "2026-06-29 21:00",
       "direction": "short",
       "outcome": "STOP",
       "gross_r": -1.0,
-      "cost_r": 0.815789,
-      "net_r": -1.815789,
+      "cost_r": 31.0,
+      "net_r": -32.0,
       "structure_key": "('GBPUSD', 'E3M1', 'zone', 75538)"
     },
     {

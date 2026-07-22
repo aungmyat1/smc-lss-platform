@@ -141,3 +141,14 @@ notes:
   - ST-C1_v1.2.0.yaml (v3.9, "Clean SMC") remains retained, unmodified, as an
     independent prior candidate/control and is not superseded in place by
     this file.
+  - 2026-07-22: the E-trigger selection rule in src/signal_v310.py's
+    detect_e_trigger now prioritizes E1 outright when it qualifies, instead
+    of a plain recency-based tie-break across all three triggers. Diagnosed
+    and filed per reports/audit/ST_C1_V310_E1_LOCKOUT_DIAGNOSIS.md and
+    reports/audit/ST_C1_V310_E1_TIEBREAK_RCR.md — the prior rule (inherited
+    unchanged from v3.9's two-trigger E2/E3-only world) caused E1 to lose to
+    E2/E3 100% of the time it qualified (0/371 checkpoints won across all
+    three symbols), so the reversal-capture thesis this candidate was built
+    to test had never once been exercised. Engine-internal change, not a
+    parameter/spec-version change (per project-governance-agent's ruling) —
+    no version bump to this file's `version:` field.
