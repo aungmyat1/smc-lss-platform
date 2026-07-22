@@ -223,3 +223,24 @@ validation — per the same precedent `ST_C1_V39_CLEAN_SMC_RCR.md` and
 precedent. Separately, dedicated ST-C2 agent files (e.g. a
 scenario-classifier agent) require their own new ADR before they exist —
 that question is separable and does not block the RCR/research path.
+
+### Outcome (2026-07-22) — RCR filed, awaiting authorization
+
+`reports/audit/ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md` filed (logged to
+`reports/research_log.md`) per `docs/RESEARCH-CHARTER.md`'s six-question
+template, before any code was written. Scoped to XAUUSD only (matching
+`specs/st-c2.yaml` as filed — EURUSD/GBPUSD both `enabled: false`);
+existence-check only (>=1 qualifying signal), no population-feasibility
+floor precommitted, same disclosed-limitation pattern
+`ST_C1_V310_REVERSAL_CAPTURE_RCR.md` used. `specs/st-c2.yaml` already had
+`engine_implements_spec: false` set correctly — no change needed there.
+Work done on branch `research/st-c2-contract-and-conformance`. No code, no
+spec mutation, no execution/demo/live/promotion flag changed.
+
+**Next step, not started here:** `project-governance-agent`/owner
+authorization of this RCR, per the same precedent
+`ST_C1_V310_E1_TIEBREAK_RCR.md` followed — filed, then explicitly
+authorized before implementation. Only after authorization: golden-case
+tests, the conformance kernel (as research code, not an agent file), the
+minimum XAUUSD detector slice, and the existence-check run — in that
+order.

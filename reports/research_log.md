@@ -296,3 +296,25 @@ predicted — confirms this was never going to be a profitability fix. See
 `ST_C1_V310_E1_TIEBREAK_RESULTS.md`. Both candidates remain net-losing in
 every symbol; the park-or-continue decision for the ST-C1 v3.9/v3.10 line
 remains open and is now the largest unaddressed item.
+
+## RCR filed: ST-C2 "Hybrid Liquidity-First Unified SMC Pipeline" (2026-07-22)
+
+Per `project-governance-agent`'s ruling (`NEXT_ACTION.md`, 2026-07-22): the
+ST-C1 v3.9/v3.10 line is now PARKED (see the preceding entry), and a new
+candidate, ST-C2 (`specs/st-c2.yaml`, owner-supplied, already committed), is
+proposed as its architecturally distinct successor — a conjunctive,
+all-stages-must-pass sequential pipeline (liquidity/inducement -> HTF bias
+-> OTE -> FVG alignment -> LTF CHoCH -> execution) at a new H4/M15/M3
+timeframe triple, versus ST-C1's disjunctive E1/E2/E3 branching at
+H4/H1/M5. Per the same precedent `ST_C1_V39_CLEAN_SMC_RCR.md` and
+`ST_C1_V310_REVERSAL_CAPTURE_RCR.md` both followed, an RCR is required
+before any scenario-classifier design, conformance-kernel binding,
+population-feasibility testing, or net-of-cost work — filed here as
+`ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md` before any code was written. Scoped
+to XAUUSD only, matching `specs/st-c2.yaml` as filed (EURUSD/GBPUSD both
+`enabled: false`); existence-check only (>=1 qualifying signal), no
+population-feasibility floor precommitted, same disclosed-limitation
+pattern as v3.10's RCR. `engine_implements_spec` stays `false`. No code,
+spec mutation, or execution/demo/live/promotion flag changed. RCR not yet
+implemented — awaiting `project-governance-agent`/owner authorization
+before any conformance-kernel or detector work begins.
