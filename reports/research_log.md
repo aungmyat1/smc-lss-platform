@@ -318,3 +318,47 @@ pattern as v3.10's RCR. `engine_implements_spec` stays `false`. No code,
 spec mutation, or execution/demo/live/promotion flag changed. RCR not yet
 implemented — awaiting `project-governance-agent`/owner authorization
 before any conformance-kernel or detector work begins.
+
+## Addendum: ST-C2 governance/conformance audit + owner decisions recorded, documentation-only gap closure (2026-07-23)
+
+A read-only governance/conformance audit of `specs/st-c2.yaml` and
+`ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`
+(`reports/audit/ST_C2_GOVERNANCE_CONFORMANCE_AUDIT.md`) found the RCR not
+yet implementation-ready: an unresolved internal `rr_min` conflict (2.0 vs
+3.0), a deferred population-feasibility floor (a real degrees-of-freedom
+risk per this repo's own recent ST-C1 v3.9/v3.10 experience), and most of
+gates G1-G10 plus the entry/order-simulation rules missing exact
+deterministic formulas, tie-breaks, freshness/invalidation rules, and
+rejection codes. Verdict: `RCR_ADDENDUM_REQUIRED`.
+
+The owner (Aung) reviewed the audit and issued explicit written
+authorization for **documentation-only** closure of the identified gaps —
+verbatim: "I authorize documentation-only closure of the ST-C2 RCR gaps.
+This does not authorize strategy-engine implementation, backtesting,
+optimization, demo execution, live execution, promotion, or broker
+operations." Twelve owner decisions were recorded verbatim and used as the
+sole source of new semantics to close as much of the G1-G10 gap matrix as
+those decisions cover — see the addendum appended to
+`ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md` for the full decision text and the
+gate-by-gate closure mapping.
+
+**Result:** G7, G8, and G9 are now fully closed. G1, G2, G3, G5, G6, G10,
+and the entry/order-simulation rules are partially closed. G4
+(premium/discount location) remains entirely open — no owner decision
+addresses it. Remaining blockers are listed explicitly in the addendum
+(HTF/external swing definition, protected-structure lifecycle, 3-candle
+FVG formation formula, dealing-range anchor tie-break and equilibrium
+treatment, liquidity-sweep reclaim-close timing, open-position time/
+session/emergency-exit rules, bid/ask and gap-through/partial-fill/
+duplicate-setup handling, and most of the remaining RCR pre-registration
+items beyond the population thresholds). No gap outside the 12 decisions
+was filled by inference or by importing conventions from other
+candidates' engines.
+
+No code was written, no spec file was mutated (`specs/st-c2.yaml`
+unchanged, `engine_implements_spec` stays `false`), no backtest was run,
+and no execution/demo/live/promotion/approval state changed. This
+addendum does not authorize implementation — a further RCR addendum (or
+additional owner decisions) is required to close the remaining blockers,
+and a separate, explicit implementation authorization is required after
+that.
