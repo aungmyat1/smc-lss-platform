@@ -362,3 +362,47 @@ addendum does not authorize implementation — a further RCR addendum (or
 additional owner decisions) is required to close the remaining blockers,
 and a separate, explicit implementation authorization is required after
 that.
+
+**Correction note (2026-07-23):** the "G7... fully closed" claim above was
+found inaccurate the same day — G7's own gate-by-gate paragraph in the
+addendum already disclosed a residual (no min/max stop-distance sanity
+bound). Corrected to PARTIAL in a follow-up checkpoint commit (`adf74aaa`);
+G7 is closed for real in the session recorded immediately below.
+
+## Addendum: owner-decision session round 2 — G4, G7, and all 5 RCR
+pre-registration items closed (2026-07-23)
+
+A second owner-decision session closed three of the remaining gaps from
+the entry above: **G4** (premium/discount location, previously entirely
+open), **G7's stop-distance residual** (minimum/maximum sanity bounds,
+previously open per the correction above), and **all five outstanding RCR
+pre-registration items** (primary/secondary metrics, multiple-testing
+control, OOS calendar boundary, maximum experiment count, allowed
+parameter changes). Full decision text and rationale recorded in the
+second addendum appended to `ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`.
+
+**Result:** G4 and G7 are now fully closed. All 5 RCR pre-registration
+items are closed. **G5 remains PARTIAL** — four new alignment/placement/
+stacking/invalidation rules were recorded as owner-decided additions (not
+pre-existing spec rules), but the underlying FVG formation/size formula
+and the mitigation-rounding convention residual (both already flagged in
+the entry above) were not addressed and remain open. G1, G2, G3, G6, G10,
+and the entry/order-simulation residuals are unchanged from the entry
+above — nothing in this session touched them.
+
+One correction made during the session before recording: an initial OOS-
+boundary proposal (a retroactive 2025-01-01 cutoff) was rejected as
+violating the existing owner decision that historical data already used
+diagnostically cannot be treated as pristine OOS regardless of which past
+date is chosen as a boundary; the recorded decision instead locks OOS
+prospectively at 2026-07-23 (this session's date) — all prior data remains
+development/walk-forward-only, never OOS.
+
+No code was written, no spec file was mutated (`specs/st-c2.yaml`
+unchanged, `engine_implements_spec` stays `false`), no backtest was run,
+and no execution/demo/live/promotion/approval state changed. This session
+does not authorize implementation. Two gates remain unmet regardless of
+today's progress: `specs/st-c2.yaml` is still self-declared
+`status: candidate`, not owner-verified canonical, and no
+`IMPLEMENTATION AUTHORIZATION: GRANTED` string exists anywhere in the
+repo. Both require a separate, explicit owner act.

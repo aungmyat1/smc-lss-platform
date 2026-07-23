@@ -1,10 +1,6 @@
 {
   "project": "smc-lss-platform",
   "description": "Institutional Smart Money Concepts (SMC-LSS) trading research + execution platform",
-  "skills": {
-    "autoload": true,
-    "directory": ".claude/skills"
-  },
   "permissions": {
     "allow": [
       "Read",

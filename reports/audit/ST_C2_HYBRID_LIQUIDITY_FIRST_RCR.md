@@ -375,3 +375,174 @@ implementation can be authorized. Once the strategy-semantics contract is
 fully closed, the next authorized action is to version and publish a new
 spec file reflecting the closed contract (see the governance report for
 the recommended path) — that file is not created by this addendum.
+
+---
+
+## Second addendum (2026-07-23, owner-decision session round 2)
+
+Documentation-only, per the same owner authorization scope as the first
+addendum: does **not** authorize strategy-engine implementation,
+backtesting, optimization, demo execution, live execution, promotion, or
+broker operations. `specs/st-c2.yaml` remains unchanged and unread-only
+referenced below; `engine_implements_spec` stays `false`. This session
+closes G4, G7's stop-distance residual, and all five outstanding RCR
+pre-registration items. It does **not** close G5 in full (see below), nor
+G1, G2, G3, G6, G10, or the entry/order-simulation residuals already listed
+above — those remain open exactly as stated in the first addendum.
+
+### G4 — Premium/discount location (now CLOSED)
+
+1. **Swing source:** the dealing range's anchoring swing is
+   `liquidity_stage`'s external-liquidity swing pair (the same swing
+   `detect_external_liquidity` already computes for the H4, 300-bar
+   lookback) — not a separately-computed swing, and not
+   `htf_bias_stage`'s BOS/CHoCH-confirmed swing.
+2. **Range update policy:** the range **freezes** once identified at the
+   triggering external swing; it is never recalculated for that setup even
+   if a later, more-recent qualifying swing appears before entry.
+3. **Anchoring-swing invalidation:** if the anchoring external swing is
+   later invalidated (e.g., a subsequent BOS breaks through it) before
+   entry triggers, the **entire setup is invalidated immediately** — no
+   persistence on the stale swing, no re-anchoring.
+4. **Equilibrium boundary:** exact point at 0.5, **zero-width** — matching
+   `.claude/skills/premium-discount/SKILL.md`'s literal "no directional
+   edge, wait" wording, not a tolerance band. No band width (e.g., an
+   earlier-discussed ±0.02) is adopted; any such tolerance would be a new
+   number requiring its own RCR if wanted later.
+5. **OTE band:** the tradeable zone is **`[0.5, 0.786]`** — i.e., from the
+   equilibrium threshold (`ote_stage.discount_threshold` /
+   `premium_threshold: 0.5`) up to `ote_stage.max_retrace_pct: 0.786`.
+   There is **no separate refinement floor** (the skill's generic 0.62
+   lower bound is explicitly **not** inherited, since it does not appear
+   anywhere in `specs/st-c2.yaml`).
+
+G4's original residual ("dealing-range anchor tie-break, equilibrium
+treatment, range invalidation/reselection — entirely open") is resolved by
+decisions 1-5 above.
+
+### G5 — Fresh, valid HTF POI/FVG (PARTIAL — not fully closed)
+
+The following four rules are decided and recorded as **new rules added by
+owner decision, not rules already present in `specs/st-c2.yaml`**:
+
+1. **HTF↔MTF directional alignment:** full alignment required — HTF
+   bullish requires MTF bullish, HTF bearish requires MTF bearish; any
+   divergence kills the setup immediately.
+2. **LTF placement:** the LTF FVG must sit entirely inside the HTF-MTF
+   confluence zone (not extend beyond either boundary, not contradict
+   directional bias). **This is a new rule** — `specs/st-c2.yaml` today
+   only states `mf_fvg.must_overlap_htf_fvg: true` /
+   `max_distance_pips: 10`; there is no equivalent
+   `ltf_fvg.must_overlap_mf_fvg`-style field. If this is to be enforced,
+   it is an owner-decided addition, not an existing spec rule being
+   applied.
+3. **FVG size validation:** use only `specs/st-c2.yaml`'s existing
+   per-timeframe threshold fields (`htf_fvg`, `mf_fvg`, `ltf_fvg`
+   min-size/age/distance values); never infer fib-based or
+   volatility-based adjustments.
+4. **Multi-FVG behavior:** no stacking/weighting heuristics — all
+   qualifying FVGs must collapse into a single confluence zone; no
+   "two consecutive FVGs imply stronger bias"-style logic.
+5. **FVG invalidation:** if any FVG in the confluence chain is
+   invalidated, the entire FVG-alignment result fails and the setup dies
+   immediately — no fallback to the next-nearest FVG, no recalculation.
+   Consistent with G4 decision 3's invalidation behavior.
+
+**Still open, NOT resolved by the above:** the **3-candle FVG
+formation/size formula itself** (i.e., the actual price-boundary formula
+an FVG's zone is computed from — `specs/st-c2.yaml` only has
+`min_displacement_bars`/`max_age_bars`/overlap-distance fields, never the
+gap-boundary formula itself) and the **rounding convention for the G4
+(now-closed) 50%-mitigation penetration ratio**. Both residuals are
+carried forward unresolved — nothing in this session's discussion touched
+them.
+
+### G7 — Structural invalidation and stop (now CLOSED)
+
+1. **Stop buffer (anchor rule) — reconfirmed, unchanged:** 2 broker-native
+   points beyond the liquidity-sweep extreme, rounded outward to XAUUSD
+   symbol precision, matching owner decision 6 (first addendum) and
+   `specs/st-c2.yaml`'s `execution_stage.stop.buffer_pips: 2` exactly (not
+   5 — an earlier draft of this session's discussion briefly misquoted
+   this as `buffer_points: 5` under a non-existent `invalidation_stage`
+   key; corrected before being recorded here).
+2. **Minimum stop distance: 35 points.** Rationale: XAUUSD's cost profile
+   (`config/research_costs.yaml`) is spread 25 points + slippage 5 points
+   = a 30-point cost-noise floor; 35 gives a 5-point margin above that
+   floor so the stop cannot sit inside pure transaction-cost noise.
+3. **Maximum stop distance: 150 points.** Rationale: a fixed ceiling,
+   deliberately not ADR/ATR/volatility-derived, chosen to reject
+   structurally-incoherent stops (RR-breaking, "no real stop" distances)
+   while remaining well below typical XAUUSD H4 swing spans.
+4. **Behavior:** compute `stop_distance = |entry - stop|` from the
+   structural anchor + 2-point buffer; if `stop_distance < 35` or
+   `stop_distance > 150`, the setup dies immediately; otherwise the stop
+   is valid.
+
+These are **owner decisions enforced by the engine internally**, not new
+`specs/st-c2.yaml` fields. Adding `min_stop_distance_points` /
+`max_stop_distance_points` to the spec itself would require a separate RCR.
+
+G7's original residual ("minimum and maximum stop-distance sanity bounds
+remain an owner/specification decision") is resolved by decisions 1-4
+above.
+
+### RCR pre-registration — all five remaining items (now CLOSED)
+
+1. **Primary metric: net profit factor (PF).** Matches the `docs/CHARTER.md`
+   promotion gate (PF ≥ 1.3) and is the metric most robust to trade-count
+   variation. **Secondary metrics:** expectancy, max drawdown, trade count
+   — these assess stability of a PF result, they cannot independently
+   promote a strategy that fails the PF gate.
+2. **Multiple-testing control: deflated Sharpe ≥ 0.3**, keyed to the
+   research-log entry (trial) count, per the mechanism `docs/RESEARCH-CHARTER.md`
+   already names (lines 73-77: deflated Sharpe corrects for the
+   multiple-testing risk of an accept-and-reject log; the log's entry
+   count is the trial-count input). Any experiment below this threshold is
+   rejected as statistically indistinguishable from overfit noise,
+   regardless of its PF.
+3. **OOS calendar boundary: prospective lock at 2026-07-23** (the date of
+   this owner-decision session) — **not** a retroactive historical split.
+   All data before 2026-07-23 is development/walk-forward-diagnostic only,
+   never treated as OOS. All data from 2026-07-23 forward is genuine OOS.
+   This corrects an earlier draft of this session's discussion that
+   proposed a retroactive 2025-01-01 cutoff, which was rejected as
+   violating owner decision 11 (first addendum): existing history —
+   including everything after 2025-01-01 — has already been used
+   diagnostically across the ST-C1 line and cannot be treated as pristine
+   OOS regardless of which historical date is chosen as the boundary. Only
+   a genuinely future-collected period satisfies decision 11's "new future
+   period must be locked" requirement. Promotion requires PF ≥ 1.3 on OOS
+   data only.
+4. **Maximum experiment count: 12.** No prior value existed anywhere in
+   the repo for this item; chosen as small enough to keep the deflated-Sharpe
+   trial-count correction meaningful while allowing legitimate iteration.
+   If ST-C2 exceeds 12 logged experiments without meeting the PF ≥ 1.3
+   gate, the research track is terminated (not silently continued).
+5. **Allowed parameter changes (positive list).** During research, only
+   these five parameter families may be varied: FVG size thresholds, the
+   OTE `max_retrace_pct` value, session-filter windows, spread-gate
+   values, and the G7 stop-distance bounds (35/150, decided above).
+   Everything else remains frozen, including (explicitly): `min_rr`,
+   `per_trade_risk_pct`, any liquidity-stage logic, any HTF bias logic, any
+   structural-invalidation logic, any OTE threshold below 0.5, any
+   volatility-adaptive parameter, and any symbol-set expansion — all of
+   which require a new RCR to change, not researcher discretion.
+
+### Status after this second addendum
+
+Closed this session: **G4 (fully)**, **G7 (fully)**, **all 5 RCR
+pre-registration items**. **G5 remains PARTIAL** — four new alignment/
+placement/stacking/invalidation rules are recorded, but the FVG
+formation/size formula and the mitigation-rounding convention residual
+(both already listed in the first addendum) are untouched. **G1, G2, G3,
+G6, G10, and the entry/order-simulation residuals remain exactly as listed
+in the first addendum** — nothing in this session addressed them.
+
+This addendum does not, by itself, satisfy either of the two remaining
+implementation gates: (a) `specs/st-c2.yaml` is still self-declared
+`status: candidate`, not an owner-verified canonical/approved spec, and (b)
+no `IMPLEMENTATION AUTHORIZATION: GRANTED` string exists anywhere in the
+repo. Both remain open, separate owner acts — recording these decisions is
+not the same as authorizing implementation, per the owner's own stated
+gate structure for this work.
