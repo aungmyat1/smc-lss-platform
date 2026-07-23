@@ -4,10 +4,14 @@
 **Status:** Configuration governance complete; ST-C1 strategy research/validation in
 progress. Execution layer remains blocked — nothing below changes that.
 **Current phase:** Strategy research and validation (not execution-layer work).
-**Current milestone:** ST-C1 v3.9 "Clean SMC" preset (v1.2.0 candidate) filed as
-the follow-up Research Change Request targeting the `REJECTED_NO_DISPLACEMENT`
-bottleneck — candidate created, population-feasibility backtest not yet run
-(see §5). Not execution-layer work.
+**Current milestone:** ST-C2 "Hybrid Liquidity-First Unified SMC Pipeline" is the
+current research candidate. The prior ST-C1 v3.9 and v3.10 backtests are complete
+and both PARKED (below the promotion bar — v3.9 aggregate net PF 0.138, v3.10
+aggregate net PF 0.471; see §5). For ST-C2 the RCR is filed
+(`reports/audit/ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`) and a governance/conformance
+addendum published (`reports/audit/ST_C2_GOVERNANCE_CONFORMANCE_AUDIT.md`), but
+implementation is NOT authorized — G4 is entirely open and the remaining gates are
+only partially closed (see §5). Not execution-layer work.
 
 This status file reflects the current repository state after the governance audit
 and loader hardening work. It supersedes the older audit snapshot that described

@@ -21,7 +21,8 @@ the **highest authority**. Full order:
 5. [`PROJECT_STATUS.md`](PROJECT_STATUS.md) — last audited state, ranked blockers.
 6. [`ROADMAP.md`](ROADMAP.md) — milestone sequence under MASTER_PLAN's **M1–M5**
    (M1 Strategy Contract Normalization — complete; M2 Strategy Approval & Validation
-   — current, ST-C1 v3.9/v3.10 research sits here; M3 Execution Layer Skeleton;
+   — current, ST-C2 "Hybrid Liquidity-First" is the active candidate (ST-C1 v3.7–v3.10
+   researched to conclusion and parked); M3 Execution Layer Skeleton;
    M4 Demo Trading Integration; M5 Live Promotion Gate).
 7. [`NEXT_ACTION.md`](NEXT_ACTION.md) — the *one* milestone in flight right now.
 8. Source code.
@@ -36,9 +37,12 @@ override governance.
   drawn from `MASTER_PLAN.md` v2.1/v2.1.1) is **obsolete and removed** — `MASTER_PLAN.md`
   v3.0.0 (2026-07-19) superseded that text the next day and defines no such phase.
   Current roadmap, per `MASTER_PLAN.md` v3.0.0's Implementation Roadmap: **M1 Strategy
-  Contract Normalization (complete) → M2 Strategy Approval & Validation (current — all
-  ST-C1 v3.9/v3.10 research belongs here; no detection-logic change without an RCR
-  through `docs/RESEARCH-CHARTER.md`) → M3 Execution Layer Skeleton (not yet
+  Contract Normalization (complete) → M2 Strategy Approval & Validation (current —
+  ST-C2 "Hybrid Liquidity-First" is the active candidate: RCR filed and a governance/
+  conformance checkpoint published, implementation blocked pending G4 and the other
+  open gate closures; ST-C1 v3.7–v3.10 researched to conclusion and parked/exhausted;
+  no detection-logic change without an RCR through `docs/RESEARCH-CHARTER.md`) → M3
+  Execution Layer Skeleton (not yet
   authorized — no kernel/scenario-binding modules, audit logging, or execution-layer
   code until sequenced by `project-governance-agent`) → M4 Demo Trading Integration →
   M5 Live Promotion Gate.** The v3.5 promotion track remains **parked** until demo

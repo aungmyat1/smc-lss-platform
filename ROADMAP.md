@@ -2,7 +2,7 @@
 
 **Authority:** organized under [`MASTER_PLAN.md`](MASTER_PLAN.md) (v3.0.0).
 Phases and priority come from that document; this file holds the per-phase status
-and acceptance criteria. **Current priority: Phase 1 — Approved Strategy Foundation.**
+and acceptance criteria. **Current priority: Phase 2 — Strategy Approval & Validation.**
 
 **Guiding rule:** strategy first, execution second. Freeze the strategy contract
 before building any execution plumbing.

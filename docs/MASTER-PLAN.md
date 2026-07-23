@@ -1,7 +1,7 @@
 # SMC-LSS Platform — Implementation Master Plan  ⚠️ DEPRECATED
 
 > **DEPRECATED 2026-07-18.** Superseded by the root [`MASTER_PLAN.md`](../MASTER_PLAN.md)
-> (Master Agent v2.1), which is the authoritative governance document. This file is
+> (Master Execution Agent v3.0.0), which is the authoritative governance document. This file is
 > retained for historical milestone detail (M0–M6, exit gates, Telegram/observability
 > plans) only. Where this document conflicts with the root `MASTER_PLAN.md`, the root
 > file wins. Do not use this as the source of phase priority or sequencing.

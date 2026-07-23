@@ -10,7 +10,7 @@ Institutional Smart Money Concepts research + execution environment for Claude
   skills/               # 17 atomic SMC skills + 5 orchestrators (22 total)
 .mcp.json               # MetaTrader MCP config (DEMO credentials)
 specs/v1.yaml           # deterministic strategy spec (versioned)
-src/backtest.py         # deterministic backtest runner (skeleton)
+src/backtest.py         # deterministic backtest runner (exercised across ST-C1 v3.7-v3.10 campaigns)
 data/                   # historical CSVs (gitignored)
 tests/                  # smoke tests
 reports/                # audit + validation reports

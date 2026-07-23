@@ -34,6 +34,9 @@ contract derived from `docs/strategy/SMC-LSS-v3.6-SIGNAL-SPEC.md`. Until that
 contract exists and the execution layer is built, the loop remains in propose-mode
 or analysis-only mode — it must never invent live orders from unapproved rules.
 
+See `docs/adr/ADR-0001-two-track-strategy-lifecycle.md` for the two-track
+execution/research lifecycle governing which spec may execute.
+
 ### Strategy source
 `docs/strategy/SMC-LSS-v3.6-SIGNAL-SPEC.md` is the human-readable source of truth
 for the new strategy-approval workflow. It must be normalized into a machine-readable
