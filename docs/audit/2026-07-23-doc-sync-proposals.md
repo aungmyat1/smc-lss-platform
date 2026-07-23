@@ -1,6 +1,6 @@
 # Documentation Sync — Authority-Touching Proposals (2026-07-23)
 
-**Status:** DRAFT — proposals only. **No source file has been modified for F1, F2, or F7.**
+**Status:** DRAFT — proposals only. **No source file has been modified for F1, F2, F7, or F11.**
 These three findings touch authority-hierarchy documents (`CLAUDE.md`, `MASTER_PLAN.md`,
 `docs/CHARTER.md`) and are therefore left for explicit owner review and approval before
 any edit is applied. The routine findings (F3, F4, F5, F6, F8, F9) were applied directly
@@ -171,3 +171,30 @@ historical artifact.
   reconciling sentence, keeping "They do not define the new architecture" applicable to
   the v3.5 research materials.
 ```
+
+---
+
+## F11 — M0–M5 vs. M1–M5 milestone numbering mismatch (NEW, discovered 2026-07-23)
+
+**Files:** `MASTER_PLAN.md` (lines ~156-190) and `docs/CHARTER.md` (lines ~102-111)
+
+**Current text (MASTER_PLAN.md):** Uses M1–M5 numbering (M1 Strategy Contract
+Normalization ... M5 Live Promotion Gate).
+
+**Current text (docs/CHARTER.md):** Uses M0–M5 numbering, with M0 = "Strategy
+approval foundation (current)" as an extra leading milestone. CHARTER.md's M3
+("Execution layer") does not correspond to the same content as MASTER_PLAN.md's
+M3 ("Execution Layer Skeleton") — same concept, different position in each
+document's own count. Neither file cross-references the other's numbering.
+
+**Why authority-touching, not routine:** Picking a canonical numbering (and
+deciding whether M0 is real or CHARTER.md's is the stale one) is a governance
+framing decision, not a fact that's already settled elsewhere in the repo —
+unlike F3-F6/F8-F9, there's no third source to sync against.
+
+**Proposed resolution (for owner decision, not applied):** Either (a) drop
+CHARTER.md's M0 and renumber to match MASTER_PLAN.md's M1-M5 exactly, treating
+MASTER_PLAN.md as the canonical milestone numbering per its Authority #1
+status, or (b) formally adopt M0-M5 everywhere and update MASTER_PLAN.md to
+add the missing M0. Owner should pick one; do not implement either without
+sign-off.
