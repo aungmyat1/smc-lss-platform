@@ -16,6 +16,7 @@ from typing import Any
 import yaml
 
 from src import smc_engine as e
+from validation.st_c2.structure import structural_context
 from validation.st_c2.symbols import load_symbol_metadata, points_to_price
 
 
@@ -124,10 +125,20 @@ def _last_sweep(htf: list[dict[str, Any]], spec: dict[str, Any]) -> dict[str, An
 
 
 def _bias_from_sweep(sweep: dict[str, Any]) -> str:
+    """Deprecated compatibility shim.
+
+    Active S1-G2-GC2 logic derives bias from HTF BOS/CHoCH structural evidence
+    in `validation.st_c2.structure.classify_htf_bias`, not from sweep direction.
+    """
     return "long" if sweep["dir"] == "bull" else "short"
 
 
 def _in_discount_or_premium(mf: list[dict[str, Any]], direction: str) -> bool:
+    """Deprecated compatibility shim for pre-GC2 tests.
+
+    Active pipeline OTE evaluation uses structural dealing-range identity via
+    `validation.st_c2.structure.evaluate_ote_location`.
+    """
     high = max(c["high"] for c in mf)
     low = min(c["low"] for c in mf)
     eq = (high + low) / 2.0
@@ -174,19 +185,45 @@ def analyze_windows(
         stages.append(_stage("config", False, "R6", enabled_symbols=configured_symbols))
         return DetectionResult("NO_SIGNAL", symbol, None, "R6", tuple(stages))
 
-    sweep = _last_sweep(htf, spec)
-    if sweep is None:
-        stages.append(_stage("liquidity", False, "R1"))
-        return DetectionResult("NO_SIGNAL", symbol, None, "R1", tuple(stages))
-    direction = _bias_from_sweep(sweep)
-    stages.append(_stage("liquidity", True, "PASS", sweep=sweep))
+    context = structural_context(htf, mf, spec=spec, symbol=symbol)
+    bias = context["bias"]
+    direction = bias.direction if bias.direction in {"long", "short"} else None
+    if direction is None:
+        stages.append(_stage("htf_bias", False, "R2", reason=bias.reason, structural_events=len(context["events"])))
+        return DetectionResult("NO_SIGNAL", symbol, None, "R2", tuple(stages))
+    stages.append(
+        _stage(
+            "htf_bias",
+            True,
+            "PASS",
+            direction=direction,
+            bias_event_id=bias.bias_event_id,
+            evidence_timestamp=bias.bias_evidence_timestamp,
+            evidence_type=bias.bias_evidence_type,
+            protected_level_id=bias.protected_level_id,
+        )
+    )
 
-    stages.append(_stage("htf_bias", True, "PASS", direction=direction, evidence_timestamp=htf[sweep["i"]]["time"]))
+    sweep = context["sweep"]
+    if sweep is None or sweep.status != "confirmed":
+        reason = None if sweep is None else sweep.metadata.get("detail_reason")
+        stages.append(_stage("liquidity", False, "R1", reason=reason or "NO_ELIGIBLE_LIQUIDITY_POOL"))
+        return DetectionResult("NO_SIGNAL", symbol, direction, "R1", tuple(stages))
+    stages.append(_stage("liquidity", True, "PASS", sweep=sweep.to_dict()))
 
-    if not _in_discount_or_premium(mf, direction):
-        stages.append(_stage("ote", False, "R3", direction=direction))
+    ote = context["ote"]
+    if ote is None or not ote.ote_eligible:
+        stages.append(
+            _stage(
+                "ote",
+                False,
+                "R3",
+                direction=direction,
+                reason=None if ote is None else ote.rejection_detail,
+            )
+        )
         return DetectionResult("NO_SIGNAL", symbol, direction, "R3", tuple(stages))
-    stages.append(_stage("ote", True, "PASS", direction=direction))
+    stages.append(_stage("ote", True, "PASS", direction=direction, ote=ote.__dict__))
 
     fvg = _matching_mf_fvg(mf, direction, spec)
     if fvg is None:

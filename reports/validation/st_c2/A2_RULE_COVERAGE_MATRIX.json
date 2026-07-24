@@ -6,60 +6,837 @@
   "audit_date": "2026-07-24",
   "summary": {
     "total_frozen_rules_in_inventory": 45,
-    "implemented_rules": 7,
-    "tested_rules": 6,
+    "implemented_rules": 23,
+    "tested_rules": 18,
     "positive_case_coverage": 5,
     "negative_case_coverage": 2,
-    "boundary_case_coverage": 0,
-    "missing_rule_test_mappings": 37,
-    "critical_implementation_coverage_rate": 0.1556,
+    "boundary_case_coverage": 1,
+    "missing_rule_test_mappings": 28,
+    "critical_implementation_coverage_rate": 0.5111,
     "s1_g2_completion_eligible": false
   },
   "inventory": [
-    {"id": "STC2-SCOPE-001", "rule": "GBPUSD is the only enabled active symbol", "spec_lines": "35-43", "classification": "IMPLEMENTED_AND_TESTED", "implementation": "validation/st_c2_reference.py::enabled_symbols", "tests": ["tests/test_st_c2_reference.py::test_spec_is_frozen_gbpusd_only"]},
-    {"id": "STC2-TF-001", "rule": "HTF/MF/LTF timeframes are H4/M15/M3", "spec_lines": "56-60", "classification": "IMPLEMENTED_NOT_TESTED", "implementation": "validation/st_c2_reference.py::REQUIRED_DATA", "tests": []},
-    {"id": "STC2-STRUCT-001", "rule": "H4 swing fractal k is 3", "spec_lines": "68", "classification": "PARTIALLY_IMPLEMENTED", "implementation": "validation/st_c2_reference.py::_last_sweep", "tests": []},
-    {"id": "STC2-STRUCT-002", "rule": "External swing definition is outside_dealing_range", "spec_lines": "70-74", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-STRUCT-003", "rule": "Internal swing definition is inside_dealing_range_pre_bos", "spec_lines": "70-74", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-STRUCT-004", "rule": "Protected level creates on first CHoCH establishing bias", "spec_lines": "76-82", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-STRUCT-005", "rule": "Protected level invalidates on opposite CHoCH and persists until explicit invalidation", "spec_lines": "76-82", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-STRUCT-006", "rule": "Multi-CHoCH sequencing has second/third/fourth-plus classifications", "spec_lines": "84-87", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-BIAS-001", "rule": "Bull/bear classification uses HTF BOS and CHoCH only", "spec_lines": "88-91", "classification": "NOT_IMPLEMENTED", "implementation": "validation/st_c2_reference.py::_bias_from_sweep", "tests": []},
-    {"id": "STC2-BIAS-002", "rule": "Every bias decision includes bias_evidence_timestamp", "spec_lines": "90-91", "classification": "PARTIALLY_IMPLEMENTED", "implementation": "validation/st_c2_reference.py::analyze_windows", "tests": []},
-    {"id": "STC2-LIQ-001", "rule": "External liquidity lookback is 300 H4 bars", "spec_lines": "98-101", "classification": "IMPLEMENTED_NOT_TESTED", "implementation": "validation/st_c2_reference.py::scan_history", "tests": []},
-    {"id": "STC2-LIQ-002", "rule": "Equal-high/low tolerance is 5 pips", "spec_lines": "98-101", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-LIQ-003", "rule": "Sweep wick ratio min is 0.6", "spec_lines": "103-107", "classification": "IMPLEMENTED_AND_TESTED", "implementation": "validation/st_c2_reference.py::_last_sweep", "tests": ["tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal", "tests/test_st_c2_reference.py::test_negative_without_liquidity_rejects_r1"]},
-    {"id": "STC2-LIQ-004", "rule": "Sweep must close back in range", "spec_lines": "103-107", "classification": "PARTIALLY_IMPLEMENTED", "implementation": "src/smc_engine.py::liquidity_sweeps via validation/st_c2_reference.py::_last_sweep", "tests": ["tests/test_st_c2_reference.py::test_negative_without_liquidity_rejects_r1"]},
-    {"id": "STC2-LIQ-005", "rule": "Max sweep age is 20 H4 bars", "spec_lines": "103-107", "classification": "IMPLEMENTED_NOT_TESTED", "implementation": "validation/st_c2_reference.py::_last_sweep", "tests": []},
-    {"id": "STC2-LIQ-006", "rule": "Reclaim close bar rule is single_bar_only", "spec_lines": "103-107", "classification": "PARTIALLY_IMPLEMENTED", "implementation": "src/smc_engine.py::liquidity_sweeps via validation/st_c2_reference.py::_last_sweep", "tests": []},
-    {"id": "STC2-LIQ-007", "rule": "Liquidity pool selection priority and stable identifier tie-breaks", "spec_lines": "109-116", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-POI-001", "rule": "POI gap reaction min is 10 points, max age 40 H4 bars, partial fill required", "spec_lines": "119-122", "classification": "PARTIALLY_IMPLEMENTED", "implementation": "validation/st_c2_reference.py::_matching_mf_fvg", "tests": []},
-    {"id": "STC2-BIAS-003", "rule": "BOS confirmation bars is 2 and close beyond structure is required", "spec_lines": "128-131", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-BIAS-004", "rule": "CHoCH displacement body ratio min is 0.6 and reclaim window is 5 bars", "spec_lines": "133-136", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-BIAS-005", "rule": "BOS/CHoCH mutual exclusivity and prior-confirmed-bias authority", "spec_lines": "138-141", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-OTE-001", "rule": "Dealing range anchors come from triggering liquidity external swing and freeze at trigger", "spec_lines": "147-153", "classification": "NOT_IMPLEMENTED", "implementation": "validation/st_c2_reference.py::_in_discount_or_premium", "tests": []},
-    {"id": "STC2-OTE-002", "rule": "Equilibrium boundary is exact 0.5 with long discount and short premium", "spec_lines": "153-159", "classification": "PARTIALLY_IMPLEMENTED", "implementation": "validation/st_c2_reference.py::_in_discount_or_premium", "tests": ["tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal", "tests/test_st_c2_reference.py::test_bearish_mirror_emits_short_signal"]},
-    {"id": "STC2-OTE-003", "rule": "Max retrace pct is 0.786", "spec_lines": "159-160", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-FVG-001", "rule": "HTF FVG min displacement bars 3 and max age 60", "spec_lines": "164-168", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-FVG-002", "rule": "MF FVG must overlap HTF FVG and be within max distance 10 pips", "spec_lines": "170-172", "classification": "NOT_IMPLEMENTED", "implementation": "validation/st_c2_reference.py::_matching_mf_fvg plus validation/st_c2/symbols.py metadata conversion foundation", "tests": []},
-    {"id": "STC2-FVG-003", "rule": "LTF FVG is required for entry, max age 20, inside confluence zone", "spec_lines": "174-176", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-FVG-004", "rule": "HTF/MF directional alignment, no multi-zone stacking, cascade invalidation", "spec_lines": "178-184", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-FVG-005", "rule": "FVG chain continuity is HTF valid -> MF overlap -> LTF within MF displacement", "spec_lines": "186-190", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-FVG-006", "rule": "FVG geometry is fixed three-candle wick-to-wick", "spec_lines": "192-198", "classification": "PARTIALLY_IMPLEMENTED", "implementation": "src/smc_engine.py::fvgs via validation/st_c2_reference.py::_matching_mf_fvg", "tests": ["tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal"]},
-    {"id": "STC2-FVG-007", "rule": "FVG tie-break, mitigation invalidation threshold, and rounding", "spec_lines": "200-203", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-LTF-001", "rule": "LTF CHoCH requires immediately preceding internal BOS", "spec_lines": "205-214", "classification": "NOT_IMPLEMENTED", "implementation": "validation/st_c2_reference.py::_ltf_confirmation", "tests": []},
-    {"id": "STC2-LTF-002", "rule": "LTF break requires close beyond structure and displacement body ratio min 0.5", "spec_lines": "205-214", "classification": "PARTIALLY_IMPLEMENTED", "implementation": "validation/st_c2_reference.py::_ltf_confirmation", "tests": ["tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal"]},
-    {"id": "STC2-LTF-003", "rule": "Stronger CHoCH requires lower-high/higher-low and max setup 20 bars", "spec_lines": "216-220", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-LTF-004", "rule": "Entry window is 15 bars and first qualifying LTF CHoCH bar is used", "spec_lines": "218-220", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-ENTRY-001", "rule": "Entry is limit_into_fvg with max slippage 5 points and next-bar-after-confirmation earliest fill", "spec_lines": "225-235", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-ENTRY-002", "rule": "Limit expiry is 15 M3 bars with early cancellation triggers", "spec_lines": "234-240", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-ENTRY-003", "rule": "Partial-fill policy, duplicate setup policy, post-fill priority, same-bar stop-first", "spec_lines": "243-253", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-STOP-001", "rule": "Stop is structural with 2.5 point buffer and no widening", "spec_lines": "255-259", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-STOP-002", "rule": "Stop distance min/max points and formula", "spec_lines": "260-262", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-TARGET-001", "rule": "Targets require opposite external liquidity then internal liquidity, both T1 and T2 mandatory", "spec_lines": "265-273", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-RISK-001", "rule": "Risk uses GBPUSD cost profile, net reward basis, min gross/net R", "spec_lines": "280-288", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-MGMT-001", "rule": "No time stop and conditional session close only near invalidation", "spec_lines": "293-304", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []},
-    {"id": "STC2-REJECT-001", "rule": "R1-R7 rejection code scheme plus known unmapped stop/net-R/cost/target gaps", "spec_lines": "359-371", "classification": "PARTIALLY_IMPLEMENTED", "implementation": "validation/st_c2_reference.py::DetectionResult", "tests": ["tests/test_st_c2_reference.py::test_negative_without_liquidity_rejects_r1"]},
-    {"id": "STC2-DEDUP-001", "rule": "Dedup key formula uses symbol, LTF_CHoCH, index offset, and confirmation index", "spec_lines": "398-403", "classification": "NOT_IMPLEMENTED", "implementation": null, "tests": []}
+    {
+      "id": "STC2-SCOPE-001",
+      "rule": "GBPUSD is the only enabled active symbol",
+      "spec_lines": "35-43",
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2_reference.py::enabled_symbols",
+      "tests": [
+        "tests/test_st_c2_reference.py::test_spec_is_frozen_gbpusd_only"
+      ],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-TF-001",
+      "rule": "HTF/MF/LTF timeframes are H4/M15/M3",
+      "spec_lines": "56-60",
+      "classification": "IMPLEMENTED_NOT_TESTED",
+      "implementation": "validation/st_c2_reference.py::REQUIRED_DATA",
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-STRUCT-001",
+      "rule": "H4 swing fractal k is 3",
+      "spec_lines": "68",
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/structure.py::detect_htf_structure",
+      "tests": [
+        "tests/st_c2/test_structural_conformance.py::test_htf_bias_uses_closed_candle_bos_choch_not_wick_only"
+      ],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map",
+          "gc2_tests"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-STRUCT-002",
+      "rule": "External swing definition is outside_dealing_range",
+      "spec_lines": "70-74",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-STRUCT-003",
+      "rule": "Internal swing definition is inside_dealing_range_pre_bos",
+      "spec_lines": "70-74",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-STRUCT-004",
+      "rule": "Protected level creates from structural bias evidence",
+      "spec_lines": "76-82",
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/structure.py::detect_htf_structure",
+      "tests": [
+        "tests/st_c2/test_structural_conformance.py::test_htf_bias_uses_closed_candle_bos_choch_not_wick_only"
+      ],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map",
+          "gc2_tests"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-STRUCT-005",
+      "rule": "Protected level invalidates on opposite CHoCH and persists until explicit invalidation",
+      "spec_lines": "76-82",
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/structure.py::detect_htf_structure",
+      "tests": [
+        "tests/st_c2/test_structural_conformance.py::test_choch_flip_requires_displacement_threshold"
+      ],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map",
+          "gc2_tests"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-STRUCT-006",
+      "rule": "Multi-CHoCH sequencing has second/third/fourth-plus classifications",
+      "spec_lines": "84-87",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-BIAS-001",
+      "rule": "Bull/bear classification uses HTF BOS and CHoCH only",
+      "spec_lines": "88-91",
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/structure.py::classify_htf_bias",
+      "tests": [
+        "tests/st_c2/test_structural_conformance.py::test_htf_bias_uses_closed_candle_bos_choch_not_wick_only",
+        "tests/st_c2/test_structural_conformance.py::test_choch_flip_requires_displacement_threshold"
+      ],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map",
+          "gc2_tests"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-BIAS-002",
+      "rule": "Every bias decision includes bias_evidence_timestamp",
+      "spec_lines": "90-91",
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/structure.py::classify_htf_bias",
+      "tests": [
+        "tests/st_c2/test_structural_conformance.py::test_htf_bias_uses_closed_candle_bos_choch_not_wick_only"
+      ],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map",
+          "gc2_tests"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-LIQ-001",
+      "rule": "External liquidity lookback is 300 H4 bars",
+      "spec_lines": "98-101",
+      "classification": "IMPLEMENTED_NOT_TESTED",
+      "implementation": "validation/st_c2_reference.py::scan_history",
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-LIQ-002",
+      "rule": "Equal-high/low tolerance is 5 pips",
+      "spec_lines": "98-101",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-LIQ-003",
+      "rule": "Sweep wick ratio min is 0.6",
+      "spec_lines": "103-107",
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/structure.py::detect_sweep_and_reclaim",
+      "tests": [
+        "tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal",
+        "tests/test_st_c2_reference.py::test_negative_without_liquidity_rejects_r1",
+        "tests/st_c2/test_structural_conformance.py::test_sweep_requires_pierce_reclaim_wick_ratio_and_age"
+      ],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map",
+          "gc2_tests"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-LIQ-004",
+      "rule": "Sweep must close back in range",
+      "spec_lines": "103-107",
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/structure.py::detect_sweep_and_reclaim",
+      "tests": [
+        "tests/test_st_c2_reference.py::test_negative_without_liquidity_rejects_r1",
+        "tests/st_c2/test_structural_conformance.py::test_sweep_requires_pierce_reclaim_wick_ratio_and_age"
+      ],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map",
+          "gc2_tests"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-LIQ-005",
+      "rule": "Max sweep age is 20 H4 bars",
+      "spec_lines": "103-107",
+      "classification": "IMPLEMENTED_NOT_TESTED",
+      "implementation": "validation/st_c2_reference.py::_last_sweep",
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-LIQ-006",
+      "rule": "Reclaim close bar rule is single_bar_only",
+      "spec_lines": "103-107",
+      "classification": "PARTIALLY_IMPLEMENTED",
+      "implementation": "src/smc_engine.py::liquidity_sweeps via validation/st_c2_reference.py::_last_sweep",
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-LIQ-007",
+      "rule": "Liquidity pool selection priority and stable identifier tie-breaks",
+      "spec_lines": "109-116",
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/structure.py::select_liquidity_pool",
+      "tests": [
+        "tests/st_c2/test_structural_conformance.py::test_liquidity_pool_selection_is_stable_and_directional"
+      ],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map",
+          "gc2_tests"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-POI-001",
+      "rule": "POI gap reaction min is 10 points, max age 40 H4 bars, partial fill required",
+      "spec_lines": "119-122",
+      "classification": "PARTIALLY_IMPLEMENTED",
+      "implementation": "validation/st_c2_reference.py::_matching_mf_fvg",
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-BIAS-003",
+      "rule": "BOS confirmation bars is 2 and close beyond structure is required",
+      "spec_lines": "128-131",
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/structure.py::detect_htf_structure",
+      "tests": [
+        "tests/st_c2/test_structural_conformance.py::test_htf_bias_uses_closed_candle_bos_choch_not_wick_only"
+      ],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map",
+          "gc2_tests"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-BIAS-004",
+      "rule": "CHoCH displacement body ratio min is 0.6 and reclaim window is 5 bars",
+      "spec_lines": "133-136",
+      "classification": "PARTIALLY_IMPLEMENTED",
+      "implementation": "validation/st_c2/structure.py::detect_htf_structure",
+      "tests": [
+        "tests/st_c2/test_structural_conformance.py::test_choch_flip_requires_displacement_threshold"
+      ],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map",
+          "gc2_tests"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-BIAS-005",
+      "rule": "BOS/CHoCH mutual exclusivity and prior-confirmed-bias authority",
+      "spec_lines": "138-141",
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/structure.py::detect_htf_structure",
+      "tests": [
+        "tests/st_c2/test_structural_conformance.py::test_htf_bias_uses_closed_candle_bos_choch_not_wick_only",
+        "tests/st_c2/test_structural_conformance.py::test_choch_flip_requires_displacement_threshold"
+      ],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map",
+          "gc2_tests"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-OTE-001",
+      "rule": "Dealing range anchors come from triggering liquidity external swing and freeze at trigger",
+      "spec_lines": "147-153",
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/structure.py::select_structural_dealing_range",
+      "tests": [
+        "tests/st_c2/test_structural_conformance.py::test_structural_context_is_causal_and_deterministic"
+      ],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map",
+          "gc2_tests"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-OTE-002",
+      "rule": "Equilibrium boundary is exact 0.5 with long discount and short premium",
+      "spec_lines": "153-159",
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/structure.py::evaluate_ote_location",
+      "tests": [
+        "tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal",
+        "tests/test_st_c2_reference.py::test_bearish_mirror_emits_short_signal",
+        "tests/st_c2/test_structural_conformance.py::test_structural_dealing_range_ote_boundaries_are_deterministic"
+      ],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map",
+          "gc2_tests"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-OTE-003",
+      "rule": "Max retrace pct is 0.786",
+      "spec_lines": "159-160",
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/structure.py::evaluate_ote_location",
+      "tests": [
+        "tests/st_c2/test_structural_conformance.py::test_structural_dealing_range_ote_boundaries_are_deterministic"
+      ],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map",
+          "gc2_tests"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-FVG-001",
+      "rule": "HTF FVG min displacement bars 3 and max age 60",
+      "spec_lines": "164-168",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-FVG-002",
+      "rule": "MF FVG must overlap HTF FVG and be within max distance 10 pips",
+      "spec_lines": "170-172",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": "validation/st_c2_reference.py::_matching_mf_fvg plus validation/st_c2/symbols.py metadata conversion foundation",
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-FVG-003",
+      "rule": "LTF FVG is required for entry, max age 20, inside confluence zone",
+      "spec_lines": "174-176",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-FVG-004",
+      "rule": "HTF/MF directional alignment, no multi-zone stacking, cascade invalidation",
+      "spec_lines": "178-184",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-FVG-005",
+      "rule": "FVG chain continuity is HTF valid -> MF overlap -> LTF within MF displacement",
+      "spec_lines": "186-190",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-FVG-006",
+      "rule": "FVG geometry is fixed three-candle wick-to-wick",
+      "spec_lines": "192-198",
+      "classification": "PARTIALLY_IMPLEMENTED",
+      "implementation": "src/smc_engine.py::fvgs via validation/st_c2_reference.py::_matching_mf_fvg",
+      "tests": [
+        "tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal"
+      ],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-FVG-007",
+      "rule": "FVG tie-break, mitigation invalidation threshold, and rounding",
+      "spec_lines": "200-203",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-LTF-001",
+      "rule": "LTF CHoCH requires immediately preceding internal BOS",
+      "spec_lines": "205-214",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": "validation/st_c2_reference.py::_ltf_confirmation",
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-LTF-002",
+      "rule": "LTF break requires close beyond structure and displacement body ratio min 0.5",
+      "spec_lines": "205-214",
+      "classification": "PARTIALLY_IMPLEMENTED",
+      "implementation": "validation/st_c2_reference.py::_ltf_confirmation",
+      "tests": [
+        "tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal"
+      ],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-LTF-003",
+      "rule": "Stronger CHoCH requires lower-high/higher-low and max setup 20 bars",
+      "spec_lines": "216-220",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-LTF-004",
+      "rule": "Entry window is 15 bars and first qualifying LTF CHoCH bar is used",
+      "spec_lines": "218-220",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-ENTRY-001",
+      "rule": "Entry is limit_into_fvg with max slippage 5 points and next-bar-after-confirmation earliest fill",
+      "spec_lines": "225-235",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-ENTRY-002",
+      "rule": "Limit expiry is 15 M3 bars with early cancellation triggers",
+      "spec_lines": "234-240",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-ENTRY-003",
+      "rule": "Partial-fill policy, duplicate setup policy, post-fill priority, same-bar stop-first",
+      "spec_lines": "243-253",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-STOP-001",
+      "rule": "Stop is structural with 2.5 point buffer and no widening",
+      "spec_lines": "255-259",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-STOP-002",
+      "rule": "Stop distance min/max points and formula",
+      "spec_lines": "260-262",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-TARGET-001",
+      "rule": "Targets require opposite external liquidity then internal liquidity, both T1 and T2 mandatory",
+      "spec_lines": "265-273",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-RISK-001",
+      "rule": "Risk uses GBPUSD cost profile, net reward basis, min gross/net R",
+      "spec_lines": "280-288",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-MGMT-001",
+      "rule": "No time stop and conditional session close only near invalidation",
+      "spec_lines": "293-304",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-REJECT-001",
+      "rule": "R1-R7 rejection code scheme plus known unmapped stop/net-R/cost/target gaps",
+      "spec_lines": "359-371",
+      "classification": "PARTIALLY_IMPLEMENTED",
+      "implementation": "validation/st_c2_reference.py::DetectionResult",
+      "tests": [
+        "tests/test_st_c2_reference.py::test_negative_without_liquidity_rejects_r1"
+      ],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    },
+    {
+      "id": "STC2-DEDUP-001",
+      "rule": "Dedup key formula uses symbol, LTF_CHoCH, index offset, and confirmation index",
+      "spec_lines": "398-403",
+      "classification": "NOT_IMPLEMENTED",
+      "implementation": null,
+      "tests": [],
+      "provenance": {
+        "module": "GC2_structural_module",
+        "module_version": "v1.0.0",
+        "source": "st_c2.structural",
+        "validated_by": [
+          "traceability_map"
+        ],
+        "last_update": "2026-07-24"
+      }
+    }
   ]
 }

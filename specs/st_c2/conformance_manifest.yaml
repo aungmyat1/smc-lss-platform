@@ -21,25 +21,34 @@ stage_a:
       - reports/validation/st_c2/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md
       - reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json
       - reports/validation/st_c2/A2_CONFORMANCE_RESULTS.json
+      - reports/validation/st_c2/S1_G2_GC2_STRUCTURAL_CONFORMANCE_REPORT.md
+      - reports/validation/st_c2/HTF_STRUCTURE_AND_BIAS_REPORT.md
+      - reports/validation/st_c2/LIQUIDITY_SWEEP_CONFORMANCE_REPORT.md
+      - reports/validation/st_c2/DEALING_RANGE_OTE_CONFORMANCE_REPORT.md
     completion_audit:
       verdict: S1-G2 REMAINS OPEN
       blocking_gaps:
-        - htf_bos_choch_bias_missing
-        - structural_dealing_range_missing
         - fvg_confluence_lifecycle_partial
         - ltf_confirmation_evidence_partial
         - state_machine_missing
         - logical_trade_plan_missing
         - rejection_subcodes_missing
-        - stable_identifiers_missing
-        - golden_case_library_missing
-        - hardcoded_symbol_precision_present
+        - stable_identifiers_for_later_events_missing
+        - golden_case_library_incomplete
+        - rule_to_test_map_has_28_missing_mappings
     gc1_foundations:
       status: passed
       report: reports/validation/st_c2/S1_G2_GC1_CONFORMANCE_FOUNDATIONS_REPORT.md
       symbol_metadata: specs/st_c2/symbol_metadata.yaml
       stable_identifier_contract: reports/validation/st_c2/STABLE_IDENTIFIER_CONTRACT.md
       golden_case_library_report: reports/validation/st_c2/GOLDEN_CASE_LIBRARY_REPORT.md
+    gc2_structural_conformance:
+      status: passed
+      report: reports/validation/st_c2/S1_G2_GC2_STRUCTURAL_CONFORMANCE_REPORT.md
+      htf_structure_and_bias: reports/validation/st_c2/HTF_STRUCTURE_AND_BIAS_REPORT.md
+      liquidity_sweep: reports/validation/st_c2/LIQUIDITY_SWEEP_CONFORMANCE_REPORT.md
+      dealing_range_ote: reports/validation/st_c2/DEALING_RANGE_OTE_CONFORMANCE_REPORT.md
+      next_slice: S1-G2-GC3
   a3:
     status: blocked
     blocked_by: a2

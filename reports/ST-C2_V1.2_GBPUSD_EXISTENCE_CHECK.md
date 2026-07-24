@@ -10,14 +10,16 @@
 
 ## Verdict
 
-**SIGNAL_FOUND**
+**NO_SIGNAL_FOUND**
 
-Checked windows: `1365`
+Checked windows: `16563`
 
-First signal time: `2026-06-10 17:15`
-Direction: `short`
+No qualifying GBPUSD signal was found by the current reference scan.
 
-The S1-G2 minimum existence floor (`>=1`) is satisfied by the reference scan.
+Rejection counts:
+
+- `R1`: 16167
+- `R3`: 396
 
 ## Data Provenance
 

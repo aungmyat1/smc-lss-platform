@@ -9,7 +9,42 @@ from validation.st_c2.traceability import validate_traceability
 def test_traceability_current_inventory_reports_missing_mappings_honestly():
     result = validate_traceability()
     assert result.valid
-    assert result.missing_mappings == 37
+    assert result.missing_mappings == 28
+
+
+def test_coverage_inventory_has_structured_provenance():
+    coverage_data = json.loads(Path("reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json").read_text(encoding="utf-8"))
+    required = {"module", "module_version", "source", "validated_by", "last_update"}
+    gc2_rules = {
+        "STC2-STRUCT-001",
+        "STC2-STRUCT-004",
+        "STC2-STRUCT-005",
+        "STC2-BIAS-001",
+        "STC2-BIAS-002",
+        "STC2-BIAS-003",
+        "STC2-BIAS-004",
+        "STC2-BIAS-005",
+        "STC2-LIQ-003",
+        "STC2-LIQ-004",
+        "STC2-LIQ-007",
+        "STC2-OTE-001",
+        "STC2-OTE-002",
+        "STC2-OTE-003",
+    }
+    for item in coverage_data["inventory"]:
+        provenance = item.get("provenance")
+        assert isinstance(provenance, dict)
+        assert required <= set(provenance)
+        assert isinstance(provenance["validated_by"], list)
+        assert provenance["module"] == "GC2_structural_module"
+        assert provenance["module_version"] == "v1.0.0"
+        assert provenance["source"] == "st_c2.structural"
+        assert provenance["last_update"] == "2026-07-24"
+        assert "traceability_map" in provenance["validated_by"]
+        if item["id"] in gc2_rules:
+            assert "gc2_tests" in provenance["validated_by"]
+        else:
+            assert "gc2_tests" not in provenance["validated_by"]
 
 
 def test_traceability_invalid_test_detection(tmp_path):

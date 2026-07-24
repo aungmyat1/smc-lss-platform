@@ -10,15 +10,24 @@
     "symbol_metadata_source": "specs/st_c2/symbol_metadata.yaml",
     "stable_identifier_contract": "reports/validation/st_c2/STABLE_IDENTIFIER_CONTRACT.md",
     "golden_case_library_report": "reports/validation/st_c2/GOLDEN_CASE_LIBRARY_REPORT.md",
-    "next_slice": "S1-G2-GC2 STRUCTURAL BIAS, LIQUIDITY, AND DEALING-RANGE CONFORMANCE"
+    "next_slice_status": "completed by S1-G2-GC2"
+  },
+  "gc2_structural_conformance": {
+    "status": "passed",
+    "structural_evidence_source": "HTF BOS/CHoCH events emitted by validation.st_c2.structure; liquidity sweeps, FVG, OTE, and LTF confirmation are secondary evidence and do not determine HTF bias",
+    "report": "reports/validation/st_c2/S1_G2_GC2_STRUCTURAL_CONFORMANCE_REPORT.md",
+    "htf_structure_report": "reports/validation/st_c2/HTF_STRUCTURE_AND_BIAS_REPORT.md",
+    "liquidity_sweep_report": "reports/validation/st_c2/LIQUIDITY_SWEEP_CONFORMANCE_REPORT.md",
+    "dealing_range_ote_report": "reports/validation/st_c2/DEALING_RANGE_OTE_CONFORMANCE_REPORT.md",
+    "next_slice": "S1-G2-GC3 FVG CHAIN AND LTF CONFIRMATION CONFORMANCE"
   },
   "s1_g2_completion_criteria": {
     "frozen_rule_inventory_complete": true,
     "missing_mappings_zero": false,
     "critical_implementation_coverage_100_percent": false,
     "positive_deterministic_cases_pass": true,
-    "negative_deterministic_cases_pass": false,
-    "boundary_cases_pass": false,
+    "negative_deterministic_cases_pass": true,
+    "boundary_cases_pass": true,
     "lookahead_violations": 0,
     "illegal_state_transitions": "not_implemented",
     "duplicate_signals": "not_implemented",
@@ -41,16 +50,14 @@
     }
   },
   "blocking_gaps": [
-    "Bias conformance is not faithful: _bias_from_sweep equates liquidity-sweep direction with HTF BOS/CHoCH bias.",
-    "OTE/dealing range conformance is not faithful: _in_discount_or_premium uses full MF window high/low rather than frozen triggering liquidity swing range identity.",
-    "FVG conformance is partial and uses hardcoded point conversion points * 0.00001.",
+    "FVG chain conformance remains partial: HTF FVG, MF overlap, LTF-within-MF-displacement, freshness, invalidation, and tie-break evidence are not complete.",
     "LTF confirmation is partial, hardcodes k=2, and lacks internal BOS, displacement, first qualifying bar, protected-level lifecycle, and structured event evidence.",
     "No deterministic state machine exists.",
     "No full logical trade-plan object exists.",
     "R1-R7 rejection coverage is incomplete for stop invalidity, net-R insufficiency, missing cost profile, and missing target.",
-    "Stable identifiers for pools/events/sweeps/FVGs/confirmations/signals/trade plans are not implemented.",
-    "Golden-case library is initialized but not complete enough for S1-G2 qualification.",
-    "Rule-to-test map reports 37 missing mappings that must remain open until direct evidence exists."
+    "Stable identifiers remain incomplete for FVGs, confirmations, signals, and trade plans.",
+    "Golden-case library is initialized but not complete enough for full S1-G2 qualification.",
+    "Rule-to-test map reports 28 missing mappings that must remain open until direct evidence exists."
   ],
   "commands": {
     "existence_reproduction": "python -m validation.run_st_c2_gbp_existence"

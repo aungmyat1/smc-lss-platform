@@ -2,7 +2,7 @@
 
 **One milestone at a time. This is the active milestone.**
 
-## S1-G2-GC2 - Structural Bias, Liquidity, and Dealing-Range Conformance
+## S1-G2-GC3 - FVG Chain and LTF Confirmation Conformance
 
 Current lifecycle position:
 
@@ -25,9 +25,9 @@ Current lifecycle position:
 
 ## Objective
 
-Implement the next controlled S1-G2 gap-closure slice: HTF structural
-BOS/CHoCH bias, liquidity-pool selection/reclaim evidence, and structural
-dealing-range/OTE lifecycle. S1-G2 remains open; A2/S1-G3 is not authorized.
+Implement the next controlled S1-G2 gap-closure slice: HTF/MF/LTF FVG-chain
+evidence and LTF confirmation conformance. S1-G2 remains open; A2/S1-G3 is
+not authorized.
 
 ## Current Evidence
 
@@ -50,6 +50,14 @@ dealing-range/OTE lifecycle. S1-G2 remains open; A2/S1-G3 is not authorized.
   `reports/validation/st_c2/A2_CONFORMANCE_RESULTS.json`.
 - GC1 foundations report:
   `reports/validation/st_c2/S1_G2_GC1_CONFORMANCE_FOUNDATIONS_REPORT.md`.
+- GC2 structural conformance report:
+  `reports/validation/st_c2/S1_G2_GC2_STRUCTURAL_CONFORMANCE_REPORT.md`.
+- HTF structure and bias report:
+  `reports/validation/st_c2/HTF_STRUCTURE_AND_BIAS_REPORT.md`.
+- Liquidity sweep conformance report:
+  `reports/validation/st_c2/LIQUIDITY_SWEEP_CONFORMANCE_REPORT.md`.
+- Dealing-range OTE conformance report:
+  `reports/validation/st_c2/DEALING_RANGE_OTE_CONFORMANCE_REPORT.md`.
 - Stable identifier contract:
   `reports/validation/st_c2/STABLE_IDENTIFIER_CONTRACT.md`.
 - Golden-case library report:
@@ -65,7 +73,8 @@ After extending M1-derived M3 history to 16,642 bars, the existence floor
 
 - Implement or formally close the audit blockers without changing frozen
   strategy parameters.
-- Complete the GC2 structural interfaces with deterministic evidence objects.
+- Complete GC3 FVG-chain and LTF confirmation interfaces with deterministic
+  evidence objects.
 - Preserve the reproduced existence signal or explain any change.
 - Keep missing mappings honest; do not mark S1-G2 complete.
 - Keep A3 historical/statistical validation blocked until A2 passes.
@@ -73,14 +82,13 @@ After extending M1-derived M3 history to 16,642 bars, the existence floor
 
 ## Blocking Gaps
 
-- HTF BOS/CHoCH bias is not implemented; current bias is sweep-derived.
-- Structural dealing-range identity and OTE lifecycle are missing.
 - FVG confluence, freshness, invalidation, tie-break, rounding, and point
   normalization are incomplete.
 - LTF confirmation lacks full structured event evidence and lifecycle rules.
 - Deterministic state machine is missing.
 - Full logical trade-plan object is missing.
 - R1-R7 detailed failure coverage is incomplete.
-- Stable identifiers are missing.
-- Versioned golden-case library is missing.
+- Stable identifiers are incomplete for FVG, confirmation, signal, and trade-plan
+  evidence.
+- Versioned golden-case library requires GC3+ expansion.
 - Hardcoded symbol precision in the reference kernel was closed by GC1.
