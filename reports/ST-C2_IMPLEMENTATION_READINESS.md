@@ -10,6 +10,14 @@ Companion to `reports/ST-C2_SPEC_AUDIT.md` (full gate-by-gate matrix) and
 
 # READY WITH OWNER DECISIONS PENDING
 
+**Updated 2026-07-24 (fifth addendum):** the owner closed one of the six
+original blocking items (`duplicate_setup_policy`, with rationale) and
+added a new, explicitly PROVISIONAL portfolio-loss circuit breaker
+(`risk.hard_kill_switch`). The verdict is unchanged — five substantive
+blockers remain, one of which (emergency-exit numeric thresholds) was
+initially mistaken for closed by the same submission and is corrected
+back to open below, with the reasoning stated.
+
 Not READY FOR IMPLEMENTATION. Not NOT READY. Six of ten gates
 (G3, G4, G7, G8, G9) plus RCR pre-registration are fully closed with
 deterministic, measurable, testable rules, and one more (G6) is closed
@@ -27,7 +35,7 @@ items below are closed and this report is re-issued.**
 
 A deterministic point-in-time engine cannot be built end-to-end today
 without inventing at least the following, none of which exists anywhere in
-`specs/st-c2.yaml`, its four RCR addenda, or the codebase:
+`specs/st-c2.yaml`, its five RCR addenda, or the codebase:
 
 1. **The FVG zone-boundary formula (G5)** — without this, the pipeline's
    own stage 4 (FVG alignment, required for entry per `ltf_fvg.required_for_entry: true`)
@@ -36,22 +44,28 @@ without inventing at least the following, none of which exists anywhere in
 2. **The liquidity-pool "stable identifier" (G2)** — decision 3's own
    tie-break chain (nearest distance → most recent timestamp → stable
    identifier) is incomplete without it when the first two criteria tie.
-3. **`duplicate_setup_policy` (order-simulation)** — the platform-wide risk
-   gate (`risk.max_positions: 3`) cannot be enforced deterministically
-   without knowing how concurrent qualifying setups are prioritized.
-4. **Post-fill event-priority ordering (order-simulation)** — trade
+3. **Post-fill event-priority ordering (order-simulation)** — trade
    management (`management.break_even_activation_r`, `partial_take_r`,
    `runner_enabled`) has no defined behavior when more than one management
    event could apply on the same bar.
-5. **Session-close-forces-exit for an open position (G10)** — an
+4. **Session-close-forces-exit for an open position (G10)** — an
    unaddressed question distinct from the already-closed "no time stop"
    decision.
-6. **Emergency-exit numeric thresholds (G10)** — the concept and trigger
-   types are decided; the actual numbers that would fire the rule are not.
+5. **Emergency-exit numeric thresholds (G10)** — the concept and trigger
+   types are decided; the actual numbers that would fire the
+   spread-spike/connection-loss/volatility-shock rule are not. (A
+   separate, PROVISIONAL portfolio-loss circuit breaker was decided in the
+   fifth addendum — that closes a different mechanism, not this one; see
+   `reports/ST-C2_SPEC_AUDIT.md` §3 finding 9 for why they aren't the
+   same thing.)
 
-Each of these is a place where an implementer would otherwise have to
-invent a rule mid-build — exactly what the four RCR addenda, and this
-task, exist to prevent.
+`duplicate_setup_policy` (order-simulation) was the sixth item on this
+list as of the fourth addendum — **closed** in the fifth addendum with
+stated rationale (`one_position_at_a_time`, logged not executed).
+
+Each remaining item is a place where an implementer would otherwise have
+to invent a rule mid-build — exactly what the RCR addenda, and this task,
+exist to prevent.
 
 ## Why not NOT READY
 

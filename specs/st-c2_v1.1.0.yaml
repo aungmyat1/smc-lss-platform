@@ -21,7 +21,9 @@
 id: ST-C2
 name: Hybrid Liquidity-First Unified SMC Pipeline
 version: 1.1.0
-status: candidate   # NOT canonical/approved — see reports/ST-C2_IMPLEMENTATION_READINESS.md
+governance_profile: ST-C2_v1   # decided: fifth addendum — tracking label only, not a status change
+status: candidate   # deliberately NOT "frozen" — see reports/ST-C2_IMPLEMENTATION_READINESS.md and the fifth
+                     # addendum's "Structural note on this session's format" for why
 consolidation_status: PARTIAL   # see reports/ST-C2_SPEC_AUDIT.md for the full gate matrix
 engine_implements_spec: false   # SAFETY INTERLOCK — no engine exists yet
 implementation_authorization: null   # no "IMPLEMENTATION AUTHORIZATION: GRANTED" string exists anywhere in the repo
@@ -239,10 +241,9 @@ pipeline:
       gap_through_handling: fill_at_open          # decided: third addendum, Cluster 4 Q14
       partial_fill_policy: accept_and_scale_targets   # decided: third addendum, Cluster 4 Q15
 
-      duplicate_setup_policy: null   # UNRESOLVED — a proposed value ("one_position_at_a_time") was supplied
-                                      # alongside the third addendum's decisions but with NO owner rationale behind
-                                      # it, unlike every other field in that session. Explicitly flagged unconfirmed
-                                      # in the addendum itself. Do not treat as decided. See audit §Order-Simulation.
+      duplicate_setup_policy: one_position_at_a_time   # decided: fifth addendum, Decision A
+      duplicate_setup_log_only: true   # decided: fifth addendum, Decision A — a rejected duplicate setup is still
+                                        # logged per diagnostics.record_rejected_setups, not silently dropped
 
       post_fill_event_priority_ordering: null   # UNRESOLVED — decision 9's stop-first rule covers same-bar
                                                  # entry/stop/target ambiguity only. General event ordering across
@@ -298,12 +299,14 @@ pipeline:
                                        # answer plausibly implies no forced session-close exit either, but this was
                                        # never explicitly stated as covering that case. Not assumed here. See audit §G10.
 
-    emergency_exit_rules:
+    emergency_exit_rules:   # distinct from risk.hard_kill_switch above (a portfolio loss-% circuit breaker) —
+                             # this is an infrastructure/market-anomaly-triggered immediate exit. Do not conflate.
       concept: immediate_market_exit   # decided: third addendum, Cluster 4 Q12
       triggers: [spread_spike, connection_loss, volatility_shock]   # decided: third addendum, Cluster 4 Q12
       spread_spike_points: 20   # PLACEHOLDER — illustrative example value from source material, explicitly flagged
                                  # as NOT owner-confirmed in the third addendum's own "Not addressed" section.
-      connection_loss_seconds: 60   # PLACEHOLDER — same caveat as above.
+                                 # STILL UNRESOLVED as of the fifth addendum — not answered by Decision B.
+      connection_loss_seconds: 60   # PLACEHOLDER — same caveat as above, still unresolved.
 
 # ============================================================
 # 4. Risk & Portfolio
@@ -320,6 +323,18 @@ risk:
   portfolio_heat_pct: 3.0
   daily_loss_pct: 3.0
   weekly_loss_pct: 7.0
+
+  hard_kill_switch:   # decided: fifth addendum, Decision B — STATUS: PROVISIONAL, subject to future risk research
+    enabled: true
+    triggers: [daily_loss_pct_exceeded, weekly_loss_pct_exceeded]   # references the two fields above; thresholds
+                                                                     # are NOT duplicated here to avoid drift
+    on_trigger:
+      disable_new_entries: true
+      close_open_positions_if: structural_invalidation_near
+      resume_requires: manual_reauthorization
+    # NOTE: this is a distinct mechanism from pipeline.management.emergency_exit_rules below (a spread-spike/
+    # connection-loss/volatility-shock-triggered immediate market exit, whose numeric thresholds remain UNRESOLVED).
+    # Do not conflate the two — see reports/ST-C2_SPEC_AUDIT.md.
 
 # ============================================================
 # 5. Conformance & Diagnostics

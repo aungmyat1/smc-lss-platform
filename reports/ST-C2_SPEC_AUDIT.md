@@ -42,8 +42,8 @@ pass's own re-check.
 | G7 — structural invalidation/stop | **CLOSED** | Anchor/buffer/rounding: 1st addendum decision 6. Min/max stop-distance bounds (35/150 points) and the out-of-bounds behavior: 2nd addendum G7 decisions 1-4. | None. |
 | G8 — net reward after costs | **CLOSED** | `rr_min` conflict resolution and cost model: 1st addendum decisions 1, 10. Cost profile verified present (`config/research_costs.yaml` XAUUSD row: spread 25.0 pts, slippage 5.0 pts, commission 0, swap 0). | None. |
 | G9 — logical target before entry | **CLOSED** | T1/T2 both-mandatory, pre-entry selection: 1st addendum decisions 1, 7. | None. |
-| G10 — precommitted trade management | **PARTIAL** | Pre-fill limit expiry: 1st addendum decision 8. Time stop (none, structure/R-based only): 3rd addendum Cluster 4 Q11. Emergency-exit concept + triggers: 3rd addendum Cluster 4 Q12. | Emergency-exit **numeric thresholds** (20 pts / 60 s) are explicitly flagged illustrative-only, not owner-confirmed, in the 3rd addendum itself. **Session-close-forces-exit for an already-filled position** was never explicitly addressed — distinct from "time stop," per the original audit's own item split; new finding this pass, see §3. |
-| Entry / order-simulation | **PARTIAL** | Exact limit price, placement/confirmation timing, next-bar fill: 1st addendum decisions 2, 9. Limit expiry/cancellation: decision 8. Same-bar entry/stop/target ambiguity (stop-first): decision 9. Bid/ask (mid-price): 3rd addendum Cluster 4 Q13. Gap-through (fill-at-open): Q14. Partial-fill (accept + scale): Q15. | `duplicate_setup_policy` — proposed value exists but explicitly flagged unconfirmed (no owner rationale) in the 3rd addendum. **General post-fill event-priority ordering** (breakeven vs. partial vs. runner vs. stop, same bar) is a distinct question from decision 9's entry/stop/target scope and was never addressed — new finding this pass, see §3. |
+| G10 — precommitted trade management | **PARTIAL** | Pre-fill limit expiry: 1st addendum decision 8. Time stop (none, structure/R-based only): 3rd addendum Cluster 4 Q11. Emergency-exit concept + triggers: 3rd addendum Cluster 4 Q12. Portfolio-level loss circuit breaker (new, owner-initiated addition beyond the original gate table — `risk.hard_kill_switch`, status PROVISIONAL): **5th addendum, Decision B.** | Emergency-exit **numeric thresholds** (20 pts / 60 s, for the spread-spike/connection-loss/volatility-shock immediate-exit rule) are explicitly flagged illustrative-only, not owner-confirmed — **still unresolved after the 5th addendum**, which decided a mechanically different thing (see §3 update below). **Session-close-forces-exit for an already-filled position** was never explicitly addressed — distinct from "time stop," per the original audit's own item split; new finding this pass, see §3. |
+| Entry / order-simulation | **PARTIAL** | Exact limit price, placement/confirmation timing, next-bar fill: 1st addendum decisions 2, 9. Limit expiry/cancellation: decision 8. Same-bar entry/stop/target ambiguity (stop-first): decision 9. Bid/ask (mid-price): 3rd addendum Cluster 4 Q13. Gap-through (fill-at-open): Q14. Partial-fill (accept + scale): Q15. `duplicate_setup_policy` (one_position_at_a_time, log-only): **5th addendum, Decision A.** | **General post-fill event-priority ordering** (breakeven vs. partial vs. runner vs. stop, same bar) is a distinct question from decision 9's entry/stop/target scope and was never addressed — new finding this pass, see §3. |
 | RCR pre-registration | **CLOSED** | Primary/secondary metrics, multiple-testing control, OOS boundary, max experiment count, allowed-parameter-changes list: all 2nd addendum. Population-feasibility (30) / statistical-claim (100) floors: 1st addendum decision 12. | None. |
 
 **Summary:** 6 of 12 rows fully CLOSED (G3, G4, G7, G8, G9, RCR
@@ -130,30 +130,44 @@ project's established verification practice.
    as non-blocking, low-risk, and worth a one-line confirmation (or
    silent acceptance) at implementation time rather than presented as an
    owner decision.
+9. **(Added 2026-07-24, fifth addendum) A proposed "emergency_exit"
+   decision did not close the emergency-exit numeric-threshold gap
+   flagged above.** A governance-restructuring proposal offered
+   `max_daily_loss_pct`/`max_weekly_loss_pct`/`hard_kill_switch_enabled`
+   under the name "emergency exit." Checked against source: those numbers
+   already existed as `risk.daily_loss_pct`/`weekly_loss_pct`; the new
+   content is enforcement behavior (disable entries, conditional close,
+   manual re-auth), recorded as `risk.hard_kill_switch` (PROVISIONAL).
+   The actual open item — spread-spike/connection-loss numeric thresholds
+   for `management.emergency_exit_rules`'s immediate-market-exit concept —
+   remains unresolved. Recorded as its own item, not merged into finding 4
+   above, to keep the distinction visible for future readers.
 
 ---
 
 ## 4. Full list of unresolved items (nothing here is resolved by this audit)
 
-| # | Item | Gate | Blocking? |
-|---|---|---|---|
-| 1 | `duplicate_setup_policy` exact value | Order-simulation | Yes — explicitly flagged unconfirmed by the owner's own prior addendum |
-| 2 | Emergency-exit numeric thresholds (spread-spike points, connection-loss seconds) | G10 | Yes — explicitly flagged illustrative-only |
-| 3 | FVG zone-boundary formula (3-candle gap price boundaries) | G5 | Yes — no deterministic engine can be built without it |
-| 4 | Liquidity-pool "stable identifier" composition | G2 | Yes — decision 3's tie-break chain is incomplete without it |
-| 5 | Bull/bear classification rule (explicit statement) | G1 | Likely low-effort, but unresolved |
-| 6 | Bias-evidence-timestamp field | G1 | Low-risk, diagnostics-detail level |
-| 7 | Session-close-forces-exit for an open position | G10 | Yes — distinct from the already-answered time-stop question |
-| 8 | Post-fill event-priority ordering (breakeven/partial/runner/stop) | Order-simulation | Yes — needed for deterministic trade management |
-| 9 | 4th+ CHoCH sequencing rule | G1/G3 | Narrow edge case, non-blocking for initial implementation |
-| 10 | `protected_level_lifecycle.create_on` — confirm the terminology-based inference | G1 | Low-risk, recommend one-line confirmation |
-| 11 | `internal_bos_required` explicit restatement | G6 | Low-risk, recommend one-line confirmation |
-| 12 | Rejection code strings — confirm or accept as proposed | All gates | Non-blocking |
+| # | Item | Gate | Blocking? | Status |
+|---|---|---|---|---|
+| 1 | ~~`duplicate_setup_policy` exact value~~ | Order-simulation | — | **CLOSED, 5th addendum Decision A** |
+| 2 | Emergency-exit numeric thresholds (spread-spike points, connection-loss seconds) | G10 | Yes — explicitly flagged illustrative-only, still unresolved after the 5th addendum's Decision B (a different mechanism) | Open |
+| 3 | FVG zone-boundary formula (3-candle gap price boundaries) | G5 | Yes — no deterministic engine can be built without it | Open |
+| 4 | Liquidity-pool "stable identifier" composition | G2 | Yes — decision 3's tie-break chain is incomplete without it | Open |
+| 5 | Bull/bear classification rule (explicit statement) | G1 | Likely low-effort, but unresolved | Open |
+| 6 | Bias-evidence-timestamp field | G1 | Low-risk, diagnostics-detail level | Open |
+| 7 | Session-close-forces-exit for an open position | G10 | Yes — distinct from the already-answered time-stop question | Open |
+| 8 | Post-fill event-priority ordering (breakeven/partial/runner/stop) | Order-simulation | Yes — needed for deterministic trade management | Open |
+| 9 | 4th+ CHoCH sequencing rule | G1/G3 | Narrow edge case, non-blocking for initial implementation | Open |
+| 10 | `protected_level_lifecycle.create_on` — confirm the terminology-based inference | G1 | Low-risk, recommend one-line confirmation | Open |
+| 11 | `internal_bos_required` explicit restatement | G6 | Low-risk, recommend one-line confirmation | Open |
+| 12 | Rejection code strings — confirm or accept as proposed | All gates | Non-blocking | Open |
+| 13 | `risk.hard_kill_switch` — PROVISIONAL, subject to future risk research per the owner's own label | Risk (new, beyond original gate table) | Not blocking initial implementation scope, but PROVISIONAL means it may change | New, 5th addendum Decision B |
 
-Items 1-4 and 7-8 are the substantive blockers. Items 5, 6, 9, 10, 11, 12
-are low-risk/narrow and could reasonably be closed with brief confirmations
-rather than fresh design sessions, but are not resolved here regardless of
-apparent size, per instruction.
+Items 2-4 and 7-8 are the substantive remaining blockers. Items 5, 6, 9,
+10, 11, 12 are low-risk/narrow and could reasonably be closed with brief
+confirmations rather than fresh design sessions, but are not resolved
+here regardless of apparent size, per instruction. Item 13 is new and
+explicitly provisional, not a blocker.
 
 ---
 
