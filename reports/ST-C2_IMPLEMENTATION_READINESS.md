@@ -10,62 +10,68 @@ Companion to `reports/ST-C2_SPEC_AUDIT.md` (full gate-by-gate matrix) and
 
 # READY WITH OWNER DECISIONS PENDING
 
-**Updated 2026-07-24 (fifth addendum):** the owner closed one of the six
-original blocking items (`duplicate_setup_policy`, with rationale) and
-added a new, explicitly PROVISIONAL portfolio-loss circuit breaker
-(`risk.hard_kill_switch`). The verdict is unchanged — five substantive
-blockers remain, one of which (emergency-exit numeric thresholds) was
-initially mistaken for closed by the same submission and is corrected
-back to open below, with the reasoning stated.
+**Updated 2026-07-24 (sixth addendum):** the owner closed four more of
+the five remaining substantive blockers (FVG zone-boundary formula,
+liquidity-pool stable-identifier composition, post-fill event-priority
+ordering, and — partially — session-close-forces-exit) plus ratified the
+emergency-exit numeric thresholds as PROVISIONAL working values. **Exactly
+one substantive gap now remains: the numeric "invalidation-buffer
+distance" for the session-close-exit rule** (the concept is decided; the
+number is not, and is explicitly not inferred from the unrelated G7 stop
+buffer). Six low-risk/narrow items from the audit are also still open.
+The verdict stays READY WITH OWNER DECISIONS PENDING rather than READY FOR
+IMPLEMENTATION, per this task's own rule that only a report with zero
+remaining blockers earns that conclusion — one missing number is still a
+missing number, not a rounding-up case.
 
-Not READY FOR IMPLEMENTATION. Not NOT READY. Six of ten gates
-(G3, G4, G7, G8, G9) plus RCR pre-registration are fully closed with
-deterministic, measurable, testable rules, and one more (G6) is closed
-except for a single low-risk restatement. But four gates (G1, G2, G5, G10)
-and the order-simulation rule set each carry at least one genuine,
-unresolved gap — some explicitly flagged as unconfirmed by the owner's own
-prior addenda, some newly found in this consolidation pass. Per this
-task's own instruction, none of them is resolved by assumption here.
-**Implementation should not be recommended or started until the blocking
-items below are closed and this report is re-issued.**
+Not READY FOR IMPLEMENTATION. Not NOT READY. Nine of twelve gate-matrix
+rows (G2, G3, G4, G5, G7, G8, G9, order-simulation, RCR pre-registration)
+are now fully closed with deterministic, measurable, testable rules, and
+a tenth (G6) is closed except for a single low-risk restatement. G1
+carries two low-risk open items; G10 carries exactly one missing number.
+Per this task's own instruction, none of them is resolved by assumption
+here. **Implementation should not be recommended or started until the
+blocking item below is closed and this report is re-issued.**
 
 ---
 
 ## Why not READY FOR IMPLEMENTATION
 
-A deterministic point-in-time engine cannot be built end-to-end today
-without inventing at least the following, none of which exists anywhere in
-`specs/st-c2.yaml`, its five RCR addenda, or the codebase:
+Exactly one gap remains that would force an implementer to invent a rule
+mid-build:
 
-1. **The FVG zone-boundary formula (G5)** — without this, the pipeline's
-   own stage 4 (FVG alignment, required for entry per `ltf_fvg.required_for_entry: true`)
-   has no way to compute what a "fair value gap" actually *is* in price
-   terms, only how it ages and gets invalidated.
-2. **The liquidity-pool "stable identifier" (G2)** — decision 3's own
-   tie-break chain (nearest distance → most recent timestamp → stable
-   identifier) is incomplete without it when the first two criteria tie.
-3. **Post-fill event-priority ordering (order-simulation)** — trade
-   management (`management.break_even_activation_r`, `partial_take_r`,
-   `runner_enabled`) has no defined behavior when more than one management
-   event could apply on the same bar.
-4. **Session-close-forces-exit for an open position (G10)** — an
-   unaddressed question distinct from the already-closed "no time stop"
-   decision.
-5. **Emergency-exit numeric thresholds (G10)** — the concept and trigger
-   types are decided; the actual numbers that would fire the
-   spread-spike/connection-loss/volatility-shock rule are not. (A
-   separate, PROVISIONAL portfolio-loss circuit breaker was decided in the
-   fifth addendum — that closes a different mechanism, not this one; see
-   `reports/ST-C2_SPEC_AUDIT.md` §3 finding 9 for why they aren't the
-   same thing.)
+1. **Session-close "invalidation-buffer distance" (G10)** — the sixth
+   addendum's Decision 3 settled the rule's *shape* (at session close,
+   exit only if price is within an invalidation-buffer distance of
+   structural invalidation; otherwise the position stays open), but
+   supplied no number or formula for that distance. It was explicitly not
+   assumed to reuse the G7 stop buffer (a different concept — stop
+   placement, not exit-trigger proximity) per this project's practice of
+   not inferring across unrelated fields. One number closes this.
 
-`duplicate_setup_policy` (order-simulation) was the sixth item on this
-list as of the fourth addendum — **closed** in the fifth addendum with
-stated rationale (`one_position_at_a_time`, logged not executed).
+Everything else on the original five-item list from the fifth-addendum
+version of this report is now closed:
 
-Each remaining item is a place where an implementer would otherwise have
-to invent a rule mid-build — exactly what the RCR addenda, and this task,
-exist to prevent.
+- ~~FVG zone-boundary formula (G5)~~ — closed, sixth addendum Decision 1
+  (wick-to-wick displacement, verified directly against
+  `src/smc_engine.py:135-143`'s `fvgs()`, not just asserted).
+- ~~Liquidity-pool "stable identifier" (G2)~~ — closed, sixth addendum
+  Decision 2 (SHA-256 hash of structural attributes).
+- ~~Post-fill event-priority ordering (order-simulation)~~ — closed,
+  sixth addendum Decision 4 (stop → target → management → diagnostics).
+- ~~Emergency-exit numeric thresholds (G10)~~ — closed as PROVISIONAL
+  working values, sixth addendum Decision 5 (the existing 20 pts / 60 s
+  illustrative values, now knowingly ratified rather than merely
+  unreviewed).
+- ~~`duplicate_setup_policy` (order-simulation)~~ — closed, fifth
+  addendum Decision A.
+
+The remaining low-risk items (bull/bear classification statement,
+bias-evidence-timestamp field, 4th+ CHoCH sequencing,
+`protected_level_lifecycle.create_on`, `internal_bos_required`
+restatement, rejection-code ratification) are unchanged from the prior
+version of this report — narrow, non-blocking in the same sense, but not
+resolved here either.
 
 ## Why not NOT READY
 
@@ -82,27 +88,12 @@ four addenda's worth of real, careful decision-making.
 
 ## What "READY WITH OWNER DECISIONS PENDING" requires to become READY
 
-All items in `reports/ST-C2_SPEC_AUDIT.md` §4 must be closed — either by an
-explicit owner decision (same format as the four prior addenda) or, for
-the items already classified as engineering-verification-only (none
-remain unclassified at this time — G2's dedup key was the last such item,
-closed by the fourth addendum), by a read-only verification pass. The
-blocking subset, restated from the audit:
+One substantive item: **the invalidation-buffer distance number** for
+Decision 3's conditional session-close-exit rule (a points/pips value or
+an explicit formula, e.g. "within N points of the structural invalidation
+level").
 
-- `duplicate_setup_policy` — needs an actual decision with rationale, not
-  the currently-unconfirmed proposed value.
-- Emergency-exit numeric thresholds — needs owner confirmation of final
-  numbers (or an explicit statement that the illustrative values become
-  final).
-- FVG zone-boundary formula — needs either an owner-supplied formula or an
-  explicit decision to adopt (and verify) an existing codebase primitive.
-- Liquidity-pool stable-identifier composition — needs a decision,
-  distinct from the already-closed replay-engine dedup key.
-- Session-close-forces-exit — needs an explicit yes/no, not inferred from
-  the time-stop answer.
-- Post-fill event-priority ordering — needs an explicit precedence rule.
-
-The five low-risk items (bull/bear classification statement,
+The six low-risk items (bull/bear classification statement,
 bias-evidence-timestamp field, 4th+ CHoCH sequencing, the
 `protected_level_lifecycle.create_on` inference, the `internal_bos_required`
 restatement, and rejection-code ratification) are not blocking in the
@@ -127,9 +118,13 @@ confirmed before or during implementation rather than left silent.
 
 ## Recommendation
 
-Do not begin implementation. When ready, resolve the six blocking items
-above (ideally as a fifth RCR addendum, matching this project's
-established pattern), re-run this consolidation, and re-issue this report.
-Only a future version of this report concluding **READY FOR IMPLEMENTATION**
-should be treated as grounds to seek
-`IMPLEMENTATION AUTHORIZATION: GRANTED`.
+Do not begin implementation. One number away: supply the
+invalidation-buffer distance (ideally as a seventh RCR addendum, matching
+this project's established pattern), re-run this consolidation, and
+re-issue this report. Only a future version of this report concluding
+**READY FOR IMPLEMENTATION** should be treated as grounds to seek
+`IMPLEMENTATION AUTHORIZATION: GRANTED` — and per the project-governance-
+agent ruling recorded in this session, that authorization act, plus
+sequencing by `project-governance-agent`, are both still required after
+this report turns green before any `src/` code is written; the RCR
+addenda authorize spec content, never execution-layer code, on their own.
