@@ -1,6 +1,6 @@
 # ST-C2 Implementation Readiness Report
 
-**Date:** 2026-07-24
+**Date:** 2026-07-24 (updated after the seventh RCR addendum)
 **Prepared per:** owner instruction to "prepare ST-C2 for implementation
 authorization" — explicitly **not** an instruction to begin implementation.
 Companion to `reports/ST-C2_SPEC_AUDIT.md` (full gate-by-gate matrix) and
@@ -8,97 +8,112 @@ Companion to `reports/ST-C2_SPEC_AUDIT.md` (full gate-by-gate matrix) and
 
 ## Verdict
 
-# READY WITH OWNER DECISIONS PENDING
+# READY FOR IMPLEMENTATION
 
-**Updated 2026-07-24 (sixth addendum):** the owner closed four more of
-the five remaining substantive blockers (FVG zone-boundary formula,
-liquidity-pool stable-identifier composition, post-fill event-priority
-ordering, and — partially — session-close-forces-exit) plus ratified the
-emergency-exit numeric thresholds as PROVISIONAL working values. **Exactly
-one substantive gap now remains: the numeric "invalidation-buffer
-distance" for the session-close-exit rule** (the concept is decided; the
-number is not, and is explicitly not inferred from the unrelated G7 stop
-buffer). Six low-risk/narrow items from the audit are also still open.
-The verdict stays READY WITH OWNER DECISIONS PENDING rather than READY FOR
-IMPLEMENTATION, per this task's own rule that only a report with zero
-remaining blockers earns that conclusion — one missing number is still a
-missing number, not a rounding-up case.
+**Updated 2026-07-24 (seventh addendum):** the seventh addendum closed
+the last substantive blocker (the session-close invalidation-buffer
+distance, 2.5 points, final). Combined with the fifth and sixth addenda,
+every item this report has ever listed as a **substantive** blocker is
+now closed with a deterministic, citable rule. 10 of 12 gate-matrix rows
+in `reports/ST-C2_SPEC_AUDIT.md` are fully CLOSED, one more (G6) is
+closed except for a single low-risk restatement, and only G1 carries two
+narrow, non-blocking open items. This is a genuine, earned conclusion —
+not a rounding-up of "READY WITH OWNER DECISIONS PENDING." It reflects
+seven addenda's worth of real, checked, citable decisions, several
+verified directly against code rather than accepted on assertion.
 
-Not READY FOR IMPLEMENTATION. Not NOT READY. Nine of twelve gate-matrix
-rows (G2, G3, G4, G5, G7, G8, G9, order-simulation, RCR pre-registration)
-are now fully closed with deterministic, measurable, testable rules, and
-a tenth (G6) is closed except for a single low-risk restatement. G1
-carries two low-risk open items; G10 carries exactly one missing number.
-Per this task's own instruction, none of them is resolved by assumption
-here. **Implementation should not be recommended or started until the
-blocking item below is closed and this report is re-issued.**
+**This verdict is not, by itself, `IMPLEMENTATION AUTHORIZATION: GRANTED`,
+and does not authorize creating any file under `src/`.** See "What this
+verdict does and does not authorize" below — that is a separate,
+still-open governance question this report does not decide.
 
 ---
 
-## Why not READY FOR IMPLEMENTATION
+## Why READY FOR IMPLEMENTATION
 
-Exactly one gap remains that would force an implementer to invent a rule
-mid-build:
+Every item ever listed in this report's "substantive blocker" set is now
+closed:
 
-1. **Session-close "invalidation-buffer distance" (G10)** — the sixth
-   addendum's Decision 3 settled the rule's *shape* (at session close,
-   exit only if price is within an invalidation-buffer distance of
-   structural invalidation; otherwise the position stays open), but
-   supplied no number or formula for that distance. It was explicitly not
-   assumed to reuse the G7 stop buffer (a different concept — stop
-   placement, not exit-trigger proximity) per this project's practice of
-   not inferring across unrelated fields. One number closes this.
+- FVG zone-boundary formula (G5) — wick-to-wick displacement, **verified**
+  directly against `src/smc_engine.py:135-143`'s `fvgs()` (sixth addendum,
+  Decision 1) — not merely asserted.
+- Liquidity-pool stable-identifier composition (G2) — SHA-256 hash of
+  structural attributes (sixth addendum, Decision 2).
+- Post-fill event-priority ordering (order-simulation) — stop → target →
+  management → diagnostics (sixth addendum, Decision 4).
+- Session-close-forces-exit (G10) — conditional, near invalidation only
+  (sixth addendum, Decision 3), with the numeric invalidation-buffer
+  distance — 2.5 points, final — closed by the **seventh addendum**.
+- Emergency-exit numeric thresholds (G10) — ratified as PROVISIONAL
+  working values, 20 spread-spike points / 60 connection-loss seconds
+  (sixth addendum, Decision 5).
+- `duplicate_setup_policy` (order-simulation) — one_position_at_a_time,
+  logged not executed (fifth addendum, Decision A).
 
-Everything else on the original five-item list from the fifth-addendum
-version of this report is now closed:
+## What is still open (non-blocking, tracked, not resolved here)
 
-- ~~FVG zone-boundary formula (G5)~~ — closed, sixth addendum Decision 1
-  (wick-to-wick displacement, verified directly against
-  `src/smc_engine.py:135-143`'s `fvgs()`, not just asserted).
-- ~~Liquidity-pool "stable identifier" (G2)~~ — closed, sixth addendum
-  Decision 2 (SHA-256 hash of structural attributes).
-- ~~Post-fill event-priority ordering (order-simulation)~~ — closed,
-  sixth addendum Decision 4 (stop → target → management → diagnostics).
-- ~~Emergency-exit numeric thresholds (G10)~~ — closed as PROVISIONAL
-  working values, sixth addendum Decision 5 (the existing 20 pts / 60 s
-  illustrative values, now knowingly ratified rather than merely
-  unreviewed).
-- ~~`duplicate_setup_policy` (order-simulation)~~ — closed, fifth
-  addendum Decision A.
+Six low-risk items from `reports/ST-C2_SPEC_AUDIT.md` §4 remain
+unaddressed and are **not** resolved by this verdict:
 
-The remaining low-risk items (bull/bear classification statement,
-bias-evidence-timestamp field, 4th+ CHoCH sequencing,
-`protected_level_lifecycle.create_on`, `internal_bos_required`
-restatement, rejection-code ratification) are unchanged from the prior
-version of this report — narrow, non-blocking in the same sense, but not
-resolved here either.
+1. Bull/bear classification rule — explicit statement never written down
+   (mechanically implied by existing terminology).
+2. Bias-evidence-timestamp field — diagnostics-detail level.
+3. 4th+ CHoCH sequencing — narrow edge case beyond the decided 2nd/3rd
+   CHoCH rule.
+4. `protected_level_lifecycle.create_on: bos_confirmed` — a terminology-
+   based inference (`applied:`, not `decided:`), recommend one-line
+   confirmation.
+5. `internal_bos_required`'s explicit restatement — implied, not
+   independently stated.
+6. Rejection code strings — carried from the original governance audit's
+   own naming, never separately owner-ratified.
+7. A units flag on the seventh addendum's `2.5` (recorded as points,
+   consistent with this spec's established `buffer_pips`-means-points
+   precedent, but the owner's literal wording used "pips" — flagged for
+   correction if that reading is wrong).
 
-## Why not NOT READY
+None of these block a deterministic engine build in the judgment recorded
+here — each has an unambiguous default reading already stated in the
+spec, or is a narrow edge case, or is a non-strategy diagnostics/naming
+detail. They should be confirmed before or during implementation, not
+silently forgotten because this report turned green.
 
-The overwhelming majority of the strategy's semantics **are** closed with
-citable, deterministic, testable rules: HTF bias classification, dealing-
-range/premium-discount mechanics, FVG freshness/invalidation/alignment
-(short of the boundary formula), sweep/CHoCH timing, the entire stop-
-distance and cost-model contract, target selection, and the full RCR
-statistical pre-registration. Six gates are fully closed; a seventh is one
-sentence away. This is not a strategy with foundational gaps — it is a
-strategy with a short, enumerable list of specific, isolable open
-questions. Framing it as "not ready" in the broad sense would understate
-four addenda's worth of real, careful decision-making.
+## What this verdict does and does not authorize
 
-## What "READY WITH OWNER DECISIONS PENDING" requires to become READY
+**Does not authorize:**
+- Any change to `specs/st-c2.yaml` (v1.0.0, still unchanged) or
+  `specs/st-c2_v1.1.0.yaml`'s `status` field (still `candidate` — this
+  report does not itself freeze the spec; see below).
+- Creating, editing, or scaffolding any file under `src/`.
+- Any backtest, demo, live, or promotion action.
+- `IMPLEMENTATION AUTHORIZATION: GRANTED` — that string still does not
+  exist anywhere in the repo, and this report does not create it.
 
-One substantive item: **the invalidation-buffer distance number** for
-Decision 3's conditional session-close-exit rule (a points/pips value or
-an explicit formula, e.g. "within N points of the structural invalidation
-level").
+**Two separate governance questions remain, deliberately not decided by
+this report:**
 
-The six low-risk items (bull/bear classification statement,
-bias-evidence-timestamp field, 4th+ CHoCH sequencing, the
-`protected_level_lifecycle.create_on` inference, the `internal_bos_required`
-restatement, and rejection-code ratification) are not blocking in the
-same sense but are also not resolved here, per instruction, and should be
-confirmed before or during implementation rather than left silent.
+1. **Should `specs/st-c2_v1.1.0.yaml` be promoted from `status: candidate`
+   to `status: frozen`, now that the substantive blockers are closed?**
+   This is a real question this report's authors (the assistant, across
+   this session) are not the right authority to self-answer, especially
+   immediately after an owner request framed as "if satisfied, grant
+   authorization and permit engine-file creation" — collapsing evaluation
+   and authorization into one step is exactly the pattern this session's
+   `project-governance-agent` ruling already warned against when it
+   rejected treating repetition or self-styled request formatting as
+   authorization. This question is routed to `project-governance-agent`
+   as a separate act, not decided here.
+2. **If freeze is granted, what does `IMPLEMENTATION AUTHORIZATION:
+   GRANTED` actually permit building first?** The `project-governance-agent`
+   ruling already on record in this session (in response to the direct
+   `src/strategies/st_c2/` skeleton request) was explicit: even full
+   authorization does not jump straight to a 10-file engine package.
+   `NEXT_ACTION.md`'s own declared order applies first — golden-case
+   tests, then a conformance kernel filed as **research code** (not the
+   execution package), then a minimum XAUUSD detector slice, then an
+   existence-check run. Building the full `src/strategies/st_c2/`
+   skeleton would need its own, later, separate sequencing act even after
+   authorization is granted.
 
 ## Explicit non-actions in this task
 
@@ -110,21 +125,15 @@ confirmed before or during implementation rather than left silent.
 - No execution, demo, live, or promotion state was changed.
 - No `IMPLEMENTATION AUTHORIZATION: GRANTED` string exists anywhere in the
   repo, and this report does not create one.
-- `specs/st-c2_v1.1.0.yaml` remains `status: candidate`, not an
-  owner-verified canonical/approved spec — the "canonical-specification-
-  path question" first raised in the RCR's original addendum is addressed
-  by this file's existence, but the file's *approval* is a separate,
-  still-open owner act.
+- `specs/st-c2_v1.1.0.yaml` remains `status: candidate` — this report
+  does not freeze it; that is a separate act, per above.
 
 ## Recommendation
 
-Do not begin implementation. One number away: supply the
-invalidation-buffer distance (ideally as a seventh RCR addendum, matching
-this project's established pattern), re-run this consolidation, and
-re-issue this report. Only a future version of this report concluding
-**READY FOR IMPLEMENTATION** should be treated as grounds to seek
-`IMPLEMENTATION AUTHORIZATION: GRANTED` — and per the project-governance-
-agent ruling recorded in this session, that authorization act, plus
-sequencing by `project-governance-agent`, are both still required after
-this report turns green before any `src/` code is written; the RCR
-addenda authorize spec content, never execution-layer code, on their own.
+The specification is substantively complete. The next step is a
+`project-governance-agent` evaluation of (a) whether to promote
+`specs/st-c2_v1.1.0.yaml` to `status: frozen`, and (b) if so, what
+`IMPLEMENTATION AUTHORIZATION: GRANTED`, once issued, would actually
+scope and sequence — per its own already-recorded ruling on this exact
+question. That evaluation is a separate act from this report and is not
+performed here.

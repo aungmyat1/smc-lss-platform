@@ -293,9 +293,10 @@ pipeline:
     session_close_forces_exit: conditional_near_invalidation_only   # decided: sixth addendum, Decision 3 — at
       # session close, exit only if price is within an invalidation-buffer distance of structural invalidation;
       # otherwise the position remains open past session close. Consistent with Q11's structure-based philosophy.
-    invalidation_buffer_distance: null   # UNRESOLVED — Decision 3 named the concept ("near invalidation") but
-      # supplied no number/formula. NOT assumed to reuse execution_stage.stop's G7 buffer (a different concept:
-      # stop placement, not exit-trigger proximity) — see sixth addendum for why that inference was declined.
+    invalidation_buffer_distance_points: 2.5   # decided: seventh addendum, status FINAL — recorded in points, not
+      # "pips" as the owner's field name/rationale used; the referenced G7 buffer (execution_stage.stop.buffer_pips)
+      # is itself decided as points despite its own name, per this repo's established naming-vs-semantics precedent.
+      # Flagged for correction if "pips" was meant as a distinct, larger unit — see seventh addendum.
 
     emergency_exit_rules:   # distinct from risk.hard_kill_switch above (a portfolio loss-% circuit breaker) —
                              # this is an infrastructure/market-anomaly-triggered immediate exit. Do not conflate.

@@ -1014,3 +1014,66 @@ remain unmet: `specs/st-c2.yaml` is still `status: candidate`, and no
 `IMPLEMENTATION AUTHORIZATION: GRANTED` string exists anywhere in the
 repo. No execution-layer code has been written and none is authorized by
 this addendum.
+
+---
+
+## Seventh addendum (2026-07-24, owner-decision session round 6 — session-close invalidation buffer)
+
+Documentation-only, same restriction as every prior addendum: does **not**
+authorize strategy-engine implementation, backtesting, optimization, demo
+execution, live execution, promotion, or broker operations. `specs/st-c2.yaml`
+(v1.0.0) remains unchanged; `engine_implements_spec` stays `false`. No code
+written, no backtest run, no execution/demo/live/promotion state changed.
+
+### Decision — Session-close invalidation-buffer distance (closes Decision 3's residual, G10)
+
+**Decision:** `session_close_invalidation_buffer = 2.5` **points**, status
+**final**.
+
+**Rationale (recorded verbatim from the owner):** the buffer must be
+slightly more conservative than the structural invalidation buffer (2
+[units]) while remaining aligned with typical XAUUSD volatility during
+London and New York session close — 2.5 avoids both premature and late
+exits, and is deterministic and portable across data vendors.
+
+**Unit correction, flagged rather than silently accepted:** the owner's
+field name and rationale used "pips" (`session_close_invalidation_buffer_pips`,
+"2 pips" for the referenced G7 buffer). Checked against the repo: the G7
+buffer this rationale explicitly compares against is `execution_stage.stop.buffer_pips: 2`
+— but that field, despite its `_pips` name, was explicitly decided in the
+**first** addendum (decision 6) as "two broker-native **points**," not
+pips, precisely because the original governance audit had flagged a
+pips-vs-points ambiguity on XAUUSD for that exact field. Every other
+distance field in this spec and in `config/research_costs.yaml`
+(`min_stop_distance_points`, `max_stop_distance_points`, `spread_points`,
+`slippage_points`) uses points, and none uses a distinct "pips" unit
+anywhere. Recorded here as **points** (`2.5` broker-native points),
+consistent with that established precedent — the same naming-vs-semantics
+pattern as the pre-existing `buffer_pips` field, not a new ambiguity. If
+"pips" was meant literally as a distinct, larger unit, this needs explicit
+correction; per this addendum's standing practice, the interpretation is
+stated plainly rather than silently locked in either way.
+`specs/st-c2_v1.1.0.yaml`'s `management.invalidation_buffer_distance` is
+updated from `null` to `2.5` (points), status `final`.
+
+### Status after this seventh addendum
+
+Closed this session: the session-close invalidation-buffer distance —
+**the last substantive blocker** identified in
+`reports/ST-C2_IMPLEMENTATION_READINESS.md`. Combined with the sixth
+addendum, all five items that report listed as substantive blockers are
+now closed (one, `duplicate_setup_policy`, was closed earlier in the
+fifth addendum).
+
+**Still open:** the six low-risk items from `reports/ST-C2_SPEC_AUDIT.md`
+§4 (bull/bear classification statement, bias-evidence-timestamp field,
+4th+ CHoCH sequencing, `protected_level_lifecycle.create_on` confirmation,
+`internal_bos_required` restatement, rejection-code ratification), plus
+the unit-interpretation flag just recorded above. Both implementation
+gates remain formally unmet as of this addendum: `specs/st-c2.yaml` is
+still `status: candidate`, and no `IMPLEMENTATION AUTHORIZATION: GRANTED`
+string exists anywhere in the repo. Whether the spec is now eligible for
+`frozen` status and/or an authorization act is a governance-sequencing
+question, not decided by this addendum — see
+`reports/ST-C2_IMPLEMENTATION_READINESS.md`'s re-issued verdict for the
+result of that evaluation.
