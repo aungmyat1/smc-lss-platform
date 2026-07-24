@@ -6,13 +6,13 @@
   "audit_date": "2026-07-24",
   "summary": {
     "total_frozen_rules_in_inventory": 45,
-    "implemented_rules": 31,
-    "tested_rules": 26,
+    "implemented_rules": 40,
+    "tested_rules": 35,
     "positive_case_coverage": 5,
     "negative_case_coverage": 2,
-    "boundary_case_coverage": 2,
-    "missing_rule_test_mappings": 20,
-    "critical_implementation_coverage_rate": 0.6889,
+    "boundary_case_coverage": 3,
+    "missing_rule_test_mappings": 10,
+    "critical_implementation_coverage_rate": 0.8889,
     "s1_g2_completion_eligible": false
   },
   "inventory": [
@@ -705,15 +705,19 @@
       "id": "STC2-ENTRY-001",
       "rule": "Entry is limit_into_fvg with max slippage 5 points and next-bar-after-confirmation earliest fill",
       "spec_lines": "225-235",
-      "classification": "NOT_IMPLEMENTED",
-      "implementation": null,
-      "tests": [],
+      "classification": "PARTIALLY_IMPLEMENTED",
+      "implementation": "validation/st_c2/evidence_gc4.py::DecisionEvidenceBuilder",
+      "tests": [
+        "tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan",
+        "tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal"
+      ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC4_decision_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc4",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc4_tests"
         ],
         "last_update": "2026-07-24"
       }
@@ -722,15 +726,18 @@
       "id": "STC2-ENTRY-002",
       "rule": "Limit expiry is 15 M3 bars with early cancellation triggers",
       "spec_lines": "234-240",
-      "classification": "NOT_IMPLEMENTED",
-      "implementation": null,
-      "tests": [],
+      "classification": "PARTIALLY_IMPLEMENTED",
+      "implementation": "validation/st_c2/evidence_gc4.py::DecisionEvidenceBuilder",
+      "tests": [
+        "tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan"
+      ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC4_decision_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc4",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc4_tests"
         ],
         "last_update": "2026-07-24"
       }
@@ -739,15 +746,18 @@
       "id": "STC2-ENTRY-003",
       "rule": "Partial-fill policy, duplicate setup policy, post-fill priority, same-bar stop-first",
       "spec_lines": "243-253",
-      "classification": "NOT_IMPLEMENTED",
-      "implementation": null,
-      "tests": [],
+      "classification": "PARTIALLY_IMPLEMENTED",
+      "implementation": "validation/st_c2/evidence_gc4.py::DecisionEvidenceBuilder",
+      "tests": [
+        "tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan"
+      ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC4_decision_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc4",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc4_tests"
         ],
         "last_update": "2026-07-24"
       }
@@ -756,15 +766,18 @@
       "id": "STC2-STOP-001",
       "rule": "Stop is structural with 2.5 point buffer and no widening",
       "spec_lines": "255-259",
-      "classification": "NOT_IMPLEMENTED",
-      "implementation": null,
-      "tests": [],
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/evidence_gc4.py::DecisionEvidenceBuilder",
+      "tests": [
+        "tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan"
+      ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC4_decision_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc4",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc4_tests"
         ],
         "last_update": "2026-07-24"
       }
@@ -773,15 +786,18 @@
       "id": "STC2-STOP-002",
       "rule": "Stop distance min/max points and formula",
       "spec_lines": "260-262",
-      "classification": "NOT_IMPLEMENTED",
-      "implementation": null,
-      "tests": [],
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/evidence_gc4.py::DecisionEvidenceBuilder",
+      "tests": [
+        "tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan"
+      ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC4_decision_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc4",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc4_tests"
         ],
         "last_update": "2026-07-24"
       }
@@ -790,15 +806,18 @@
       "id": "STC2-TARGET-001",
       "rule": "Targets require opposite external liquidity then internal liquidity, both T1 and T2 mandatory",
       "spec_lines": "265-273",
-      "classification": "NOT_IMPLEMENTED",
-      "implementation": null,
-      "tests": [],
+      "classification": "PARTIALLY_IMPLEMENTED",
+      "implementation": "validation/st_c2/evidence_gc4.py::DecisionEvidenceBuilder",
+      "tests": [
+        "tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan"
+      ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC4_decision_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc4",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc4_tests"
         ],
         "last_update": "2026-07-24"
       }
@@ -807,15 +826,19 @@
       "id": "STC2-RISK-001",
       "rule": "Risk uses GBPUSD cost profile, net reward basis, min gross/net R",
       "spec_lines": "280-288",
-      "classification": "NOT_IMPLEMENTED",
-      "implementation": null,
-      "tests": [],
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/evidence_gc4.py::DecisionEvidenceBuilder",
+      "tests": [
+        "tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan",
+        "tests/st_c2/test_gc4_evidence.py::test_gc4_rejection_evidence_is_stable_and_canonical"
+      ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC4_decision_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc4",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc4_tests"
         ],
         "last_update": "2026-07-24"
       }
@@ -824,15 +847,18 @@
       "id": "STC2-MGMT-001",
       "rule": "No time stop and conditional session close only near invalidation",
       "spec_lines": "293-304",
-      "classification": "NOT_IMPLEMENTED",
-      "implementation": null,
-      "tests": [],
+      "classification": "PARTIALLY_IMPLEMENTED",
+      "implementation": "validation/st_c2/evidence_gc4.py::build_rejection_evidence",
+      "tests": [
+        "tests/st_c2/test_gc4_evidence.py::test_gc4_rejection_evidence_is_stable_and_canonical"
+      ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC4_decision_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc4",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc4_tests"
         ],
         "last_update": "2026-07-24"
       }
@@ -842,16 +868,17 @@
       "rule": "R1-R7 rejection code scheme plus known unmapped stop/net-R/cost/target gaps",
       "spec_lines": "359-371",
       "classification": "PARTIALLY_IMPLEMENTED",
-      "implementation": "validation/st_c2_reference.py::DetectionResult",
+      "implementation": "validation/st_c2/evidence_gc4.py::build_rejection_evidence",
       "tests": [
-        "tests/test_st_c2_reference.py::test_negative_without_liquidity_rejects_r1"
+        "tests/st_c2/test_gc4_evidence.py::test_gc4_rejection_evidence_is_stable_and_canonical"
       ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC4_decision_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc4",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc4_tests"
         ],
         "last_update": "2026-07-24"
       }
@@ -860,15 +887,19 @@
       "id": "STC2-DEDUP-001",
       "rule": "Dedup key formula uses symbol, LTF_CHoCH, index offset, and confirmation index",
       "spec_lines": "398-403",
-      "classification": "NOT_IMPLEMENTED",
-      "implementation": null,
-      "tests": [],
+      "classification": "PARTIALLY_IMPLEMENTED",
+      "implementation": "validation/st_c2/evidence_gc4.py::DecisionEvidenceBuilder",
+      "tests": [
+        "tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan",
+        "tests/st_c2/test_gc4_evidence.py::test_gc4_detects_illegal_transition_sequence"
+      ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC4_decision_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc4",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc4_tests"
         ],
         "last_update": "2026-07-24"
       }

@@ -2,7 +2,7 @@
 
 **One milestone at a time. This is the active milestone.**
 
-## S1-G2 Remaining Rule Closures - State, Trade Plan, and Rejection Evidence
+## S1-G2 Remaining Rule Mappings and Completion-Audit Preparation
 
 Current lifecycle position:
 
@@ -25,9 +25,8 @@ Current lifecycle position:
 
 ## Objective
 
-Implement the next controlled S1-G2 gap-closure slice: deterministic state
-transitions, signal candidate evidence, logical trade-plan evidence, and
-remaining rejection-code coverage. S1-G2 remains open; A2/S1-G3 is not
+Close the remaining 10 rule mappings, expand required golden cases, and prepare
+the S1-G2 completion audit package. S1-G2 remains open; A2/S1-G3 is not
 authorized.
 
 ## Current Evidence
@@ -42,7 +41,7 @@ authorized.
 - Rule-to-test traceability: `specs/st_c2/rule_to_test_map.yaml`.
 - Conformance manifest: `specs/st_c2/conformance_manifest.yaml`.
 - Current existence verdict: `SIGNAL_FOUND`.
-- First qualifying signal: `2026-06-10 17:15`, direction `short`.
+- First qualifying signal after GC4 gates: `2026-06-26 17:51`, direction `short`.
 - S1-G2 completion audit:
   `reports/validation/st_c2/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md`.
 - A2 coverage matrix:
@@ -63,6 +62,16 @@ authorized.
   `reports/validation/st_c2/DIFFERENTIAL_COVERAGE_AUDIT_GC2.md`.
 - GC3 FVG/LTF evidence report:
   `reports/validation/st_c2/S1_G2_GC3_FVG_LTF_EVIDENCE_REPORT.md`.
+- GC4 state machine report:
+  `reports/validation/st_c2/GC4_STATE_MACHINE_REPORT.md`.
+- GC4 signal candidate report:
+  `reports/validation/st_c2/GC4_SIGNAL_CANDIDATE_REPORT.md`.
+- GC4 logical trade-plan report:
+  `reports/validation/st_c2/GC4_TRADE_PLAN_REPORT.md`.
+- GC4 rejection evidence report:
+  `reports/validation/st_c2/GC4_REJECTION_EVIDENCE_REPORT.md`.
+- GC4 rule closure report:
+  `reports/validation/st_c2/GC4_RULE_CLOSURE_REPORT.md`.
 - Stable identifier contract:
   `reports/validation/st_c2/STABLE_IDENTIFIER_CONTRACT.md`.
 - Golden-case library report:
@@ -78,8 +87,10 @@ After extending M1-derived M3 history to 16,642 bars, the existence floor
 
 - Implement or formally close the audit blockers without changing frozen
   strategy parameters.
-- Complete the remaining S1-G2 state, signal, trade-plan, and rejection-code
-  evidence objects.
+- Close the remaining 10 rule mappings honestly.
+- Expand golden cases for sequencing, duplicate, invalidation, expiry, and
+  rejection subcodes.
+- Prepare but do not approve the S1-G2 final completion audit.
 - Preserve the reproduced existence signal or explain any change.
 - Keep missing mappings honest; do not mark S1-G2 complete.
 - Keep A3 historical/statistical validation blocked until A2 passes.
@@ -88,9 +99,9 @@ After extending M1-derived M3 history to 16,642 bars, the existence floor
 ## Blocking Gaps
 
 - FVG/LTF advanced confluence and sequencing remain partial.
-- Deterministic state machine is missing.
-- Full logical trade-plan object is missing.
-- R1-R7 detailed failure coverage is incomplete.
+- State machine, signal candidate, trade plan, and rejection evidence require
+  broader golden-case qualification before completion audit can pass.
+- R1-R7 detailed negative golden-case coverage is incomplete.
 - Stable identifiers are incomplete for FVG, confirmation, signal, and trade-plan
   evidence.
 - Versioned golden-case library requires GC3+ expansion.

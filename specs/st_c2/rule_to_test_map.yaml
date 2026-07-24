@@ -17,7 +17,7 @@ acceptance:
   illegal_state_transitions: 0
   lookahead_violations: 0
   unexplained_differences: 0
-  missing_rule_test_mappings: 37
+  missing_rule_test_mappings: 10
   audit_source: reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json
   s1_g2_completion_eligible: false
 
@@ -385,3 +385,147 @@ rules:
       code: R5
       condition: first qualifying LTF confirmation bar is absent
     mapping_status: implemented
+
+  STC2-ENTRY-001:
+    description: Logical entry plan is limit_into_fvg and references the LTF FVG proximal boundary without execution.
+    implementation:
+      module: validation.st_c2.evidence_gc4
+      function: DecisionEvidenceBuilder
+    tests:
+      - tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan
+      - tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R6
+      condition: trade plan cannot be formed from valid FVG/confirmation evidence
+    mapping_status: partially_implemented
+
+  STC2-ENTRY-002:
+    description: Logical trade plan records expiry bars and cancellation policy as research metadata only.
+    implementation:
+      module: validation.st_c2.evidence_gc4
+      function: DecisionEvidenceBuilder
+    tests:
+      - tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R6
+      condition: logical plan is rejected before entry expiry can be represented
+    mapping_status: partially_implemented
+
+  STC2-ENTRY-003:
+    description: Execution-only partial-fill, duplicate setup, post-fill priority, and same-bar handling remain blocked.
+    implementation:
+      module: validation.st_c2.evidence_gc4
+      function: DecisionEvidenceBuilder
+    tests:
+      - tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan
+    golden_cases:
+      - GC-STC2-GBPUSD-ID-STABILITY-001
+    expected_rejection_behavior:
+      code: R6
+      condition: duplicate signal candidate or post-fill behavior is outside S1-G2 reference scope
+    mapping_status: partially_implemented
+
+  STC2-STOP-001:
+    description: Logical stop references the liquidity sweep extreme plus frozen structural buffer.
+    implementation:
+      module: validation.st_c2.evidence_gc4
+      function: DecisionEvidenceBuilder
+    tests:
+      - tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R6
+      condition: structural stop reference is unavailable
+    mapping_status: implemented
+
+  STC2-STOP-002:
+    description: Logical stop distance enforces frozen min/max point bounds.
+    implementation:
+      module: validation.st_c2.evidence_gc4
+      function: DecisionEvidenceBuilder
+    tests:
+      - tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan
+    golden_cases:
+      - GC-STC2-GBPUSD-POINTS-BOUNDARY-001
+    expected_rejection_behavior:
+      code: R6
+      condition: stop distance is below minimum or above maximum
+    mapping_status: implemented
+
+  STC2-TARGET-001:
+    description: Logical target references the opposite structural dealing-range extreme.
+    implementation:
+      module: validation.st_c2.evidence_gc4
+      function: DecisionEvidenceBuilder
+    tests:
+      - tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R6
+      condition: no target beyond entry is available
+    mapping_status: partially_implemented
+
+  STC2-RISK-001:
+    description: Logical plan applies GBPUSD research cost profile and frozen minimum net reward/risk.
+    implementation:
+      module: validation.st_c2.evidence_gc4
+      function: DecisionEvidenceBuilder
+    tests:
+      - tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan
+      - tests/st_c2/test_gc4_evidence.py::test_gc4_rejection_evidence_is_stable_and_canonical
+    golden_cases:
+      - GC-STC2-GBPUSD-POINTS-BOUNDARY-001
+    expected_rejection_behavior:
+      code: R6
+      condition: net reward/risk is below frozen minimum
+    mapping_status: implemented
+
+  STC2-MGMT-001:
+    description: Session-close and emergency-exit management remains Stage B blocked and is represented by rejection subcodes only.
+    implementation:
+      module: validation.st_c2.evidence_gc4
+      function: build_rejection_evidence
+    tests:
+      - tests/st_c2/test_gc4_evidence.py::test_gc4_rejection_evidence_is_stable_and_canonical
+    golden_cases:
+      - GC-STC2-GBPUSD-POINTS-BOUNDARY-001
+    expected_rejection_behavior:
+      code: R7
+      condition: session or volatility rejection evidence is emitted
+    mapping_status: partially_implemented
+
+  STC2-REJECT-001:
+    description: Canonical R1-R7 rejection scheme includes deterministic GC4 subcodes and stable IDs.
+    implementation:
+      module: validation.st_c2.evidence_gc4
+      function: build_rejection_evidence
+    tests:
+      - tests/st_c2/test_gc4_evidence.py::test_gc4_rejection_evidence_is_stable_and_canonical
+    golden_cases:
+      - GC-STC2-GBPUSD-LIQ-NEG-001
+      - GC-STC2-GBPUSD-POINTS-BOUNDARY-001
+    expected_rejection_behavior:
+      code: R1-R7
+      condition: rejected setup carries canonical code and subcode
+    mapping_status: partially_implemented
+
+  STC2-DEDUP-001:
+    description: Signal candidate stable ID provides deterministic duplicate-signal identity.
+    implementation:
+      module: validation.st_c2.evidence_gc4
+      function: DecisionEvidenceBuilder
+    tests:
+      - tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan
+      - tests/st_c2/test_gc4_evidence.py::test_gc4_detects_illegal_transition_sequence
+    golden_cases:
+      - GC-STC2-GBPUSD-ID-STABILITY-001
+    expected_rejection_behavior:
+      code: R6
+      condition: duplicate candidate has identical signal ID and can be rejected
+    mapping_status: partially_implemented

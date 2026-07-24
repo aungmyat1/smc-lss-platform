@@ -27,17 +27,22 @@ stage_a:
       - reports/validation/st_c2/DEALING_RANGE_OTE_CONFORMANCE_REPORT.md
       - reports/validation/st_c2/DIFFERENTIAL_COVERAGE_AUDIT_GC2.md
       - reports/validation/st_c2/S1_G2_GC3_FVG_LTF_EVIDENCE_REPORT.md
+      - reports/validation/st_c2/GC4_STATE_MACHINE_REPORT.md
+      - reports/validation/st_c2/GC4_SIGNAL_CANDIDATE_REPORT.md
+      - reports/validation/st_c2/GC4_TRADE_PLAN_REPORT.md
+      - reports/validation/st_c2/GC4_REJECTION_EVIDENCE_REPORT.md
+      - reports/validation/st_c2/GC4_RULE_CLOSURE_REPORT.md
     completion_audit:
       verdict: S1-G2 REMAINS OPEN
       blocking_gaps:
         - fvg_confluence_lifecycle_advanced_cases_partial
         - ltf_confirmation_advanced_sequencing_partial
-        - state_machine_missing
-        - logical_trade_plan_missing
-        - rejection_subcodes_missing
+        - state_machine_golden_cases_incomplete
+        - logical_trade_plan_golden_cases_incomplete
+        - rejection_subcodes_golden_cases_incomplete
         - stable_identifiers_for_later_events_missing
         - golden_case_library_incomplete
-        - rule_to_test_map_has_20_missing_mappings
+        - rule_to_test_map_has_10_missing_mappings
     gc1_foundations:
       status: passed
       report: reports/validation/st_c2/S1_G2_GC1_CONFORMANCE_FOUNDATIONS_REPORT.md
@@ -57,6 +62,15 @@ stage_a:
       report: reports/validation/st_c2/S1_G2_GC3_FVG_LTF_EVIDENCE_REPORT.md
       evidence_module: validation/st_c2/evidence_gc3.py
       missing_mappings_after_gc3: 20
+    gc4_decision_evidence:
+      status: partial_pass
+      evidence_module: validation/st_c2/evidence_gc4.py
+      state_machine_report: reports/validation/st_c2/GC4_STATE_MACHINE_REPORT.md
+      signal_candidate_report: reports/validation/st_c2/GC4_SIGNAL_CANDIDATE_REPORT.md
+      trade_plan_report: reports/validation/st_c2/GC4_TRADE_PLAN_REPORT.md
+      rejection_evidence_report: reports/validation/st_c2/GC4_REJECTION_EVIDENCE_REPORT.md
+      rule_closure_report: reports/validation/st_c2/GC4_RULE_CLOSURE_REPORT.md
+      missing_mappings_after_gc4: 10
   a3:
     status: blocked
     blocked_by: a2

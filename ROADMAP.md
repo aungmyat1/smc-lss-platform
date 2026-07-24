@@ -115,6 +115,7 @@ Completed:
 - `reports/validation/st_c2/LIQUIDITY_SWEEP_CONFORMANCE_REPORT.md`
 - `reports/validation/st_c2/DEALING_RANGE_OTE_CONFORMANCE_REPORT.md`
 - `reports/validation/st_c2/S1_G2_GC3_FVG_LTF_EVIDENCE_REPORT.md`
+- `reports/validation/st_c2/GC4_RULE_CLOSURE_REPORT.md`
 
 Blocker:
 
@@ -123,12 +124,13 @@ Blocker:
   checked windows, all rejected at R1 liquidity.
 - The R1 diagnostic identified insufficient M3 coverage as the cause.
 - After extending M1-derived M3 to 16,642 bars, the existence scan found a
-  qualifying GBPUSD short signal at `2026-06-10 17:15`.
+  qualifying GBPUSD short signal at `2026-06-10 17:15`; after GC4 logical
+  trade-plan gates, the first accepted signal is `2026-06-26 17:51`.
 - S1-G2 completion audit verdict is S1-G2 REMAINS OPEN.
-- Missing rule-test mappings: 20.
-- Blocking gaps: advanced FVG/LTF confluence cases, state machine, trade plan,
-  rejection subcodes, stable IDs for later evidence objects, and golden-case
-  library expansion.
+- Missing rule-test mappings: 10.
+- Blocking gaps: remaining unmapped rules, advanced FVG/LTF confluence cases,
+  broader state/trade-plan/rejection golden cases, and golden-case library
+  expansion.
 - GC1 foundations PASS: metadata, normalization, schemas, stable IDs,
   golden-case scaffold, traceability validator, and structural interfaces.
 - GC2 structural conformance PASS: HTF BOS/CHoCH-only bias, deterministic
@@ -136,8 +138,11 @@ Blocker:
   boundary evidence.
 - GC3 FVG/LTF evidence PARTIAL PASS: dedicated evidence module, FVG-chain
   evidence, and LTF confirmation evidence integrated into the reference kernel.
-- Remaining next slice: S1-G2 state machine, trade-plan, rejection-code, and
-  remaining rule closures.
+- GC4 decision evidence PARTIAL PASS: deterministic state transitions, signal
+  candidate evidence, logical trade-plan evidence, and rejection subcode
+  evidence integrated into the reference kernel.
+- Remaining next slice: close 10 mappings, expand golden cases, and prepare the
+  S1-G2 completion audit.
 
 Allowed after authorization: feature generation, detector engine, parser, rule
 engine, conformance tests, golden datasets.

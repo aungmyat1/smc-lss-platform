@@ -62,7 +62,8 @@ Current lifecycle position:
 ST-C2 v1.2.0 is the active frozen GBPUSD-scoped specification. Scoped S1-G2
 reference implementation is authorized only for golden-case tests, conformance
 kernel, minimum GBPUSD detector slice, and the existence check. The first
-GBPUSD existence floor is satisfied by a short signal at `2026-06-10 17:15`.
+GBPUSD existence floor is satisfied by a short signal at `2026-06-26 17:51`
+after GC4 logical trade-plan gates.
 The S1-G2 completion audit keeps the gate open pending reference-conformance
 gap closure. Treat any claim to historical validation, execution, demo, live,
 or production authority as a governance conflict until verified in the

@@ -18,6 +18,7 @@ from validation.st_c2.schemas import (
     StructuralEvent,
 )
 from validation.st_c2.symbols import SymbolMetadata
+from validation.st_c2.evidence_gc4 import GC4DecisionEvidence
 
 Candle = dict[str, float | str]
 
@@ -137,3 +138,35 @@ def build_logical_trade_plan(
 ) -> LogicalTradePlan:
     """Builds research-only logical entry/SL/TP/RR package; no broker behavior."""
     raise NotImplementedError("planned slice: S1-G2-GC4")
+
+
+def collect_state_transition_evidence(context: dict) -> tuple[StateTransition, ...]:
+    """GC4 research-only state transition evidence hook."""
+    decision = context.get("gc4_decision")
+    if isinstance(decision, GC4DecisionEvidence):
+        return decision.transitions
+    return tuple(context.get("state_transitions", ()))
+
+
+def collect_signal_candidate_evidence(context: dict) -> tuple[SignalCandidate, ...]:
+    """GC4 research-only signal candidate evidence hook."""
+    decision = context.get("gc4_decision")
+    if isinstance(decision, GC4DecisionEvidence) and decision.signal is not None:
+        return (decision.signal,)
+    return tuple(context.get("signal_candidates", ()))
+
+
+def collect_logical_trade_plan(context: dict) -> tuple[LogicalTradePlan, ...]:
+    """GC4 research-only logical trade-plan evidence hook; no execution authority."""
+    decision = context.get("gc4_decision")
+    if isinstance(decision, GC4DecisionEvidence) and decision.trade_plan is not None:
+        return (decision.trade_plan,)
+    return tuple(context.get("trade_plans", ()))
+
+
+def collect_rejection_evidence(context: dict) -> tuple[object, ...]:
+    """GC4 research-only rejection evidence hook."""
+    decision = context.get("gc4_decision")
+    if isinstance(decision, GC4DecisionEvidence):
+        return decision.rejections
+    return tuple(context.get("rejections", ()))

@@ -17,6 +17,7 @@ import yaml
 
 from src import smc_engine as e
 from validation.st_c2.evidence_gc3 import EvidenceBuilder
+from validation.st_c2.evidence_gc4 import DecisionEvidenceBuilder
 from validation.st_c2.structure import structural_context
 from validation.st_c2.symbols import load_symbol_metadata, points_to_price
 
@@ -241,7 +242,44 @@ def analyze_windows(
         return DetectionResult("NO_SIGNAL", symbol, direction, "R5", tuple(stages))
     stages.append(_stage("ltf_confirmation", True, "PASS", confirmation=confirmation.to_dict()))
 
-    stages.append(_stage("risk", True, "PASS", provisional_thresholds=True))
+    decision_builder = DecisionEvidenceBuilder(spec=spec, symbol_metadata=metadata, causal_cutoff=causal_cutoff)
+    decision = decision_builder.build_decision(
+        direction=direction,
+        signal_timestamp=ltf[-1]["time"],
+        bias_event_id=str(bias.bias_event_id),
+        pool=context["pool"],
+        sweep=sweep,
+        dealing_range=context["range"],
+        ote=ote,
+        fvg_chain=fvg_chain,
+        confirmation=confirmation,
+    )
+    if not decision.valid:
+        rejection = decision.rejections[0] if decision.rejections else None
+        stages.append(
+            _stage(
+                "trade_plan",
+                False,
+                "R6",
+                signal=None if decision.signal is None else decision.signal.to_dict(),
+                trade_plan=None if decision.trade_plan is None else decision.trade_plan.to_dict(),
+                rejection=None if rejection is None else rejection.to_dict(),
+            )
+        )
+        return DetectionResult("NO_SIGNAL", symbol, direction, "R6", tuple(stages))
+    stages.append(
+        _stage(
+            "state_machine",
+            True,
+            "PASS",
+            transitions=[transition.to_dict() for transition in decision.transitions],
+            illegal_transition_count=decision.illegal_transition_count,
+            duplicate_signal=decision.duplicate_signal,
+        )
+    )
+    stages.append(_stage("signal_candidate", True, "PASS", signal=decision.signal.to_dict()))
+    stages.append(_stage("trade_plan", True, "PASS", trade_plan=decision.trade_plan.to_dict()))
+    stages.append(_stage("risk", True, "PASS", net_reward_risk=decision.trade_plan.net_reward_risk))
     return DetectionResult("SIGNAL", symbol, direction, None, tuple(stages), signal_time=ltf[-1]["time"])
 
 

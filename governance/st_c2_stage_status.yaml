@@ -32,7 +32,7 @@ stage_a_strategy_validation:
       diagnostic_report: reports/ST-C2_V1.2_GBPUSD_R1_DIAGNOSTIC.md
     existence_floor:
       status: passed
-      first_signal_time: "2026-06-10 17:15"
+      first_signal_time: "2026-06-26 17:51"
       direction: short
     completion_audit:
       status: failed
@@ -40,14 +40,18 @@ stage_a_strategy_validation:
       report: reports/validation/st_c2/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md
       coverage_matrix: reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json
       conformance_results: reports/validation/st_c2/A2_CONFORMANCE_RESULTS.json
-      missing_rule_test_mappings: 37
+      missing_rule_test_mappings: 10
     gc1_foundations:
       status: passed
       report: reports/validation/st_c2/S1_G2_GC1_CONFORMANCE_FOUNDATIONS_REPORT.md
       symbol_metadata: specs/st_c2/symbol_metadata.yaml
       stable_identifier_contract: reports/validation/st_c2/STABLE_IDENTIFIER_CONTRACT.md
       golden_case_library_report: reports/validation/st_c2/GOLDEN_CASE_LIBRARY_REPORT.md
-    next_required_decision: start_s1_g2_gc2_structural_bias_liquidity_dealing_range
+    gc4_decision_evidence:
+      status: partial_pass
+      report: reports/validation/st_c2/GC4_RULE_CLOSURE_REPORT.md
+      missing_rule_test_mappings_after_gc4: 10
+    next_required_decision: continue_s1_g2_remaining_mappings_and_completion_audit_preparation
 
   a3_statistical_validation:
     status: blocked

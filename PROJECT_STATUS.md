@@ -79,7 +79,7 @@ ST-C2 evidence:
 - `reports/validation/st_c2/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md`
   - S1-G2 completion audit; verdict S1-G2 REMAINS OPEN.
 - `reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json` - frozen-rule
-  coverage matrix; 45 rules inventoried, 20 missing mappings.
+  coverage matrix; 45 rules inventoried, 10 missing mappings.
 - `reports/validation/st_c2/A2_CONFORMANCE_RESULTS.json` - completion criteria
   results and reproduced existence signal.
 - `reports/validation/st_c2/S1_G2_GC1_CONFORMANCE_FOUNDATIONS_REPORT.md` -
@@ -99,6 +99,8 @@ ST-C2 evidence:
   confirms structural dealing-range and OTE evidence.
 - `reports/validation/st_c2/S1_G2_GC3_FVG_LTF_EVIDENCE_REPORT.md` - GC3
   FVG/LTF evidence module integration; PARTIAL PASS while S1-G2 remains open.
+- `reports/validation/st_c2/GC4_RULE_CLOSURE_REPORT.md` - GC4 state, signal,
+  trade-plan, and rejection evidence; PARTIAL PASS while S1-G2 remains open.
 - `validation/st_c2_reference.py` - S1-G2 minimum GBPUSD reference kernel.
 - `validation/run_st_c2_gbp_existence.py` - S1-G2 existence-check scanner.
 - `tests/test_st_c2_reference.py` - golden-case, mirror, cutoff, determinism,
@@ -108,7 +110,7 @@ ST-C2 evidence:
 - `reports/ST-C2_V1.2_GBPUSD_R1_DIAGNOSTIC.md` - S1-G2 diagnostic showing the
   initial zero-signal result was caused by insufficient M3 data coverage.
 - `reports/ST-C2_V1.2_GBPUSD_EXISTENCE_CHECK.md` - real-history existence-check
-  scan; currently SIGNAL_FOUND at `2026-06-10 17:15`, direction `short`.
+  scan; currently SIGNAL_FOUND at `2026-06-26 17:51`, direction `short`.
 - `reports/research_log.md` - research log entries for ST-C2 decisions.
 
 Platform evidence:
@@ -142,14 +144,15 @@ S1-G2 result:
   checked windows, all rejected at R1 liquidity.
 - Diagnostic identified data coverage as the cause. After extending M1-derived
   M3 to 16,642 bars, the existence scan found a qualifying short signal at
-  `2026-06-10 17:15`.
+  `2026-06-10 17:15`; after GC4 logical trade-plan gates, the first accepted
+  signal is `2026-06-26 17:51`.
 
 Remaining blocker:
 
 - S1-G2 completion audit remains open. Close exact blockers before A2/S1-G3 can
   be authorized: advanced FVG/LTF confluence cases, deterministic state
-  machine, logical trade plan, rejection subcodes, stable identifiers for later
-  evidence objects, and golden-case library expansion.
+  completion-audit remaining mappings, broader state/trade-plan/rejection
+  golden cases, and golden-case library expansion.
 - GC1 foundations closed the hardcoded reference-kernel symbol precision gap,
   added metadata, stable schemas/IDs, golden-case scaffolding, traceability
   validation, and structural interfaces.
@@ -158,6 +161,9 @@ Remaining blocker:
   pool/sweep evidence for this S1-G2 slice.
 - GC3 FVG/LTF evidence integration added a dedicated evidence module and
   reduced missing rule mappings to 20.
+- GC4 decision evidence integration added deterministic state transitions,
+  signal candidates, logical trade plans, and rejection subcodes, reducing
+  missing rule mappings to 10.
 
 Non-blocking residuals to carry forward:
 
@@ -192,9 +198,9 @@ current Stage A lifecycle.
 
 ## Next Action
 
-Continue with remaining S1-G2 closures: state machine, signal/trade-plan
-evidence, rejection-code coverage, and remaining unmapped rules. Do not advance
-to S1-G3, A3, or Stage B until a new completion audit supports the gate.
+Continue with remaining S1-G2 mappings, golden-case expansion, and completion
+audit preparation. Do not advance to S1-G3, A3, or Stage B until a new
+completion audit supports the gate.
 
 Do not modify strategy specs, code, YAML parameters, execution state, demo
 settings, live settings, or authorization state as part of status maintenance.

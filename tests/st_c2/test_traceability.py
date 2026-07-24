@@ -9,7 +9,7 @@ from validation.st_c2.traceability import validate_traceability
 def test_traceability_current_inventory_reports_missing_mappings_honestly():
     result = validate_traceability()
     assert result.valid
-    assert result.missing_mappings == 20
+    assert result.missing_mappings == 10
 
 
 def test_coverage_inventory_has_structured_provenance():
@@ -43,6 +43,18 @@ def test_coverage_inventory_has_structured_provenance():
         "STC2-LTF-003",
         "STC2-LTF-004",
     }
+    gc4_rules = {
+        "STC2-ENTRY-001",
+        "STC2-ENTRY-002",
+        "STC2-ENTRY-003",
+        "STC2-STOP-001",
+        "STC2-STOP-002",
+        "STC2-TARGET-001",
+        "STC2-RISK-001",
+        "STC2-MGMT-001",
+        "STC2-REJECT-001",
+        "STC2-DEDUP-001",
+    }
     for item in coverage_data["inventory"]:
         provenance = item.get("provenance")
         assert isinstance(provenance, dict)
@@ -59,9 +71,14 @@ def test_coverage_inventory_has_structured_provenance():
             assert provenance["module"] == "GC3_evidence_module"
             assert provenance["source"] == "st_c2.evidence_gc3"
             assert "gc3_tests" in provenance["validated_by"]
+        elif item["id"] in gc4_rules:
+            assert provenance["module"] == "GC4_decision_evidence_module"
+            assert provenance["source"] == "st_c2.evidence_gc4"
+            assert "gc4_tests" in provenance["validated_by"]
         else:
             assert "gc2_tests" not in provenance["validated_by"]
             assert "gc3_tests" not in provenance["validated_by"]
+            assert "gc4_tests" not in provenance["validated_by"]
 
 
 def test_traceability_invalid_test_detection(tmp_path):
