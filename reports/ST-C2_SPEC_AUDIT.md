@@ -34,21 +34,23 @@ pass's own re-check.
 | Gate | Status | Closed by | Residuals (still open) |
 |---|---|---|---|
 | G1 — HTF bias | **PARTIAL** | Same-bar BOS/CHoCH tie-break: 1st addendum decision 5. Swing fractal window (k=3): 3rd addendum Cluster 1 Q1. Protected-structure lifecycle: 3rd addendum Cluster 1 Q3. | Bull/bear classification rule never explicitly stated (mechanically implied, not decided). Bias-evidence-timestamp field never specified. Both new findings from this pass — see §3. |
-| G2 — external/protected structure | **PARTIAL** | Multi-candidate pool tie-break (distance → timestamp → identifier): 1st addendum decision 3. External-vs-internal swing distinction: 3rd addendum Cluster 1 Q2. Protected high/low lifecycle: shared with G1 (3rd addendum Cluster 1 Q3). | The pool-level "stable identifier" field composition (decision 3's *third* tie-break criterion) is still undefined. The 4th addendum closed a *different* thing — the replay-engine dedup key — not this. Conflated in the original task framing; separated here. See §3. |
+| G2 — external/protected structure | **CLOSED** | Multi-candidate pool tie-break (distance → timestamp → identifier): 1st addendum decision 3. External-vs-internal swing distinction: 3rd addendum Cluster 1 Q2. Protected high/low lifecycle: shared with G1 (3rd addendum Cluster 1 Q3). Pool-level stable-identifier composition (SHA-256 of structural attributes): **6th addendum, Decision 2.** | None. |
 | G3 — close-confirmed BOS/CHoCH | **CLOSED** | Same-bar classification boundary: 1st addendum decision 5. Wick-probe-rejection mechanics: 3rd addendum Phase 1 (existing convention, `close_beyond_structure_required` + choch-bos skill). Multi-CHoCH sequencing (2nd/3rd): 3rd addendum Cluster 1 Q4. | 4th+ CHoCH has no rule — narrow, see §3, not treated as blocking G3's core closure. |
 | G4 — premium/discount location | **CLOSED** | All five sub-items (swing source, range-freeze policy, anchoring-swing invalidation, equilibrium boundary, OTE band) closed in full by 2nd addendum. | None. |
-| G5 — fresh/valid HTF POI/FVG | **PARTIAL** | Freshness/invalidation rule (50% mitigation): 1st addendum decision 4. Rounding convention: 3rd addendum Cluster 3 Q10. HTF-MTF alignment, LTF placement, size-validation source, no-stacking, cascade-invalidation: all 2nd addendum G5 rules 1-5. Multi-zone tie-break: 3rd addendum Cluster 3 Q9. | The actual 3-candle **zone-boundary formula** (which candles' highs/lows bound the gap) is still not pinned. 3rd addendum Q8 clarified the geometry *mode* ("fixed_three_candle") but not the *formula*. A field-by-field re-check (`docs/audit/2026-07-23-st-c2-deferred-gates-companion.md` §4) found `src/smc_engine.py`'s `fvgs()` does not cleanly match this stage's fields — a starting primitive, not a confirmed formula. |
+| G5 — fresh/valid HTF POI/FVG | **CLOSED** | Freshness/invalidation rule (50% mitigation): 1st addendum decision 4. Rounding convention: 3rd addendum Cluster 3 Q10. HTF-MTF alignment, LTF placement, size-validation source, no-stacking, cascade-invalidation: all 2nd addendum G5 rules 1-5. Multi-zone tie-break: 3rd addendum Cluster 3 Q9. Zone-boundary formula (wick-to-wick displacement, verified against `src/smc_engine.py`'s `fvgs()`): **6th addendum, Decision 1.** | None. |
 | G6 — LTF sweep + structure confirmation | **CLOSED** (one flagged low-risk item) | Fill timing, expiry/cancellation: 1st addendum decisions 2, 8, 9. `max_setup_bars` vs `entry_window_bars` relationship: 3rd addendum Cluster 2 Q5. First-qualifying-bar rule: 3rd addendum Cluster 2 Q6. Sweep reclaim-close timing: 3rd addendum Cluster 2 Q7. LTF displacement/close-confirmation fields: 3rd addendum Phase 1 (existing convention). | `internal_bos_required`'s definition is only *implied* by Cluster 1 Q2's external/internal rule ("unblocks" it, per the 3rd addendum's own text) — never explicitly restated as a closure. Low-risk, flagged in the consolidated spec as `applied:`, recommend one-line owner confirmation. |
 | G7 — structural invalidation/stop | **CLOSED** | Anchor/buffer/rounding: 1st addendum decision 6. Min/max stop-distance bounds (35/150 points) and the out-of-bounds behavior: 2nd addendum G7 decisions 1-4. | None. |
 | G8 — net reward after costs | **CLOSED** | `rr_min` conflict resolution and cost model: 1st addendum decisions 1, 10. Cost profile verified present (`config/research_costs.yaml` XAUUSD row: spread 25.0 pts, slippage 5.0 pts, commission 0, swap 0). | None. |
 | G9 — logical target before entry | **CLOSED** | T1/T2 both-mandatory, pre-entry selection: 1st addendum decisions 1, 7. | None. |
-| G10 — precommitted trade management | **PARTIAL** | Pre-fill limit expiry: 1st addendum decision 8. Time stop (none, structure/R-based only): 3rd addendum Cluster 4 Q11. Emergency-exit concept + triggers: 3rd addendum Cluster 4 Q12. Portfolio-level loss circuit breaker (new, owner-initiated addition beyond the original gate table — `risk.hard_kill_switch`, status PROVISIONAL): **5th addendum, Decision B.** | Emergency-exit **numeric thresholds** (20 pts / 60 s, for the spread-spike/connection-loss/volatility-shock immediate-exit rule) are explicitly flagged illustrative-only, not owner-confirmed — **still unresolved after the 5th addendum**, which decided a mechanically different thing (see §3 update below). **Session-close-forces-exit for an already-filled position** was never explicitly addressed — distinct from "time stop," per the original audit's own item split; new finding this pass, see §3. |
-| Entry / order-simulation | **PARTIAL** | Exact limit price, placement/confirmation timing, next-bar fill: 1st addendum decisions 2, 9. Limit expiry/cancellation: decision 8. Same-bar entry/stop/target ambiguity (stop-first): decision 9. Bid/ask (mid-price): 3rd addendum Cluster 4 Q13. Gap-through (fill-at-open): Q14. Partial-fill (accept + scale): Q15. `duplicate_setup_policy` (one_position_at_a_time, log-only): **5th addendum, Decision A.** | **General post-fill event-priority ordering** (breakeven vs. partial vs. runner vs. stop, same bar) is a distinct question from decision 9's entry/stop/target scope and was never addressed — new finding this pass, see §3. |
+| G10 — precommitted trade management | **PARTIAL (one small numeric gap)** | Pre-fill limit expiry: 1st addendum decision 8. Time stop (none, structure/R-based only): 3rd addendum Cluster 4 Q11. Emergency-exit concept + triggers: 3rd addendum Cluster 4 Q12. Portfolio-level loss circuit breaker (`risk.hard_kill_switch`, PROVISIONAL): 5th addendum, Decision B. Session-close-forces-exit (conditional, near invalidation only): **6th addendum, Decision 3.** Emergency-exit thresholds ratified PROVISIONAL working values (20 pts / 60 s): **6th addendum, Decision 5.** | Decision 3's "invalidation-buffer distance" was named as a concept but no number/formula was supplied — explicitly not inferred from the unrelated G7 stop buffer. One number away from full closure. |
+| Entry / order-simulation | **CLOSED** | Exact limit price, placement/confirmation timing, next-bar fill: 1st addendum decisions 2, 9. Limit expiry/cancellation: decision 8. Same-bar entry/stop/target ambiguity (stop-first): decision 9. Bid/ask (mid-price): 3rd addendum Cluster 4 Q13. Gap-through (fill-at-open): Q14. Partial-fill (accept + scale): Q15. `duplicate_setup_policy` (one_position_at_a_time, log-only): 5th addendum, Decision A. Post-fill event-priority ordering (stop → target → management → diagnostics): **6th addendum, Decision 4.** | None. |
 | RCR pre-registration | **CLOSED** | Primary/secondary metrics, multiple-testing control, OOS boundary, max experiment count, allowed-parameter-changes list: all 2nd addendum. Population-feasibility (30) / statistical-claim (100) floors: 1st addendum decision 12. | None. |
 
-**Summary:** 6 of 12 rows fully CLOSED (G3, G4, G7, G8, G9, RCR
-pre-registration), 1 CLOSED with one flagged low-risk item (G6), and 5
-PARTIAL with genuine open residuals (G1, G2, G5, G10, order-simulation).
+**Summary (updated after the sixth addendum, 2026-07-24):** 9 of 12 rows
+fully CLOSED (G2, G3, G4, G5, G7, G8, G9, order-simulation, RCR
+pre-registration), 1 CLOSED with one flagged low-risk item (G6), and 2
+PARTIAL (G1 — two low-risk items; G10 — one small numeric gap, the
+invalidation-buffer distance).
 
 ---
 
@@ -87,15 +89,22 @@ project's established verification practice.
    addendum) needs a **different** identifier — one that distinguishes
    between multiple *simultaneously-qualifying liquidity pools* for the
    tie-break chain (distance → timestamp → identifier). These are related
-   but distinct concepts; closing one does not close the other. The pool-
-   level identifier composition remains genuinely open.
+   but distinct concepts; closing one does not close the other. **Closed
+   2026-07-24: the sixth addendum's Decision 2 (SHA-256 hash of structural
+   attributes) closes the pool-level identifier specifically, leaving all
+   three now-distinct identifier mechanisms (dedup key, pool identifier,
+   duplicate-setup policy) separately decided.**
 2. **G5's FVG zone-boundary formula was never pinned**, only its "mode."
    Cluster 3 Q8 answered "fixed 3-candle geometry, not variable-length" —
    a real closure of *one* ambiguity — but the actual formula (which
    candles' highs/lows form the gap boundaries) was never stated by any
    decision, and the codebase's `fvgs()` function was independently found
    (in the 2026-07-23 deferred-gates companion review) not to cleanly
-   match this stage's fields.
+   match this stage's fields. **Closed 2026-07-24: the sixth addendum's
+   Decision 1 adopts wick-to-wick displacement, and this pass verified
+   directly against `src/smc_engine.py:135-143` that `fvgs()` already
+   implements exactly that formula — the claimed ST-C1-lineage precedent
+   checked out.**
 3. **G1's bull/bear classification rule and bias-evidence-timestamp field**
    were named as required in the original governance audit's gate table
    but never addressed by any of the four addenda. Likely mechanical/
@@ -107,14 +116,20 @@ project's established verification practice.
    stop," which plausibly extends to "no forced session-close exit
    either" — but the original governance audit explicitly named these as
    two separate open items, and no decision text says so explicitly.
-   Not assumed closed here.
+   Not assumed closed here. **Partially closed 2026-07-24: the sixth
+   addendum's Decision 3 answers the concept (conditional exit, near
+   invalidation only) but not the numeric "invalidation-buffer distance"
+   — one number still missing, not assumed from the unrelated G7 stop
+   buffer.**
 5. **Order-simulation's post-fill event-priority ordering is a distinct,
    unaddressed question from decision 9's entry/stop/target scope.**
    Decision 9 (1st addendum) resolves same-bar ambiguity between entry,
    stop, and target only. It says nothing about priority when multiple
    *management* events (breakeven activation, partial-take, runner
    activation, stop) could apply on the same bar to an already-open
-   position. New gap, not previously listed anywhere.
+   position. New gap, not previously listed anywhere. **Closed 2026-07-24:
+   the sixth addendum's Decision 4 (stop → target → management →
+   diagnostics) is a complete, deterministic total ordering.**
 6. **4th+ CHoCH sequencing has no rule.** Cluster 1 Q4 only covers the
    2nd and 3rd CHoCH. Narrow edge case, not treated as blocking G3's
    overall closure, but listed for completeness.
@@ -150,24 +165,26 @@ project's established verification practice.
 | # | Item | Gate | Blocking? | Status |
 |---|---|---|---|---|
 | 1 | ~~`duplicate_setup_policy` exact value~~ | Order-simulation | — | **CLOSED, 5th addendum Decision A** |
-| 2 | Emergency-exit numeric thresholds (spread-spike points, connection-loss seconds) | G10 | Yes — explicitly flagged illustrative-only, still unresolved after the 5th addendum's Decision B (a different mechanism) | Open |
-| 3 | FVG zone-boundary formula (3-candle gap price boundaries) | G5 | Yes — no deterministic engine can be built without it | Open |
-| 4 | Liquidity-pool "stable identifier" composition | G2 | Yes — decision 3's tie-break chain is incomplete without it | Open |
+| 2 | ~~Emergency-exit numeric thresholds~~ (ratified as PROVISIONAL working values) | G10 | — | **CLOSED (provisional), 6th addendum Decision 5** |
+| 3 | ~~FVG zone-boundary formula~~ | G5 | — | **CLOSED, 6th addendum Decision 1 (verified against code)** |
+| 4 | ~~Liquidity-pool "stable identifier" composition~~ | G2 | — | **CLOSED, 6th addendum Decision 2** |
 | 5 | Bull/bear classification rule (explicit statement) | G1 | Likely low-effort, but unresolved | Open |
 | 6 | Bias-evidence-timestamp field | G1 | Low-risk, diagnostics-detail level | Open |
-| 7 | Session-close-forces-exit for an open position | G10 | Yes — distinct from the already-answered time-stop question | Open |
-| 8 | Post-fill event-priority ordering (breakeven/partial/runner/stop) | Order-simulation | Yes — needed for deterministic trade management | Open |
+| 7 | Session-close-forces-exit **invalidation-buffer distance** (concept closed, number still missing) | G10 | Yes — one number away from full closure | **PARTIAL, 6th addendum Decision 3** |
+| 8 | ~~Post-fill event-priority ordering~~ | Order-simulation | — | **CLOSED, 6th addendum Decision 4** |
 | 9 | 4th+ CHoCH sequencing rule | G1/G3 | Narrow edge case, non-blocking for initial implementation | Open |
 | 10 | `protected_level_lifecycle.create_on` — confirm the terminology-based inference | G1 | Low-risk, recommend one-line confirmation | Open |
 | 11 | `internal_bos_required` explicit restatement | G6 | Low-risk, recommend one-line confirmation | Open |
 | 12 | Rejection code strings — confirm or accept as proposed | All gates | Non-blocking | Open |
 | 13 | `risk.hard_kill_switch` — PROVISIONAL, subject to future risk research per the owner's own label | Risk (new, beyond original gate table) | Not blocking initial implementation scope, but PROVISIONAL means it may change | New, 5th addendum Decision B |
 
-Items 2-4 and 7-8 are the substantive remaining blockers. Items 5, 6, 9,
-10, 11, 12 are low-risk/narrow and could reasonably be closed with brief
-confirmations rather than fresh design sessions, but are not resolved
-here regardless of apparent size, per instruction. Item 13 is new and
-explicitly provisional, not a blocker.
+**Updated 2026-07-24 (sixth addendum):** items 2, 3, 4, and 8 are now
+closed. Item 7 is down to a single missing number (the invalidation-buffer
+distance). The only remaining substantive blocker is item 7's number.
+Items 5, 6, 9, 10, 11, 12 are low-risk/narrow and could reasonably be
+closed with brief confirmations rather than fresh design sessions, but
+are not resolved here regardless of apparent size, per instruction.
+Item 13 remains explicitly provisional, not a blocker.
 
 ---
 

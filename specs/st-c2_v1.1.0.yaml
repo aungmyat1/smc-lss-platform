@@ -111,12 +111,11 @@ pipeline:
       primary: nearest_absolute_price_distance
       tiebreak_1: most_recent_confirmation_timestamp
       tiebreak_2: stable_identifier
-      stable_identifier_composition: null   # UNRESOLVED — decision 3 says "use a stable identifier" as the final
-                                             # tie-break but never defines its field composition. NOTE: this is
-                                             # DISTINCT from the replay-engine dedup key closed by the fourth
-                                             # addendum (which solves repeat-detection of one setup across bars,
-                                             # not tie-breaking between multiple concurrently-qualifying pools).
-                                             # See audit §G2 for the full distinction.
+      stable_identifier_composition: sha256_of_structural_attributes   # decided: sixth addendum, Decision 2
+      stable_identifier_fields: [timestamp, high, low, swing_classification, displacement_metrics]   # decided: sixth addendum, Decision 2
+      # NOTE: distinct from the replay-engine dedup key closed by the fourth addendum (which solves
+      # repeat-detection of one setup across bars, not tie-breaking between multiple concurrently-qualifying
+      # pools). See audit §G2 for the full distinction.
 
     poi_gap_reaction:
       gap_min_points: 10
@@ -185,11 +184,10 @@ pipeline:
                                                       # chain invalidates -> entire alignment result fails)
 
     fvg_geometry_mode: fixed_three_candle   # decided: third addendum, Cluster 3 Q8 (semantic clarification only)
-    zone_boundary_formula: null   # UNRESOLVED — Q8 clarified the geometry MODE (fixed 3-candle, not variable-length)
-                                   # but never pinned the actual price-boundary formula (which candles' highs/lows
-                                   # bound the gap). src/smc_engine.py's fvgs() is a plausible starting primitive but
-                                   # was found NOT to cleanly match this stage's fields on a field-by-field check
-                                   # (docs/audit/2026-07-23-st-c2-deferred-gates-companion.md §4). See audit §G5.
+    zone_boundary_formula: wick_to_wick_displacement   # decided: sixth addendum, Decision 1 — verified against
+      # src/smc_engine.py:135-143's fvgs(): bull gap = [c[i-2].high, c[i].low] where c[i-2].high < c[i].low;
+      # bear gap = [c[i].high, c[i-2].low] where c[i-2].low > c[i].high. Uses candle high/low (wicks), not
+      # open/close (body). Claim of ST-C1-lineage precedent checked and confirmed accurate before recording.
 
     multi_zone_tie_break_rule: highest_timeframe_priority   # decided: third addendum, Cluster 3 Q9
     mitigation_invalidation_threshold_pct: 50   # decided: first addendum, decision 4 (>= 50% invalidates, inclusive)
@@ -245,11 +243,9 @@ pipeline:
       duplicate_setup_log_only: true   # decided: fifth addendum, Decision A — a rejected duplicate setup is still
                                         # logged per diagnostics.record_rejected_setups, not silently dropped
 
-      post_fill_event_priority_ordering: null   # UNRESOLVED — decision 9's stop-first rule covers same-bar
-                                                 # entry/stop/target ambiguity only. General event ordering across
-                                                 # post-fill management events (breakeven activation, partial-take,
-                                                 # runner, stop) on the same bar is not addressed by any decision.
-                                                 # See audit §G10/Order-Simulation.
+      post_fill_event_priority_ordering: [stop, target, management, diagnostics]   # decided: sixth addendum,
+        # Decision 4 — stop first (prevents invalid states), target second (correct RR logic), management third
+        # (breakeven/partials, must not override stop/target), diagnostics last (logging only, never affects execution)
 
     same_bar_priority_rule: stop_first   # decided: first addendum, decision 9
 
@@ -294,19 +290,22 @@ pipeline:
     time_stop_enabled: false   # decided: third addendum, Cluster 4 Q11
     time_stop_threshold_bars: null   # decided: third addendum, Cluster 4 Q11 (no time stop)
 
-    session_close_forces_exit: null   # UNRESOLVED — the original governance audit named "session-close rule" as a
-                                       # distinct open item from "time stop." Q11's "structure-based/R-multiple only"
-                                       # answer plausibly implies no forced session-close exit either, but this was
-                                       # never explicitly stated as covering that case. Not assumed here. See audit §G10.
+    session_close_forces_exit: conditional_near_invalidation_only   # decided: sixth addendum, Decision 3 — at
+      # session close, exit only if price is within an invalidation-buffer distance of structural invalidation;
+      # otherwise the position remains open past session close. Consistent with Q11's structure-based philosophy.
+    invalidation_buffer_distance: null   # UNRESOLVED — Decision 3 named the concept ("near invalidation") but
+      # supplied no number/formula. NOT assumed to reuse execution_stage.stop's G7 buffer (a different concept:
+      # stop placement, not exit-trigger proximity) — see sixth addendum for why that inference was declined.
 
     emergency_exit_rules:   # distinct from risk.hard_kill_switch above (a portfolio loss-% circuit breaker) —
                              # this is an infrastructure/market-anomaly-triggered immediate exit. Do not conflate.
       concept: immediate_market_exit   # decided: third addendum, Cluster 4 Q12
       triggers: [spread_spike, connection_loss, volatility_shock]   # decided: third addendum, Cluster 4 Q12
-      spread_spike_points: 20   # PLACEHOLDER — illustrative example value from source material, explicitly flagged
-                                 # as NOT owner-confirmed in the third addendum's own "Not addressed" section.
-                                 # STILL UNRESOLVED as of the fifth addendum — not answered by Decision B.
-      connection_loss_seconds: 60   # PLACEHOLDER — same caveat as above, still unresolved.
+      status: PROVISIONAL   # decided: sixth addendum, Decision 5 — reviewed and knowingly retained as provisional/
+                             # revisable working values (not "never reviewed" as before this session); see addendum
+                             # for the explicit interpretation note — confirm if this reading isn't what was intended.
+      spread_spike_points: 20   # now the provisional working value (sixth addendum, Decision 5), not final
+      connection_loss_seconds: 60   # now the provisional working value (sixth addendum, Decision 5), not final
 
 # ============================================================
 # 4. Risk & Portfolio
@@ -389,6 +388,8 @@ rcr_preregistration:
 implementation_notes:
   dedup_key_formula: '(symbol, "LTF_CHoCH", index_offset_m3 + ltf_choch_confirmation_bar_index)'
   dedup_key_source: "fourth addendum — verified generalization of ST-C1's structure_key/index_offset convention"
-  dedup_key_scope_caveat: "Solves repeat-detection of ONE still-valid setup across replay bars. Does NOT solve
-    liquidity_stage.pool_selection.stable_identifier_composition (a different, still-unresolved question) and does
-    NOT solve execution_stage.entry.duplicate_setup_policy (concurrent independent setups, also unresolved)."
+  dedup_key_scope_caveat: "Solves repeat-detection of ONE still-valid setup across replay bars. This is a DIFFERENT
+    mechanism from liquidity_stage.pool_selection.stable_identifier_composition (sixth addendum: SHA-256 of
+    structural attributes, for tie-breaking among concurrently-qualifying pools) and from
+    execution_stage.entry.duplicate_setup_policy (fifth addendum: one_position_at_a_time, for concurrent
+    independent setups). All three are now decided but solve three distinct questions — do not conflate."

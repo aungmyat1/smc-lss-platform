@@ -878,3 +878,139 @@ gates remain unmet: `specs/st-c2.yaml` is still `status: candidate`, and no
 repo. No execution-layer code has been written and none is authorized by
 this addendum — per `CLAUDE.md`'s hard rule, that requires sequencing by
 `project-governance-agent` in addition to the two gates above.
+
+---
+
+## Sixth addendum (2026-07-24, owner-decision session round 5 — the five remaining blockers from the readiness report)
+
+Documentation-only, same restriction as every prior addendum: does **not**
+authorize strategy-engine implementation, backtesting, optimization, demo
+execution, live execution, promotion, or broker operations. `specs/st-c2.yaml`
+(v1.0.0) remains unchanged; `engine_implements_spec` stays `false`. No code
+written, no backtest run, no execution/demo/live/promotion state changed.
+This addendum answers all five items
+`reports/ST-C2_IMPLEMENTATION_READINESS.md` listed as substantive blockers.
+Three close cleanly; two close with a flagged residual, stated below rather
+than silently assumed away.
+
+### Decision 1 — FVG zone-boundary formula (closes G5's remaining residual)
+
+**Decision: wick-to-wick displacement.**
+
+**Verified against code before recording** (per this project's standing
+practice of checking claims rather than accepting them at face value): the
+rationale asserted this formula is "already used in your ST-C1 lineage."
+Checked directly — `src/smc_engine.py:135-143`'s `fvgs()` function computes
+bullish gaps as `lower = c[i-2]["high"], upper = c[i]["low"]` (requiring
+`c[i-2]["high"] < c[i]["low"]`) and the mirrored bearish case, using candle
+`high`/`low` fields (wick extremes) from the first and third candles of
+each 3-candle window — not `open`/`close` (body). The claim is **confirmed
+accurate**, not merely asserted.
+
+**Effect:** `fvgs()`'s existing formula is now the owner-confirmed
+authoritative zone-boundary formula for ST-C2's FVG stages (HTF/MF/LTF),
+resolving the residual the third addendum's `fvg_geometry_mode:
+fixed_three_candle` decision left open (that decision fixed the *mode*;
+this fixes the *formula*). `specs/st-c2_v1.1.0.yaml`'s
+`fvg_stage.zone_boundary_formula` is updated from `null` to this decision.
+
+### Decision 2 — Liquidity-pool stable-identifier composition (closes G2's remaining residual)
+
+**Decision: SHA-256 hash of structural attributes** — specifically
+timestamp, high, low, swing classification, and displacement metrics.
+
+This is distinct from (and does not touch) the fourth addendum's
+replay-engine dedup key
+(`(symbol, "LTF_CHoCH", index_offset_m3 + ltf_choch_confirmation_bar_index)`) —
+that key solves repeat-detection of one setup across replay bars; this
+decision solves decision 3's (first addendum) liquidity-pool tie-break
+chain's third criterion (nearest distance → most recent timestamp →
+**stable identifier**), which was left undefined until now.
+`specs/st-c2_v1.1.0.yaml`'s
+`liquidity_stage.pool_selection.stable_identifier_composition` is updated
+from `null` to this decision.
+
+### Decision 3 — Session-close-forces-exit (closes G10's remaining residual, with one flagged numeric gap)
+
+**Decision: conditional exit — at session close, exit an open position
+only if price is within an invalidation-buffer distance of structural
+invalidation; otherwise the position remains open past session close**,
+consistent with the third addendum's existing "structure-based/R-multiple
+only" management philosophy (Q11) rather than introducing an unrelated,
+purely time-based rule.
+
+**Not closed by this decision, flagged rather than assumed:** the exact
+numeric or formulaic definition of "invalidation-buffer distance" was not
+supplied. It is *not* assumed here to reuse the G7 stop buffer (2
+broker-native points beyond the liquidity-sweep extreme, second addendum)
+— that buffer governs stop placement, a related but distinct concept, and
+conflating the two would be exactly the kind of unstated inference this
+RCR's addenda have repeatedly corrected when found (see the fourth
+addendum's G2 scope correction, the third addendum's G6 scope correction).
+`specs/st-c2_v1.1.0.yaml` records the conditional-exit *rule* as decided
+but leaves the buffer distance itself `null`/flagged.
+
+### Decision 4 — Post-fill event-priority ordering (closes the order-simulation residual)
+
+**Decision: STOP → TARGET → MANAGEMENT → DIAGNOSTICS.**
+
+Stop evaluated first (prevents invalid states) — target second (correct
+RR logic) — management (breakeven, partials) third, explicitly forbidden
+from overriding stop/target outcomes — diagnostics last, logging only,
+never affecting execution. This is a complete, deterministic total
+ordering across all four post-fill event categories the audit identified
+as unaddressed by decision 9's (first addendum) entry/stop/target-only
+scope. `specs/st-c2_v1.1.0.yaml`'s
+`execution_stage.entry.post_fill_event_priority_ordering` is updated from
+`null` to this decision.
+
+### Decision 5 — Emergency-exit thresholds (status decision, not a new numeric decision)
+
+**Decision: remain PROVISIONAL until ST-C2 statistical validation is
+complete.**
+
+**Interpretation recorded explicitly, not left ambiguous:** the owner's
+text did not restate new numbers, only a status ruling. Read together with
+the rationale given ("must remain adjustable... marking FINAL would
+violate the research workflow... marking TBD would block freeze
+eligibility"), this is recorded as: the existing illustrative values
+(`spread_spike_points: 20`, `connection_loss_seconds: 60`, third addendum
+Cluster 4 Q12) become the **working implementation values**, explicitly
+labeled provisional/revisable rather than merely "illustrative and
+unconfirmed" as they were before this session. This is a meaningful status
+change — from "never reviewed by the owner" to "reviewed and knowingly
+retained as provisional" — even though the numbers themselves are
+unchanged. **If this reading is not what was intended, it needs correcting
+explicitly**, per this addendum's own practice of flagging interpretations
+rather than silently locking them in.
+
+### On "freeze eligibility" as this session's framing
+
+This session's own title framed these five answers as closing "ST-C2
+freeze eligibility." Per the fifth addendum's already-recorded reasoning
+(reaffirmed, not re-litigated here): `status: frozen` is a claim about the
+*complete* contract having zero open residuals. Decision 3 above still
+carries one (the invalidation-buffer distance), and Decision 5 is
+explicitly provisional by its own terms — not a closed, locked value.
+Neither `specs/st-c2.yaml` nor `specs/st-c2_v1.1.0.yaml` is marked
+`frozen` by this addendum. See
+`reports/ST-C2_IMPLEMENTATION_READINESS.md` (re-issued alongside this
+addendum) for the resulting verdict.
+
+### Status after this sixth addendum
+
+Closed this session: FVG zone-boundary formula (G5), liquidity-pool
+stable-identifier composition (G2), post-fill event-priority ordering
+(order-simulation). Closed with one flagged residual each:
+session-close-forces-exit (G10 — concept decided, buffer-distance number
+still needed) and emergency-exit thresholds (provisional status decided,
+not a new final number).
+
+**Still open:** the invalidation-buffer distance number (Decision 3's
+residual); everything already low-risk/non-blocking from the
+`reports/ST-C2_SPEC_AUDIT.md` §4 list (items 5, 6, 9, 10, 11, 12 there)
+remains unaddressed by this session, unchanged. Both implementation gates
+remain unmet: `specs/st-c2.yaml` is still `status: candidate`, and no
+`IMPLEMENTATION AUTHORIZATION: GRANTED` string exists anywhere in the
+repo. No execution-layer code has been written and none is authorized by
+this addendum.
