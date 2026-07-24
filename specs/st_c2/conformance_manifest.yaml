@@ -18,6 +18,22 @@ stage_a:
       - reports/ST-C2_V1.2_GBPUSD_REFERENCE_IMPLEMENTATION.md
       - reports/ST-C2_V1.2_GBPUSD_EXISTENCE_CHECK.md
       - reports/ST-C2_V1.2_GBPUSD_R1_DIAGNOSTIC.md
+      - reports/validation/st_c2/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md
+      - reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json
+      - reports/validation/st_c2/A2_CONFORMANCE_RESULTS.json
+    completion_audit:
+      verdict: S1-G2 REMAINS OPEN
+      blocking_gaps:
+        - htf_bos_choch_bias_missing
+        - structural_dealing_range_missing
+        - fvg_confluence_lifecycle_partial
+        - ltf_confirmation_evidence_partial
+        - state_machine_missing
+        - logical_trade_plan_missing
+        - rejection_subcodes_missing
+        - stable_identifiers_missing
+        - golden_case_library_missing
+        - hardcoded_symbol_precision_present
   a3:
     status: blocked
     blocked_by: a2

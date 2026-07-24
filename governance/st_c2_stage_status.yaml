@@ -34,7 +34,14 @@ stage_a_strategy_validation:
       status: passed
       first_signal_time: "2026-06-10 17:15"
       direction: short
-    next_required_decision: complete_s1_g2_or_record_blockers
+    completion_audit:
+      status: failed
+      verdict: S1-G2 REMAINS OPEN
+      report: reports/validation/st_c2/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md
+      coverage_matrix: reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json
+      conformance_results: reports/validation/st_c2/A2_CONFORMANCE_RESULTS.json
+      missing_rule_test_mappings: 37
+    next_required_decision: close_s1_g2_blocking_gaps
 
   a3_statistical_validation:
     status: blocked

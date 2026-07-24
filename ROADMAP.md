@@ -27,7 +27,7 @@ Stage B - Trading-System Integration and Execution Qualification
 | Frozen | YES |
 | Implementation | AUTHORIZED: S1-G2 REFERENCE ONLY |
 | A1 Logic Conformance | PASSED WITH TRACKED NON-BLOCKING RESIDUALS |
-| A2 Signal Conformance | IN PROGRESS |
+| A2 Signal Conformance | IN PROGRESS: S1-G2 REMAINS OPEN |
 | A3 Statistical Validation | BLOCKED: A2 NOT PASSED |
 | Execution | BLOCKED |
 | Demo | BLOCKED |
@@ -88,7 +88,7 @@ Verdict: PASS WITH TRACKED NON-BLOCKING RESIDUALS.
 
 This does not authorize A3, Stage B, execution, demo, live, or production.
 
-### A2 / S1-G2 - Reference Implementation - CURRENT, COMPLETION REVIEW
+### A2 / S1-G2 - Reference Implementation - CURRENT, REMAINS OPEN
 
 Authorized scope:
 
@@ -104,6 +104,9 @@ Completed:
 - `tests/test_st_c2_reference.py`
 - `reports/ST-C2_V1.2_GBPUSD_REFERENCE_IMPLEMENTATION.md`
 - `reports/ST-C2_V1.2_GBPUSD_EXISTENCE_CHECK.md`
+- `reports/validation/st_c2/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md`
+- `reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json`
+- `reports/validation/st_c2/A2_CONFORMANCE_RESULTS.json`
 
 Blocker:
 
@@ -113,7 +116,11 @@ Blocker:
 - The R1 diagnostic identified insufficient M3 coverage as the cause.
 - After extending M1-derived M3 to 16,642 bars, the existence scan found a
   qualifying GBPUSD short signal at `2026-06-10 17:15`.
-- S1-G2 completion review is required before S1-G3 Historical Validation.
+- S1-G2 completion audit verdict is S1-G2 REMAINS OPEN.
+- Missing rule-test mappings: 37.
+- Blocking gaps: HTF structural bias, OTE/dealing-range lifecycle, FVG
+  confluence, LTF event evidence, state machine, trade plan, rejection subcodes,
+  stable IDs, golden-case library, hardcoded symbol precision.
 
 Allowed after authorization: feature generation, detector engine, parser, rule
 engine, conformance tests, golden datasets.

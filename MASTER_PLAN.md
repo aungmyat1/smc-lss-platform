@@ -68,7 +68,7 @@ Nothing is higher priority than reaching this state without breaking governance.
 | Frozen | YES |
 | Implementation | AUTHORIZED: S1-G2 REFERENCE ONLY |
 | A1 Logic Conformance | PASSED WITH TRACKED NON-BLOCKING RESIDUALS |
-| A2 Signal Conformance | IN PROGRESS |
+| A2 Signal Conformance | IN PROGRESS: S1-G2 REMAINS OPEN |
 | A3 Statistical Validation | BLOCKED: A2 NOT PASSED |
 | Execution | BLOCKED |
 | Demo | BLOCKED |
@@ -276,7 +276,9 @@ golden-case tests, conformance kernel, minimum GBPUSD detector slice, and the
 existence-check run. The minimum existence floor is satisfied by a first
 GBPUSD short signal at `2026-06-10 17:15` after extending M1-derived M3
 coverage. No broker, execution-layer, demo, live, or production work is
-authorized.
+authorized. The S1-G2 completion audit in
+`reports/validation/st_c2/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md`
+keeps S1-G2 open pending gap closure.
 
 ### A2 / S1-G3 - Primitive and Indicator Conformance
 

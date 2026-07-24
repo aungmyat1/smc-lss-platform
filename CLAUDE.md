@@ -53,7 +53,7 @@ Current lifecycle position:
 | Frozen | YES |
 | Implementation | AUTHORIZED: S1-G2 REFERENCE ONLY |
 | A1 Logic Conformance | PASSED WITH TRACKED NON-BLOCKING RESIDUALS |
-| A2 Signal Conformance | IN PROGRESS |
+| A2 Signal Conformance | IN PROGRESS: S1-G2 REMAINS OPEN |
 | A3 Statistical Validation | BLOCKED: A2 NOT PASSED |
 | Execution | BLOCKED |
 | Demo | BLOCKED |
@@ -63,9 +63,10 @@ ST-C2 v1.2.0 is the active frozen GBPUSD-scoped specification. Scoped S1-G2
 reference implementation is authorized only for golden-case tests, conformance
 kernel, minimum GBPUSD detector slice, and the existence check. The first
 GBPUSD existence floor is satisfied by a short signal at `2026-06-10 17:15`.
-Treat any claim to historical validation, execution, demo, live, or production
-authority as a governance conflict until verified in the higher-authority
-documents and ADR/RCR records.
+The S1-G2 completion audit keeps the gate open pending reference-conformance
+gap closure. Treat any claim to historical validation, execution, demo, live,
+or production authority as a governance conflict until verified in the
+higher-authority documents and ADR/RCR records.
 
 ## Hard Rules
 

@@ -23,7 +23,7 @@ subordinate to `MASTER_PLAN.md` and should not duplicate the full lifecycle rule
 | Frozen | YES |
 | Implementation | AUTHORIZED: S1-G2 REFERENCE ONLY |
 | A1 Logic Conformance | PASSED WITH TRACKED NON-BLOCKING RESIDUALS |
-| A2 Signal Conformance | IN PROGRESS |
+| A2 Signal Conformance | IN PROGRESS: S1-G2 REMAINS OPEN |
 | A3 Statistical Validation | BLOCKED: A2 NOT PASSED |
 | Execution | BLOCKED |
 | Demo | BLOCKED |
@@ -76,6 +76,12 @@ ST-C2 evidence:
   gate status.
 - `specs/st_c2/conformance_manifest.yaml` - A2 conformance manifest.
 - `specs/st_c2/rule_to_test_map.yaml` - rule-to-test traceability map.
+- `reports/validation/st_c2/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md`
+  - S1-G2 completion audit; verdict S1-G2 REMAINS OPEN.
+- `reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json` - frozen-rule
+  coverage matrix; 45 rules inventoried, 37 missing mappings.
+- `reports/validation/st_c2/A2_CONFORMANCE_RESULTS.json` - completion criteria
+  results and reproduced existence signal.
 - `validation/st_c2_reference.py` - S1-G2 minimum GBPUSD reference kernel.
 - `validation/run_st_c2_gbp_existence.py` - S1-G2 existence-check scanner.
 - `tests/test_st_c2_reference.py` - golden-case, mirror, cutoff, determinism,
@@ -123,9 +129,11 @@ S1-G2 result:
 
 Remaining blocker:
 
-- Complete S1-G2 review: confirm the reference kernel, tests, data provenance,
-  existence report, and R1 diagnostic are sufficient evidence to promote the
-  lifecycle to S1-G3 Historical Validation.
+- S1-G2 completion audit failed. Close exact blockers before A2/S1-G3 can be
+  authorized: structural HTF bias, dealing-range/OTE lifecycle, FVG confluence,
+  LTF confirmation evidence, deterministic state machine, logical trade plan,
+  rejection subcodes, stable identifiers, golden-case library, and hardcoded
+  symbol precision.
 
 Non-blocking residuals to carry forward:
 
@@ -160,9 +168,8 @@ current Stage A lifecycle.
 
 ## Next Action
 
-Complete S1-G2 evidence review. If accepted, record the governance decision and
-advance to S1-G3 Historical Validation. Do not tune parameters or change the
-frozen spec without a new RCR.
+Close S1-G2 audit blockers. Do not advance to S1-G3, A3, or Stage B until a
+new completion audit supports the gate.
 
 Do not modify strategy specs, code, YAML parameters, execution state, demo
 settings, live settings, or authorization state as part of status maintenance.

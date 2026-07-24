@@ -1,0 +1,50 @@
+{
+  "strategy": "ST-C2",
+  "version": "1.2.0",
+  "symbol": "GBPUSD",
+  "gate": "S1-G2 Reference Implementation Completion Review",
+  "verdict": "S1-G2 REMAINS OPEN",
+  "s1_g2_completion_criteria": {
+    "frozen_rule_inventory_complete": true,
+    "missing_mappings_zero": false,
+    "critical_implementation_coverage_100_percent": false,
+    "positive_deterministic_cases_pass": true,
+    "negative_deterministic_cases_pass": false,
+    "boundary_cases_pass": false,
+    "lookahead_violations": 0,
+    "illegal_state_transitions": "not_implemented",
+    "duplicate_signals": "not_implemented",
+    "unexplained_differences": "not_measured",
+    "broker_imports": 0,
+    "hardcoded_symbol_precision": 1,
+    "full_logical_trade_plan_reproducible": false,
+    "data_provenance_complete": true,
+    "existence_result_reproducible": true
+  },
+  "reproduced_signal": {
+    "status": "SIGNAL_FOUND",
+    "checked_windows_before_first_signal": 1365,
+    "signal_time": "2026-06-10 17:15",
+    "direction": "short",
+    "data_hashes_sha256": {
+      "data/GBPUSD_H4.csv": "46B642EAD3C7FBBB839FCC0609FE9C2082C2732F4573DDE813987CFDD10C50FE",
+      "data/GBPUSD_M15.csv": "DBAE313BEBB714A8C813995B541E30DFEE4DDD2AEB05243E61FB0653154E0BB8",
+      "data/GBPUSD_M3.csv": "05F302868ACE44FF8C04BD2438FE598AE5A5D6ABAF0092655E87CB417BB851C2"
+    }
+  },
+  "blocking_gaps": [
+    "Bias conformance is not faithful: _bias_from_sweep equates liquidity-sweep direction with HTF BOS/CHoCH bias.",
+    "OTE/dealing range conformance is not faithful: _in_discount_or_premium uses full MF window high/low rather than frozen triggering liquidity swing range identity.",
+    "FVG conformance is partial and uses hardcoded point conversion points * 0.00001.",
+    "LTF confirmation is partial, hardcodes k=2, and lacks internal BOS, displacement, first qualifying bar, protected-level lifecycle, and structured event evidence.",
+    "No deterministic state machine exists.",
+    "No full logical trade-plan object exists.",
+    "R1-R7 rejection coverage is incomplete for stop invalidity, net-R insufficiency, missing cost profile, and missing target.",
+    "Stable identifiers for pools/events/sweeps/FVGs/confirmations/signals/trade plans are not implemented.",
+    "Golden-case library is not versioned beyond inline helper arrays.",
+    "Rule-to-test map claims missing_rule_test_mappings: 0 but audit inventory finds 37 missing mappings."
+  ],
+  "commands": {
+    "existence_reproduction": "python -m validation.run_st_c2_gbp_existence"
+  }
+}

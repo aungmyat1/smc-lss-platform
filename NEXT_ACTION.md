@@ -2,7 +2,7 @@
 
 **One milestone at a time. This is the active milestone.**
 
-## ST-C2 A1 Closure and A2 Reference-Conformance Authorization
+## S1-G2 Gap Closure - Reference-Conformance Blockers
 
 Current lifecycle position:
 
@@ -17,7 +17,7 @@ Current lifecycle position:
 | Frozen | YES |
 | Implementation | AUTHORIZED: S1-G2 REFERENCE ONLY |
 | A1 Logic Conformance | PASSED WITH TRACKED NON-BLOCKING RESIDUALS |
-| A2 Signal Conformance | IN PROGRESS |
+| A2 Signal Conformance | IN PROGRESS: S1-G2 REMAINS OPEN |
 | A3 Statistical Validation | BLOCKED: A2 NOT PASSED |
 | Execution | BLOCKED |
 | Demo | BLOCKED |
@@ -25,9 +25,8 @@ Current lifecycle position:
 
 ## Objective
 
-Review whether the current S1-G2 evidence is sufficient to complete the
-reference implementation gate and authorize the next A2 correctness gate,
-S1-G3 Primitive and Indicator Conformance.
+Close the blocking gaps found by the S1-G2 completion audit. S1-G2 remains
+open; A2/S1-G3 is not authorized.
 
 ## Current Evidence
 
@@ -42,6 +41,12 @@ S1-G3 Primitive and Indicator Conformance.
 - Conformance manifest: `specs/st_c2/conformance_manifest.yaml`.
 - Current existence verdict: `SIGNAL_FOUND`.
 - First qualifying signal: `2026-06-10 17:15`, direction `short`.
+- S1-G2 completion audit:
+  `reports/validation/st_c2/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md`.
+- A2 coverage matrix:
+  `reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json`.
+- A2 conformance results:
+  `reports/validation/st_c2/A2_CONFORMANCE_RESULTS.json`.
 
 ## Data Finding
 
@@ -51,11 +56,25 @@ After extending M1-derived M3 history to 16,642 bars, the existence floor
 
 ## Acceptance Criteria
 
-- Confirm A1 closure is accepted with tracked non-blocking residuals.
-- Confirm reference kernel remains within authorized S1-G2/A2 scope.
-- Confirm tests, data provenance, existence report, and diagnostic report are
-  recorded as objective evidence.
-- Record a governance decision to either complete S1-G2 and move to A2/S1-G3
-  Primitive and Indicator Conformance, or keep S1-G2 open with named blockers.
+- Implement or formally close the audit blockers without changing frozen
+  strategy parameters.
+- Rule-to-test missing mappings must be reduced to `0` with direct evidence.
+- Critical implementation coverage must reach `100%` for the S1-G2 reference
+  contract.
+- Full logical trade plan and reproduced existence signal must be deterministic.
 - Keep A3 historical/statistical validation blocked until A2 passes.
 - Execution, demo, live, broker, and production authority remain blocked.
+
+## Blocking Gaps
+
+- HTF BOS/CHoCH bias is not implemented; current bias is sweep-derived.
+- Structural dealing-range identity and OTE lifecycle are missing.
+- FVG confluence, freshness, invalidation, tie-break, rounding, and point
+  normalization are incomplete.
+- LTF confirmation lacks full structured event evidence and lifecycle rules.
+- Deterministic state machine is missing.
+- Full logical trade-plan object is missing.
+- R1-R7 detailed failure coverage is incomplete.
+- Stable identifiers are missing.
+- Versioned golden-case library is missing.
+- Hardcoded symbol precision remains in the reference kernel.

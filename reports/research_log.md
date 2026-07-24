@@ -966,3 +966,28 @@ A1 is formally closed as PASS WITH TRACKED NON-BLOCKING RESIDUALS. A2 remains
 in progress at S1-G2 Reference Implementation Completion Review. A3 historical
 baseline/statistical validation remains blocked until A2 passes. Stage B
 execution/demo/live/production remains blocked until Stage A approval.
+
+## Addendum: ST-C2 v1.2 GBPUSD S1-G2 completion audit keeps gate open (2026-07-24)
+
+The S1-G2 completion audit was performed against the active frozen ST-C2 v1.2.0
+GBPUSD contract and the current reference implementation. The existence result
+was reproduced as `SIGNAL_FOUND` at `2026-06-10 17:15`, direction `short`, but
+existence is not sufficient for S1-G2 completion.
+
+New evidence:
+
+- `reports/validation/st_c2/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md`
+- `reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json`
+- `reports/validation/st_c2/A2_CONFORMANCE_RESULTS.json`
+
+Verdict: **S1-G2 REMAINS OPEN**.
+
+Blocking gaps include HTF BOS/CHoCH structural bias, dealing-range/OTE
+lifecycle, FVG confluence and precision handling, LTF confirmation event
+evidence, deterministic state machine, logical trade plan, rejection subcodes,
+stable identifiers, a versioned golden-case library, and hardcoded symbol
+precision. The rule inventory records 45 frozen rules and 37 missing
+rule-test mappings.
+
+A2/S1-G3, A3 historical/statistical validation, Stage B execution, demo, live,
+broker integration, and production remain blocked.

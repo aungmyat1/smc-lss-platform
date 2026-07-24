@@ -17,7 +17,9 @@ acceptance:
   illegal_state_transitions: 0
   lookahead_violations: 0
   unexplained_differences: 0
-  missing_rule_test_mappings: 0
+  missing_rule_test_mappings: 37
+  audit_source: reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json
+  s1_g2_completion_eligible: false
 
 rules:
   STC2-G1-STRUCT-001:
