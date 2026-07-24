@@ -546,3 +546,166 @@ no `IMPLEMENTATION AUTHORIZATION: GRANTED` string exists anywhere in the
 repo. Both remain open, separate owner acts — recording these decisions is
 not the same as authorizing implementation, per the owner's own stated
 gate structure for this work.
+
+---
+
+## Third addendum (2026-07-24, owner-decision session round 3 — remaining 7-item blocker list)
+
+Documentation-only, same restriction as the first two addenda: does **not**
+authorize strategy-engine implementation, backtesting, optimization, demo
+execution, live execution, promotion, or broker operations. `specs/st-c2.yaml`
+is unchanged; `engine_implements_spec` stays `false`. No code written, no
+backtest run, no execution/demo/live/promotion state changed.
+
+**Provenance note, stated plainly because it differs from the first two
+sessions:** the first two addenda's decisions were derived from
+`specs/st-c2.yaml` and the owner's own strategy document only. This session's
+rationale additionally cites external SMC teaching material ("ICT" concepts,
+"MentFX") as justification for several implications. That is disclosed here,
+not smoothed over — the decisions below are recorded as owner decisions
+regardless of their sourcing, exactly as previously scoped, but a reader
+should know the reasoning chain now includes external reference material,
+not just this repo's own filed documents.
+
+This session answers the 15-question set from
+`docs/audit/2026-07-24-st-c2-gate-sequencing-review` (the governance
+sequencing review's draft question list), grouped in the same four clusters,
+plus records two items from that review's "Phase 1" findings that needed no
+owner input at all.
+
+### Phase 1 — closed by existing convention, not owner decision (carried in from the 2026-07-24 governance sequencing review)
+
+- **G3 wick-probe-rejection**: already answered by
+  `close_beyond_structure_required: true` plus
+  `.claude/skills/choch-bos/SKILL.md`'s existing "close beyond level, not
+  just wick" rule. No new decision needed.
+- **G6 `displacement_body_ratio_min: 0.5`** and **`break_structure_close_required`**:
+  already implemented by `src/smc_engine.py`'s `displacement_move()` (the
+  same body-ratio formula `signal_v39.py`/`signal_v310.py` already reuse at
+  a different threshold) and the same close-beyond-structure rule as G3.
+  No new decision needed.
+
+### Cluster 1 — Swing / Structure (Q1-Q4)
+
+1. **H4 fractal confirmation window (`k`):** `k = 3`.
+2. **External vs. internal swing:** external = liquidity outside the
+   current dealing range; internal = liquidity inside the current dealing
+   range (swept before BOS).
+3. **Protected high/low lifecycle:** a protected level invalidates when an
+   opposite CHoCH occurs; otherwise it persists.
+4. **Multi-CHoCH sequencing:** a second CHoCH confirms continuation; a
+   third CHoCH signals trend acceleration or re-classification.
+
+Resolves G1/G2's swing-definition/protected-lifecycle residual and G3's
+multi-CHoCH-sequencing residual. Per the 2026-07-24 sequencing review, this
+was the load-bearing decision — it also unblocks `internal_bos_required`
+(G6) via decision 2 above, and is a precondition for finally verifying
+whether the existing `structure_key`/`index_offset` identifier convention
+(G2's remaining item, see "Not addressed" below) generalizes to ST-C2.
+
+### Cluster 2 — G6 Timing (Q5-Q7)
+
+5. **`max_setup_bars` (20) vs. `entry_window_bars` (15):** the entry window
+   is a subset of the setup window.
+6. **First-qualifying-bar tie-break:** the first bar that produces a clean
+   CHoCH close wins.
+7. **Sweep reclaim-close timing:** a single-bar reclaim close is
+   sufficient (no multi-bar confirmation required).
+
+Resolves G6's `max_setup_bars`/`entry_window_bars` relationship,
+first-qualifying-bar behavior, and sweep reclaim-close timing residuals.
+
+### Cluster 3 — FVG (Q8-Q10)
+
+8. **`min_displacement_bars: 3` semantic:** fixed 3-candle FVG geometry
+   (not a separate variable-length displacement-run concept).
+9. **Multi-zone FVG tie-break:** highest timeframe wins (an HTF FVG
+   dominates over MF/LTF FVGs when more than one qualifies).
+10. **Mitigation-ratio rounding:** round-half-up to broker precision.
+
+Resolves G5's FVG-formation-semantic ambiguity, multi-zone tie-break, and
+mitigation-rounding residuals. The FVG age/overlap/distance mechanics
+(`max_age_bars`, `max_distance_pips`, `must_overlap_htf_fvg`) remain, per
+the sequencing review, "implementation-ready, no decision required" —
+mechanical work against numbers the spec already supplies, not a gap
+needing an owner answer.
+
+### Cluster 4 — G10 + Order Simulation (Q11-Q14 answered; Q15 NOT answered, see below)
+
+11. **Time stop:** none — management remains structure-based/R-multiple
+    only, per the existing trade-management skill.
+12. **Emergency exit:** immediate market exit, triggered by spread spikes,
+    connection loss, or volatility shocks (illustrative values given:
+    spread-spike threshold 20 points, connection-loss threshold 60
+    seconds — these are examples in the source material, not yet
+    confirmed as the final numeric decision; see open item below).
+13. **Bid/ask treatment:** mid-price for FVG boundaries and fills.
+14. **Gap-through handling:** fill at open.
+15. **Partial-fill policy:** accept partial fills; scale stop/target
+    accordingly.
+
+Resolves G10's post-fill time-stop/emergency-exit residual and three of
+the four order-simulation residuals (bid/ask, gap-through, partial-fill).
+
+### Not addressed by this session — do not treat as decided
+
+- **Duplicate/concurrent-setup handling** (the fourth order-simulation
+  residual, originally Q15 in the governance review's draft list) has
+  **no corresponding decision or rationale** in what was provided this
+  session. A field-level draft supplied alongside these answers proposes
+  `duplicate_setup_policy: one_position_at_a_time`, but no "Q/implication"
+  reasoning backs that value the way it does for every other field above —
+  it is recorded here as an **unconfirmed proposal**, not an owner
+  decision, and must not be treated as closed until the owner explicitly
+  confirms it the same way the other 14 items were confirmed.
+- **G2's stable-identifier composition** (whether the existing
+  `structure_key`/`index_offset` convention from
+  `validation/historical_replay_engine_v39.py`/`_v310.py` generalizes to
+  ST-C2's H4/M15/M3 structure) is now unblocked by Cluster 1's decisions
+  but was not itself verified this session — still open, and per the
+  sequencing review this is an engineering-verification task, not a
+  further owner-decision question.
+- **Emergency-exit numeric thresholds** (spread-spike points,
+  connection-loss seconds): recorded above as illustrative examples from
+  the session's source material, not confirmed as final by the owner in
+  the same explicit way the other values were. Flagged so a future reader
+  doesn't treat "20 points / 60 seconds" as equivalent in authority to,
+  say, decision 6's "35/150 points" stop-distance bounds from the second
+  addendum, which were both stated and reasoned as the actual decision.
+
+### Field-level spec draft (reference only — NOT applied to `specs/st-c2.yaml`)
+
+A field-level YAML draft implementing decisions 1-14 above (new
+`htf_structure`/`management` blocks, plus additions to
+`ltf_confirmation_stage`, `liquidity_stage.detect_sweep`, `fvg_stage`, and
+`execution_stage.entry`) was supplied alongside these decisions and is
+preserved verbatim in `reports/research_log.md`'s entry for this addendum
+for future reference. Consistent with how the first two addenda's closed
+decisions (G4, G7, G8, G9) were never written into `specs/st-c2.yaml`
+itself, this draft is **not** applied to the spec file here. Folding it in
+— whether as an edit to `specs/st-c2.yaml` or as a new versioned file such
+as `specs/st-c2_v1.1.0.yaml` — is exactly the still-open
+"canonical-specification-path question" flagged in the first addendum's
+closing note, and remains a separate, explicit owner/governance act.
+
+### Status after this third addendum
+
+Closed this session: Cluster 1 (G1/G2 swing definition, G3 multi-CHoCH),
+Cluster 2 (G6 timing residuals), Cluster 3 (G5 FVG-formula/tie-break/
+rounding residuals), and three of four Cluster 4 items (G10 time-stop/
+emergency-exit concept, bid/ask, gap-through, partial-fill). Also closed
+via existing-convention verification (not owner decision): G3
+wick-probe-rejection, G6 displacement/close-confirmation fields.
+
+**Still open:** G2's stable-identifier generalization (engineering
+verification, now unblocked); duplicate/concurrent-setup handling (no
+decision given, only an unconfirmed proposed value); emergency-exit's
+exact numeric thresholds (illustrative, not confirmed as final).
+
+This addendum does not, by itself, satisfy either of the two remaining
+implementation gates: (a) `specs/st-c2.yaml` is still self-declared
+`status: candidate`, not an owner-verified canonical/approved spec, and (b)
+no `IMPLEMENTATION AUTHORIZATION: GRANTED` string exists anywhere in the
+repo. Both remain open, separate owner acts — recording these decisions is
+not the same as authorizing implementation, per the owner's own stated
+gate structure for this work.
