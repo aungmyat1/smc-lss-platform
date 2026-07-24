@@ -6,13 +6,13 @@
   "audit_date": "2026-07-24",
   "summary": {
     "total_frozen_rules_in_inventory": 45,
-    "implemented_rules": 23,
-    "tested_rules": 18,
+    "implemented_rules": 31,
+    "tested_rules": 26,
     "positive_case_coverage": 5,
     "negative_case_coverage": 2,
-    "boundary_case_coverage": 1,
-    "missing_rule_test_mappings": 28,
-    "critical_implementation_coverage_rate": 0.5111,
+    "boundary_case_coverage": 2,
+    "missing_rule_test_mappings": 20,
+    "critical_implementation_coverage_rate": 0.6889,
     "s1_g2_completion_eligible": false
   },
   "inventory": [
@@ -479,15 +479,19 @@
       "id": "STC2-FVG-001",
       "rule": "HTF FVG min displacement bars 3 and max age 60",
       "spec_lines": "164-168",
-      "classification": "NOT_IMPLEMENTED",
-      "implementation": null,
-      "tests": [],
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/evidence_gc3.py::EvidenceBuilder",
+      "tests": [
+        "tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_valid_fvg_chain_evidence",
+        "tests/st_c2/test_evidence_gc3.py::test_gc3_builder_rejects_fvg_chain_without_ltf_continuity"
+      ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC3_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc3",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc3_tests"
         ],
         "last_update": "2026-07-24"
       }
@@ -496,15 +500,18 @@
       "id": "STC2-FVG-002",
       "rule": "MF FVG must overlap HTF FVG and be within max distance 10 pips",
       "spec_lines": "170-172",
-      "classification": "NOT_IMPLEMENTED",
-      "implementation": "validation/st_c2_reference.py::_matching_mf_fvg plus validation/st_c2/symbols.py metadata conversion foundation",
-      "tests": [],
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/evidence_gc3.py::EvidenceBuilder",
+      "tests": [
+        "tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_valid_fvg_chain_evidence"
+      ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC3_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc3",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc3_tests"
         ],
         "last_update": "2026-07-24"
       }
@@ -513,15 +520,19 @@
       "id": "STC2-FVG-003",
       "rule": "LTF FVG is required for entry, max age 20, inside confluence zone",
       "spec_lines": "174-176",
-      "classification": "NOT_IMPLEMENTED",
-      "implementation": null,
-      "tests": [],
+      "classification": "PARTIALLY_IMPLEMENTED",
+      "implementation": "validation/st_c2/evidence_gc3.py::EvidenceBuilder",
+      "tests": [
+        "tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_valid_fvg_chain_evidence",
+        "tests/st_c2/test_evidence_gc3.py::test_gc3_builder_rejects_fvg_chain_without_ltf_continuity"
+      ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC3_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc3",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc3_tests"
         ],
         "last_update": "2026-07-24"
       }
@@ -530,15 +541,19 @@
       "id": "STC2-FVG-004",
       "rule": "HTF/MF directional alignment, no multi-zone stacking, cascade invalidation",
       "spec_lines": "178-184",
-      "classification": "NOT_IMPLEMENTED",
-      "implementation": null,
-      "tests": [],
+      "classification": "PARTIALLY_IMPLEMENTED",
+      "implementation": "validation/st_c2/evidence_gc3.py::EvidenceBuilder",
+      "tests": [
+        "tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_valid_fvg_chain_evidence",
+        "tests/st_c2/test_evidence_gc3.py::test_gc3_builder_rejects_fvg_chain_without_ltf_continuity"
+      ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC3_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc3",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc3_tests"
         ],
         "last_update": "2026-07-24"
       }
@@ -547,15 +562,19 @@
       "id": "STC2-FVG-005",
       "rule": "FVG chain continuity is HTF valid -> MF overlap -> LTF within MF displacement",
       "spec_lines": "186-190",
-      "classification": "NOT_IMPLEMENTED",
-      "implementation": null,
-      "tests": [],
+      "classification": "PARTIALLY_IMPLEMENTED",
+      "implementation": "validation/st_c2/evidence_gc3.py::EvidenceBuilder",
+      "tests": [
+        "tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_valid_fvg_chain_evidence",
+        "tests/st_c2/test_evidence_gc3.py::test_gc3_builder_rejects_fvg_chain_without_ltf_continuity"
+      ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC3_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc3",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc3_tests"
         ],
         "last_update": "2026-07-24"
       }
@@ -564,17 +583,19 @@
       "id": "STC2-FVG-006",
       "rule": "FVG geometry is fixed three-candle wick-to-wick",
       "spec_lines": "192-198",
-      "classification": "PARTIALLY_IMPLEMENTED",
-      "implementation": "src/smc_engine.py::fvgs via validation/st_c2_reference.py::_matching_mf_fvg",
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/fvg_confirmation.py::detect_fvg_events",
       "tests": [
-        "tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal"
+        "tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal",
+        "tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_valid_fvg_chain_evidence"
       ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC3_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc3",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc3_tests"
         ],
         "last_update": "2026-07-24"
       }
@@ -600,15 +621,18 @@
       "id": "STC2-LTF-001",
       "rule": "LTF CHoCH requires immediately preceding internal BOS",
       "spec_lines": "205-214",
-      "classification": "NOT_IMPLEMENTED",
-      "implementation": "validation/st_c2_reference.py::_ltf_confirmation",
-      "tests": [],
+      "classification": "PARTIALLY_IMPLEMENTED",
+      "implementation": "validation/st_c2/evidence_gc3.py::EvidenceBuilder",
+      "tests": [
+        "tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_ltf_confirmation_evidence"
+      ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC3_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc3",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc3_tests"
         ],
         "last_update": "2026-07-24"
       }
@@ -617,17 +641,21 @@
       "id": "STC2-LTF-002",
       "rule": "LTF break requires close beyond structure and displacement body ratio min 0.5",
       "spec_lines": "205-214",
-      "classification": "PARTIALLY_IMPLEMENTED",
-      "implementation": "validation/st_c2_reference.py::_ltf_confirmation",
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/evidence_gc3.py::EvidenceBuilder",
       "tests": [
-        "tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal"
+        "tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal",
+        "tests/test_st_c2_reference.py::test_bearish_mirror_emits_short_signal",
+        "tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_ltf_confirmation_evidence",
+        "tests/st_c2/test_evidence_gc3.py::test_gc3_builder_rejects_ltf_confirmation_without_displacement"
       ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC3_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc3",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc3_tests"
         ],
         "last_update": "2026-07-24"
       }
@@ -636,15 +664,18 @@
       "id": "STC2-LTF-003",
       "rule": "Stronger CHoCH requires lower-high/higher-low and max setup 20 bars",
       "spec_lines": "216-220",
-      "classification": "NOT_IMPLEMENTED",
-      "implementation": null,
-      "tests": [],
+      "classification": "PARTIALLY_IMPLEMENTED",
+      "implementation": "validation/st_c2/evidence_gc3.py::EvidenceBuilder",
+      "tests": [
+        "tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_ltf_confirmation_evidence"
+      ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC3_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc3",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc3_tests"
         ],
         "last_update": "2026-07-24"
       }
@@ -653,15 +684,19 @@
       "id": "STC2-LTF-004",
       "rule": "Entry window is 15 bars and first qualifying LTF CHoCH bar is used",
       "spec_lines": "218-220",
-      "classification": "NOT_IMPLEMENTED",
-      "implementation": null,
-      "tests": [],
+      "classification": "IMPLEMENTED_AND_TESTED",
+      "implementation": "validation/st_c2/evidence_gc3.py::EvidenceBuilder",
+      "tests": [
+        "tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_ltf_confirmation_evidence",
+        "tests/st_c2/test_evidence_gc3.py::test_gc3_builder_rejects_ltf_confirmation_without_displacement"
+      ],
       "provenance": {
-        "module": "GC2_structural_module",
+        "module": "GC3_evidence_module",
         "module_version": "v1.0.0",
-        "source": "st_c2.structural",
+        "source": "st_c2.evidence_gc3",
         "validated_by": [
-          "traceability_map"
+          "traceability_map",
+          "gc3_tests"
         ],
         "last_update": "2026-07-24"
       }

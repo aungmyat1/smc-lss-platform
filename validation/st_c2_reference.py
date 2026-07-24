@@ -16,6 +16,7 @@ from typing import Any
 import yaml
 
 from src import smc_engine as e
+from validation.st_c2.evidence_gc3 import EvidenceBuilder
 from validation.st_c2.structure import structural_context
 from validation.st_c2.symbols import load_symbol_metadata, points_to_price
 
@@ -225,17 +226,20 @@ def analyze_windows(
         return DetectionResult("NO_SIGNAL", symbol, direction, "R3", tuple(stages))
     stages.append(_stage("ote", True, "PASS", direction=direction, ote=ote.__dict__))
 
-    fvg = _matching_mf_fvg(mf, direction, spec)
-    if fvg is None:
+    metadata = load_symbol_metadata(symbol)
+    causal_cutoff = str(htf[-1]["time"]) if htf else ""
+    evidence_builder = EvidenceBuilder(spec=spec, symbol_metadata=metadata, causal_cutoff=causal_cutoff)
+    fvg_chain = evidence_builder.build_fvg_chain(htf, mf, ltf, direction=direction)
+    if not fvg_chain.valid:
         stages.append(_stage("fvg_alignment", False, "R4", direction=direction))
         return DetectionResult("NO_SIGNAL", symbol, direction, "R4", tuple(stages))
-    stages.append(_stage("fvg_alignment", True, "PASS", fvg=fvg))
+    stages.append(_stage("fvg_alignment", True, "PASS", fvg_chain=fvg_chain.to_dict()))
 
-    confirmation = _ltf_confirmation(ltf, direction)
-    if confirmation is None:
+    confirmation = evidence_builder.build_ltf_confirmation(ltf, direction=direction)
+    if not confirmation.valid:
         stages.append(_stage("ltf_confirmation", False, "R5", direction=direction))
         return DetectionResult("NO_SIGNAL", symbol, direction, "R5", tuple(stages))
-    stages.append(_stage("ltf_confirmation", True, "PASS", confirmation=confirmation))
+    stages.append(_stage("ltf_confirmation", True, "PASS", confirmation=confirmation.to_dict()))
 
     stages.append(_stage("risk", True, "PASS", provisional_thresholds=True))
     return DetectionResult("SIGNAL", symbol, direction, None, tuple(stages), signal_time=ltf[-1]["time"])

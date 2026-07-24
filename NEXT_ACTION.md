@@ -2,7 +2,7 @@
 
 **One milestone at a time. This is the active milestone.**
 
-## S1-G2-GC3 - FVG Chain and LTF Confirmation Conformance
+## S1-G2 Remaining Rule Closures - State, Trade Plan, and Rejection Evidence
 
 Current lifecycle position:
 
@@ -25,9 +25,10 @@ Current lifecycle position:
 
 ## Objective
 
-Implement the next controlled S1-G2 gap-closure slice: HTF/MF/LTF FVG-chain
-evidence and LTF confirmation conformance. S1-G2 remains open; A2/S1-G3 is
-not authorized.
+Implement the next controlled S1-G2 gap-closure slice: deterministic state
+transitions, signal candidate evidence, logical trade-plan evidence, and
+remaining rejection-code coverage. S1-G2 remains open; A2/S1-G3 is not
+authorized.
 
 ## Current Evidence
 
@@ -58,6 +59,10 @@ not authorized.
   `reports/validation/st_c2/LIQUIDITY_SWEEP_CONFORMANCE_REPORT.md`.
 - Dealing-range OTE conformance report:
   `reports/validation/st_c2/DEALING_RANGE_OTE_CONFORMANCE_REPORT.md`.
+- Differential coverage audit:
+  `reports/validation/st_c2/DIFFERENTIAL_COVERAGE_AUDIT_GC2.md`.
+- GC3 FVG/LTF evidence report:
+  `reports/validation/st_c2/S1_G2_GC3_FVG_LTF_EVIDENCE_REPORT.md`.
 - Stable identifier contract:
   `reports/validation/st_c2/STABLE_IDENTIFIER_CONTRACT.md`.
 - Golden-case library report:
@@ -73,7 +78,7 @@ After extending M1-derived M3 history to 16,642 bars, the existence floor
 
 - Implement or formally close the audit blockers without changing frozen
   strategy parameters.
-- Complete GC3 FVG-chain and LTF confirmation interfaces with deterministic
+- Complete the remaining S1-G2 state, signal, trade-plan, and rejection-code
   evidence objects.
 - Preserve the reproduced existence signal or explain any change.
 - Keep missing mappings honest; do not mark S1-G2 complete.
@@ -82,9 +87,7 @@ After extending M1-derived M3 history to 16,642 bars, the existence floor
 
 ## Blocking Gaps
 
-- FVG confluence, freshness, invalidation, tie-break, rounding, and point
-  normalization are incomplete.
-- LTF confirmation lacks full structured event evidence and lifecycle rules.
+- FVG/LTF advanced confluence and sequencing remain partial.
 - Deterministic state machine is missing.
 - Full logical trade-plan object is missing.
 - R1-R7 detailed failure coverage is incomplete.

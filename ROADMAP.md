@@ -114,6 +114,7 @@ Completed:
 - `reports/validation/st_c2/HTF_STRUCTURE_AND_BIAS_REPORT.md`
 - `reports/validation/st_c2/LIQUIDITY_SWEEP_CONFORMANCE_REPORT.md`
 - `reports/validation/st_c2/DEALING_RANGE_OTE_CONFORMANCE_REPORT.md`
+- `reports/validation/st_c2/S1_G2_GC3_FVG_LTF_EVIDENCE_REPORT.md`
 
 Blocker:
 
@@ -124,16 +125,19 @@ Blocker:
 - After extending M1-derived M3 to 16,642 bars, the existence scan found a
   qualifying GBPUSD short signal at `2026-06-10 17:15`.
 - S1-G2 completion audit verdict is S1-G2 REMAINS OPEN.
-- Missing rule-test mappings: 28.
-- Blocking gaps: FVG chain conformance, LTF event evidence, state machine,
-  trade plan, rejection subcodes, stable IDs for later evidence objects, and
-  golden-case library expansion.
+- Missing rule-test mappings: 20.
+- Blocking gaps: advanced FVG/LTF confluence cases, state machine, trade plan,
+  rejection subcodes, stable IDs for later evidence objects, and golden-case
+  library expansion.
 - GC1 foundations PASS: metadata, normalization, schemas, stable IDs,
   golden-case scaffold, traceability validator, and structural interfaces.
 - GC2 structural conformance PASS: HTF BOS/CHoCH-only bias, deterministic
   liquidity pool/sweep evidence, structural dealing-range identity, and OTE
   boundary evidence.
-- Remaining next slice: S1-G2-GC3 FVG chain and LTF confirmation conformance.
+- GC3 FVG/LTF evidence PARTIAL PASS: dedicated evidence module, FVG-chain
+  evidence, and LTF confirmation evidence integrated into the reference kernel.
+- Remaining next slice: S1-G2 state machine, trade-plan, rejection-code, and
+  remaining rule closures.
 
 Allowed after authorization: feature generation, detector engine, parser, rule
 engine, conformance tests, golden datasets.

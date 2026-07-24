@@ -25,17 +25,19 @@ stage_a:
       - reports/validation/st_c2/HTF_STRUCTURE_AND_BIAS_REPORT.md
       - reports/validation/st_c2/LIQUIDITY_SWEEP_CONFORMANCE_REPORT.md
       - reports/validation/st_c2/DEALING_RANGE_OTE_CONFORMANCE_REPORT.md
+      - reports/validation/st_c2/DIFFERENTIAL_COVERAGE_AUDIT_GC2.md
+      - reports/validation/st_c2/S1_G2_GC3_FVG_LTF_EVIDENCE_REPORT.md
     completion_audit:
       verdict: S1-G2 REMAINS OPEN
       blocking_gaps:
-        - fvg_confluence_lifecycle_partial
-        - ltf_confirmation_evidence_partial
+        - fvg_confluence_lifecycle_advanced_cases_partial
+        - ltf_confirmation_advanced_sequencing_partial
         - state_machine_missing
         - logical_trade_plan_missing
         - rejection_subcodes_missing
         - stable_identifiers_for_later_events_missing
         - golden_case_library_incomplete
-        - rule_to_test_map_has_28_missing_mappings
+        - rule_to_test_map_has_20_missing_mappings
     gc1_foundations:
       status: passed
       report: reports/validation/st_c2/S1_G2_GC1_CONFORMANCE_FOUNDATIONS_REPORT.md
@@ -48,7 +50,13 @@ stage_a:
       htf_structure_and_bias: reports/validation/st_c2/HTF_STRUCTURE_AND_BIAS_REPORT.md
       liquidity_sweep: reports/validation/st_c2/LIQUIDITY_SWEEP_CONFORMANCE_REPORT.md
       dealing_range_ote: reports/validation/st_c2/DEALING_RANGE_OTE_CONFORMANCE_REPORT.md
+      differential_coverage_audit: reports/validation/st_c2/DIFFERENTIAL_COVERAGE_AUDIT_GC2.md
       next_slice: S1-G2-GC3
+    gc3_fvg_ltf_evidence:
+      status: partial_pass
+      report: reports/validation/st_c2/S1_G2_GC3_FVG_LTF_EVIDENCE_REPORT.md
+      evidence_module: validation/st_c2/evidence_gc3.py
+      missing_mappings_after_gc3: 20
   a3:
     status: blocked
     blocked_by: a2

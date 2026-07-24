@@ -19,7 +19,16 @@
     "htf_structure_report": "reports/validation/st_c2/HTF_STRUCTURE_AND_BIAS_REPORT.md",
     "liquidity_sweep_report": "reports/validation/st_c2/LIQUIDITY_SWEEP_CONFORMANCE_REPORT.md",
     "dealing_range_ote_report": "reports/validation/st_c2/DEALING_RANGE_OTE_CONFORMANCE_REPORT.md",
+    "differential_coverage_audit": "reports/validation/st_c2/DIFFERENTIAL_COVERAGE_AUDIT_GC2.md",
     "next_slice": "S1-G2-GC3 FVG CHAIN AND LTF CONFIRMATION CONFORMANCE"
+  },
+  "gc3_fvg_ltf_evidence": {
+    "status": "partial_pass",
+    "report": "reports/validation/st_c2/S1_G2_GC3_FVG_LTF_EVIDENCE_REPORT.md",
+    "evidence_module": "validation/st_c2/evidence_gc3.py",
+    "reference_kernel_integration": "validation/st_c2_reference.py consumes EvidenceBuilder outputs",
+    "missing_mappings_after_gc3": 20,
+    "next_slice": "S1-G2 state machine, trade-plan, rejection-code, and remaining rule closures"
   },
   "s1_g2_completion_criteria": {
     "frozen_rule_inventory_complete": true,
@@ -57,7 +66,7 @@
     "R1-R7 rejection coverage is incomplete for stop invalidity, net-R insufficiency, missing cost profile, and missing target.",
     "Stable identifiers remain incomplete for FVGs, confirmations, signals, and trade plans.",
     "Golden-case library is initialized but not complete enough for full S1-G2 qualification.",
-    "Rule-to-test map reports 28 missing mappings that must remain open until direct evidence exists."
+    "Rule-to-test map reports 20 missing mappings that must remain open until direct evidence exists."
   ],
   "commands": {
     "existence_reproduction": "python -m validation.run_st_c2_gbp_existence"

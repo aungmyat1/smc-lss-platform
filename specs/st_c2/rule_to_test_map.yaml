@@ -238,30 +238,150 @@ rules:
       condition: candidate is outside the frozen OTE retrace band
     mapping_status: implemented
 
-  STC2-FVG-006:
-    description: FVG alignment uses fixed three-candle wick-to-wick geometry in the setup direction.
+  STC2-FVG-001:
+    description: HTF/MF/LTF FVG evidence records continuity status.
     implementation:
-      module: validation.st_c2_reference
-      function: _matching_mf_fvg
+      module: validation.st_c2.evidence_gc3
+      function: EvidenceBuilder
     tests:
-      - tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal
+      - tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_valid_fvg_chain_evidence
+      - tests/st_c2/test_evidence_gc3.py::test_gc3_builder_rejects_fvg_chain_without_ltf_continuity
     golden_cases:
       - GC-STC2-GBPUSD-BULL-POS-001
     expected_rejection_behavior:
       code: R4
-      condition: no matching MF FVG exists
+      condition: FVG chain continuity is absent
+    mapping_status: implemented
+
+  STC2-FVG-002:
+    description: FVG confluence zone is emitted from aligned FVG evidence.
+    implementation:
+      module: validation.st_c2.evidence_gc3
+      function: EvidenceBuilder
+    tests:
+      - tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_valid_fvg_chain_evidence
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R4
+      condition: confluence zone cannot be computed from FVG evidence
+    mapping_status: implemented
+
+  STC2-FVG-003:
+    description: LTF FVG evidence is required for entry and must be current enough for the chain.
+    implementation:
+      module: validation.st_c2.evidence_gc3
+      function: EvidenceBuilder
+    tests:
+      - tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_valid_fvg_chain_evidence
+      - tests/st_c2/test_evidence_gc3.py::test_gc3_builder_rejects_fvg_chain_without_ltf_continuity
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R4
+      condition: LTF FVG is missing or expired
+    mapping_status: partially_implemented
+
+  STC2-FVG-004:
+    description: FVG chain requires directional alignment and cascade failure on missing lower-timeframe evidence.
+    implementation:
+      module: validation.st_c2.evidence_gc3
+      function: EvidenceBuilder
+    tests:
+      - tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_valid_fvg_chain_evidence
+      - tests/st_c2/test_evidence_gc3.py::test_gc3_builder_rejects_fvg_chain_without_ltf_continuity
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R4
+      condition: directional FVG chain cannot be confirmed
+    mapping_status: partially_implemented
+
+  STC2-FVG-005:
+    description: FVG chain continuity is represented as HTF/MF/LTF evidence and downstream confluence.
+    implementation:
+      module: validation.st_c2.evidence_gc3
+      function: EvidenceBuilder
+    tests:
+      - tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_valid_fvg_chain_evidence
+      - tests/st_c2/test_evidence_gc3.py::test_gc3_builder_rejects_fvg_chain_without_ltf_continuity
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R4
+      condition: FVG chain continuity is false
+    mapping_status: partially_implemented
+
+  STC2-FVG-006:
+    description: FVG alignment uses fixed three-candle wick-to-wick geometry in the setup direction.
+    implementation:
+      module: validation.st_c2.fvg_confirmation
+      function: detect_fvg_events
+    tests:
+      - tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal
+      - tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_valid_fvg_chain_evidence
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R4
+      condition: no matching fixed-geometry FVG exists
+
+  STC2-LTF-001:
+    description: LTF confirmation evidence records the internal BOS prerequisite.
+    implementation:
+      module: validation.st_c2.evidence_gc3
+      function: EvidenceBuilder
+    tests:
+      - tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_ltf_confirmation_evidence
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R5
+      condition: no internal BOS evidence exists before confirmation
+    mapping_status: partially_implemented
 
   STC2-LTF-002:
-    description: LTF confirmation requires a close beyond prior swing structure.
+    description: LTF confirmation requires close beyond structure and displacement threshold.
     implementation:
-      module: validation.st_c2_reference
-      function: _ltf_confirmation
+      module: validation.st_c2.evidence_gc3
+      function: EvidenceBuilder
     tests:
       - tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal
       - tests/test_st_c2_reference.py::test_bearish_mirror_emits_short_signal
+      - tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_ltf_confirmation_evidence
+      - tests/st_c2/test_evidence_gc3.py::test_gc3_builder_rejects_ltf_confirmation_without_displacement
     golden_cases:
       - GC-STC2-GBPUSD-BULL-POS-001
       - GC-STC2-GBPUSD-BEAR-POS-001
     expected_rejection_behavior:
       code: R5
       condition: no close-confirmed LTF break exists
+
+  STC2-LTF-003:
+    description: Stronger LTF confirmation evidence records setup bar window and displacement metrics.
+    implementation:
+      module: validation.st_c2.evidence_gc3
+      function: EvidenceBuilder
+    tests:
+      - tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_ltf_confirmation_evidence
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R5
+      condition: no stronger LTF confirmation evidence exists
+    mapping_status: partially_implemented
+
+  STC2-LTF-004:
+    description: LTF confirmation uses first qualifying bar semantics and rejection code evidence.
+    implementation:
+      module: validation.st_c2.evidence_gc3
+      function: EvidenceBuilder
+    tests:
+      - tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_ltf_confirmation_evidence
+      - tests/st_c2/test_evidence_gc3.py::test_gc3_builder_rejects_ltf_confirmation_without_displacement
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R5
+      condition: first qualifying LTF confirmation bar is absent
+    mapping_status: implemented

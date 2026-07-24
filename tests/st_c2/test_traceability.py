@@ -9,7 +9,7 @@ from validation.st_c2.traceability import validate_traceability
 def test_traceability_current_inventory_reports_missing_mappings_honestly():
     result = validate_traceability()
     assert result.valid
-    assert result.missing_mappings == 28
+    assert result.missing_mappings == 20
 
 
 def test_coverage_inventory_has_structured_provenance():
@@ -31,20 +31,37 @@ def test_coverage_inventory_has_structured_provenance():
         "STC2-OTE-002",
         "STC2-OTE-003",
     }
+    gc3_rules = {
+        "STC2-FVG-001",
+        "STC2-FVG-002",
+        "STC2-FVG-003",
+        "STC2-FVG-004",
+        "STC2-FVG-005",
+        "STC2-FVG-006",
+        "STC2-LTF-001",
+        "STC2-LTF-002",
+        "STC2-LTF-003",
+        "STC2-LTF-004",
+    }
     for item in coverage_data["inventory"]:
         provenance = item.get("provenance")
         assert isinstance(provenance, dict)
         assert required <= set(provenance)
         assert isinstance(provenance["validated_by"], list)
-        assert provenance["module"] == "GC2_structural_module"
         assert provenance["module_version"] == "v1.0.0"
-        assert provenance["source"] == "st_c2.structural"
         assert provenance["last_update"] == "2026-07-24"
         assert "traceability_map" in provenance["validated_by"]
         if item["id"] in gc2_rules:
+            assert provenance["module"] == "GC2_structural_module"
+            assert provenance["source"] == "st_c2.structural"
             assert "gc2_tests" in provenance["validated_by"]
+        elif item["id"] in gc3_rules:
+            assert provenance["module"] == "GC3_evidence_module"
+            assert provenance["source"] == "st_c2.evidence_gc3"
+            assert "gc3_tests" in provenance["validated_by"]
         else:
             assert "gc2_tests" not in provenance["validated_by"]
+            assert "gc3_tests" not in provenance["validated_by"]
 
 
 def test_traceability_invalid_test_detection(tmp_path):

@@ -79,7 +79,7 @@ ST-C2 evidence:
 - `reports/validation/st_c2/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md`
   - S1-G2 completion audit; verdict S1-G2 REMAINS OPEN.
 - `reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json` - frozen-rule
-  coverage matrix; 45 rules inventoried, 28 missing mappings.
+  coverage matrix; 45 rules inventoried, 20 missing mappings.
 - `reports/validation/st_c2/A2_CONFORMANCE_RESULTS.json` - completion criteria
   results and reproduced existence signal.
 - `reports/validation/st_c2/S1_G2_GC1_CONFORMANCE_FOUNDATIONS_REPORT.md` -
@@ -97,6 +97,8 @@ ST-C2 evidence:
   GC2 liquidity pool and sweep/reclaim evidence.
 - `reports/validation/st_c2/DEALING_RANGE_OTE_CONFORMANCE_REPORT.md` -
   confirms structural dealing-range and OTE evidence.
+- `reports/validation/st_c2/S1_G2_GC3_FVG_LTF_EVIDENCE_REPORT.md` - GC3
+  FVG/LTF evidence module integration; PARTIAL PASS while S1-G2 remains open.
 - `validation/st_c2_reference.py` - S1-G2 minimum GBPUSD reference kernel.
 - `validation/run_st_c2_gbp_existence.py` - S1-G2 existence-check scanner.
 - `tests/test_st_c2_reference.py` - golden-case, mirror, cutoff, determinism,
@@ -145,15 +147,17 @@ S1-G2 result:
 Remaining blocker:
 
 - S1-G2 completion audit remains open. Close exact blockers before A2/S1-G3 can
-  be authorized: FVG chain conformance, LTF confirmation evidence,
-  deterministic state machine, logical trade plan, rejection subcodes, stable
-  identifiers for later evidence objects, and golden-case library expansion.
+  be authorized: advanced FVG/LTF confluence cases, deterministic state
+  machine, logical trade plan, rejection subcodes, stable identifiers for later
+  evidence objects, and golden-case library expansion.
 - GC1 foundations closed the hardcoded reference-kernel symbol precision gap,
   added metadata, stable schemas/IDs, golden-case scaffolding, traceability
   validation, and structural interfaces.
 - GC2 structural conformance closed sweep-derived HTF bias, structural
   dealing-range identity, OTE band evidence, and deterministic liquidity
   pool/sweep evidence for this S1-G2 slice.
+- GC3 FVG/LTF evidence integration added a dedicated evidence module and
+  reduced missing rule mappings to 20.
 
 Non-blocking residuals to carry forward:
 
@@ -188,9 +192,9 @@ current Stage A lifecycle.
 
 ## Next Action
 
-Continue with S1-G2-GC3: FVG chain and LTF confirmation conformance. Do not
-advance to S1-G3, A3, or Stage B until a new completion audit supports the
-gate.
+Continue with remaining S1-G2 closures: state machine, signal/trade-plan
+evidence, rejection-code coverage, and remaining unmapped rules. Do not advance
+to S1-G3, A3, or Stage B until a new completion audit supports the gate.
 
 Do not modify strategy specs, code, YAML parameters, execution state, demo
 settings, live settings, or authorization state as part of status maintenance.
