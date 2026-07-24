@@ -1020,3 +1020,63 @@ Slice verdict: **S1-G2-GC1 CONFORMANCE FOUNDATIONS: PASS**.
 S1-G2 remains open. The next milestone is S1-G2-GC2 structural bias, liquidity,
 and dealing-range conformance. A3, Stage B, execution, broker integration, demo,
 live, and production remain blocked.
+
+## Change: ST-C3 v1.0.0 candidate intake — Daily Price Action funnel (spec version: NEW -> v1.0.0)
+Date: 2026-07-24
+Author: Aung Myat (owner-directed); recorded by AI agent per ADR-0004
+
+### Why
+The owner supplied a complete deterministic SMC entry-confirmation workflow
+(HTF bias -> external liquidity sweep -> displacement/BOS -> OTE ->
+FVG/order-block confluence -> LTF CHoCH -> entry window -> structural stop ->
+TP1/TP2/TP3 -> expiry) and asked for it to be built as a new tradeable
+candidate ("completely change the strategy, add new candidate"), explicitly
+cross-referencing "both SMC documents." This entry registers the intake
+before any spec freeze or implementation, per `docs/RESEARCH-CHARTER.md`.
+
+### Evidence
+`docs/reference/smc-definitive-guide-dailypriceaction.md` and
+`docs/reference/smc-8step-entry-model-dailypriceaction.md` — confirmed
+in-session by the owner as "both SMC documents." Both are Daily Price
+Action / Justin Bennett material, already committed 2026-07-22, and the
+8-step file's own cross-reference table already names ST-C2 as "the platform
+candidate most structurally similar to this liquidity->bias->OTE->FVG->LTF-CHoCH
+sequence" — i.e. the owner's funnel is a formalization of that existing
+reference material, not new backtest evidence. No backtest, replay, or
+statistical evidence exists yet for this specific rule combination.
+
+### Hypothesis
+Formalizing the Daily Price Action 8-step entry model (HTF structure ->
+external BOS -> CHoCH -> OTE -> FVG confluence -> LTF CHoCH -> execution at
+>=3R) as a fully deterministic, non-repainting rule set with explicit
+evidence IDs and rejection codes will produce a testable ST-C3 candidate
+whose existence and edge can be measured the same way ST-C1/ST-C2 were. This
+is a hypothesis about testability, not a claim that ST-C3 will outperform
+either prior candidate.
+
+### Expected improvement
+Not asserted yet. This entry is intake/spec-drafting only, per ADR-0004. A
+falsifiable expected-improvement number must be filled in as its own
+addendum to this entry before any backtest is run, once ST-C3's own S1-G1
+freeze act resolves the thresholds currently marked `UNRESOLVED` in
+`specs/st-c3_v1.0.0.yaml` (entry-window bar count, sweep tolerances, TP2/TP3
+liquidity definitions, displacement body-ratio minimums).
+
+### Success criteria
+Deferred to ST-C3's own S1-G1 spec-freeze act. No backtest or existence-check
+run is authorized against this candidate until a frozen spec exists.
+
+### Rollback criteria
+If S1-G1 spec-freeze work for ST-C3 finds that a described stage cannot be
+made non-repainting/deterministic from the owner's description (e.g.
+"impulsive candles" or "clean displacement" without a stated body-ratio
+threshold), that stage is recorded `UNRESOLVED` and blocks freeze rather than
+being inferred or defaulted from ST-C2's values.
+
+### Governance note
+`ST-C3-R1`..`ST-C3-R7` rejection codes and `F1`/`F2`/`F3` funnel-stage labels
+are namespaced per ADR-0004 to avoid collision with ST-C2's existing bare
+`R1`-`R7` codes (`specs/st-c2_v1.2.0.yaml` §6) and ST-C1's existing `E1`/`E2`/`E3`
+scenario-cluster taxonomy (`specs/v3.9.yaml`, `specs/v3.10.yaml`). ST-C3 does
+not supersede, pause, or modify ST-C2; `NEXT_ACTION.md` continues to name
+ST-C2 v1.2.0 S1-G2 closure as the sole active execution milestone.
