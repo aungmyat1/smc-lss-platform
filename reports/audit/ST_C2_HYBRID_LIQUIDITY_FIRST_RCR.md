@@ -709,3 +709,66 @@ no `IMPLEMENTATION AUTHORIZATION: GRANTED` string exists anywhere in the
 repo. Both remain open, separate owner acts — recording these decisions is
 not the same as authorizing implementation, per the owner's own stated
 gate structure for this work.
+
+---
+
+## Fourth addendum (2026-07-24, engineering-verification result — G2 identifier generalization)
+
+Verification-only, not an owner-decision session: this closes G2's
+"stable identifier" residual by checking existing code, per the governance
+sequencing review's own classification of this item as engineering
+verification rather than owner judgment. No code written, no spec file
+mutated (`specs/st-c2.yaml` unchanged, `engine_implements_spec` stays
+`false`), no backtest run, no execution/demo/live/promotion state changed.
+
+**What was checked:** the `structure_key`/`index_offset` deduplication
+convention in `validation/historical_replay_engine_v39.py`
+(lines 232, 255, 414, 418) and `_v310.py` (lines 189, 211, 318, 322), keyed
+via `src/signal_v39.py:475-478` / `src/signal_v310.py:609-612` as
+`(symbol, variant, "zone", index_offset + zone_creation_i)` against a
+per-run `consumed` set. Its actual job: the walk-forward replay loop
+re-evaluates the pipeline bar-by-bar, so a still-valid, unconsumed
+structure can otherwise re-fire a signal on every bar it remains valid —
+the key collapses repeat re-detections of the *same underlying structure*
+into a single trade.
+
+**Determination: generalizes to ST-C2**, with one adaptation required by
+the third addendum's own Cluster 1 decisions (not a new invented rule):
+decisions 3 and 4 there establish that a protected level persists until an
+opposite CHoCH, and that a 2nd/3rd CHoCH against the same level are
+distinct tradeable events (continuation/acceleration), not duplicates of
+the first. This means the identifier must anchor to the **LTF CHoCH
+confirmation bar** (pipeline stage 5 — the direct analog of ST-C1's
+entry-adjacent `zone_creation_i`), never to an upstream shared structure
+(the liquidity sweep, OTE zone, or FVG creation bar from stages 1-4).
+Keying on an upstream stage would wrongly collapse legitimate 2nd/3rd CHoCH
+entries into "duplicates" of the first, contradicting the already-recorded
+decision; keying on the CHoCH bar itself gives each CHoCH its own bar
+index, preserving that semantics while still deduping true re-detections
+of one still-unconsumed CHoCH.
+
+**Adapted key composition:**
+`(symbol, "LTF_CHoCH", index_offset_m3 + ltf_choch_confirmation_bar_index)`
+— `variant` collapses to a constant tag since ST-C2, unlike ST-C1, has no
+competing disjunctive trigger branch to disambiguate.
+
+**Explicitly out of scope for this verification:** the separately-flagged,
+still-unconfirmed `duplicate_setup_policy: one_position_at_a_time`
+proposal from the third addendum concerns *concurrent, independent
+setups* (a different question — how many open positions at once), not
+*repeat re-detection of the same setup* (what this key solves). That item
+remains open and unconfirmed, untouched by this addendum.
+
+### Status after this fourth addendum
+
+Closed this session (verification, not owner decision): G2's
+stable-identifier composition.
+
+**Still open, unchanged:** duplicate/concurrent-setup handling
+(`duplicate_setup_policy` — no owner rationale given, only an unconfirmed
+proposed value); emergency-exit's exact numeric thresholds (illustrative,
+not confirmed as final). Both implementation gates remain unmet:
+`specs/st-c2.yaml` is still `status: candidate`, and no
+`IMPLEMENTATION AUTHORIZATION: GRANTED` string exists anywhere in the
+repo — recording a verification result is not the same as authorizing
+implementation, same as every prior addendum in this file.
