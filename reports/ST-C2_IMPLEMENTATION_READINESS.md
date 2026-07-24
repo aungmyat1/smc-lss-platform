@@ -15,6 +15,12 @@ promoted `specs/st-c2_v1.1.0.yaml` from `candidate` to `frozen`. This changes
 specification status only. It does not grant implementation authorization,
 execution authority, demo trading, live trading, or production promotion.
 
+**GBPUSD candidate note (2026-07-24):** owner later requested GBPUSD as the
+default symbol. That request is recorded as new candidate
+`specs/st-c2_v1.2.0.yaml`. This readiness report applies to the prior frozen
+v1.1.0 XAUUSD-scoped specification unless a v1.2.0-specific audit says
+otherwise.
+
 **Updated 2026-07-24 (seventh addendum):** the seventh addendum closed
 the last substantive blocker (the session-close invalidation-buffer
 distance, 2.5 points, final). Combined with the fifth and sixth addenda,

@@ -1,0 +1,56 @@
+strategy: ST-C2
+version: 1.2.0
+active_symbol: GBPUSD
+spec: specs/st-c2_v1.2.0.yaml
+
+stage_a_strategy_validation:
+  status: in_progress
+
+  a1_logic_conformance:
+    status: passed
+    gate: S1-G1C
+    closure_report: reports/validation/st_c2/A1_LOGIC_CONFORMANCE_CLOSURE.md
+    residuals:
+      - A1-RES-001
+      - A1-RES-002
+      - A1-RES-003
+      - A1-RES-004
+
+  a2_signal_conformance:
+    status: in_progress
+    current_gate: S1-G2
+    current_gate_name: Reference Implementation Completion Review
+    authorized_scope:
+      - golden_case_tests
+      - research_conformance_kernel
+      - minimum_gbpusd_detector_slice
+      - existence_check_conformance_run
+    evidence:
+      reference_kernel: validation/st_c2_reference.py
+      focused_tests: tests/test_st_c2_reference.py
+      existence_report: reports/ST-C2_V1.2_GBPUSD_EXISTENCE_CHECK.md
+      diagnostic_report: reports/ST-C2_V1.2_GBPUSD_R1_DIAGNOSTIC.md
+    existence_floor:
+      status: passed
+      first_signal_time: "2026-06-10 17:15"
+      direction: short
+    next_required_decision: complete_s1_g2_or_record_blockers
+
+  a3_statistical_validation:
+    status: blocked
+    blocked_by:
+      - a2_signal_conformance
+
+stage_b_execution_qualification:
+  status: blocked
+  blocked_by:
+    - a3_statistical_validation
+
+forbidden_until_authorized:
+  - historical_baseline
+  - cost_adjusted_backtest
+  - walk_forward
+  - broker_integration
+  - demo_trading
+  - live_trading
+  - production_promotion

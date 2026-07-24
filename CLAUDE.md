@@ -13,7 +13,7 @@ is the AI operating index and hard-rules reminder.
 This file is read first as the entry index, but `MASTER_PLAN.md` is the highest
 authority.
 
-1. [`MASTER_PLAN.md`](MASTER_PLAN.md) - AUTHORITATIVE v4.0.2 lifecycle and branch governance model.
+1. [`MASTER_PLAN.md`](MASTER_PLAN.md) - AUTHORITATIVE v4.1.0 validation architecture and branch governance model.
 2. [`CLAUDE.md`](CLAUDE.md) - AI operating instructions and document index.
 3. [`docs/CHARTER.md`](docs/CHARTER.md) - operational safety and promotion gates.
 4. [`docs/RESEARCH-CHARTER.md`](docs/RESEARCH-CHARTER.md) - RCR discipline.
@@ -33,30 +33,39 @@ silently override governance.
 The active governance model is:
 
 ```text
-Stage 1 - Strategy Validation
-Stage 2 - Live Execution
+Stage A - Strategy Validation
+  A1 - Strategy Logic Contract and Conformance
+  A2 - Indicator, Event and Signal Conformance
+  A3 - Statistical Edge and Robustness Qualification
+Stage B - Trading-System Integration and Execution Qualification
 ```
 
 Current lifecycle position:
 
 | Field | State |
 |---|---|
-| Stage | Strategy Validation |
-| Gate | S1-G2 Reference Implementation |
-| Strategy | ST-C2 v1.1.0 |
+| Stage | Stage A - Strategy Validation |
+| Substage | A2 - Indicator, Event and Signal Conformance |
+| Gate | S1-G2 Reference Implementation Completion Review |
+| Strategy | ST-C2 v1.2.0 GBPUSD |
 | Status | Frozen |
 | Readiness | GREEN |
 | Frozen | YES |
-| Implementation | BLOCKED |
-| Historical Validation | BLOCKED |
+| Implementation | AUTHORIZED: S1-G2 REFERENCE ONLY |
+| A1 Logic Conformance | PASSED WITH TRACKED NON-BLOCKING RESIDUALS |
+| A2 Signal Conformance | IN PROGRESS |
+| A3 Statistical Validation | BLOCKED: A2 NOT PASSED |
 | Execution | BLOCKED |
 | Demo | BLOCKED |
 | Production | BLOCKED |
 
-ST-C2 is frozen, but it is not approved, implemented, or authorized. Treat any
-claim to implementation, execution, demo, live, or production authority as a
-governance conflict until verified in the higher-authority documents and ADR/RCR
-records.
+ST-C2 v1.2.0 is the active frozen GBPUSD-scoped specification. Scoped S1-G2
+reference implementation is authorized only for golden-case tests, conformance
+kernel, minimum GBPUSD detector slice, and the existence check. The first
+GBPUSD existence floor is satisfied by a short signal at `2026-06-10 17:15`.
+Treat any claim to historical validation, execution, demo, live, or production
+authority as a governance conflict until verified in the higher-authority
+documents and ADR/RCR records.
 
 ## Hard Rules
 
@@ -66,7 +75,7 @@ records.
 - Evidence before approval.
 - No implementation before specification freeze.
 - No execution before strategy approval.
-- No broker integration during Stage 1.
+- No broker integration during Stage A.
 - No demo trading before execution validation.
 - No production before promotion approval.
 - Approved strategies are immutable.
@@ -81,15 +90,23 @@ records.
 
 ## Stage Responsibilities
 
-Stage 1 - Strategy Validation:
+Stage A - Strategy Validation:
 
 - freeze candidate specification
 - build reference implementation only after freeze and authorization
-- run historical replay
-- run statistical, OOS, walk-forward, robustness, and sensitivity validation
+- close A1 logic conformance
+- prove A2 indicator, event, signal, and trade-plan conformance
+- run A3 historical replay, statistical, OOS, walk-forward, robustness, and
+  sensitivity validation only after A2 passes
 - approve or reject the immutable strategy package
 
-Stage 2 - Live Execution:
+SMC-specific implementation skill is required when working inside Stage A
+reference implementation, historical validation, backtest diagnosis, and
+code/spec conformance because those tasks depend on BOS, CHoCH, liquidity, FVG,
+OTE, session, and structural invalidation semantics. It is not required for pure
+branch cleanup or governance-document synchronization.
+
+Stage B - Trading-System Integration and Execution Qualification:
 
 - build execution only from an Approved Strategy Package
 - keep execution free of duplicated strategy logic
@@ -111,7 +128,8 @@ ST-C1 v3.7-v3.10 are parked historical evidence, not active candidates:
 - v3.9: corrected aggregate net PF 0.138.
 - v3.10: corrected aggregate net PF 0.471.
 
-ST-C2 v1.1.0 is the active frozen Stage 1 specification.
+ST-C2 v1.1.0 is the prior frozen XAUUSD-scoped specification. ST-C2 v1.2.0 is
+the active frozen GBPUSD-scoped specification.
 
 ## Working Conventions
 

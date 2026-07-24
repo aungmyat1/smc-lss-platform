@@ -1,0 +1,404 @@
+# ST-C2 "Hybrid Liquidity-First Unified SMC Pipeline" — GBPUSD candidate spec.
+#
+# THIS FILE IS A CONSOLIDATION, NOT A NEW DECISION. Every field below either
+# (a) already existed in specs/st-c2.yaml v1.0.0 unchanged, or (b) was added
+# because an owner decision or engineering-verification result in
+# reports/audit/ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md's four addenda closed the
+# corresponding gap. No field here represents a new decision made while
+# writing this file. Every field carries a `# decided:` provenance comment
+# pointing at its source, OR is explicitly marked UNRESOLVED with a pointer
+# to reports/ST-C2_SPEC_AUDIT.md. Nothing is filled in by inference beyond
+# what that audit documents as a direct, low-risk application of an existing
+# decision (and those cases are labeled `# applied:`, not `# decided:`).
+#
+# STATUS: FROZEN GBPUSD-scoped specification as of the 2026-07-24 S1-G1
+# freeze act recorded in reports/ST-C2_V1.2_GBPUSD_SPEC_AUDIT.md,
+# reports/audit/ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md, and reports/research_log.md.
+# This is not a mutation of frozen v1.1.0 and is not implementation
+# authorization.
+# specs/st-c2_v1.1.0.yaml remains the frozen prior ST-C2 specification.
+
+id: ST-C2
+name: Hybrid Liquidity-First Unified SMC Pipeline
+version: 1.2.0
+governance_profile: ST-C2_v1_GBPUSD   # decided: GBPUSD symbol-scope RCR addendum, 2026-07-24
+status: frozen   # decided: ST-C2 v1.2 GBPUSD S1-G1 freeze act, 2026-07-24; not implementation authorization
+consolidation_status: COMPLETE   # GBPUSD-specific S1-G1 blockers closed as provisional/inherited decisions
+engine_implements_spec: false   # SAFETY INTERLOCK — no engine exists yet
+implementation_authorization: scoped_reference_implementation_granted   # S1-G2 only; no execution/demo/live authority
+supersedes: specs/st-c2_v1.1.0.yaml (frozen)   # new candidate version; does not mutate frozen v1.1.0
+description: >
+  Unified liquidity-first SMC pipeline combining inducement, HTF bias,
+  OTE, FVG alignment, and LTF CHoCH confirmation into a single deterministic
+  sequence. Designed to replicate E-model + M-model entries seen in visual SMC.
+
+# ============================================================
+# 1. Instruments & Sessions
+# ============================================================
+instruments:
+  - symbol: XAUUSD
+    enabled: false   # changed: GBPUSD symbol-scope candidate, 2026-07-24
+  - symbol: EURUSD
+    enabled: false   # decided: RCR "Scope decision on symbol coverage" — expansion requires its own RCR addendum
+  - symbol: GBPUSD
+    enabled: true   # changed: GBPUSD symbol-scope candidate, 2026-07-24
+
+sessions:
+  london:
+    utc_open: "07:00"
+    utc_close: "11:00"
+  new_york:
+    utc_open: "12:00"
+    utc_close: "16:00"
+
+# ============================================================
+# 2. Timeframes
+# ============================================================
+timeframes:
+  htf: H4      # Bias, external structure, major liquidity
+  mf: M15      # OTE, HTF FVG refinement, POI alignment
+  ltf: M3      # CHoCH, BOS, execution
+
+# ============================================================
+# 3. Unified Pipeline Stages
+# ============================================================
+pipeline:
+
+  # ------------------------------------------------------------
+  # 3.0 HTF/External Structure Definition (G1/G2) — new block
+  # ------------------------------------------------------------
+  htf_structure:
+    htf_swing_fractal_k_h4: 3   # decided: third addendum, Cluster 1 Q1
+
+    external_swing_definition: outside_dealing_range           # decided: third addendum, Cluster 1 Q2
+    internal_swing_definition: inside_dealing_range_pre_bos     # decided: third addendum, Cluster 1 Q2
+
+    protected_level_lifecycle:
+      create_on: first_choch_establishing_bias   # decided: ninth addendum, Decision 10 — supersedes the earlier
+                                                  # `bos_confirmed` applied-inference (not a numbered decision itself)
+      invalidate_on: opposite_choch   # decided: third addendum, Cluster 1 Q3
+      persist_until: explicit_invalidation   # decided: third addendum, Cluster 1 Q3
+
+    multi_choch_sequencing:
+      second_choch: confirm_continuation          # decided: third addendum, Cluster 1 Q4
+      third_choch: trend_acceleration_or_reclassification   # decided: third addendum, Cluster 1 Q4
+      fourth_plus_choch: continuation_unless_htf_displacement_exceeded   # decided: eighth addendum, Decision 3 —
+        # keyed to htf_bias_stage.choch.displacement_body_ratio_min: 0.6, not a new number
+
+    bull_bear_classification_rule: htf_bos_and_choch_only   # decided: eighth addendum, Decision 1 — no alternative
+                                                             # classifier (EMA, swing-count, regression slope, etc.)
+    bias_evidence_timestamp_field: bias_evidence_timestamp   # decided: eighth addendum, Decision 2 — every bias
+      # decision (long/short/none) includes this field, referencing the structural event (BOS or CHoCH) that
+      # produced the bias
+
+  # ------------------------------------------------------------
+  # 3.1 Liquidity / Inducement Stage
+  # ------------------------------------------------------------
+  liquidity_stage:
+    detect_external_liquidity:
+      lookback_bars_htf: 300
+      equal_highs_tolerance_pips: 5
+      equal_lows_tolerance_pips: 5
+
+    detect_sweep:
+      wick_ratio_min: 0.6
+      close_back_in_range_required: true
+      max_sweep_age_bars_htf: 20
+      reclaim_close_bar_rule: single_bar_only   # decided: third addendum, Cluster 2 Q7
+
+    pool_selection:   # decided: first addendum, decision 3
+      primary: nearest_absolute_price_distance
+      tiebreak_1: most_recent_confirmation_timestamp
+      tiebreak_2: stable_identifier
+      stable_identifier_composition: sha256_of_structural_attributes   # decided: sixth addendum, Decision 2
+      stable_identifier_fields: [timestamp, high, low, swing_classification, displacement_metrics]   # decided: sixth addendum, Decision 2
+      # NOTE: distinct from the replay-engine dedup key closed by the fourth addendum (which solves
+      # repeat-detection of one setup across bars, not tie-breaking between multiple concurrently-qualifying
+      # pools). See audit §G2 for the full distinction.
+
+    poi_gap_reaction:
+      gap_min_points: 10
+      gap_max_age_bars_htf: 40
+      require_partial_fill: true
+
+  # ------------------------------------------------------------
+  # 3.2 HTF Bias Stage
+  # ------------------------------------------------------------
+  htf_bias_stage:
+    bos:
+      confirmation_bars: 2
+      close_beyond_structure_required: true
+
+    choch:
+      displacement_body_ratio_min: 0.6
+      reclaim_window_bars: 5
+
+    bos_choch_mutual_exclusivity: true          # decided: first addendum, decision 5
+    classification_authority: prior_confirmed_bias   # decided: first addendum, decision 5
+    discretionary_same_bar_priority: forbidden   # decided: first addendum, decision 5
+
+    bias_rules:
+      long_bias_requires_discount: true
+      short_bias_requires_premium: true
+
+  # ------------------------------------------------------------
+  # 3.3 OTE / Premium-Discount Stage (MF) — dealing-range rules added (G4)
+  # ------------------------------------------------------------
+  ote_stage:
+    fib_anchor_mode: swing_extremes
+    dealing_range_swing_source: liquidity_stage.detect_external_liquidity   # decided: second addendum, G4 decision 1
+    dealing_range_update_policy: freeze_at_triggering_swing                 # decided: second addendum, G4 decision 2
+    anchoring_swing_invalidation: invalidate_setup_immediately              # decided: second addendum, G4 decision 3
+    equilibrium_boundary: 0.5   # exact, zero-width, no tolerance band       # decided: second addendum, G4 decision 4
+
+    discount_threshold: 0.5
+    premium_threshold: 0.5
+    long_only_in_discount: true
+    short_only_in_premium: true
+    max_retrace_pct: 0.786
+    # Tradeable OTE band is [0.5, 0.786] — no separate 0.62 refinement floor. decided: second addendum, G4 decision 5
+
+  # ------------------------------------------------------------
+  # 3.4 FVG Alignment Stage
+  # ------------------------------------------------------------
+  fvg_stage:
+    htf_fvg:
+      min_displacement_bars: 3
+      max_age_bars: 60
+
+    mf_fvg:
+      must_overlap_htf_fvg: true
+      max_distance_pips: 10
+
+    ltf_fvg:
+      required_for_entry: true
+      max_age_bars: 20
+      must_sit_inside_htf_mtf_confluence_zone: true   # decided: second addendum, G5 rule 2 (owner-decided addition,
+                                                        # not an original spec field)
+
+    htf_mtf_directional_alignment_required: true   # decided: second addendum, G5 rule 1
+    size_validation_source: existing_fields_only    # decided: second addendum, G5 rule 3 (no fib/volatility inference)
+    multi_fvg_stacking: forbidden                   # decided: second addendum, G5 rule 4
+    cascade_invalidation: true                      # decided: second addendum, G5 rule 5 (one FVG in the confluence
+                                                      # chain invalidates -> entire alignment result fails)
+
+    fvg_chain_continuity:   # decided: eleventh addendum — pure restatement, no new content
+      mf_displacement_definition: htf_mtf_confluence_zone   # "MF displacement" IS the confluence zone above,
+        # not a separate concept — see htf_mtf_directional_alignment_required and must_sit_inside_htf_mtf_confluence_zone
+      chain: [htf_fvg_valid, mf_fvg_overlaps_htf_fvg, ltf_fvg_within_mf_displacement]
+      swing_anchor_required: false   # explicitly declined — no MF-level swing concept introduced
+      new_threshold_introduced: false
+
+    fvg_geometry_mode: fixed_three_candle   # decided: third addendum, Cluster 3 Q8 (semantic clarification only)
+    zone_boundary_formula: wick_to_wick_displacement   # decided: sixth addendum, Decision 1 — verified against
+      # src/smc_engine.py:135-143's fvgs(): bull gap = [c[i-2].high, c[i].low] where c[i-2].high < c[i].low;
+      # bear gap = [c[i].high, c[i-2].low] where c[i-2].low > c[i].high. Uses candle high/low (wicks), not
+      # open/close (body). Claim of ST-C1-lineage precedent checked and confirmed accurate before recording.
+
+    multi_zone_tie_break_rule: highest_timeframe_priority   # decided: third addendum, Cluster 3 Q9
+    mitigation_invalidation_threshold_pct: 50   # decided: first addendum, decision 4 (>= 50% invalidates, inclusive)
+    mitigation_rounding_mode: round_half_up_to_broker_precision   # decided: third addendum, Cluster 3 Q10
+
+  # ------------------------------------------------------------
+  # 3.5 LTF Confirmation Stage
+  # ------------------------------------------------------------
+  ltf_confirmation_stage:
+    choch:
+      internal_bos_required: true   # decided: ninth addendum, Decision 11 — an LTF CHoCH is valid only if the
+        # internal BOS immediately preceding it breaks structure by close (restatement, consistent with the
+        # existing close-beyond-structure convention and htf_structure.internal_swing_definition)
+      break_structure_close_required: true   # decided (closed by existing convention): third addendum Phase 1
+      displacement_body_ratio_min: 0.5        # decided (closed by existing convention): third addendum Phase 1
+      internal_bos_definition_ref: htf_structure.internal_swing_definition   # decided: ninth addendum, Decision 11
+
+    stronger_choch:
+      lower_high_or_higher_low_required: true
+      max_setup_bars: 20
+
+    entry_window_bars: 15
+    setup_entry_relationship: entry_window_subset_of_max_setup   # decided: third addendum, Cluster 2 Q5
+    ltf_choch_first_bar_rule: first_qualifying_bar                # decided: third addendum, Cluster 2 Q6
+
+  # ------------------------------------------------------------
+  # 3.6 Execution Stage
+  # ------------------------------------------------------------
+  execution_stage:
+    entry:
+      type: limit_into_fvg
+      max_slippage_points: 5
+
+      price_anchor: ltf_fvg_proximal_boundary          # decided: first addendum, decision 2
+      confirmation_required_before_placement: true      # decided: first addendum, decision 2
+      earliest_fill_bar: next_bar_after_confirmation     # decided: first addendum, decisions 2 and 9
+
+      expiry_bars_m3: 15   # decided: first addendum, decision 8
+      early_cancellation_triggers:   # decided: first addendum, decision 8
+        - fvg_invalidation
+        - structural_invalidation
+        - bias_change
+        - session_ineligibility
+
+      price_side_convention: mid_price          # decided: third addendum, Cluster 4 Q13
+      gap_through_handling: fill_at_open          # decided: third addendum, Cluster 4 Q14
+      partial_fill_policy: accept_and_scale_targets   # decided: third addendum, Cluster 4 Q15
+
+      duplicate_setup_policy: one_position_at_a_time   # decided: fifth addendum, Decision A
+      duplicate_setup_log_only: true   # decided: fifth addendum, Decision A — a rejected duplicate setup is still
+                                        # logged per diagnostics.record_rejected_setups, not silently dropped
+
+      post_fill_event_priority_ordering: [stop, target, management, diagnostics]   # decided: sixth addendum,
+        # Decision 4 — stop first (prevents invalid states), target second (correct RR logic), management third
+        # (breakeven/partials, must not override stop/target), diagnostics last (logging only, never affects execution)
+
+    same_bar_priority_rule: stop_first   # decided: first addendum, decision 9
+
+    stop:
+      mode: structural_invalidation
+      buffer_pips: 2
+      anchor: beyond_liquidity_sweep_extreme          # decided: first addendum, decision 6
+      rounding_direction: outward_to_symbol_precision  # decided: first addendum, decision 6
+      min_stop_distance_points: 35   # inherited unchanged for GBPUSD, PROVISIONAL: ST-C2 v1.2 S1-G1 freeze act
+      max_stop_distance_points: 150   # inherited unchanged for GBPUSD, PROVISIONAL: ST-C2 v1.2 S1-G1 freeze act
+      stop_distance_formula: "abs(entry - stop); computed from structural anchor + buffer"   # decided: second addendum, G7 decision 4
+      out_of_bounds_behavior: setup_dies_immediately   # decided: second addendum, G7 decision 4
+
+    targets:
+      t1_liquidity:
+        rr_min: 2.0
+      t2_deeper_liquidity:
+        rr_min: 3.0
+      t3_extension:
+        rr_min: 5.0
+        enabled: false
+      target_selection_policy: both_t1_and_t2_mandatory_pre_entry   # decided: first addendum, decisions 1 and 7
+                                                                     # (T1 = partial-take objective, T2 = runner
+                                                                     # objective; not alternates — a trade lacking
+                                                                     # either valid objective is rejected)
+
+    cost_model:   # decided: first addendum, decision 10
+      cost_profile_source: config/research_costs.yaml
+      cost_profile_symbol_row: GBPUSD   # verified present: spread_points 25.0, slippage_points 3.0, commission 0
+      net_reward_basis: net_after_spread_slippage_commission_swap
+      missing_cost_profile_behavior: fail_closed
+
+  # ------------------------------------------------------------
+  # 3.7 Trade Management (post-fill) — additions (G10)
+  # ------------------------------------------------------------
+  management:
+    break_even_activation_r: 1.5
+    partial_take_r: 2.0
+    partial_take_fraction: 0.5
+    runner_enabled: true
+
+    time_stop_enabled: false   # decided: third addendum, Cluster 4 Q11
+    time_stop_threshold_bars: null   # decided: third addendum, Cluster 4 Q11 (no time stop)
+
+    session_close_forces_exit: conditional_near_invalidation_only   # decided: sixth addendum, Decision 3 — at
+      # session close, exit only if price is within an invalidation-buffer distance of structural invalidation;
+      # otherwise the position remains open past session close. Consistent with Q11's structure-based philosophy.
+    invalidation_buffer_distance_points: 2.5   # inherited unchanged for GBPUSD, PROVISIONAL: ST-C2 v1.2 S1-G1 freeze act
+      # "pips" as the owner's field name/rationale used; the referenced G7 buffer (execution_stage.stop.buffer_pips)
+      # is itself decided as points despite its own name, per this repo's established naming-vs-semantics precedent.
+      # Flagged for correction if "pips" was meant as a distinct, larger unit — see seventh addendum.
+
+    emergency_exit_rules:   # distinct from risk.hard_kill_switch above (a portfolio loss-% circuit breaker) —
+                             # this is an infrastructure/market-anomaly-triggered immediate exit. Do not conflate.
+      concept: immediate_market_exit   # decided: third addendum, Cluster 4 Q12
+      triggers: [spread_spike, connection_loss, volatility_shock]   # decided: third addendum, Cluster 4 Q12
+      status: PROVISIONAL   # decided: sixth addendum, Decision 5 — reviewed and knowingly retained as provisional/
+                             # revisable working values (not "never reviewed" as before this session); see addendum
+                             # for the explicit interpretation note — confirm if this reading isn't what was intended.
+      spread_spike_points: 20   # inherited unchanged for GBPUSD, PROVISIONAL: ST-C2 v1.2 S1-G1 freeze act
+      connection_loss_seconds: 60   # now the provisional working value (sixth addendum, Decision 5), not final
+
+# ============================================================
+# 4. Risk & Portfolio
+# ============================================================
+# Cross-checked against docs/CHARTER.md's risk envelope (2026-07-24 consolidation pass):
+# per_trade_risk_pct matches CHARTER's 0.5% demo figure; max_positions matches CHARTER's 3;
+# daily_loss_pct matches CHARTER's 3%; min_rr (3.0) and portfolio_heat_pct (3.0) are both
+# STRICTER than CHARTER's floor/ceiling (2.0 min RR, 4% heat) — candidate-level tightening,
+# not a conflict. weekly_loss_pct (7.0) has no CHARTER equivalent to cross-check against.
+risk:
+  per_trade_risk_pct: 0.5
+  min_rr: 3.0
+  max_positions: 3
+  portfolio_heat_pct: 3.0
+  daily_loss_pct: 3.0
+  weekly_loss_pct: 7.0
+
+  hard_kill_switch:   # decided: fifth addendum, Decision B — STATUS: PROVISIONAL, subject to future risk research
+    enabled: true
+    triggers: [daily_loss_pct_exceeded, weekly_loss_pct_exceeded]   # references the two fields above; thresholds
+                                                                     # are NOT duplicated here to avoid drift
+    on_trigger:
+      disable_new_entries: true
+      close_open_positions_if: structural_invalidation_near
+      resume_requires: manual_reauthorization
+    # NOTE: this is a distinct mechanism from pipeline.management.emergency_exit_rules below (a spread-spike/
+    # connection-loss/volatility-shock-triggered immediate market exit, whose numeric thresholds remain UNRESOLVED).
+    # Do not conflate the two — see reports/ST-C2_SPEC_AUDIT.md.
+
+# ============================================================
+# 5. Conformance & Diagnostics
+# ============================================================
+conformance:
+  require_all_stages_pass: true
+  max_pipeline_latency_seconds: 2
+  log_level: info
+
+diagnostics:
+  enable_audit_logs: true
+  record_rejected_setups: true
+  store_structure_snapshots: true
+
+# ============================================================
+# 6. Rejection Codes — decided: tenth addendum (R1-R7 ratified, REPLACING
+#    the prior 12-entry per-gate scheme carried from the governance audit)
+# ============================================================
+rejection_codes:
+  R1: liquidity_stage_failed
+  R2: htf_bias_failed
+  R3: ote_failed
+  R4: fvg_alignment_failed
+  R5: ltf_confirmation_failed
+  R6: risk_block
+  R7: session_close_exit
+  # COVERAGE GAP, flagged not resolved (tenth addendum): no distinct code for
+  # stop-invalidity (G7), insufficient net-R (G8), missing cost-profile (G8), or
+  # missing target (G9) — the original per-gate scheme had STOP_INVALID,
+  # NET_R_INSUFFICIENT, COST_PROFILE_MISSING, TARGET_MISSING for these. Likely
+  # fold under R6 (risk_block) for the cost/reward cases; no clear home for
+  # STOP_INVALID yet. Non-blocking residual, not resolved here.
+
+# ============================================================
+# 7. RCR Pre-Registration (all closed — second addendum)
+# ============================================================
+rcr_preregistration:
+  primary_metric: net_profit_factor
+  secondary_metrics: [expectancy, max_drawdown, trade_count]
+  multiple_testing_control: deflated_sharpe_min_0_3
+  oos_calendar_boundary: "2026-07-23 prospective lock; all prior data is development/walk-forward only, never OOS"
+  max_experiment_count: 12
+  allowed_parameter_changes_during_research:
+    - fvg_size_thresholds
+    - ote_max_retrace_pct
+    - session_filter_windows
+    - spread_gate_values
+    - g7_stop_distance_bounds
+  existence_check_floor: 1   # qualifying GBPUSD signal across available local history; ST-C2 v1.2 S1-G1 freeze act
+  population_feasibility_floor: 30   # deferred until after first GBPUSD reference slice; not required for existence check
+  statistical_claim_floor: 100   # completed trades; below this is INSUFFICIENT/OVERFILTERED, not evidence
+
+# ============================================================
+# 8. Implementation Reference Notes (non-normative — engineering
+#    findings, not strategy rules; included for implementer convenience)
+# ============================================================
+implementation_notes:
+  dedup_key_formula: '(symbol, "LTF_CHoCH", index_offset_m3 + ltf_choch_confirmation_bar_index)'
+  dedup_key_source: "fourth addendum — verified generalization of ST-C1's structure_key/index_offset convention"
+  dedup_key_scope_caveat: "Solves repeat-detection of ONE still-valid setup across replay bars. This is a DIFFERENT
+    mechanism from liquidity_stage.pool_selection.stable_identifier_composition (sixth addendum: SHA-256 of
+    structural attributes, for tie-breaking among concurrently-qualifying pools) and from
+    execution_stage.entry.duplicate_setup_policy (fifth addendum: one_position_at_a_time, for concurrent
+    independent setups). All three are now decided but solve three distinct questions — do not conflate."

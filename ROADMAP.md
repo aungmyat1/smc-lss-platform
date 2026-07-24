@@ -1,15 +1,15 @@
-# ROADMAP.md - Gate Progress Under MASTER_PLAN v4.0.0
+# ROADMAP.md - Gate Progress Under MASTER_PLAN v4.1.0
 
 **Authority:** subordinate to `MASTER_PLAN.md`.
 **Purpose:** track active milestones, gate progress, and upcoming deliverables.
-**Current lifecycle position:** Stage 1 - Strategy Validation, S1-G2 -
-Reference Implementation.
+**Current lifecycle position:** Stage A - Strategy Validation, A2 / S1-G2 -
+Reference Implementation Completion Review.
 
 The legacy active M1-M5 roadmap is archived. The active governance model is now:
 
 ```text
-Stage 1 - Strategy Validation
-Stage 2 - Live Execution
+Stage A - Strategy Validation
+Stage B - Trading-System Integration and Execution Qualification
 ```
 
 ---
@@ -18,29 +18,31 @@ Stage 2 - Live Execution
 
 | Field | State |
 |---|---|
-| Stage | Strategy Validation |
-| Gate | S1-G2 Reference Implementation |
-| Strategy | ST-C2 v1.1.0 |
+| Stage | Stage A - Strategy Validation |
+| Substage | A2 - Indicator, Event and Signal Conformance |
+| Gate | S1-G2 Reference Implementation Completion Review |
+| Strategy | ST-C2 v1.2.0 GBPUSD |
 | Status | Frozen |
 | Readiness | GREEN |
 | Frozen | YES |
-| Implementation | BLOCKED |
-| Historical Validation | BLOCKED |
+| Implementation | AUTHORIZED: S1-G2 REFERENCE ONLY |
+| A1 Logic Conformance | PASSED WITH TRACKED NON-BLOCKING RESIDUALS |
+| A2 Signal Conformance | IN PROGRESS |
+| A3 Statistical Validation | BLOCKED: A2 NOT PASSED |
 | Execution | BLOCKED |
 | Demo | BLOCKED |
 | Production | BLOCKED |
 
-ST-C2 readiness is green because the original numbered checklist in
-`reports/ST-C2_SPEC_AUDIT.md` is closed and
-`reports/ST-C2_IMPLEMENTATION_READINESS.md` reports READY FOR IMPLEMENTATION.
-The S1-G1 freeze act is now recorded, but implementation authorization remains
-blocked.
+ST-C2 v1.1.0 is frozen as the prior XAUUSD-scoped specification. The active
+specification is now ST-C2 v1.2.0, a frozen GBPUSD-scoped specification created
+by owner instruction. Scoped S1-G2 reference implementation is authorized;
+execution/demo/live remain blocked.
 
 ---
 
-## Stage 1 - Strategy Validation
+## Stage A - Strategy Validation
 
-### S1-G1 - Specification Governance - COMPLETE
+### A1 / S1-G1 - Specification Freeze - COMPLETE
 
 Goal: freeze one deterministic, machine-readable specification.
 
@@ -52,11 +54,17 @@ Current evidence:
 - `reports/research_log.md` records the ST-C2 addendum chain through the
   eleventh addendum.
 
-Completed:
+Completed candidate:
 
-- `specs/st-c2_v1.1.0.yaml` is promoted to `status: frozen`.
-- Freeze is recorded in `reports/audit/ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`
-  and `reports/research_log.md`.
+- `specs/st-c2_v1.2.0.yaml`, status `frozen`.
+- GBPUSD enabled; XAUUSD and EURUSD disabled.
+- Cost profile row changed to GBPUSD.
+- XAUUSD-derived point thresholds inherited unchanged as provisional for the
+  first GBPUSD reference/existence pass.
+- Existence check accepted as `>=1 qualifying GBPUSD signal`.
+- Population-feasibility floor deferred beyond the first existence check.
+
+Audit: `reports/ST-C2_V1.2_GBPUSD_SPEC_AUDIT.md` reports READY TO FREEZE.
 - MF-to-LTF structural inheritance and liquidity-tagging consistency remain
   unapplied new-scope proposals.
 - R1-R7 rejection-code coverage gap and session-close points/pips note remain
@@ -69,9 +77,43 @@ Non-blocking carry-forward items:
 - R1-R7 rejection-code coverage gap and session-close points/pips note remain
   implementation-time residuals.
 
-### S1-G2 - Reference Implementation - CURRENT, BLOCKED
+### A1 / S1-G1C - Logic-Conformance Closure - COMPLETE
 
-Blocked until scoped implementation authorization is granted.
+Evidence:
+
+- `reports/validation/st_c2/A1_LOGIC_CONFORMANCE_CLOSURE.md`
+- `governance/st_c2_stage_status.yaml`
+
+Verdict: PASS WITH TRACKED NON-BLOCKING RESIDUALS.
+
+This does not authorize A3, Stage B, execution, demo, live, or production.
+
+### A2 / S1-G2 - Reference Implementation - CURRENT, COMPLETION REVIEW
+
+Authorized scope:
+
+- golden-case tests
+- conformance kernel as research code
+- minimum GBPUSD detector slice
+- existence-check run requiring at least one qualifying GBPUSD signal
+
+Completed:
+
+- `validation/st_c2_reference.py`
+- `validation/run_st_c2_gbp_existence.py`
+- `tests/test_st_c2_reference.py`
+- `reports/ST-C2_V1.2_GBPUSD_REFERENCE_IMPLEMENTATION.md`
+- `reports/ST-C2_V1.2_GBPUSD_EXISTENCE_CHECK.md`
+
+Blocker:
+
+- Required GBPUSD H4/M15/M3 files are now present.
+- The initial short M3-history scan found zero qualifying signals across 3,248
+  checked windows, all rejected at R1 liquidity.
+- The R1 diagnostic identified insufficient M3 coverage as the cause.
+- After extending M1-derived M3 to 16,642 bars, the existence scan found a
+  qualifying GBPUSD short signal at `2026-06-10 17:15`.
+- S1-G2 completion review is required before S1-G3 Historical Validation.
 
 Allowed after authorization: feature generation, detector engine, parser, rule
 engine, conformance tests, golden datasets.
@@ -79,31 +121,58 @@ engine, conformance tests, golden datasets.
 Forbidden in this gate: MT5, broker adapter, execution layer, order management,
 live trading, risk execution pipeline.
 
-### S1-G3 - Historical Validation - BLOCKED
+### A2 / S1-G3 - Primitive and Indicator Conformance - BLOCKED
 
-Blocked until a reference implementation exists.
+Blocked until S1-G2 completion review is accepted.
 
-Required evidence: replay, deterministic outputs, trade journal, rejection
-codes, conformance audit, rule coverage, and feature coverage.
+Required evidence: primitive exact-match tests, point/pip normalization,
+session conversion, swing pivots, premium/discount, risk/reward distance,
+causal cutoff checks.
 
-### S1-G4 - Statistical Validation - BLOCKED
+### A2 / S1-G4 - Event and State Conformance - BLOCKED
 
-Blocked until S1-G3 evidence exists.
+Blocked until S1-G3 passes.
 
-Required evidence: trade count, expectancy, profit factor, drawdown, Sharpe or
-equivalent, net after costs, walk-forward, out-of-sample, robustness,
-sensitivity, and Monte Carlo if available.
+Required evidence: structured BOS/CHoCH/liquidity/FVG/POI/DOL event evidence,
+state transition evidence, illegal-transition rejection, duplicate prevention.
 
-### S1-G5 - Strategy Approval - BLOCKED
+### A2 / S1-G5 - Signal and Trade-Plan Conformance - BLOCKED
 
-Blocked until all previous Stage 1 gates pass.
+Blocked until S1-G4 passes.
 
-Output: immutable Approved Strategy Package with frozen spec, version,
-implementation hash, validation report, statistical report, and approval record.
+Required evidence: direction, timestamp, entry, SL, TP, RR, expiration, source
+event IDs, and rejection-reason exact matches.
+
+### A2 / S1-G6 - Golden-Case Qualification - BLOCKED
+
+Blocked until S1-G5 passes.
+
+Required evidence: positive, negative, boundary, sequencing, duplicate, and
+SL/TP/session-close golden cases.
+
+### A3 / S1-G7 - Historical Baseline - BLOCKED
+
+Blocked until A2 passes. Profit factor and win rate cannot pass A2.
+
+### A3 / S1-G8 - Cost-Adjusted Validation - BLOCKED
+
+Blocked until S1-G7 passes.
+
+### A3 / S1-G9 - Walk-Forward and Out-of-Sample - BLOCKED
+
+Blocked until S1-G8 passes.
+
+### A3 / S1-G10 - Robustness Qualification - BLOCKED
+
+Blocked until S1-G9 passes.
+
+Output after A3 pass: immutable Approved Strategy Package with frozen spec,
+version, implementation hash, validation report, statistical report, robustness
+report, and approval record.
 
 ---
 
-## Stage 2 - Live Execution
+## Stage B - Trading-System Integration and Execution Qualification
 
 ### S2-G1 - Execution Development - BLOCKED
 

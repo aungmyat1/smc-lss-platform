@@ -1,0 +1,27 @@
+strategy:
+  id: ST-C2
+  version: 1.2.0
+  symbol: GBPUSD
+  spec: specs/st-c2_v1.2.0.yaml
+
+stage_a:
+  a1:
+    status: passed
+    closure_report: reports/validation/st_c2/A1_LOGIC_CONFORMANCE_CLOSURE.md
+  a2:
+    status: in_progress
+    current_gate: S1-G2
+    rule_to_test_map: specs/st_c2/rule_to_test_map.yaml
+    existing_reference_kernel: validation/st_c2_reference.py
+    existing_tests: tests/test_st_c2_reference.py
+    existing_reports:
+      - reports/ST-C2_V1.2_GBPUSD_REFERENCE_IMPLEMENTATION.md
+      - reports/ST-C2_V1.2_GBPUSD_EXISTENCE_CHECK.md
+      - reports/ST-C2_V1.2_GBPUSD_R1_DIAGNOSTIC.md
+  a3:
+    status: blocked
+    blocked_by: a2
+
+stage_b:
+  status: blocked
+  blocked_by: stage_a

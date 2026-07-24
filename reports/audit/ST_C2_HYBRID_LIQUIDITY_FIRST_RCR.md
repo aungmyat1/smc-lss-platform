@@ -1449,3 +1449,159 @@ implementation, does not authorize historical replay, and does not authorize
 execution, demo, live, broker, or production work. Current lifecycle advances to
 S1-G2 Reference Implementation, BLOCKED pending a separate scoped authorization
 decision.
+
+## Addendum: S1-G2 GBPUSD existence floor satisfied after data coverage repair (2026-07-24)
+
+Correction to the prior S1-G2 R1-failure addendum: the initial zero-signal
+result was caused by insufficient M3 coverage. The M1-derived M3 file was
+regenerated after extending the local MT5 M1 pull from 10,000 bars to 50,000
+bars.
+
+Updated evidence:
+
+- `data/GBPUSD_M3.csv`: 16,642 derived M3 bars from `2026-06-05 16:51` to
+  `2026-07-24 11:48`
+- Existence report: `reports/ST-C2_V1.2_GBPUSD_EXISTENCE_CHECK.md`
+- Diagnostic report: `reports/ST-C2_V1.2_GBPUSD_R1_DIAGNOSTIC.md`
+- Existence verdict: **SIGNAL_FOUND**
+- First qualifying signal: `2026-06-10 17:15`, direction `short`
+- Diagnostic classification: **DATA_COVERAGE_CAUSE_CONFIRMED**
+
+Decision: the S1-G2 minimum existence floor (`>=1 qualifying GBPUSD signal`) is
+satisfied. This does not approve ST-C2 as a strategy and does not authorize
+historical validation by itself. The next governance step is S1-G2 completion
+review, then an explicit decision whether to advance to S1-G3 Historical
+Validation. Execution, demo, live, broker, and production remain blocked.
+
+## Addendum: S1-G2 GBPUSD data obtained and existence floor failed (2026-07-24)
+
+The S1-G2 data blocker was resolved for the first GBPUSD reference/existence
+pass:
+
+- `data/GBPUSD_H4.csv`: local MT5 terminal export via `src/load_history.py`
+- `data/GBPUSD_M15.csv`: local MT5 terminal export via `src/load_history.py`
+- `data/GBPUSD_M3.csv`: derived from complete contiguous M1 groups after the
+  terminal rejected native `TIMEFRAME_M3` with invalid params
+
+No M5-as-M3 substitution was used. Temporary helper files created during data
+collection were removed.
+
+The existence scan then ran through `validation/run_st_c2_gbp_existence.py`.
+Result: **NO_SIGNAL_FOUND** across 3,248 checked windows, with every window
+rejected at `R1` liquidity. The S1-G2 existence floor (`>=1 qualifying GBPUSD
+signal`) is therefore not satisfied.
+
+Governance handling: roll back within Stage 1 to diagnose whether the result is
+caused by data coverage, minimum reference-detector fidelity, or GBPUSD ST-C2
+strategy logic. Any strategy/spec change requires a new candidate/RCR and
+S1-G1 review. Historical validation, statistical validation, execution, demo,
+live, broker, and production remain blocked.
+
+## Addendum: S1-G2 scoped reference implementation authorization granted (2026-07-24)
+
+Decision: grant scoped S1-G2 reference implementation authorization for frozen
+`specs/st-c2_v1.2.0.yaml` (GBPUSD) only.
+
+Authorized scope:
+
+- golden-case tests
+- conformance kernel as research code
+- minimum GBPUSD detector slice
+- existence-check run requiring at least one qualifying GBPUSD signal
+
+Forbidden scope remains unchanged:
+
+- MT5
+- broker adapter
+- execution layer
+- order management
+- live trading
+- risk execution pipeline
+- demo trading
+- production promotion
+- strategy redesign
+- YAML parameter changes
+
+This authorization does not approve ST-C2 as a strategy and does not authorize
+historical/statistical validation beyond the first reference/existence slice.
+`engine_implements_spec` remains `false` until conformance coverage is complete.
+
+## Addendum: ST-C2 v1.2 GBPUSD reference kernel built, existence check data-blocked (2026-07-24)
+
+S1-G2 scoped artifacts created:
+
+- `validation/st_c2_reference.py`
+- `validation/run_st_c2_gbp_existence.py`
+- `tests/test_st_c2_reference.py`
+- `reports/ST-C2_V1.2_GBPUSD_REFERENCE_IMPLEMENTATION.md`
+- `reports/ST-C2_V1.2_GBPUSD_EXISTENCE_CHECK.md`
+
+The minimum reference kernel covers GBPUSD-only symbol scope, liquidity/bias
+precondition, OTE/location, MF FVG alignment, LTF confirmation, stable rejection
+codes, and broker isolation for the minimum detector slice. This is not full
+engine conformance and does not flip `engine_implements_spec`.
+
+Existence-check preflight result: **BLOCKED_DATA_MISSING**. Required but missing
+files:
+
+- `data/GBPUSD_H4.csv`
+- `data/GBPUSD_M15.csv`
+- `data/GBPUSD_M3.csv`
+
+No proxy timeframe substitution was used. M5 was not treated as M3. Execution,
+demo, live, broker, and production remain blocked.
+
+## Addendum: GBPUSD default-symbol candidate filed (2026-07-24)
+
+Owner instruction: "use default symbols as GBPUSD and continue."
+
+The original ST-C2 RCR deliberately scoped the first implementation/existence
+check to XAUUSD only and stated that enabling GBPUSD requires a follow-up RCR
+addendum. This addendum is that scope-change record.
+
+Decision: create `specs/st-c2_v1.2.0.yaml` as a new GBPUSD-scoped candidate.
+Do not mutate frozen `specs/st-c2_v1.1.0.yaml`.
+
+Candidate changes:
+
+- GBPUSD enabled.
+- XAUUSD disabled.
+- EURUSD remains disabled.
+- G8 `cost_profile_symbol_row` changed from XAUUSD to GBPUSD, using the existing
+  `config/research_costs.yaml` GBPUSD row.
+- `status: candidate`.
+- `engine_implements_spec: false`.
+- `implementation_authorization: null`.
+
+No profitability or edge claim is made. The first expected validation benefit is
+governance correctness: the new symbol scope is explicit before any
+implementation or backtest. The eventual existence-check criterion, if S1-G2 is
+separately authorized, is at least one qualifying GBPUSD signal across available
+local history.
+
+Current lifecycle returns to S1-G1 Specification Governance for ST-C2 v1.2.0.
+Implementation, historical validation, execution, demo, live, broker, and
+production remain blocked.
+
+## Addendum: S1-G1 freeze act — ST-C2 v1.2.0 GBPUSD promoted to frozen (2026-07-24)
+
+The GBPUSD-specific S1-G1 audit initially flagged instrument-scale thresholds
+inherited from XAUUSD. The follow-up governance decision closes those blockers:
+
+- `min_stop_distance_points: 35`, `max_stop_distance_points: 150`,
+  `invalidation_buffer_distance_points: 2.5`, and `spread_spike_points: 20`
+  are inherited unchanged and marked **PROVISIONAL** for the first GBPUSD
+  reference implementation/existence pass.
+- The GBPUSD existence-check criterion is `>=1 qualifying GBPUSD signal across
+  available local history`.
+- Population feasibility (`30` completed trades) is deferred until after the
+  minimum GBPUSD reference slice exists.
+
+Decision: `specs/st-c2_v1.2.0.yaml` is promoted from `status: candidate` to
+`status: frozen`, and `consolidation_status` is set to `COMPLETE`.
+
+This freeze act does not approve ST-C2 as a strategy, does not authorize
+implementation, does not authorize historical replay, and does not authorize
+execution, demo, live, broker, or production work. Current lifecycle advances to
+S1-G2 Reference Implementation, BLOCKED pending a separate scoped authorization
+decision.
