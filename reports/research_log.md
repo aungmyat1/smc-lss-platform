@@ -481,3 +481,30 @@ execution_stage:
     partial_fill_policy: accept_and_scale_targets
     duplicate_setup_policy: one_position_at_a_time  # UNCONFIRMED -- no owner rationale given, do not treat as decided
 ```
+
+## Addendum: engineering-verification result — G2 identifier generalization (2026-07-24)
+
+A read-only verification task (per the governance sequencing review's own
+classification of G2's stable-identifier composition as an engineering
+question, not owner judgment) checked whether ST-C1's
+`structure_key`/`index_offset` deduplication convention
+(`validation/historical_replay_engine_v39.py`/`_v310.py`, keyed via
+`src/signal_v39.py`/`signal_v310.py`) generalizes to ST-C2's different
+pipeline shape and timeframe triple.
+
+**Result: it generalizes**, with one adaptation required by the third
+addendum's own Cluster 1 decisions (protected-level persistence + 2nd/3rd
+CHoCH = distinct continuation/acceleration events, not duplicates): the
+key must anchor to the LTF CHoCH confirmation bar (the entry-adjacent
+structure, direct analog of ST-C1's `zone_creation_i`), never to an
+upstream shared structure from stages 1-4. Adapted key:
+`(symbol, "LTF_CHoCH", index_offset_m3 + ltf_choch_confirmation_bar_index)`.
+Full reasoning recorded in the fourth addendum appended to
+`ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`.
+
+This does not touch or resolve the separately-flagged, still-unconfirmed
+`duplicate_setup_policy` proposal (concurrent-position handling is a
+different question from repeat re-detection of one setup). No code
+written, no spec file mutated (`specs/st-c2.yaml` unchanged,
+`engine_implements_spec` stays `false`), no backtest run, no
+execution/demo/live/promotion state changed.
