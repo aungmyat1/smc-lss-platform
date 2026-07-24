@@ -2,7 +2,7 @@
 
 **One milestone at a time. This is the active milestone.**
 
-## ST-C3 S1-G1 Preparation - Owner Review and Freeze Readiness
+## ST-C3 S1-G1C Logic-Conformance Preparation
 
 Current lifecycle position:
 
@@ -10,15 +10,15 @@ Current lifecycle position:
 |---|---|
 | Stage | Stage A - Strategy Validation |
 | Substage | A1 - Strategy Logic Contract and Conformance |
-| Gate | Pre-S1-G1 Owner Review / Specification Freeze Preparation |
+| Gate | S1-G1C Logic-Conformance Preparation |
 | Strategy | ST-C3 v1.0.0 |
-| Status | Draft |
-| Readiness | YELLOW |
-| Frozen | NO |
+| Status | FROZEN -> READY FOR VALIDATION |
+| Readiness | GREEN |
+| Frozen | YES |
 | Implementation | BLOCKED |
 | Backtest | BLOCKED |
-| A1 Logic Conformance | NOT STARTED |
-| A2 Signal Conformance | BLOCKED: S1-G1 NOT PASSED |
+| A1 Logic Conformance | NOT STARTED: NEXT ACTIVE WORK |
+| A2 Signal Conformance | BLOCKED: S1-G1C NOT PASSED |
 | A3 Statistical Validation | BLOCKED: A2 NOT PASSED |
 | Execution | BLOCKED |
 | Demo | BLOCKED |
@@ -26,67 +26,63 @@ Current lifecycle position:
 
 ## Objective
 
-Prepare ST-C3 for its own S1-G1 specification-freeze decision without changing
-ST-C2, implementing ST-C3, running backtests, or granting execution authority.
+Begin ST-C3 S1-G1C logic-conformance preparation against the frozen v1.0.0
+strategy package without implementing kernels, running backtests, or granting
+execution authority.
 
 ## Current Evidence
 
-- ST-C3 intake ADR:
-  `docs/adr/ADR-0004-st-c3-candidate-intake.md`.
-- ST-C3 draft spec:
-  `specs/st-c3_v1.0.0.yaml`.
-- ST-C3 funnel overhaul plan:
-  `reports/ST-C3_FUNNEL_OVERHAUL_PLAN.md`.
-- ST-C3 foundation documents:
-  `docs/strategy/st_c3/ST-C3_STRATEGY_ARCHITECTURE.md`,
-  `docs/strategy/st_c3/ST-C3_FUNNEL_LIFECYCLE.md`,
-  `docs/strategy/st_c3/ST-C3_EVIDENCE_OBJECT_SPEC.md`, and
+- ST-C3 frozen spec: `specs/st-c3_v1.0.0.yaml`.
+- ST-C3 freeze action log:
+  `docs/strategy/st_c3/ST-C3_FREEZE_ACTION_LOG.md`.
+- ST-C3 worktree checkpoint:
+  `docs/strategy/st_c3/ST-C3_WORKTREE_CHECKPOINT.md`.
+- ST-C3 freeze checklist:
+  `docs/strategy/st_c3/ST-C3_FREEZE_CHECKLIST.md`.
+- ST-C3 strategy architecture:
+  `docs/strategy/st_c3/ST-C3_STRATEGY_ARCHITECTURE.md`.
+- ST-C3 funnel lifecycle:
+  `docs/strategy/st_c3/ST-C3_FUNNEL_LIFECYCLE.md`.
+- ST-C3 evidence object specification:
+  `docs/strategy/st_c3/ST-C3_EVIDENCE_OBJECT_SPEC.md`.
+- ST-C3 rejection/termination code specification:
   `docs/strategy/st_c3/ST-C3_REJECTION_CODE_SPEC.md`.
 - ST-C3 parameter sheet:
   `docs/strategy/st_c3/ST-C3_PARAMETER_SHEET.md`.
 - ST-C3 state machine:
   `docs/strategy/st_c3/ST-C3_STATE_MACHINE.md`.
-- ST-C3 RCR/intake entry:
-  `reports/research_log.md`.
-- Source reference documents:
-  `docs/reference/smc-definitive-guide-dailypriceaction.md` and
-  `docs/reference/smc-8step-entry-model-dailypriceaction.md`.
+- ST-C3 evidence binding layer:
+  `docs/strategy/st_c3/ST-C3_EVIDENCE_BINDINGS.md`.
+- ST-C3 trade-plan schema:
+  `docs/strategy/st_c3/ST-C3_TRADE_PLAN_SCHEMA.md`.
+- ST-C3 validator rules:
+  `docs/strategy/st_c3/ST-C3_VALIDATOR_RULES.md`.
+- ST-C3 proposed execution agent specification:
+  `docs/strategy/st_c3/ST-C3_EXECUTION_AGENT_SPEC.md`.
+- ST-C3 backtest specification:
+  `docs/strategy/st_c3/ST-C3_BACKTEST_SPEC.md`.
+- ST-C3 intake ADR:
+  `docs/adr/ADR-0004-st-c3-candidate-intake.md`.
+- ST-C3 RCR/intake entry: `reports/research_log.md`.
 
 ## Acceptance Criteria
 
-- Confirm or correct the provisional thresholds in
-  `reports/ST-C3_FUNNEL_OVERHAUL_PLAN.md` section 16.
-- Confirm or correct the risk envelope described in the plan and represented
-  as unresolved fields in `specs/st-c3_v1.0.0.yaml`.
-- Confirm or correct the `F1`/`F2`/`F3` relabeling from ADR-0004.
-- Confirm whether the six proposed agent roles should be formalized by
-  ADR-0005 before S1-G1 freeze.
-- Resolve all `UNRESOLVED` fields required for S1-G1 freeze readiness.
-- Keep the four ST-C3 foundation documents aligned with the draft spec and
-  funnel overhaul plan.
-- Keep the ST-C3 state machine aligned with lifecycle, evidence, rejection,
-  termination, and trade-plan contracts.
-- Prepare the S1-G1 audit package, but do not freeze the spec until the owner
-  explicitly approves the freeze act.
-
-## Blocking Gaps
-
-- Symbol scope and session windows are unresolved.
-- Sweep tolerance, wick-ratio, sweep age, `BOS_MIN_IMPULSE`, FVG/OB freshness,
-  exact `N_SWEEP`, exact `MAX_ENTRY_BARS`, stop buffer, TP2/TP3 RR floors, and
-  portfolio risk controls are unresolved or provisional.
-- Validation metrics and floors are unresolved.
-- Rejection-code coverage and session-close trigger policy still need S1-G1
-  decisions.
-- No ST-C3 reference kernel, golden-case tests, existence scanner, backtest,
-  or execution integration exists or is authorized.
+- Build an S1-G1C logic-conformance checklist for the frozen ST-C3 artifacts.
+- Verify artifact cross-links and no dangling references.
+- Verify YAML structural invariants: 16 evidence objects, 16 states, 16
+  transitions, S13 evidence chain, R/ERR code maps, and blocked execution
+  authority.
+- Prepare a validation report outline for ST-C3 v1.0.0.
+- Preserve `docs/strategy/st_c3/ST-C3_BACKTEST_SPEC.md` as A3 planning
+  material only; do not run backtests until A2 passes and A3 is authorized.
+- Do not implement ST-C3 code, kernels, scanners, backtests, broker adapters,
+  demo, live, or production paths.
 
 ## Guardrails
 
+- Do not modify frozen ST-C3 strategy logic except through a new
+  governance-approved revision or candidate lineage.
 - Do not modify `specs/st-c2_v1.2.0.yaml`.
-- Do not continue ST-C2 S1-G2 implementation work under this milestone.
-- Do not implement ST-C3 code, tests, kernels, broker integration, demo
-  trading, live trading, or production paths.
-- Keep ST-C3 `status: draft`, `engine_implements_spec: false`, and
-  `implementation_authorization: null` until a separate S1-G1 freeze act
-  authorizes a different state.
+- Keep ST-C3 `engine_implements_spec: false` and
+  `implementation_authorization: null` until a later gate authorizes a
+  different state.

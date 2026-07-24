@@ -1,8 +1,8 @@
-# ST-C3 "Daily Price Action Deterministic Funnel" — draft candidate spec.
+# ST-C3 "Next-Generation SMC Funnel" — frozen candidate spec.
 #
-# THIS FILE IS A DRAFT INTAKE RECORD, NOT A FROZEN SPECIFICATION. It is not
-# implementation authorization and does not grant execution, demo, live, or
-# broker authority. See:
+# THIS FILE IS A FROZEN SPECIFICATION RECORD. It is not implementation
+# authorization and does not grant execution, demo, live, or broker authority.
+# See:
 #   - docs/adr/ADR-0004-st-c3-candidate-intake.md (intake decision)
 #   - reports/research_log.md, "ST-C3 v1.0.0 candidate intake" entry (RCR)
 #   - docs/reference/smc-definitive-guide-dailypriceaction.md
@@ -19,18 +19,24 @@
 # Nothing here is inferred or invented beyond what one of those three
 # provenance markers documents.
 #
-# STATUS: DRAFT. Does not supersede, mutate, or pause specs/st-c2_v1.2.0.yaml
-# (frozen).
+# STATUS: FROZEN. Does not supersede, mutate, or pause
+# specs/st-c2_v1.2.0.yaml (frozen).
 
 id: ST-C3
 name: Next-Generation SMC Funnel
 version: 1.0.0
 governance_profile: null   # UNRESOLVED — symbol/session scope not yet decided; set at S1-G1
-status: draft   # NOT frozen — see ADR-0004
-consolidation_status: INTAKE_ONLY   # no S1-G1 audit has run yet
+status: frozen   # S1-G1 freeze act recorded in docs/strategy/st_c3/ST-C3_FREEZE_ACTION_LOG.md
+consolidation_status: S1_G1_FROZEN_READY_FOR_VALIDATION
 engine_implements_spec: false   # SAFETY INTERLOCK — no engine exists
-implementation_authorization: null   # nothing authorized — draft only
+implementation_authorization: null   # freeze does not authorize implementation
 supersedes: null   # new lineage; does not supersede or revise ST-C2 (ADR-0004)
+freeze:
+  timestamp: "2026-07-24T23:50:00 MMT"
+  owner: Aung
+  governance_agent: Strategy Governance Layer (SGL)
+  action_log: docs/strategy/st_c3/ST-C3_FREEZE_ACTION_LOG.md
+  validation_status: ready_for_validation
 description: >
   Refined deterministic SMC funnel intended to improve ST-C2 by hardening edge
   cases around time, session, volatility, structural locking, sweep reclaim,
@@ -67,6 +73,31 @@ sessions:
   london_window_utc: PROVISIONAL_07_00_TO_10_00   # owner example; ratify at S1-G1
   ny_window_utc: PROVISIONAL_13_00_TO_16_00       # owner example; ratify at S1-G1
   low_liquidity_filters: UNRESOLVED              # owner: optional late Asian / pre-close filters
+
+parameters:
+  N_SWEEP:
+    value: PROVISIONAL_1_TO_3
+    unit: bars_on_sweep_timeframe
+    status: provisional
+  MAX_ENTRY_BARS:
+    value: PROVISIONAL_3_TO_5
+    unit: M3_bars
+    status: provisional
+  OTE_MIN:
+    value: 0.62
+    status: provisional
+  OTE_MAX:
+    value: 0.79
+    status: provisional
+  SESSION_LONDON:
+    value: "07:00-10:00 UTC"
+    status: provisional
+  SESSION_NY:
+    value: "13:00-16:00 UTC"
+    status: provisional
+  MIN_RR:
+    value: CONFIGURABLE_PROVISIONAL_3R
+    status: provisional
 
 # ============================================================
 # 2. Timeframes — owner: matches the funnel prompt's stage-by-stage timeframe
@@ -354,6 +385,59 @@ rejection_code_json_schema:
     ERR_SUPERSEDED_SETUP: "Terminated: Newer sweep/BOS setup detected."
 
 # ============================================================
+# 4.0 Evidence Registry — single source of truth for binding
+# ============================================================
+evidence:
+  HTFBiasEvidence:
+    tf: H4
+    fields: [structure, bias, valid, reason]
+  SweepEvidence:
+    tf: [H4, M15]
+    fields: [sweep_type, wick_penetration, level, valid]
+  SweepReclaimEvidence:
+    tf: [H4, M15]
+    fields: [reclaim_within_bars, max_allowed_bars, reclaimed, valid]
+  DisplacementEvidence:
+    tf: M15
+    fields: [impulse_strength, threshold, valid]
+  BOSEvidence:
+    tf: M15
+    fields: [bos_direction, body_close_break, level, valid]
+  BOSExtremeEvidence:
+    tf: M15
+    fields: [provisional_extreme, locked_extreme, pullback_detected, valid]
+  DealingRangeEvidence:
+    tf: M15
+    fields: [origin, bos_extreme, range_size, valid]
+  OTEEvidence:
+    tf: M15
+    fields: [ote_min, ote_max, price_in_ote, valid]
+  FVGEvidence:
+    tf: [H4, M15]
+    fields: [gap_top, gap_bottom, fresh, inside_ote, valid]
+  OrderBlockEvidence:
+    tf: [H4, M15]
+    fields: [ob_high, ob_low, fresh, inside_ote, valid]
+  LTFConfirmationEvidence:
+    tf: [M3, M1]
+    fields: [choch_direction, sweep_local_liquidity, valid]
+  SessionWindowEvidence:
+    tf: [M3, M1]
+    fields: [session, valid]
+  EntryWindowEvidence:
+    tf: [M3, M1]
+    fields: [bars_since_ltf_choch, max_allowed_bars, inside_window, valid]
+  InvalidationSwingEvidence:
+    tf: [M3, M1]
+    fields: [swing_level, direction, valid]
+  TargetEvidence:
+    tf: [H4, M15]
+    fields: [target_type, level, rr, valid]
+  ExpiryEvidence:
+    tf: [M3, M1]
+    fields: [expiry_reason, valid]
+
+# ============================================================
 # 4.1 State Machine — pre-freeze deterministic blueprint
 # ============================================================
 state_machine:
@@ -437,7 +521,7 @@ state_machine:
       failure_code: R7_ENTRY_WINDOW_EXPIRED
     - state: S12
       description: RISK_SL_TP_BUILD
-      guard: InvalidationSwingEvidence.valid == true AND TargetEvidence(valid for TP1/TP2/TP3) AND RR >= MIN_RR
+      guard: InvalidationSwingEvidence.valid == true AND TargetEvidence.valid == true AND computed_rr >= MIN_RR
       next: S13
       failure_code: appropriate_r_code_for_risk_or_target_rule_failure
     - state: S13
@@ -464,6 +548,190 @@ state_machine:
     - any_failed_guard_triggers_exactly_one_r_code_or_err_code
     - trade_plan_only_exists_if_machine_reaches_s13
     - after_s13_only_err_codes_are_allowed
+  evidence_bindings:
+    S1_HTF_BIAS:
+      consumes: [HTFBiasEvidence]
+      produces: [HTFBiasEvidence]
+      guard: "HTFBiasEvidence.valid == true"
+      reject: R1_HTF_BIAS_UNCLEAR
+    S2_SWEEP:
+      consumes: [SweepEvidence]
+      produces: [SweepEvidence]
+      guard: "SweepEvidence.valid == true"
+      reject: R2_NO_SWEEP
+    S3_SWEEP_RECLAIM:
+      consumes: [SweepReclaimEvidence]
+      produces: [SweepReclaimEvidence]
+      guard: "SweepReclaimEvidence.valid == true and SweepReclaimEvidence.reclaimed == true"
+      reject: R2_NO_SWEEP
+    S4_DISPLACEMENT_BOS:
+      consumes: [DisplacementEvidence, BOSEvidence]
+      produces: [DisplacementEvidence, BOSEvidence]
+      guard: "DisplacementEvidence.valid == true and BOSEvidence.valid == true"
+      reject: R3_NO_DISPLACEMENT_BOS
+    S5_BOS_EXTREME_LOCK:
+      consumes: [BOSExtremeEvidence]
+      produces: [BOSExtremeEvidence]
+      guard: "BOSExtremeEvidence.valid == true and BOSExtremeEvidence.pullback_detected == true"
+      reject: R3_NO_DISPLACEMENT_BOS
+    S6_DEALING_RANGE:
+      consumes: [DealingRangeEvidence]
+      produces: [DealingRangeEvidence]
+      guard: "DealingRangeEvidence.valid == true"
+      reject: R4_NO_OTE_PULLBACK
+    S7_OTE:
+      consumes: [OTEEvidence]
+      produces: [OTEEvidence]
+      guard: "OTEEvidence.valid == true and OTEEvidence.price_in_ote == true"
+      reject: R4_NO_OTE_PULLBACK
+    S8_FVG_OB_CONFLUENCE:
+      consumes: [FVGEvidence, OrderBlockEvidence]
+      produces: [FVGEvidence, OrderBlockEvidence]
+      guard: "(FVGEvidence.valid == true or OrderBlockEvidence.valid == true) and inside_ote == true"
+      reject: R5_NO_FVG_OB_CONFLUENCE
+    S9_LTF_CONFIRMATION:
+      consumes: [LTFConfirmationEvidence]
+      produces: [LTFConfirmationEvidence]
+      guard: "LTFConfirmationEvidence.valid == true and LTFConfirmationEvidence.sweep_local_liquidity == true"
+      reject: R6_NO_LTF_CONFIRMATION
+    S10_SESSION_GATEKEEPER:
+      consumes: [SessionWindowEvidence]
+      produces: [SessionWindowEvidence]
+      guard: "SessionWindowEvidence.valid == true and SessionWindowEvidence.session in ['LONDON', 'NY']"
+      reject: R6_NO_LTF_CONFIRMATION
+    S11_ENTRY_WINDOW:
+      consumes: [EntryWindowEvidence]
+      produces: [EntryWindowEvidence]
+      guard: "EntryWindowEvidence.valid == true and EntryWindowEvidence.inside_window == true"
+      reject: R7_ENTRY_WINDOW_EXPIRED
+    S12_RISK_SLTP:
+      consumes: [InvalidationSwingEvidence, TargetEvidence]
+      produces: [InvalidationSwingEvidence, TargetEvidence]
+      guard: "InvalidationSwingEvidence.valid == true and TargetEvidence.valid == true and computed_rr >= MIN_RR"
+      reject: R5_NO_FVG_OB_CONFLUENCE
+    S13_TRADE_PLAN_EMIT:
+      consumes:
+        - HTFBiasEvidence
+        - SweepEvidence
+        - SweepReclaimEvidence
+        - DisplacementEvidence
+        - BOSEvidence
+        - BOSExtremeEvidence
+        - DealingRangeEvidence
+        - OTEEvidence
+        - FVGEvidence
+        - OrderBlockEvidence
+        - LTFConfirmationEvidence
+        - SessionWindowEvidence
+        - EntryWindowEvidence
+        - InvalidationSwingEvidence
+        - TargetEvidence
+      produces: [TRADE_PLAN]
+      guard: all_previous_states_valid
+      reject: none
+    S14_EXPIRY:
+      consumes: [ExpiryEvidence]
+      produces: [ExpiryEvidence]
+      terminate:
+        - ERR_HTF_BIAS_FLIP
+        - ERR_ENTRY_WINDOW_EXPIRED
+        - ERR_SL_INVALIDATION
+        - ERR_SUPERSEDED_SETUP
+
+validator_rules:
+  evaluation_model:
+    statefulness: stateless_per_tick_stateful_per_setup
+    guard_policy: one_guard_per_state
+    failure_policy: exactly_one_code_per_failed_guard
+    post_trade_plan_policy: after_s13_only_err_codes_allowed
+  principles:
+    deterministic_evaluation:
+      - every_state_has_one_guard
+      - guard_failure_emits_exactly_one_r_code
+      - after_s13_only_err_codes_are_allowed
+    evidence_driven:
+      - validator_never_computes_structure
+      - validator_only_checks_evidence_valid_and_evidence_fields
+      - detection_modules_produce_evidence
+    no_discretion:
+      - no_fuzzy_logic
+      - no_probability_thresholds
+      - no_confidence_scores
+      - only_boolean_guards_and_numeric_comparisons
+  state_rules:
+    S1_HTF_BIAS:
+      guard: "HTFBiasEvidence.valid == true"
+      reject: R1_HTF_BIAS_UNCLEAR
+    S2_SWEEP:
+      guard: "SweepEvidence.valid == true"
+      reject: R2_NO_SWEEP
+    S3_SWEEP_RECLAIM:
+      guard: "SweepReclaimEvidence.valid == true AND SweepReclaimEvidence.reclaimed == true"
+      reject: R2_NO_SWEEP
+    S4_DISPLACEMENT_BOS:
+      guard: "DisplacementEvidence.valid == true AND BOSEvidence.valid == true"
+      reject: R3_NO_DISPLACEMENT_BOS
+    S5_BOS_EXTREME_LOCK:
+      guard: "BOSExtremeEvidence.valid == true AND BOSExtremeEvidence.pullback_detected == true"
+      reject: R3_NO_DISPLACEMENT_BOS
+    S6_DEALING_RANGE:
+      guard: "DealingRangeEvidence.valid == true"
+      reject: R4_NO_OTE_PULLBACK
+    S7_OTE:
+      guard: "OTEEvidence.valid == true AND OTEEvidence.price_in_ote == true"
+      reject: R4_NO_OTE_PULLBACK
+    S8_FVG_OB_CONFLUENCE:
+      guard: "(FVGEvidence.valid == true OR OrderBlockEvidence.valid == true) AND inside_ote == true"
+      reject: R5_NO_FVG_OB_CONFLUENCE
+    S9_LTF_CONFIRMATION:
+      guard: "LTFConfirmationEvidence.valid == true AND LTFConfirmationEvidence.sweep_local_liquidity == true"
+      reject: R6_NO_LTF_CONFIRMATION
+    S10_SESSION_GATEKEEPER:
+      guard: "SessionWindowEvidence.valid == true AND SessionWindowEvidence.session IN ['LONDON', 'NY']"
+      reject: R6_NO_LTF_CONFIRMATION
+    S11_ENTRY_WINDOW:
+      guard: "EntryWindowEvidence.valid == true AND EntryWindowEvidence.inside_window == true"
+      reject: R7_ENTRY_WINDOW_EXPIRED
+    S12_RISK_SLTP:
+      guard: "InvalidationSwingEvidence.valid == true AND TargetEvidence.valid == true AND computed_rr >= MIN_RR"
+      reject: R5_NO_FVG_OB_CONFLUENCE
+    S13_TRADE_PLAN_EMIT:
+      guard: all_previous_states_valid
+      output: TRADE_PLAN
+      reject: none
+  expiry_termination_map:
+    BIAS_FLIP: ERR_HTF_BIAS_FLIP
+    ENTRY_WINDOW: ERR_ENTRY_WINDOW_EXPIRED
+    SL_BREAK: ERR_SL_INVALIDATION
+    SUPERSEDED: ERR_SUPERSEDED_SETUP
+  execution_flow:
+    on_every_tick:
+      - load_current_state
+      - load_evidence_for_current_state
+      - evaluate_guard
+      - if_guard_fails_emit_r_code_and_stop
+      - if_guard_passes_advance_to_next_state
+      - if_state_is_s13_emit_trade_plan
+      - if_state_greater_than_or_equal_s13_check_expiry_and_emit_err_code_if_needed
+    state_advancement:
+      - forward_only
+      - no_backward_transitions
+      - no_skipping_states
+      - no_reentry_into_previous_states
+  outputs:
+    rejection:
+      state: REJECTED
+      code: R#_XXXX
+      reason: string
+      evidence_id: evidence.id
+    termination:
+      state: TERMINATED
+      code: ERR_XXXX
+      reason: string
+      trade_plan_id: TP.id
+    valid:
+      state: VALID
+      trade_plan: TRADE_PLAN
 
 # ============================================================
 # 4.2 Evidence Object Schema — pre-freeze draft contract
@@ -570,28 +838,195 @@ evidence_object_schema:
         valid: false
 
 # ============================================================
-# 5. Trade-Plan Object Schema (machine format, owner-specified shape)
+# 5. Trade-Plan Object Schema (machine format emitted at S13)
 # ============================================================
-trade_plan_schema:
-  direction: enum[LONG, SHORT]
-  htf_bias: HTF_BIAS_ID
-  sweep: [SWEEP_ID, SWEEP_RECLAIM_ID]
-  displacement: DISPLACEMENT_ID
-  bos: [BOS_ID, BOS_EXTREME_ID]
-  dealing_range: DEALING_RANGE_ID
-  ote_zone: OTE_ZONE_ID
-  confluence_zone: [FVG_ID, ORDERBLOCK_ID]
-  ltf_confirmation: LTF_CHOCH_ID
-  session_window: SESSION_WINDOW_ID
-  entry_zone: ENTRY_ZONE_ID
-  entry_window: ENTRY_WINDOW_ID
-  stop_loss: INVALIDATION_SWING_ID
-  targets: [TP1_ID, TP2_ID, TP3_ID]
-  expiry: EXPIRY_ID
-  rr: numeric
-  evidence: array_of_all_ids
-  status: enum[VALID, REJECTED, TERMINATED]
-  code: enum[ST-C3-R*, ST-C3-ERR_*]
+trade_plan:
+  strategy_id: ST-C3
+  schema:
+    direction:
+      type: enum
+      values: [LONG, SHORT]
+      evidence: HTFBiasEvidence.bias
+    context:
+      htf_bias_id: HTFBiasEvidence.id
+      sweep_id: SweepEvidence.id
+      sweep_reclaim_id: SweepReclaimEvidence.id
+      bos_id: BOSEvidence.id
+      bos_extreme_id: BOSExtremeEvidence.id
+      dealing_range_id: DealingRangeEvidence.id
+      ote_id: OTEEvidence.id
+      fvg_id: FVGEvidence.id
+      orderblock_id: OrderBlockEvidence.id
+      ltf_confirmation_id: LTFConfirmationEvidence.id
+      session_window_id: SessionWindowEvidence.id
+    entry:
+      entry_zone_type:
+        type: enum
+        values: [FVG, ORDERBLOCK]
+        evidence: [FVGEvidence.valid, OrderBlockEvidence.valid]
+      entry_zone_id:
+        type: string
+        evidence: [FVGEvidence.id, OrderBlockEvidence.id]
+      entry_price:
+        type: float
+      entry_window_id: EntryWindowEvidence.id
+      max_entry_bars: EntryWindowEvidence.max_allowed_bars
+      bars_since_ltf_choch: EntryWindowEvidence.bars_since_ltf_choch
+    risk:
+      sl_price:
+        type: float
+        evidence: InvalidationSwingEvidence.swing_level
+      sl_type: STRUCTURAL_INVALIDATION
+      risk_per_trade_pct:
+        type: float
+      min_rr_required:
+        type: float
+      computed_rr:
+        type: float
+    targets:
+      tp1:
+        target_id: TargetEvidence.id
+        target_type: TP1_INTERNAL
+        price: TargetEvidence.level
+        rr: TargetEvidence.rr
+      tp2:
+        target_id: TargetEvidence.id
+        target_type: TP2_EXTERNAL
+        price: TargetEvidence.level
+        rr: TargetEvidence.rr
+      tp3:
+        target_id: TargetEvidence.id
+        target_type: TP3_HTF
+        price: TargetEvidence.level
+        rr: TargetEvidence.rr
+    expiry:
+      rules: [BIAS_FLIP, ENTRY_WINDOW, SL_BREAK, SUPERSEDED]
+      expiry_evidence_id: ExpiryEvidence.id
+    evidence_chain:
+      - HTFBiasEvidence.id
+      - SweepEvidence.id
+      - SweepReclaimEvidence.id
+      - DisplacementEvidence.id
+      - BOSEvidence.id
+      - BOSExtremeEvidence.id
+      - DealingRangeEvidence.id
+      - OTEEvidence.id
+      - FVGEvidence.id
+      - OrderBlockEvidence.id
+      - LTFConfirmationEvidence.id
+      - SessionWindowEvidence.id
+      - EntryWindowEvidence.id
+      - InvalidationSwingEvidence.id
+      - TargetEvidence.id
+    status:
+      state:
+        type: enum
+        values: [VALID, REJECTED, TERMINATED]
+      code:
+        type: enum
+        values:
+          - R1_HTF_BIAS_UNCLEAR
+          - R2_NO_SWEEP
+          - R3_NO_DISPLACEMENT_BOS
+          - R4_NO_OTE_PULLBACK
+          - R5_NO_FVG_OB_CONFLUENCE
+          - R6_NO_LTF_CONFIRMATION
+          - R7_ENTRY_WINDOW_EXPIRED
+          - ERR_HTF_BIAS_FLIP
+          - ERR_ENTRY_WINDOW_EXPIRED
+          - ERR_SL_INVALIDATION
+          - ERR_SUPERSEDED_SETUP
+      reason:
+        type: string
+    meta:
+      created_at:
+        type: datetime
+      tf_stack:
+        type: list
+        values: [H4, M15, M3, M1]
+      session:
+        type: enum
+        values: [LONDON, NY]
+      provenance: STC3_v1
+
+# ============================================================
+# 5.1 Execution Agent — proposed Stage B consumer, no authority
+# ============================================================
+execution_agent:
+  id: EXECUTION_AGENT_STC3
+  role: Execute validated ST-C3 trade-plans
+  mode: deterministic_rule_based_session_aware
+  authorization: blocked_until_stage_b
+  inputs: [TRADE_PLAN]
+  outputs:
+    - execution_events
+    - order_placement
+    - lifecycle_logs
+  responsibilities:
+    - consume_validated_trade_plan_objects
+    - enforce_session_rules
+    - enforce_expiry_rules
+    - place_orders_only_inside_entry_zone
+    - respect_sl_tp_levels
+    - track_rr_partial_exits_and_liquidity_targets
+    - emit_execution_logs_for_governance
+    - terminate_trades_using_err_codes
+    - never_override_validator_decisions
+    - never_modify_evidence
+    - never_modify_trade_plan_structure
+    - never_reinterpret_structure
+  preconditions:
+    - TRADE_PLAN.status.state == "VALID"
+    - current_session IN ["LONDON", "NY"]
+    - price_inside_TRADE_PLAN.entry.entry_zone
+  entry_logic:
+    zone_type: TRADE_PLAN.entry.entry_zone_type
+    zone_id: TRADE_PLAN.entry.entry_zone_id
+    entry_price: TRADE_PLAN.entry.entry_price
+    max_entry_bars: TRADE_PLAN.entry.max_entry_bars
+    supported_zone_types: [FVG, ORDERBLOCK, HYBRID_OB_INSIDE_FVG]
+  order:
+    type: [MARKET, LIMIT]
+    trade_plan_id: TRADE_PLAN.id
+    entry_price: TRADE_PLAN.entry.entry_price
+    sl: TRADE_PLAN.risk.sl_price
+    tp1: TRADE_PLAN.targets.tp1.price
+    tp2: TRADE_PLAN.targets.tp2.price
+    tp3: TRADE_PLAN.targets.tp3.price
+    risk_pct: TRADE_PLAN.risk.risk_per_trade_pct
+  expiry_rules: [BIAS_FLIP, ENTRY_WINDOW, SL_BREAK, SUPERSEDED]
+  termination_codes:
+    BIAS_FLIP: ERR_HTF_BIAS_FLIP
+    ENTRY_WINDOW: ERR_ENTRY_WINDOW_EXPIRED
+    SL_BREAK: ERR_SL_INVALIDATION
+    SUPERSEDED: ERR_SUPERSEDED_SETUP
+  partial_exits:
+    tp1: 0.30
+    tp2: 0.30
+    tp3: 0.40
+  events:
+    execution:
+      - EXEC_ENTER
+      - EXEC_EXIT_TP1
+      - EXEC_EXIT_TP2
+      - EXEC_EXIT_TP3
+      - EXEC_SL_HIT
+      - EXEC_EXPIRED
+      - EXEC_TERMINATED
+      - EXEC_COMPLETED
+    termination:
+      - ERR_HTF_BIAS_FLIP
+      - ERR_ENTRY_WINDOW_EXPIRED
+      - ERR_SL_INVALIDATION
+      - ERR_SUPERSEDED_SETUP
+  completion:
+    on_tp3_hit:
+      state: COMPLETED
+      emits:
+        - final_rr
+        - final_liquidity_targets_hit
+        - full_evidence_chain
+        - execution_log
 
 # ============================================================
 # 6. Risk & Portfolio — UNRESOLVED (not carried over from ST-C2; new

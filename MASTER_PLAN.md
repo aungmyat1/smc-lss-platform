@@ -1,6 +1,6 @@
 # SMC-LSS PLATFORM - MASTER GOVERNANCE PLAN
 
-**Version:** 4.1.1
+**Version:** 4.1.2
 **Status:** AUTHORITATIVE PROJECT OPERATING INSTRUCTIONS
 **Recorded:** 2026-07-24
 **Supersedes:** v3.0.0 and the legacy active M1-M5 roadmap
@@ -59,14 +59,13 @@ Nothing is higher priority than reaching this state without breaking governance.
 
 | Candidate | Stage | Gate | Status | Active Work | Authority |
 |---|---|---|---|---|---|
-| ST-C3 v1.0.0 | Stage A / A1 | Pre-S1-G1 owner review and freeze preparation | Draft | ACTIVE GOVERNANCE SETUP | Documentation/governance only; no implementation, backtest, execution, demo, live, or production authority |
+| ST-C3 v1.0.0 | Stage A / A1 | S1-G1 frozen; ready for S1-G1C logic-conformance | Frozen | ACTIVE VALIDATION SETUP | Validation/conformance preparation only; no implementation, backtest, execution, demo, live, or production authority |
 | ST-C2 v1.2.0 GBPUSD | Stage A / A2 | S1-G2 Reference Implementation Completion Review | Frozen; S1-G2 remains open | PAUSED BY OWNER DIRECTION | Scoped S1-G2 reference authority remains recorded, but no new ST-C2 work is the active milestone |
 
-ST-C3 v1.0.0 is the active owner-directed setup track for S1-G1 preparation.
-Its current work is limited to owner review of provisional thresholds, risk
-envelope, F1/F2/F3 relabeling, proposed agent roles, and freeze-readiness gaps.
-ST-C3 remains a draft candidate with `engine_implements_spec: false` and
-`implementation_authorization: null`.
+ST-C3 v1.0.0 is the active owner-directed validation setup track after S1-G1
+freeze. Its current work is limited to S1-G1C logic-conformance and validation
+preparation. ST-C3 remains non-implemented with `engine_implements_spec: false`
+and `implementation_authorization: null`.
 
 ST-C2 v1.2.0 remains preserved as the frozen GBPUSD-scoped specification.
 Pausing the active ST-C2 task does not approve, reject, mutate, supersede, or
@@ -517,6 +516,10 @@ that only executes approved strategy packages.
 
 ## Changelog
 
+- **v4.1.2 - 2026-07-25** - Records owner-approved ST-C3 v1.0.0 S1-G1 freeze
+  action. ST-C3 is frozen and ready for S1-G1C validation/conformance
+  preparation. Implementation, backtest, broker, demo, live, and production
+  authority remain blocked pending later gates.
 - **v4.1.1 - 2026-07-24** - Records owner-directed pivot of the active
   milestone from ST-C2 S1-G2 work to ST-C3 S1-G1 preparation. Adds a
   multi-candidate lifecycle position so ST-C3 can be active for governance
