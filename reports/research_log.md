@@ -660,3 +660,44 @@ No code written, no spec file mutated beyond the two closed fields
 in, `multi_choch_sequencing.fourth_plus_choch` filled in), no backtest
 run, no execution/demo/live/promotion state changed. Full decision text
 in the eighth addendum appended to `ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`.
+
+## Addendum: owner-decision session round 8 — items 10-12 revisited, FVG-chain rule restated (2026-07-24)
+
+Submission framed as "final, non-expansive, non-spec-changing
+confirmations. No new scope. No contradictions. No re-opens" for audit
+items 10-12 plus a restated FVG-chain rule. Checked against the actual
+prior state before recording anything: two of the four hold up, two do
+not.
+
+**Closed:** item 10, `protected_level_lifecycle.create_on` — but recorded
+as a **revision**, not a confirmation. The value in
+`specs/st-c2_v1.1.0.yaml` was `bos_confirmed` (itself only an `applied:`
+inference, never a numbered decision); this session changes it to
+`first_choch_establishing_bias`. Well-reasoned (consistent with this
+spec's own "CHoCH is the earliest reversal signal" framing), but a change,
+not a same-value restatement as the submission described it. Item 11,
+`internal_bos_required`'s restatement, closed cleanly — consistent with
+existing decisions, no conflict found.
+
+**Not closed:** item 12, rejection codes. The submitted 7-code scheme's
+rationale ("already appear in diagnostics logs") was checked by grepping
+`src/` and `validation/` for every proposed code string — zero real
+matches (no ST-C2 engine exists anywhere in this repo to log anything).
+Separately, the proposed scheme is coarser and different from the
+existing 12-code, per-gate scheme already in `specs/st-c2_v1.1.0.yaml`
+§6 — not a ratification of what item 12 asked about. Needs clarification:
+replace the existing scheme, or coexist as a summary layer?
+
+**Also not closed:** the restated FVG-chain continuity rule. It still
+relies on an undefined term, "MF displacement" — checked every
+`displacement`-named field in the spec; each is either a body-ratio
+threshold or the FVG's own 3-candle formation formula, never a price zone
+an FVG could sit "within." The restatement asserts this is equivalent to
+the already-closed G5 rule 2's "HTF-MTF confluence zone" without defining
+the term well enough to verify that claim. Same unresolved gap as the
+eighth addendum, not actually closed by the restatement.
+
+No code written, no spec file mutated beyond the two closed fields, no
+backtest run, no execution/demo/live/promotion state changed. Full
+decision text in the ninth addendum appended to
+`ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`.

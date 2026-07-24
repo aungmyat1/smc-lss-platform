@@ -75,9 +75,8 @@ pipeline:
     internal_swing_definition: inside_dealing_range_pre_bos     # decided: third addendum, Cluster 1 Q2
 
     protected_level_lifecycle:
-      create_on: bos_confirmed   # applied: not a separately numbered decision — this is the strategy document's own
-                                  # definition of "protected level" (a post-BOS structure); flagged in the audit as
-                                  # a low-risk terminology application, not an independent owner decision. CONFIRM before implementation.
+      create_on: first_choch_establishing_bias   # decided: ninth addendum, Decision 10 — supersedes the earlier
+                                                  # `bos_confirmed` applied-inference (not a numbered decision itself)
       invalidate_on: opposite_choch   # decided: third addendum, Cluster 1 Q3
       persist_until: explicit_invalidation   # decided: third addendum, Cluster 1 Q3
 
@@ -199,15 +198,12 @@ pipeline:
   # ------------------------------------------------------------
   ltf_confirmation_stage:
     choch:
-      internal_bos_required: true
+      internal_bos_required: true   # decided: ninth addendum, Decision 11 — an LTF CHoCH is valid only if the
+        # internal BOS immediately preceding it breaks structure by close (restatement, consistent with the
+        # existing close-beyond-structure convention and htf_structure.internal_swing_definition)
       break_structure_close_required: true   # decided (closed by existing convention): third addendum Phase 1
       displacement_body_ratio_min: 0.5        # decided (closed by existing convention): third addendum Phase 1
-      internal_bos_definition_ref: htf_structure.internal_swing_definition   # applied: third addendum notes decision
-                                                                              # Cluster1-Q2 "unblocks" this field but
-                                                                              # never restates it as an explicit
-                                                                              # closure sentence. Low-risk direct
-                                                                              # application, flagged for one-line
-                                                                              # confirmation — see audit §G6.
+      internal_bos_definition_ref: htf_structure.internal_swing_definition   # decided: ninth addendum, Decision 11
 
     stronger_choch:
       lower_high_or_higher_low_required: true

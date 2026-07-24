@@ -52,32 +52,30 @@ closed:
 
 ## What is still open (non-blocking, tracked, not resolved here)
 
-**Updated 2026-07-24 (eighth addendum):** three of the original six
+**Updated 2026-07-24 (ninth addendum):** five of the original six
 low-risk items are now closed (bull/bear classification, bias-evidence-
-timestamp field, 4th+ CHoCH sequencing) — see
-`reports/ST-C2_SPEC_AUDIT.md` §4 items 5, 6, 9. Three remain open:
+timestamp field, 4th+ CHoCH sequencing, `protected_level_lifecycle.create_on`,
+`internal_bos_required` restatement) — see `reports/ST-C2_SPEC_AUDIT.md`
+§4 items 5, 6, 9, 10, 11. One remains open:
 
-1. `protected_level_lifecycle.create_on: bos_confirmed` — a terminology-
-   based inference (`applied:`, not `decided:`), recommend one-line
-   confirmation.
-2. `internal_bos_required`'s explicit restatement — implied, not
-   independently stated.
-3. Rejection code strings — carried from the original governance audit's
-   own naming, never separately owner-ratified.
+1. Rejection code strings — a resubmission was checked and found not to
+   close this: its "already appear in diagnostics logs" rationale is
+   false (no ST-C2 engine exists anywhere to log anything), and the
+   proposed 7-code scheme is coarser and different from the existing
+   12-code scheme, not a ratification of it. Needs clarification: replace
+   the existing scheme, or coexist as a summary layer above it?
 
-**Also newly recorded, not yet applied to the spec:** the same
-submission that closed items 1-3 above also proposed three items that do
-not correspond to any previously-open audit item — an MF-to-LTF
-structural inheritance rule, a liquidity-tagging consistency rule, and an
-FVG-chain continuity rule. The first two are unapplied pending owner
-confirmation they're intended as new scope; the third is flagged for
-reconciliation against two already-closed G5 rules it may conflict with.
-See `reports/ST-C2_SPEC_AUDIT.md` §4 items 14-16 and the eighth
-addendum's "scope-mismatch note" for the full account.
-7. A units flag on the seventh addendum's `2.5` (recorded as points,
-   consistent with this spec's established `buffer_pips`-means-points
-   precedent, but the owner's literal wording used "pips" — flagged for
-   correction if that reading is wrong).
+**Also newly recorded, not yet applied to the spec:** an MF-to-LTF
+structural inheritance rule and a liquidity-tagging consistency rule
+remain unapplied pending owner confirmation they're intended as new
+scope. The FVG-chain continuity rule remains flagged, not applied — a
+restatement attempt (ninth addendum) still relies on an undefined term
+("MF displacement") and does not resolve its overlap with two
+already-closed G5 rules. See `reports/ST-C2_SPEC_AUDIT.md` §4 items
+14-16 for the full account. A units flag on the seventh addendum's `2.5`
+also remains (recorded as points, consistent with this spec's established
+`buffer_pips`-means-points precedent, but the owner's literal wording
+used "pips" — flagged for correction if that reading is wrong).
 
 None of these block a deterministic engine build in the judgment recorded
 here — each has an unambiguous default reading already stated in the

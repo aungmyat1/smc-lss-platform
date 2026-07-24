@@ -1174,3 +1174,103 @@ either applying or declining it. Both implementation gates remain unmet:
 `specs/st-c2.yaml` is still `status: candidate`, and no
 `IMPLEMENTATION AUTHORIZATION: GRANTED` string exists anywhere in the
 repo.
+
+---
+
+## Ninth addendum (2026-07-24, owner-decision session round 8 — items 10-12 revisited, FVG-chain rule restated)
+
+Documentation-only, same restriction as every prior addendum: does **not**
+authorize strategy-engine implementation, backtesting, optimization, demo
+execution, live execution, promotion, or broker operations. `specs/st-c2.yaml`
+(v1.0.0) remains unchanged; `engine_implements_spec` stays `false`. No code
+written, no backtest run, no execution/demo/live/promotion state changed.
+This session was framed as "final, non-expansive, non-spec-changing
+confirmations. No new scope. No contradictions. No re-opens." Checked
+against the actual prior state before recording anything — two of the
+four submitted items hold up under that framing, two do not.
+
+### Decision 10 — `protected_level_lifecycle.create_on` (closes audit item 10, G1 — recorded as a revision, not a confirmation)
+
+**Decision:** `create_on = first CHoCH that establishes bias` (not BOS).
+
+**Accuracy note, stated plainly:** the submission described this as a
+"non-expansive... no re-opens" confirmation. It is not — the value
+currently in `specs/st-c2_v1.1.0.yaml` is `create_on: bos_confirmed`,
+itself only an `applied:` (not `decided:`) terminology-based inference
+recorded when the consolidated spec was first built, never a numbered
+owner decision. This session **changes** that value from BOS-triggered to
+CHoCH-triggered, it does not confirm it. That said, the change is
+well-reasoned and consistent with this spec's own established
+vocabulary: the third addendum's G3 section already noted (via the
+choch-bos skill) that "CHoCH is the earliest reversal signal; BOS
+confirms continuation" — a CHoCH-triggered protected level is arguably
+more consistent with that framing than the BOS-triggered inference it
+replaces. Recorded as a genuine decision superseding the prior inference,
+not as a same-value restatement.
+
+### Decision 11 — `internal_bos_required` (closes audit item 11, G6)
+
+**Decision:** `internal_bos_required = true` means an LTF CHoCH is valid
+only if the internal BOS immediately preceding it breaks structure by
+close. This is a clean restatement, consistent with the existing
+close-beyond-structure convention (G3) and the third addendum's
+internal-swing definition (Cluster 1 Q2) — no conflict found.
+
+### Item 12 — rejection codes: NOT closed, factual claim checked and found false
+
+The submission proposed a 7-code scheme (`R1`-`R7`,
+`liquidity_stage_failed` through `session_close_exit`) with the rationale
+"these codes already appear in diagnostics logs." **Checked directly:**
+`grep -rn` across `src/` and `validation/` for every one of `R1`-`R7` and
+each named code string returns zero matches (one incidental hit on
+`R2.1`, an unrelated ST-C1 v3.8 experiment name). No ST-C2 engine exists
+anywhere in this repo to log anything — the claim is false, not merely
+unverifiable.
+
+Separately, and independent of that: this is not a "ratification" of
+what audit item 12 asked about. `specs/st-c2_v1.1.0.yaml` §6 already has
+a 12-entry, per-gate rejection-code scheme (e.g. `BIAS_UNAVAILABLE` and
+`BIAS_AMBIGUOUS` as two distinct G1 codes), carried from the original
+governance audit. The submitted 7-code scheme is coarser and different —
+one code per pipeline *stage*, not per gate — and would collapse
+distinctions the original scheme deliberately kept separate. **Not
+applied.** Needs explicit clarification: does R1-R7 replace the existing
+12-code scheme, or is it meant to coexist as a coarser summary layer
+above it? Item 12 remains open.
+
+### FVG-chain continuity rule — restatement does not resolve the flagged conflict
+
+The submission restated: "HTF FVG must be valid; MF FVG must overlap
+HTF FVG; LTF FVG must be within MF displacement. No additional
+directional or confluence requirements beyond existing G5 rules,"
+presented as resolving the eighth addendum's flagged overlap with the
+already-closed G5 rules 1 and 2.
+
+**Checked directly, not applied:** the restatement still uses "MF
+displacement" as if it were a settled term. It is not. Every
+`displacement`-named field in `specs/st-c2_v1.1.0.yaml` is either a
+body-ratio *threshold* (`displacement_body_ratio_min`, a number — 0.6
+HTF, 0.5 LTF) or the FVG's own 3-candle formation *formula*
+(`wick_to_wick_displacement`, `min_displacement_bars`) — never a price
+*zone* an FVG could sit "within." There is no MF-timeframe displacement
+concept anywhere in this spec; `ote_stage` (the MF stage) deals in
+premium/discount/OTE thresholds, not displacement. "LTF FVG must be
+within MF displacement" is therefore not obviously the same claim as G5
+rule 2's "LTF FVG must sit entirely inside the HTF-MTF confluence zone,"
+and the restatement's own rationale ("does not introduce new alignment
+constraints... simply states the minimal continuity condition already
+implied by G5") asserts equivalence without defining the new term well
+enough to check it. **This is exactly the same unresolved gap as the
+eighth addendum, restated with an added disclaimer, not actually
+closed.** Not applied. Needs either: (a) an explicit statement that "MF
+displacement" here means the HTF-MTF confluence zone (in which case, say
+so directly and this becomes a genuine restatement of G5 rule 2), or (b)
+a real definition of what "MF displacement" is as a price range, distinct
+from the confluence zone, with the relationship between the two stated.
+
+### Status after this ninth addendum
+
+Closed this session: audit items 10 (revised, not merely confirmed) and
+11. **Still open:** audit item 12 (scheme mismatch, unverified/false
+rationale) and the FVG-chain continuity rule (restatement still uses an
+undefined term). Both implementation gates remain unmet.

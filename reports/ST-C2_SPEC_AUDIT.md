@@ -173,13 +173,13 @@ project's established verification practice.
 | 7 | ~~Session-close invalidation-buffer distance~~ | G10 | — | **CLOSED, 7th addendum (2.5 points, final)** |
 | 8 | ~~Post-fill event-priority ordering~~ | Order-simulation | — | **CLOSED, 6th addendum Decision 4** |
 | 9 | ~~4th+ CHoCH sequencing rule~~ | G1/G3 | — | **CLOSED, 8th addendum Decision 3 (keyed to existing HTF displacement threshold)** |
-| 10 | `protected_level_lifecycle.create_on` — confirm the terminology-based inference | G1 | Low-risk, recommend one-line confirmation | Open |
-| 11 | `internal_bos_required` explicit restatement | G6 | Low-risk, recommend one-line confirmation | Open |
-| 12 | Rejection code strings — confirm or accept as proposed | All gates | Non-blocking | Open |
+| 10 | ~~`protected_level_lifecycle.create_on`~~ | G1 | — | **CLOSED, 9th addendum Decision 10 — recorded as a revision (CHoCH-triggered, not BOS-triggered), not a mere confirmation** |
+| 11 | ~~`internal_bos_required` explicit restatement~~ | G6 | — | **CLOSED, 9th addendum Decision 11** |
+| 12 | Rejection code strings | All gates | Non-blocking, but scheme mismatch unresolved | **NOT closed** — 9th addendum found the "already in diagnostics logs" rationale false (grepped, zero matches, no ST-C2 engine exists) and the proposed R1-R7 scheme is coarser/different from the existing 12-code scheme, not a ratification of it. Needs clarification: replace or coexist? |
 | 13 | `risk.hard_kill_switch` — PROVISIONAL, subject to future risk research per the owner's own label | Risk (new, beyond original gate table) | Not blocking initial implementation scope, but PROVISIONAL means it may change | New, 5th addendum Decision B |
 | 14 | MF-to-LTF structural inheritance rule (≤40 bars, LTF displacement confirms MF direction) | New, beyond original gate table | Not blocking; a submission framed as closing items 10-12 actually introduced this instead | New candidate, 8th addendum — **not yet applied**, needs owner confirmation it's intended scope |
 | 15 | Liquidity-tagging consistency rule (all tag types use the Addendum-6 stable-identifier hash) | New, extends G2 Decision 2's scope | Not blocking; same submission as #14 | New candidate, 8th addendum — **not yet applied**, needs owner confirmation |
-| 16 | FVG-chain continuity rule | G5 | Not blocking per se, but **overlaps two already-CLOSED G5 rules** (HTF-MTF alignment, LTF-inside-confluence-zone) with different wording ("MF displacement" vs. "confluence zone") — risks an internal contradiction if applied as-is | New candidate, 8th addendum — **flagged for reconciliation, not applied** |
+| 16 | FVG-chain continuity rule | G5 | Not blocking per se, but **overlaps two already-CLOSED G5 rules** (HTF-MTF alignment, LTF-inside-confluence-zone) with different wording ("MF displacement" vs. "confluence zone") — risks an internal contradiction if applied as-is | **STILL not applied after a restatement attempt (9th addendum)** — "MF displacement" remains undefined; every `displacement`-named field in the spec is a body-ratio threshold or an FVG formation formula, never a price zone. The restatement asserts equivalence to G5 rule 2 without defining the term well enough to check it. |
 
 **Updated 2026-07-24 (eighth addendum):** items 5, 6, and 9 are now
 closed. **Items 10, 11, 12 remain open** — a submission framed as
