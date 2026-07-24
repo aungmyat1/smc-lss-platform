@@ -40,6 +40,24 @@ description: >
   funnel-stage-cluster namespace (ADR-0004) to avoid audit-trail collision.
 
 # ============================================================
+# 0. Architecture (descriptive metadata only — no rule content)
+# ============================================================
+architecture:
+  core_paradigm: deterministic_smc_funnel
+  execution_mode: multi_timeframe_rule_based_machine_executable
+  primary_components:
+    - htf_bias_engine          # pipeline.htf_bias_stage
+    - funnel_state_machine      # pipeline (all stages) + rejection_codes
+    - evidence_layer            # evidence_ids across all stages, see reports/ST-C3_FUNNEL_OVERHAUL_PLAN.md §13
+    - trade_plan_generator      # trade_plan_schema
+    - risk_sl_tp_module         # pipeline.stop_loss_stage, pipeline.targets_stage, risk
+    - validator_rejection_system   # conformance, diagnostics, rejection_codes
+  # Stage B components (execution/journal agents that place or log live/demo
+  # trades) are explicitly OUT OF SCOPE for this Stage A spec. See
+  # reports/ST-C3_FUNNEL_OVERHAUL_PLAN.md §10 for the proposed roster and
+  # the Stage A/B boundary each proposed component must respect.
+
+# ============================================================
 # 1. Instruments & Sessions — UNRESOLVED
 # ============================================================
 instruments: []   # UNRESOLVED — owner did not specify symbol scope for ST-C3;

@@ -72,6 +72,22 @@ HTF Bias (H4)
                   -> Expiry Logic
 ```
 
+**Primary components** (now also recorded as descriptive metadata in
+`specs/st-c3_v1.0.0.yaml` §0, `architecture:` block):
+
+- HTF bias engine
+- Funnel state machine
+- Evidence layer
+- Trade-plan generator
+- Risk & SL/TP module
+- Validator & rejection system
+
+These six map directly onto the Layer 0-6 breakdown below and onto the four
+proposed evidence/rejection/trade-plan/validator agents in §10 — deliberately
+the same shape, described twice (component view here, agent-role view in
+§10) because one is the software architecture and the other is the
+governance-scoped proposal for who/what implements it.
+
 Architecturally this is the same three-tier timeframe pattern ST-C2 uses
 (`htf: H4`, `mf: M15`, `ltf: M3`) — not a coincidence, both trace to the same
 Daily Price Action reference material (`docs/reference/smc-*-dailypriceaction.md`)
@@ -97,6 +113,14 @@ Layers 0-4 are pure functions of OHLC history (no broker, no live state) —
 same non-repainting, causal-cutoff discipline `docs/RESEARCH-CHARTER.md` and
 ST-C2's golden-case tests already enforce. Nothing above Layer 5 exists until
 S1-G2-equivalent work is authorized for ST-C3.
+
+**Open flag, not adopted:** a later restatement of this architecture
+described the LTF tier as "M3/M1" rather than the owner's originally
+specified M3-only ("M3 CHoCH/BOS", stated three times in the original
+funnel prompt). `specs/st-c3_v1.0.0.yaml` `timeframes.ltf` remains `M3`
+unchanged — widening it to include M1 is a rule change, not a documentation
+cleanup, and needs an explicit owner decision at S1-G1 rather than being
+inferred from a summary restatement.
 
 ---
 
@@ -319,6 +343,29 @@ from: overriding `project-governance-agent`; modifying `specs/*.yaml`
 detection logic without an RCR; creating further agent files; modifying
 ADRs, `MASTER_PLAN.md`, `ROADMAP.md`, or `NEXT_ACTION.md`; and resolving
 (rather than escalating) session/spec-config conflicts.
+
+**Two additional integration roles were proposed in a later restatement —
+both land on opposite sides of the Stage A/B boundary, and only one is
+in scope for anything this plan can authorize:**
+
+7. **Execution agent (Stage B only — not proposed for authorization at any
+   point in this plan).** "Consumes TRADE_PLAN and places/demo trades" is,
+   by definition, broker integration and demo trading — blocked during
+   Stage A by `MASTER_PLAN.md` Governance Rules 3-4 and CLAUDE.md's Hard
+   Rules, for every candidate, not just ST-C3. It has no role until an
+   Approved Strategy Package exists (§9, Strategy Approval) and Stage B
+   S2-G1 is reached. Recorded here purely as a future integration point,
+   the same way `specs/st-c2_v1.2.0.yaml`'s own execution-stage fields
+   describe a schema without an engine.
+8. **Journal agent (proposed, Stage-A-safe subset only).** Logging rejected
+   and valid setup evidence (`diagnostics.record_rejected_setups: true`,
+   already in `specs/st-c3_v1.0.0.yaml` §7) is Stage A-appropriate —
+   it is pure diagnostics on synthetic/historical setups, no broker
+   involved. Logging *live or demo trade outcomes* is a different,
+   Stage B-only responsibility already covered by the platform's existing
+   `trade-journal-analyst` skill pattern for closed trades — this proposed
+   agent would only ever own the Stage A half unless re-scoped by its own
+   future ADR.
 
 ---
 
