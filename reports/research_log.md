@@ -508,3 +508,111 @@ different question from repeat re-detection of one setup). No code
 written, no spec file mutated (`specs/st-c2.yaml` unchanged,
 `engine_implements_spec` stays `false`), no backtest run, no
 execution/demo/live/promotion state changed.
+
+## Addendum: owner-decision session round 4 — duplicate-setup policy + portfolio loss circuit breaker (2026-07-24)
+
+**Backfilled 2026-07-24** — this entry documents a decision session that
+occurred earlier the same day but was not logged at the time, a gap found
+during a `project-governance-agent` freeze/authorization review. Recorded
+here per `docs/RESEARCH-CHARTER.md`'s "never overwrite a prior entry"
+rule, appended in date order alongside the other same-day entries above.
+
+Closes `duplicate_setup_policy` (`one_position_at_a_time`, a rejected
+duplicate setup is logged per `diagnostics.record_rejected_setups` but not
+executed) with stated rationale: avoids correlated exposure from
+overlapping setups, mirrors discretionary one-narrative-at-a-time SMC
+behavior, simplifies risk/portfolio-heat management.
+
+Also records a new, explicitly **PROVISIONAL** portfolio-level loss
+circuit breaker (`risk.hard_kill_switch`: `max_daily_loss_pct: 3.0`,
+`max_weekly_loss_pct: 7.0`, `hard_kill_switch_enabled: true` — disable new
+entries, close open positions if structural invalidation is near, require
+manual re-authorization to resume). This is recorded as a **distinct**
+mechanism from the separately-flagged emergency-exit numeric-threshold gap
+(spread-spike/connection-loss thresholds) — the two share the phrase
+"emergency exit" but are mechanically different; conflating them was
+identified and corrected in the same session.
+
+Declines three other parts of the same submission, with reasons recorded
+in the fifth addendum (`ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`): marking
+`specs/st-c2.yaml` `status: frozen` (blockers were still open at the
+time), a second `governance/rcr_st-c2_v1.md` file (would fork the single
+canonical RCR chain), and new spec-audit/determinism-audit/
+implementation-audit agent files (require an Accepted ADR per
+`CLAUDE.md`'s hard rule on governance-claiming agent files, none exists).
+
+No code written, no spec file mutated (`specs/st-c2.yaml` unchanged,
+`engine_implements_spec` stays `false`), no backtest run, no
+execution/demo/live/promotion state changed. Full decision text in the
+fifth addendum appended to `ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`.
+
+## Addendum: owner-decision session round 5 — five remaining substantive blockers (2026-07-24)
+
+**Backfilled 2026-07-24**, same gap and same rule as the entry above —
+appended in date order, not overwriting prior entries.
+
+Closes four of the five items `reports/ST-C2_IMPLEMENTATION_READINESS.md`
+listed as substantive blockers, plus partially closes a fifth:
+
+1. **FVG zone-boundary formula: wick-to-wick displacement.** Verified
+   directly against `src/smc_engine.py:135-143`'s `fvgs()` before
+   recording — confirmed it already implements exactly this formula
+   (candle high/low, not open/close) for a 3-candle gap. The claimed
+   ST-C1-lineage precedent checked out, not merely asserted.
+2. **Liquidity-pool stable-identifier composition: SHA-256 hash of
+   structural attributes** (timestamp, high, low, swing classification,
+   displacement metrics) — distinct from the fourth addendum's
+   replay-engine dedup key (repeat-detection of one setup across bars,
+   not tie-breaking among concurrently-qualifying pools).
+3. **Session-close-forces-exit: conditional** — at session close, exit
+   only if price is within an invalidation-buffer distance of structural
+   invalidation; otherwise the position stays open. **Not fully closed
+   this session**: the numeric buffer distance itself was not supplied,
+   and was explicitly not inferred from the unrelated G7 stop buffer.
+4. **Post-fill event-priority ordering: stop → target → management →
+   diagnostics** — a complete, deterministic total ordering across all
+   post-fill event categories.
+5. **Emergency-exit thresholds: ratified PROVISIONAL** — the existing
+   illustrative values (20 spread-spike points / 60 connection-loss
+   seconds) become the working implementation values, explicitly
+   labeled provisional/revisable rather than merely unreviewed.
+
+No code written, no spec file mutated (`specs/st-c2.yaml` unchanged,
+`engine_implements_spec` stays `false`), no backtest run, no
+execution/demo/live/promotion state changed. Nothing marked frozen. Full
+decision text, rationale, and the units/interpretation flags recorded in
+the sixth addendum appended to `ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`.
+
+## Addendum: owner-decision session round 6 — session-close invalidation-buffer distance (2026-07-24)
+
+**Backfilled 2026-07-24**, same gap and same rule as the two entries
+above — appended in date order, not overwriting prior entries.
+
+Closes the last substantive blocker: `session_close_invalidation_buffer =
+2.5 points`, status **final**. Rationale (recorded verbatim from the
+owner): more conservative than the structural invalidation buffer while
+matching typical XAUUSD session-close volatility; avoids both premature
+and late exits; deterministic and portable across data vendors.
+
+**Unit correction, flagged rather than silently accepted:** the owner's
+submission used "pips." Checked against the repo: the referenced G7
+buffer this compares against (`execution_stage.stop.buffer_pips: 2`) is
+itself named "pips" but was explicitly decided as broker-native
+**points** (first addendum, decision 6) — every other distance field in
+this spec and in `config/research_costs.yaml` uses points, none uses a
+distinct pips unit. Recorded as `2.5` points, consistent with that
+established precedent, flagged for correction if "pips" was meant
+literally.
+
+With this addendum, all five items `reports/ST-C2_IMPLEMENTATION_READINESS.md`
+ever listed as substantive blockers are closed.
+`reports/ST-C2_IMPLEMENTATION_READINESS.md` was re-issued and now
+concludes READY FOR IMPLEMENTATION — a verdict about the specification's
+completeness only. It does not freeze `specs/st-c2.yaml` and does not
+issue `IMPLEMENTATION AUTHORIZATION: GRANTED`; both remain separate,
+still-open governance acts per the `project-governance-agent` ruling on
+record for this candidate. No code written, no spec file mutated
+(`specs/st-c2.yaml` unchanged, `engine_implements_spec` stays `false`),
+no backtest run, no execution/demo/live/promotion state changed. Full
+decision text in the seventh addendum appended to
+`ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`.

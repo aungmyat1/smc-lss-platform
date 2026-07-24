@@ -42,15 +42,15 @@ pass's own re-check.
 | G7 — structural invalidation/stop | **CLOSED** | Anchor/buffer/rounding: 1st addendum decision 6. Min/max stop-distance bounds (35/150 points) and the out-of-bounds behavior: 2nd addendum G7 decisions 1-4. | None. |
 | G8 — net reward after costs | **CLOSED** | `rr_min` conflict resolution and cost model: 1st addendum decisions 1, 10. Cost profile verified present (`config/research_costs.yaml` XAUUSD row: spread 25.0 pts, slippage 5.0 pts, commission 0, swap 0). | None. |
 | G9 — logical target before entry | **CLOSED** | T1/T2 both-mandatory, pre-entry selection: 1st addendum decisions 1, 7. | None. |
-| G10 — precommitted trade management | **PARTIAL (one small numeric gap)** | Pre-fill limit expiry: 1st addendum decision 8. Time stop (none, structure/R-based only): 3rd addendum Cluster 4 Q11. Emergency-exit concept + triggers: 3rd addendum Cluster 4 Q12. Portfolio-level loss circuit breaker (`risk.hard_kill_switch`, PROVISIONAL): 5th addendum, Decision B. Session-close-forces-exit (conditional, near invalidation only): **6th addendum, Decision 3.** Emergency-exit thresholds ratified PROVISIONAL working values (20 pts / 60 s): **6th addendum, Decision 5.** | Decision 3's "invalidation-buffer distance" was named as a concept but no number/formula was supplied — explicitly not inferred from the unrelated G7 stop buffer. One number away from full closure. |
+| G10 — precommitted trade management | **CLOSED** | Pre-fill limit expiry: 1st addendum decision 8. Time stop (none, structure/R-based only): 3rd addendum Cluster 4 Q11. Emergency-exit concept + triggers: 3rd addendum Cluster 4 Q12. Portfolio-level loss circuit breaker (`risk.hard_kill_switch`, PROVISIONAL): 5th addendum, Decision B. Session-close-forces-exit (conditional, near invalidation only): 6th addendum, Decision 3. Emergency-exit thresholds ratified PROVISIONAL working values (20 pts / 60 s): 6th addendum, Decision 5. Invalidation-buffer distance (2.5 points, final): **7th addendum.** | None substantive. A units flag (pips vs. points, resolved as points per established `buffer_pips` precedent) is recorded in the 7th addendum — low-risk, not blocking. |
 | Entry / order-simulation | **CLOSED** | Exact limit price, placement/confirmation timing, next-bar fill: 1st addendum decisions 2, 9. Limit expiry/cancellation: decision 8. Same-bar entry/stop/target ambiguity (stop-first): decision 9. Bid/ask (mid-price): 3rd addendum Cluster 4 Q13. Gap-through (fill-at-open): Q14. Partial-fill (accept + scale): Q15. `duplicate_setup_policy` (one_position_at_a_time, log-only): 5th addendum, Decision A. Post-fill event-priority ordering (stop → target → management → diagnostics): **6th addendum, Decision 4.** | None. |
 | RCR pre-registration | **CLOSED** | Primary/secondary metrics, multiple-testing control, OOS boundary, max experiment count, allowed-parameter-changes list: all 2nd addendum. Population-feasibility (30) / statistical-claim (100) floors: 1st addendum decision 12. | None. |
 
-**Summary (updated after the sixth addendum, 2026-07-24):** 9 of 12 rows
-fully CLOSED (G2, G3, G4, G5, G7, G8, G9, order-simulation, RCR
-pre-registration), 1 CLOSED with one flagged low-risk item (G6), and 2
-PARTIAL (G1 — two low-risk items; G10 — one small numeric gap, the
-invalidation-buffer distance).
+**Summary (updated after the seventh addendum, 2026-07-24):** 10 of 12
+rows fully CLOSED (G2, G3, G4, G5, G7, G8, G9, G10, order-simulation, RCR
+pre-registration), 1 CLOSED with one flagged low-risk item (G6), and 1
+PARTIAL (G1 — two low-risk items, non-blocking). No substantive blockers
+remain.
 
 ---
 
@@ -170,7 +170,7 @@ project's established verification practice.
 | 4 | ~~Liquidity-pool "stable identifier" composition~~ | G2 | — | **CLOSED, 6th addendum Decision 2** |
 | 5 | Bull/bear classification rule (explicit statement) | G1 | Likely low-effort, but unresolved | Open |
 | 6 | Bias-evidence-timestamp field | G1 | Low-risk, diagnostics-detail level | Open |
-| 7 | Session-close-forces-exit **invalidation-buffer distance** (concept closed, number still missing) | G10 | Yes — one number away from full closure | **PARTIAL, 6th addendum Decision 3** |
+| 7 | ~~Session-close invalidation-buffer distance~~ | G10 | — | **CLOSED, 7th addendum (2.5 points, final)** |
 | 8 | ~~Post-fill event-priority ordering~~ | Order-simulation | — | **CLOSED, 6th addendum Decision 4** |
 | 9 | 4th+ CHoCH sequencing rule | G1/G3 | Narrow edge case, non-blocking for initial implementation | Open |
 | 10 | `protected_level_lifecycle.create_on` — confirm the terminology-based inference | G1 | Low-risk, recommend one-line confirmation | Open |
@@ -178,13 +178,12 @@ project's established verification practice.
 | 12 | Rejection code strings — confirm or accept as proposed | All gates | Non-blocking | Open |
 | 13 | `risk.hard_kill_switch` — PROVISIONAL, subject to future risk research per the owner's own label | Risk (new, beyond original gate table) | Not blocking initial implementation scope, but PROVISIONAL means it may change | New, 5th addendum Decision B |
 
-**Updated 2026-07-24 (sixth addendum):** items 2, 3, 4, and 8 are now
-closed. Item 7 is down to a single missing number (the invalidation-buffer
-distance). The only remaining substantive blocker is item 7's number.
-Items 5, 6, 9, 10, 11, 12 are low-risk/narrow and could reasonably be
-closed with brief confirmations rather than fresh design sessions, but
-are not resolved here regardless of apparent size, per instruction.
-Item 13 remains explicitly provisional, not a blocker.
+**Updated 2026-07-24 (seventh addendum):** items 2, 3, 4, 7, and 8 are now
+all closed. **No substantive blockers remain.** Items 5, 6, 9, 10, 11, 12
+are low-risk/narrow and could reasonably be closed with brief
+confirmations rather than fresh design sessions, but are not resolved
+here regardless of apparent size, per instruction. Item 13 remains
+explicitly provisional, not a blocker.
 
 ---
 
