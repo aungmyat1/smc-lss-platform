@@ -37,7 +37,9 @@
       "Bash(python -m pytest --version)",
       "Bash(python -m pytest --collect-only -q)",
       "Bash(python -m pytest -v --durations=10)",
-      "mcp__scheduled-tasks__list_scheduled_tasks"
+      "mcp__scheduled-tasks__list_scheduled_tasks",
+      "mcp__Claude_Code_Remote__subscribe_pr_activity",
+      "mcp__Claude_Code_Remote__send_later"
     ]
   }
 }

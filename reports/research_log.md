@@ -406,3 +406,78 @@ today's progress: `specs/st-c2.yaml` is still self-declared
 `status: candidate`, not owner-verified canonical, and no
 `IMPLEMENTATION AUTHORIZATION: GRANTED` string exists anywhere in the
 repo. Both require a separate, explicit owner act.
+
+## Addendum: owner-decision session round 3 — remaining 7-item blocker list (2026-07-24)
+
+A third owner-decision session answered the 15-question set from the
+2026-07-24 governance gate-sequencing review, covering all four remaining
+clusters: swing/structure (G1/G2/G3), G6 timing, G5 FVG, and G10/order
+simulation. Full decision text, the Phase-1 existing-convention closures
+(G3 wick-probe, G6 displacement/close fields), and the two items
+explicitly **not** resolved this session (duplicate/concurrent-setup
+handling, G2's identifier generalization) are recorded in the third
+addendum appended to `ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`. Unlike the
+first two sessions, this one's rationale cites external SMC teaching
+material (ICT, MentFX) alongside the filed spec/document — disclosed in
+the addendum, not treated as equivalent-authority to the earlier
+document-only sessions without that flag.
+
+No code written, no spec file mutated (`specs/st-c2.yaml` unchanged,
+`engine_implements_spec` stays `false`), no backtest run, no
+execution/demo/live/promotion state changed. Both implementation gates
+from the prior two sessions remain open (spec still `status: candidate`;
+no `IMPLEMENTATION AUTHORIZATION: GRANTED` string anywhere in the repo).
+
+A field-level YAML draft (new `htf_structure`/`management` blocks plus
+additions to `ltf_confirmation_stage`, `liquidity_stage.detect_sweep`,
+`fvg_stage`, `execution_stage.entry`) implementing this session's decisions
+was supplied and is preserved verbatim below for future reference. It has
+**not** been applied to `specs/st-c2.yaml` — folding it in (as an edit or
+as a new versioned file) is the still-open "canonical-specification-path
+question," a separate owner/governance act.
+
+```yaml
+# Reference draft only — not applied to specs/st-c2.yaml.
+# Cluster 1: swing / structure (Q1-Q4)
+htf_structure:
+  htf_swing_fractal_k_h4: 3
+  external_swing_rule: dealing_range_break_required
+  protected_level_lifecycle:
+    create_on: "bos_confirmed"
+    invalidate_on: "opposite_choch"
+    persist_until: "explicit_invalidation"
+  multi_choch_sequencing:
+    second_choch: "confirm_continuation"
+    third_choch: "trend_acceleration"
+
+# Cluster 2: G6 timing (Q5-Q7) -- additions to ltf_confirmation_stage / liquidity_stage.detect_sweep
+ltf_confirmation_stage:
+  setup_entry_relationship:
+    entry_window_subset_of_max_setup: true
+  ltf_choch_first_bar_rule: first_qualifying_bar
+liquidity_stage:
+  detect_sweep:
+    reclaim_close_bar_rule: single_bar_only
+
+# Cluster 3: FVG (Q8-Q10) -- additions to fvg_stage
+fvg_stage:
+  fvg_geometry_mode: fixed_three_candle
+  multi_zone_tie_break_rule: highest_timeframe_priority
+  mitigation_rounding_mode: round_half_up_to_broker_precision
+
+# Cluster 4: G10 + order simulation (Q11-Q14 decided; duplicate_setup_policy is
+# an UNCONFIRMED proposal, not a decision -- see addendum's "Not addressed" section)
+management:
+  time_stop_enabled: false
+  time_stop_threshold_bars: null
+  emergency_exit_rules:
+    spread_spike_points: 20   # illustrative, not confirmed final -- see addendum
+    connection_loss_seconds: 60  # illustrative, not confirmed final -- see addendum
+    action: "immediate_market_exit"
+execution_stage:
+  entry:
+    price_side_convention: mid_price
+    gap_through_handling: fill_at_open
+    partial_fill_policy: accept_and_scale_targets
+    duplicate_setup_policy: one_position_at_a_time  # UNCONFIRMED -- no owner rationale given, do not treat as decided
+```
