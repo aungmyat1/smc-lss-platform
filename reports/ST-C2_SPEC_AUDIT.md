@@ -168,22 +168,28 @@ project's established verification practice.
 | 2 | ~~Emergency-exit numeric thresholds~~ (ratified as PROVISIONAL working values) | G10 | — | **CLOSED (provisional), 6th addendum Decision 5** |
 | 3 | ~~FVG zone-boundary formula~~ | G5 | — | **CLOSED, 6th addendum Decision 1 (verified against code)** |
 | 4 | ~~Liquidity-pool "stable identifier" composition~~ | G2 | — | **CLOSED, 6th addendum Decision 2** |
-| 5 | Bull/bear classification rule (explicit statement) | G1 | Likely low-effort, but unresolved | Open |
-| 6 | Bias-evidence-timestamp field | G1 | Low-risk, diagnostics-detail level | Open |
+| 5 | ~~Bull/bear classification rule~~ | G1 | — | **CLOSED, 8th addendum Decision 1 (HTF BOS+CHoCH only)** |
+| 6 | ~~Bias-evidence-timestamp field~~ | G1 | — | **CLOSED, 8th addendum Decision 2** |
 | 7 | ~~Session-close invalidation-buffer distance~~ | G10 | — | **CLOSED, 7th addendum (2.5 points, final)** |
 | 8 | ~~Post-fill event-priority ordering~~ | Order-simulation | — | **CLOSED, 6th addendum Decision 4** |
-| 9 | 4th+ CHoCH sequencing rule | G1/G3 | Narrow edge case, non-blocking for initial implementation | Open |
+| 9 | ~~4th+ CHoCH sequencing rule~~ | G1/G3 | — | **CLOSED, 8th addendum Decision 3 (keyed to existing HTF displacement threshold)** |
 | 10 | `protected_level_lifecycle.create_on` — confirm the terminology-based inference | G1 | Low-risk, recommend one-line confirmation | Open |
 | 11 | `internal_bos_required` explicit restatement | G6 | Low-risk, recommend one-line confirmation | Open |
 | 12 | Rejection code strings — confirm or accept as proposed | All gates | Non-blocking | Open |
 | 13 | `risk.hard_kill_switch` — PROVISIONAL, subject to future risk research per the owner's own label | Risk (new, beyond original gate table) | Not blocking initial implementation scope, but PROVISIONAL means it may change | New, 5th addendum Decision B |
+| 14 | MF-to-LTF structural inheritance rule (≤40 bars, LTF displacement confirms MF direction) | New, beyond original gate table | Not blocking; a submission framed as closing items 10-12 actually introduced this instead | New candidate, 8th addendum — **not yet applied**, needs owner confirmation it's intended scope |
+| 15 | Liquidity-tagging consistency rule (all tag types use the Addendum-6 stable-identifier hash) | New, extends G2 Decision 2's scope | Not blocking; same submission as #14 | New candidate, 8th addendum — **not yet applied**, needs owner confirmation |
+| 16 | FVG-chain continuity rule | G5 | Not blocking per se, but **overlaps two already-CLOSED G5 rules** (HTF-MTF alignment, LTF-inside-confluence-zone) with different wording ("MF displacement" vs. "confluence zone") — risks an internal contradiction if applied as-is | New candidate, 8th addendum — **flagged for reconciliation, not applied** |
 
-**Updated 2026-07-24 (seventh addendum):** items 2, 3, 4, 7, and 8 are now
-all closed. **No substantive blockers remain.** Items 5, 6, 9, 10, 11, 12
-are low-risk/narrow and could reasonably be closed with brief
-confirmations rather than fresh design sessions, but are not resolved
-here regardless of apparent size, per instruction. Item 13 remains
-explicitly provisional, not a blocker.
+**Updated 2026-07-24 (eighth addendum):** items 5, 6, and 9 are now
+closed. **Items 10, 11, 12 remain open** — a submission framed as
+answering "the six confirmations" (audit items 5, 6, 9, 10, 11, 12) in
+fact answered only the first three; the other three of its six points
+were new content (items 14-16 above), not answers to 10-12. No
+substantive blockers remain among the original gate-matrix rows, but
+items 10-12 are still unconfirmed and items 14-16 are new, unapplied
+proposals — one of which (16) needs reconciliation against existing
+decisions before it can be applied at all.
 
 ---
 

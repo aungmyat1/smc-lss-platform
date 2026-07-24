@@ -52,21 +52,28 @@ closed:
 
 ## What is still open (non-blocking, tracked, not resolved here)
 
-Six low-risk items from `reports/ST-C2_SPEC_AUDIT.md` §4 remain
-unaddressed and are **not** resolved by this verdict:
+**Updated 2026-07-24 (eighth addendum):** three of the original six
+low-risk items are now closed (bull/bear classification, bias-evidence-
+timestamp field, 4th+ CHoCH sequencing) — see
+`reports/ST-C2_SPEC_AUDIT.md` §4 items 5, 6, 9. Three remain open:
 
-1. Bull/bear classification rule — explicit statement never written down
-   (mechanically implied by existing terminology).
-2. Bias-evidence-timestamp field — diagnostics-detail level.
-3. 4th+ CHoCH sequencing — narrow edge case beyond the decided 2nd/3rd
-   CHoCH rule.
-4. `protected_level_lifecycle.create_on: bos_confirmed` — a terminology-
+1. `protected_level_lifecycle.create_on: bos_confirmed` — a terminology-
    based inference (`applied:`, not `decided:`), recommend one-line
    confirmation.
-5. `internal_bos_required`'s explicit restatement — implied, not
+2. `internal_bos_required`'s explicit restatement — implied, not
    independently stated.
-6. Rejection code strings — carried from the original governance audit's
+3. Rejection code strings — carried from the original governance audit's
    own naming, never separately owner-ratified.
+
+**Also newly recorded, not yet applied to the spec:** the same
+submission that closed items 1-3 above also proposed three items that do
+not correspond to any previously-open audit item — an MF-to-LTF
+structural inheritance rule, a liquidity-tagging consistency rule, and an
+FVG-chain continuity rule. The first two are unapplied pending owner
+confirmation they're intended as new scope; the third is flagged for
+reconciliation against two already-closed G5 rules it may conflict with.
+See `reports/ST-C2_SPEC_AUDIT.md` §4 items 14-16 and the eighth
+addendum's "scope-mismatch note" for the full account.
 7. A units flag on the seventh addendum's `2.5` (recorded as points,
    consistent with this spec's established `buffer_pips`-means-points
    precedent, but the owner's literal wording used "pips" — flagged for

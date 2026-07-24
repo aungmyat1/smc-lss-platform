@@ -616,3 +616,47 @@ record for this candidate. No code written, no spec file mutated
 no backtest run, no execution/demo/live/promotion state changed. Full
 decision text in the seventh addendum appended to
 `ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`.
+
+## Addendum: owner-decision session round 7 — three of six low-risk items closed (2026-07-24)
+
+Logged same-day this time, not backfilled — a `project-governance-agent`
+freeze/authorization review earlier the same day found addenda 5-7 had
+never been logged here, in violation of `docs/RESEARCH-CHARTER.md`'s
+"append every decision, never overwrite a prior entry" rule; that gap was
+backfilled and this entry follows the corrected practice.
+
+The owner submitted a "six confirmations" set framed as answering exactly
+`reports/ST-C2_SPEC_AUDIT.md` §4's six remaining low-risk items (5, 6, 9,
+10, 11, 12). Checked directly against that table before recording
+anything: **only three of the six submitted items actually map to those
+six numbers.**
+
+**Closed** (audit items 5, 6, 9): bull/bear classification rule (HTF
+BOS+CHoCH only, no alternative classifier); bias-evidence-timestamp field
+(`bias_evidence_timestamp`, referencing the producing BOS/CHoCH event);
+4th+ CHoCH sequencing (continuation unless HTF displacement threshold
+exceeded, reusing the existing 0.6 body-ratio threshold rather than a new
+number).
+
+**Still open, unaddressed by this submission**: audit items 10
+(`protected_level_lifecycle.create_on` confirmation), 11
+(`internal_bos_required` restatement), 12 (rejection-code ratification).
+
+**Recorded but NOT applied**, flagged as new scope rather than answers to
+10-12: an MF-to-LTF structural inheritance rule (≤40 bars, LTF
+displacement confirms MF direction) and a liquidity-tagging consistency
+rule (extends the sixth addendum's stable-identifier hash to all
+liquidity-tag types) — both pending owner confirmation they're intended
+scope expansions. A third, an "FVG-chain continuity rule," is flagged for
+reconciliation rather than applied at all: it overlaps two already-CLOSED
+second-addendum G5 rules (HTF-MTF directional alignment,
+LTF-inside-confluence-zone) using different wording ("MF displacement" vs.
+"confluence zone") that could mean different things — applying it as
+written risked an unresolved internal contradiction.
+
+No code written, no spec file mutated beyond the two closed fields
+(`specs/st-c2.yaml` v1.0.0 unchanged; `specs/st-c2_v1.1.0.yaml` gets
+`bull_bear_classification_rule` and `bias_evidence_timestamp_field` filled
+in, `multi_choch_sequencing.fourth_plus_choch` filled in), no backtest
+run, no execution/demo/live/promotion state changed. Full decision text
+in the eighth addendum appended to `ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`.

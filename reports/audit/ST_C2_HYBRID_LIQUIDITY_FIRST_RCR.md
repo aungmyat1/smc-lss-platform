@@ -1077,3 +1077,100 @@ string exists anywhere in the repo. Whether the spec is now eligible for
 question, not decided by this addendum — see
 `reports/ST-C2_IMPLEMENTATION_READINESS.md`'s re-issued verdict for the
 result of that evaluation.
+
+---
+
+## Eighth addendum (2026-07-24, owner-decision session round 7 — three of six low-risk items closed, three still open)
+
+Documentation-only, same restriction as every prior addendum: does **not**
+authorize strategy-engine implementation, backtesting, optimization, demo
+execution, live execution, promotion, or broker operations. `specs/st-c2.yaml`
+(v1.0.0) remains unchanged; `engine_implements_spec` stays `false`. No code
+written, no backtest run, no execution/demo/live/promotion state changed.
+
+**Scope-mismatch note, stated plainly before recording anything:** the
+owner's submission was framed as "the six confirmations" answering exactly
+`reports/ST-C2_SPEC_AUDIT.md` §4 items 5, 6, 9, 10, 11, 12. Checked
+directly against that table: **only three of the six submitted items map
+to those six numbers.** Items 1-3 below close audit items 5, 6, and 9.
+Items 4-6 of the submission are **new content that does not correspond to
+audit items 10, 11, or 12** — those three remain exactly as open as they
+were before this session. This is recorded here rather than silently
+accepted, consistent with this RCR's practice throughout (e.g. the fifth
+addendum's "emergency exit" naming collision, the sixth addendum's units
+flag).
+
+### Decision 1 — Bull/bear classification rule (closes audit item 5, G1)
+
+**Decision:** HTF BOS + CHoCH is the canonical bull/bear classifier. No
+alternative classifier (EMA, swing-count, regression slope, or any other)
+is used anywhere in ST-C2.
+
+### Decision 2 — Bias-evidence-timestamp field (closes audit item 6, G1)
+
+**Decision:** every bias decision (long/short/none) must include a
+`bias_evidence_timestamp` field, referencing the structural event (BOS or
+CHoCH) that produced the bias.
+
+### Decision 3 — 4th+ CHoCH sequencing rule (closes audit item 9, G1/G3)
+
+**Decision:** CHoCH events beyond the third in a sequence are treated as
+continuations, not fresh bias flips, unless displacement exceeds the HTF
+displacement threshold (`htf_bias_stage.choch.displacement_body_ratio_min: 0.6`).
+Extends the third addendum's Cluster 1 Q4 rule (2nd CHoCH = continuation,
+3rd = trend acceleration/re-classification) to a general rule for all
+subsequent CHoCH events, keyed to the existing HTF displacement threshold
+rather than a new number.
+
+### Items 4-6 of the submission — recorded as new proposed decisions, NOT closures of items 10-12
+
+These are real content, not rejected outright, but they answer questions
+nobody had flagged as open, and one of them needs reconciliation before
+it can be treated as settled:
+
+- **"MF-to-LTF structural inheritance rule"** (MF structural objects
+  inheritable by LTF only if ≤40 bars old and LTF displacement confirms
+  MF direction) — new design surface, no prior audit item covers this.
+  Recorded as a candidate decision, not yet applied to
+  `specs/st-c2_v1.1.0.yaml` pending owner confirmation this is intended
+  as new scope, not a substitute for items 10-12.
+- **"Liquidity-tagging consistency rule"** (all liquidity tags — equal
+  highs/lows, sweep, inducement — use the Addendum-6 stable-identifier
+  hash; no timestamp-only or index-only identifiers) — a reasonable
+  extension of the sixth addendum's Decision 2, but that decision was
+  scoped to the liquidity-*pool* tie-break specifically; broadening it to
+  every liquidity tag type is a scope expansion, not a restatement.
+  Recorded as a candidate decision, not yet applied.
+- **"FVG-chain continuity rule"** (MF FVG overlaps HTF FVG; LTF FVG within
+  MF displacement; all three share directional bias) — **flagged for
+  reconciliation, not applied.** This substantially overlaps two already-
+  CLOSED decisions: the second addendum's G5 rule 1
+  (`htf_mtf_directional_alignment_required: true`) and G5 rule 2
+  (`ltf_fvg.must_sit_inside_htf_mtf_confluence_zone: true`). "LTF FVG must
+  be within MF **displacement**" is not obviously the same claim as "LTF
+  FVG must sit inside the HTF-MTF **confluence zone**" — displacement (a
+  price-move/body-ratio concept used for BOS/CHoCH) and a confluence zone
+  (an FVG-overlap price range) are different mechanisms in this spec.
+  Applying this as written, without resolving whether it restates,
+  refines, or conflicts with the existing G5 rules, risks introducing an
+  internal contradiction — exactly what decision 4/G8's `rr_min` conflict
+  (first addendum) already taught this RCR to catch before recording, not
+  after.
+
+### Status after this eighth addendum
+
+Closed this session: audit items 5, 6, 9 (bull/bear classification,
+bias-evidence-timestamp, 4th+ CHoCH sequencing).
+
+**Still open:** audit items 10 (`protected_level_lifecycle.create_on`
+confirmation), 11 (`internal_bos_required` restatement), and 12
+(rejection-code ratification) — **not addressed by this session despite
+the submission's framing.** Three new candidate decisions (MF-to-LTF
+inheritance, liquidity-tagging consistency, FVG-chain continuity) are
+recorded above but **not applied** to `specs/st-c2_v1.1.0.yaml` — the
+first two need owner confirmation they're intended as new scope, and the
+third needs reconciliation against the already-closed G5 rules before
+either applying or declining it. Both implementation gates remain unmet:
+`specs/st-c2.yaml` is still `status: candidate`, and no
+`IMPLEMENTATION AUTHORIZATION: GRANTED` string exists anywhere in the
+repo.
