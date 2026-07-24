@@ -1,12 +1,13 @@
 # PROJECT_STATUS.md - SMC-LSS Platform
 
 **Audit date:** 2026-07-24
-**Governance model:** `MASTER_PLAN.md` v4.1.0 Stage A/Stage B validation architecture
-**Current lifecycle position:** Stage A - Strategy Validation, A2 / S1-G2 -
-Reference Implementation Completion Review
+**Governance model:** `MASTER_PLAN.md` v4.1.1 Stage A/Stage B validation architecture
+**Current lifecycle position:** Stage A - Strategy Validation, A1 / pre-S1-G1 -
+ST-C3 Owner Review and Specification Freeze Preparation
 
 This file records current gate state, evidence, blockers, and metrics. It is
-subordinate to `MASTER_PLAN.md` and should not duplicate the full lifecycle rules.
+subordinate to `MASTER_PLAN.md` and should not duplicate the full lifecycle
+rules.
 
 ---
 
@@ -15,37 +16,42 @@ subordinate to `MASTER_PLAN.md` and should not duplicate the full lifecycle rule
 | Field | State |
 |---|---|
 | Stage | Stage A - Strategy Validation |
-| Substage | A2 - Indicator, Event and Signal Conformance |
-| Gate | S1-G2 Reference Implementation Completion Review |
-| Strategy | ST-C2 v1.2.0 GBPUSD |
-| Status | Frozen |
-| Readiness | GREEN |
-| Frozen | YES |
-| Implementation | AUTHORIZED: S1-G2 REFERENCE ONLY |
-| A1 Logic Conformance | PASSED WITH TRACKED NON-BLOCKING RESIDUALS |
-| A2 Signal Conformance | IN PROGRESS: S1-G2 REMAINS OPEN |
+| Substage | A1 - Strategy Logic Contract and Conformance |
+| Gate | Pre-S1-G1 Owner Review / Specification Freeze Preparation |
+| Strategy | ST-C3 v1.0.0 |
+| Status | Draft |
+| Readiness | YELLOW |
+| Frozen | NO |
+| Implementation | BLOCKED |
+| Backtest | BLOCKED |
+| A1 Logic Conformance | NOT STARTED |
+| A2 Signal Conformance | BLOCKED: S1-G1 NOT PASSED |
 | A3 Statistical Validation | BLOCKED: A2 NOT PASSED |
 | Execution | BLOCKED |
 | Demo | BLOCKED |
 | Production | BLOCKED |
 
-ST-C2 v1.2.0 is the active frozen GBPUSD-scoped specification. Scoped S1-G2
-reference implementation is authorized. ST-C2 v1.1.0 remains preserved as the
-prior frozen XAUUSD-scoped specification.
+ST-C3 v1.0.0 is the active owner-directed setup track for S1-G1 preparation.
+ST-C2 v1.2.0 remains preserved as the frozen GBPUSD-scoped specification with
+S1-G2 open, but new ST-C2 S1-G2 work is paused by owner direction. This does
+not approve, reject, mutate, supersede, or execute ST-C2.
 
 ---
 
 ## Objective
 
-Produce one approved, immutable strategy package, then build a live execution
-system that consumes only that approved package and configuration.
+Prepare ST-C3 for its own S1-G1 specification-freeze decision without changing
+frozen ST-C2 strategy content, implementing ST-C3, running backtests, or
+granting execution authority.
 
 Current path:
 
 ```text
-ST-C2 v1.2.0 GBPUSD frozen specification
--> A1/S1-G1C logic-conformance closure
--> A2/S1-G2 scoped reference implementation completion review
+ST-C3 v1.0.0 draft candidate
+-> owner review of provisional and unresolved fields
+-> S1-G1 specification freeze decision
+-> S1-G1C logic-conformance closure
+-> S1-G2 scoped reference implementation authorization and completion review
 -> A2/S1-G3-S1-G6 conformance qualification
 -> A3/S1-G7-S1-G10 statistical edge and robustness qualification
 -> Stage B execution qualification
@@ -55,146 +61,53 @@ ST-C2 v1.2.0 GBPUSD frozen specification
 
 ## Evidence On Record
 
-ST-C2 evidence:
+ST-C3 evidence:
 
-- `specs/st-c2.yaml` - original filed candidate reference, v1.0.0.
-- `specs/st-c2_v1.1.0.yaml` - prior consolidated frozen specification, status `frozen`,
-  `engine_implements_spec: false`, `implementation_authorization: null`.
-- `specs/st-c2_v1.2.0.yaml` - active GBPUSD-scoped frozen specification,
-  status `frozen`, GBPUSD enabled, `engine_implements_spec: false`,
-  `implementation_authorization: scoped_reference_implementation_granted`.
-- `reports/audit/ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md` - RCR and addendum chain.
-- `reports/ST-C2_SPEC_AUDIT.md` - specification audit; original checklist
-  closed through the eleventh addendum.
-- `reports/ST-C2_V1.2_GBPUSD_SPEC_AUDIT.md` - GBPUSD S1-G1 audit; READY TO
-  FREEZE with inherited/provisional threshold decisions.
-- `reports/ST-C2_IMPLEMENTATION_READINESS.md` - verdict READY FOR
-  IMPLEMENTATION, explicitly not freeze and not authorization.
-- `reports/validation/st_c2/A1_LOGIC_CONFORMANCE_CLOSURE.md` - formal A1
-  closure with tracked non-blocking residuals.
-- `governance/st_c2_stage_status.yaml` - machine-readable Stage A/Stage B
-  gate status.
-- `specs/st_c2/conformance_manifest.yaml` - A2 conformance manifest.
-- `specs/st_c2/rule_to_test_map.yaml` - rule-to-test traceability map.
-- `reports/validation/st_c2/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md`
-  - S1-G2 completion audit; verdict S1-G2 REMAINS OPEN.
-- `reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json` - frozen-rule
-  coverage matrix; 45 rules inventoried, 20 missing mappings.
-- `reports/validation/st_c2/A2_CONFORMANCE_RESULTS.json` - completion criteria
-  results and reproduced existence signal.
-- `reports/validation/st_c2/S1_G2_GC1_CONFORMANCE_FOUNDATIONS_REPORT.md` -
-  GC1 conformance foundations; PASS while S1-G2 remains open.
-- `reports/validation/st_c2/STABLE_IDENTIFIER_CONTRACT.md` - stable ID
-  composition contract.
-- `reports/validation/st_c2/GOLDEN_CASE_LIBRARY_REPORT.md` - initial versioned
-  golden-case framework report.
-- `reports/validation/st_c2/S1_G2_GC2_STRUCTURAL_CONFORMANCE_REPORT.md` -
-  GC2 structural bias, liquidity, dealing-range, and OTE conformance; PASS
-  while S1-G2 remains open.
-- `reports/validation/st_c2/HTF_STRUCTURE_AND_BIAS_REPORT.md` - confirms HTF
-  bias authority is BOS/CHoCH-only.
-- `reports/validation/st_c2/LIQUIDITY_SWEEP_CONFORMANCE_REPORT.md` - confirms
-  GC2 liquidity pool and sweep/reclaim evidence.
-- `reports/validation/st_c2/DEALING_RANGE_OTE_CONFORMANCE_REPORT.md` -
-  confirms structural dealing-range and OTE evidence.
-- `reports/validation/st_c2/S1_G2_GC3_FVG_LTF_EVIDENCE_REPORT.md` - GC3
-  FVG/LTF evidence module integration; PARTIAL PASS while S1-G2 remains open.
-- `validation/st_c2_reference.py` - S1-G2 minimum GBPUSD reference kernel.
-- `validation/run_st_c2_gbp_existence.py` - S1-G2 existence-check scanner.
-- `tests/test_st_c2_reference.py` - golden-case, mirror, cutoff, determinism,
-  and no-broker tests.
-- `reports/ST-C2_V1.2_GBPUSD_REFERENCE_IMPLEMENTATION.md` - S1-G2 reference
-  implementation report.
-- `reports/ST-C2_V1.2_GBPUSD_R1_DIAGNOSTIC.md` - S1-G2 diagnostic showing the
-  initial zero-signal result was caused by insufficient M3 data coverage.
-- `reports/ST-C2_V1.2_GBPUSD_EXISTENCE_CHECK.md` - real-history existence-check
-  scan; currently SIGNAL_FOUND at `2026-06-10 17:15`, direction `short`.
-- `reports/research_log.md` - research log entries for ST-C2 decisions.
+- `docs/adr/ADR-0004-st-c3-candidate-intake.md` - accepted intake ADR.
+- `reports/research_log.md` - ST-C3 RCR/intake entry.
+- `specs/st-c3_v1.0.0.yaml` - draft candidate specification, not frozen.
+- `reports/ST-C3_FUNNEL_OVERHAUL_PLAN.md` - S1-G1 preparation plan.
+- `docs/strategy/st_c3/ST-C3_STRATEGY_ARCHITECTURE.md` - foundation architecture.
+- `docs/strategy/st_c3/ST-C3_FUNNEL_LIFECYCLE.md` - ordered funnel lifecycle.
+- `docs/strategy/st_c3/ST-C3_EVIDENCE_OBJECT_SPEC.md` - evidence object contract.
+- `docs/strategy/st_c3/ST-C3_REJECTION_CODE_SPEC.md` - rejection and error codes.
+- `docs/strategy/st_c3/ST-C3_PARAMETER_SHEET.md` - provisional machine-ready
+  parameter sheet.
+- `docs/strategy/st_c3/ST-C3_STATE_MACHINE.md` - deterministic state-machine
+  blueprint.
+- `docs/reference/smc-definitive-guide-dailypriceaction.md` - source reference.
+- `docs/reference/smc-8step-entry-model-dailypriceaction.md` - source reference.
 
-Platform evidence:
-
-- Configuration governance layer is complete and fail-closed.
-- Historical replay/statistical scaffolds exist for prior candidates.
-- ST-C1 v3.7-v3.10 research evidence is preserved and parked.
+Preserved ST-C2 evidence remains on record but is no longer the active
+milestone while this ST-C3 setup task is active.
 
 ---
 
 ## Blockers
 
-A1 result:
+ST-C3 S1-G1 blockers:
 
-- Logic conformance is formally closed as PASS WITH TRACKED NON-BLOCKING
-  RESIDUALS.
-- A1 closure does not authorize A3, Stage B, execution, demo, live, or
-  production.
+- Owner review of section 16 provisional thresholds is incomplete.
+- Symbol scope and session windows are unresolved.
+- Sweep tolerance, wick ratio, sweep age, `BOS_MIN_IMPULSE`, FVG/OB freshness,
+  exact `N_SWEEP`, exact `MAX_ENTRY_BARS`, stop buffer, TP2/TP3 RR floors, and
+  portfolio risk controls are unresolved or provisional.
+- Validation metrics and floors are unresolved.
+- Rejection-code coverage and session-close trigger policy need S1-G1 decisions.
+- Proposed ST-C3 agent roles are not yet formalized by ADR-0005.
 
-A2/S1-G2 authorization:
+Stage A2 / A3 / Stage B blockers:
 
-- Granted for golden-case tests, conformance kernel, minimum GBPUSD detector
-  slice, and existence-check run only.
-
-S1-G2 result:
-
-- Minimum reference kernel and golden-case tests exist.
-- Real-history existence check ran after GBPUSD H4/M15/M3 availability was
-  resolved.
-- Initial 10,000-bar M1-derived M3 scan returned NO_SIGNAL_FOUND across 3,248
-  checked windows, all rejected at R1 liquidity.
-- Diagnostic identified data coverage as the cause. After extending M1-derived
-  M3 to 16,642 bars, the existence scan found a qualifying short signal at
-  `2026-06-10 17:15`.
-
-Remaining blocker:
-
-- S1-G2 completion audit remains open. Close exact blockers before A2/S1-G3 can
-  be authorized: advanced FVG/LTF confluence cases, deterministic state
-  machine, logical trade plan, rejection subcodes, stable identifiers for later
-  evidence objects, and golden-case library expansion.
-- GC1 foundations closed the hardcoded reference-kernel symbol precision gap,
-  added metadata, stable schemas/IDs, golden-case scaffolding, traceability
-  validation, and structural interfaces.
-- GC2 structural conformance closed sweep-derived HTF bias, structural
-  dealing-range identity, OTE band evidence, and deterministic liquidity
-  pool/sweep evidence for this S1-G2 slice.
-- GC3 FVG/LTF evidence integration added a dedicated evidence module and
-  reduced missing rule mappings to 20.
-
-Non-blocking residuals to carry forward:
-
-- MF-to-LTF structural inheritance and liquidity-tagging consistency are
-  unapplied new-scope proposals.
-- R1-R7 rejection-code coverage gap remains flagged for implementation time.
-- Session-close buffer wording has a points/pips note; current repo reading is
-  points.
-
-Stage A3 / Stage B blockers:
-
-- No Approved Strategy Package exists.
-- ST-C2 reference implementation is partial and requires S1-G2 completion
-  review before wider A2 conformance begins.
-- A3 historical/statistical/robustness validation has not started for ST-C2.
-- Execution, demo, and production remain blocked.
-
----
-
-## Archived Historical Evidence
-
-ST-C1 remains historical evidence and must not be deleted:
-
-- v3.7/v3.8: parked as overfiltered/statistically inconclusive.
-- v3.9: corrected aggregate net PF 0.138, parked.
-- v3.10: corrected aggregate net PF 0.471, parked.
-
-Legacy v1/v3.5/v3.6 materials remain references unless promoted through the
-current Stage A lifecycle.
+- No frozen ST-C3 specification exists.
+- No ST-C3 logic-conformance closure exists.
+- No ST-C3 reference kernel, golden-case library, existence scanner, backtest,
+  broker integration, demo path, live path, or production path exists or is
+  authorized.
 
 ---
 
 ## Next Action
 
-Continue with remaining S1-G2 closures: state machine, signal/trade-plan
-evidence, rejection-code coverage, and remaining unmapped rules. Do not advance
-to S1-G3, A3, or Stage B until a new completion audit supports the gate.
-
-Do not modify strategy specs, code, YAML parameters, execution state, demo
-settings, live settings, or authorization state as part of status maintenance.
+Continue ST-C3 S1-G1 preparation. Resolve owner decisions for provisional and
+unresolved fields, then prepare a freeze audit package. Do not freeze the spec
+or authorize implementation until the owner explicitly approves the S1-G1 act.

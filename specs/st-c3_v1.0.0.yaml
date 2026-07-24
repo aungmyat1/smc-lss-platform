@@ -20,10 +20,10 @@
 # provenance markers documents.
 #
 # STATUS: DRAFT. Does not supersede, mutate, or pause specs/st-c2_v1.2.0.yaml
-# (frozen) or NEXT_ACTION.md's active ST-C2 v1.2.0 S1-G2 milestone.
+# (frozen).
 
 id: ST-C3
-name: Daily Price Action Deterministic Funnel
+name: Next-Generation SMC Funnel
 version: 1.0.0
 governance_profile: null   # UNRESOLVED — symbol/session scope not yet decided; set at S1-G1
 status: draft   # NOT frozen — see ADR-0004
@@ -32,19 +32,19 @@ engine_implements_spec: false   # SAFETY INTERLOCK — no engine exists
 implementation_authorization: null   # nothing authorized — draft only
 supersedes: null   # new lineage; does not supersede or revise ST-C2 (ADR-0004)
 description: >
-  Deterministic funnel formalizing the Daily Price Action ("Justin Bennett")
-  8-step SMC entry model: HTF bias -> external liquidity sweep ->
-  displacement/BOS -> dealing-range OTE -> FVG/order-block confluence -> LTF
-  CHoCH confirmation -> entry window -> structural stop -> tiered liquidity
-  targets -> expiry. Distinct lineage from ST-C2; own rejection-code and
+  Refined deterministic SMC funnel intended to improve ST-C2 by hardening edge
+  cases around time, session, volatility, structural locking, sweep reclaim,
+  BOS extreme locking, entry expiry, and post-signal termination while keeping
+  full SMC alignment. Distinct lineage from ST-C2; own rejection-code and
   funnel-stage-cluster namespace (ADR-0004) to avoid audit-trail collision.
 
 # ============================================================
 # 0. Architecture (descriptive metadata only — no rule content)
 # ============================================================
 architecture:
-  core_paradigm: deterministic_smc_funnel
+  core_paradigm: next_generation_smc_funnel_refined_deterministic_model
   execution_mode: multi_timeframe_rule_based_machine_executable
+  goal: improve_st_c2_edge_case_hardening_without_mutating_st_c2
   primary_components:
     - htf_bias_engine          # pipeline.htf_bias_stage
     - funnel_state_machine      # pipeline (all stages) + rejection_codes
@@ -63,17 +63,20 @@ architecture:
 instruments: []   # UNRESOLVED — owner did not specify symbol scope for ST-C3;
                    # no instrument may be enabled before an explicit RCR addendum
 
-sessions: {}   # UNRESOLVED — owner did not specify session windows for ST-C3
+sessions:
+  london_window_utc: PROVISIONAL_07_00_TO_10_00   # owner example; ratify at S1-G1
+  ny_window_utc: PROVISIONAL_13_00_TO_16_00       # owner example; ratify at S1-G1
+  low_liquidity_filters: UNRESOLVED              # owner: optional late Asian / pre-close filters
 
 # ============================================================
 # 2. Timeframes — owner: matches the funnel prompt's stage-by-stage timeframe
-#    references (H4 bias, H4/M15 sweep, M15 displacement/BOS/OTE, H4/M15
-#    FVG/OB, M3 LTF confirmation)
+#    references (H4 bias, M15 sweep/displacement/BOS/OTE/FVG/OB, M3/M1 LTF
+#    confirmation)
 # ============================================================
 timeframes:
   htf: H4      # owner: "HTF Bias (H4)"
   mf: M15      # owner: "Displacement + BOS (M15)", "Dealing Range + OTE (M15)"
-  ltf: M3      # owner: "LTF Confirmation (M3 CHoCH/BOS)"
+  ltf: [M3, M1]      # owner: "M3/M1 -> CHoCH/BOS confirmation"
 
 # ============================================================
 # 3. Funnel Pipeline Stages
@@ -102,7 +105,10 @@ pipeline:
                                   # decided value, not carried over per ADR-0004 (new lineage)
     equal_highs_lows_tolerance: UNRESOLVED
     max_sweep_age_bars: UNRESOLVED
-    evidence_ids: [SWEEP_ID, LIQUIDITY_ZONE_ID]
+    sweep_wick_penetration: true
+    sweep_close_reclaim: required
+    sweep_reclaim_max_bars: PROVISIONAL_1_TO_3   # owner: N_SWEEP = 1-3 bars on sweep timeframe
+    evidence_ids: [SWEEP_ID, SWEEP_RECLAIM_ID, LIQUIDITY_ZONE_ID]
     rejection_code: ST-C3-R2   # owner meaning: no external sweep
 
   # ------------------------------------------------------------
@@ -110,10 +116,12 @@ pipeline:
   # ------------------------------------------------------------
   displacement_bos_stage:
     displacement_definition: impulsive_candles   # owner: "displacement must show impulsive candles"
-    displacement_body_ratio_min: UNRESOLVED   # "impulsive" not given a numeric threshold by the owner
+    displacement_body_ratio_min: CONFIGURABLE_UNRESOLVED   # owner: BOS_MIN_IMPULSE configurable
     bos_confirmation_rule: body_close_required   # owner: "BOS must be a body close, not wick"
+    bos_status: provisional_until_first_pullback
+    bos_extreme_lock_policy: lock_after_first_pullback   # owner: BOS extreme locking after first pullback
     bos_defines_dealing_range: true   # owner: "BOS defines the dealing range"
-    evidence_ids: [DISPLACEMENT_ID, BOS_ID, DEALING_RANGE_ID]
+    evidence_ids: [DISPLACEMENT_ID, BOS_ID, BOS_EXTREME_ID, DEALING_RANGE_ID]
     rejection_code: ST-C3-R3   # owner meaning: no displacement/BOS
 
   # ------------------------------------------------------------
@@ -156,16 +164,26 @@ pipeline:
     rejection_code: ST-C3-R6   # owner meaning: no LTF CHoCH
 
   # ------------------------------------------------------------
-  # 3.6 Entry Window Stage
+  # 3.6 Session Gatekeeper Stage
+  # ------------------------------------------------------------
+  session_gatekeeper_stage:
+    allowed_windows: [london_window_utc, ny_window_utc]
+    required_for_ltf_confirmation: true
+    optional_low_liquidity_filters: true
+    evidence_ids: [SESSION_WINDOW_ID]
+    rejection_code: ST-C3-R6   # owner: outside session invalidates LTF confirmation
+
+  # ------------------------------------------------------------
+  # 3.7 Entry Window Stage
   # ------------------------------------------------------------
   entry_window_stage:
-    entry_window_bars: UNRESOLVED   # owner: "within X bars after LTF CHoCH" — X not given
+    entry_window_bars: PROVISIONAL_3_TO_5_M3_BARS   # owner example; ratify at S1-G1
     entry_zone_definition: [mf_ltf_fvg, refined_order_block]   # owner
     evidence_ids: [ENTRY_WINDOW_ID, ENTRY_ZONE_ID]
     rejection_code: ST-C3-R7   # owner meaning: entry window expired
 
   # ------------------------------------------------------------
-  # 3.7 Stop-Loss (structural invalidation)
+  # 3.8 Stop-Loss (structural invalidation)
   # ------------------------------------------------------------
   stop_loss_stage:
     mode: structural_invalidation   # owner: "never arbitrary"
@@ -175,7 +193,7 @@ pipeline:
     evidence_ids: [INVALIDATION_SWING_ID]
 
   # ------------------------------------------------------------
-  # 3.8 Take-Profit Targets
+  # 3.9 Take-Profit Targets
   # ------------------------------------------------------------
   targets_stage:
     tp1_internal_liquidity:
@@ -190,7 +208,7 @@ pipeline:
     evidence_ids: [TP1_ID, TP2_ID, TP3_ID]
 
   # ------------------------------------------------------------
-  # 3.9 Expiry Logic
+  # 3.10 Expiry Logic
   # ------------------------------------------------------------
   expiry_stage:
     triggers:
@@ -205,15 +223,351 @@ pipeline:
 #    with ST-C2's bare R1-R7 (specs/st-c2_v1.2.0.yaml §6, different meanings)
 # ============================================================
 rejection_codes:
-  ST-C3-R1: htf_bias_unclear
-  ST-C3-R2: no_external_sweep
-  ST-C3-R3: no_displacement_bos
-  ST-C3-R4: no_ote_pullback
-  ST-C3-R5: no_fvg_ob_confluence
-  ST-C3-R6: no_ltf_choch
-  ST-C3-R7: entry_window_expired
+  ST-C3-R1:
+    local_code: R1_HTF_BIAS_UNCLEAR
+    meaning: htf_bias_unclear
+    message: "Rejected: HTF bias not structurally defined."
+    stage: htf_bias_stage
+    triggers:
+      - h4_structure_ambiguous
+      - no_clear_hh_hl_or_lh_ll
+      - htf_choch_invalidates_bias_mid_stage
+    reason: cannot_determine_directional_context
+  ST-C3-R2:
+    local_code: R2_NO_SWEEP
+    meaning: no_valid_sweep
+    message: "Rejected: No valid external liquidity sweep."
+    stage: liquidity_sweep_stage
+    triggers:
+      - no_external_liquidity_sweep
+      - sweep_wick_does_not_penetrate_level
+      - sweep_reclaim_exceeds_n_sweep
+    reason: no_institutional_liquidity_event
+  ST-C3-R3:
+    local_code: R3_NO_DISPLACEMENT_BOS
+    meaning: no_displacement_or_bos
+    message: "Rejected: No valid displacement or BOS."
+    stage: displacement_bos_stage
+    triggers:
+      - no_impulsive_move_after_sweep
+      - bos_no_body_close_break
+      - bos_direction_contradicts_htf_bias
+    reason: no_momentum_shift
+  ST-C3-R4:
+    local_code: R4_NO_OTE_PULLBACK
+    meaning: no_ote_pullback
+    message: "Rejected: Price did not retrace into OTE zone."
+    stage: ote_stage
+    triggers:
+      - price_not_in_62_79_zone
+      - bos_extreme_not_locked
+      - retrace_outside_ote
+    reason: no_optimal_entry_zone
+  ST-C3-R5:
+    local_code: R5_NO_FVG_OB_CONFLUENCE
+    meaning: no_fvg_ob_confluence
+    message: "Rejected: No valid FVG/OB confluence."
+    stage: fvg_ob_confluence_stage
+    triggers:
+      - no_fresh_fvg_or_ob_inside_ote
+      - confluence_zone_mitigated_or_invalid
+      - confluence_contradicts_htf_bias
+    reason: no_institutional_footprint
+  ST-C3-R6:
+    local_code: R6_NO_LTF_CONFIRMATION
+    meaning: no_ltf_confirmation
+    message: "Rejected: No valid LTF CHoCH/BOS."
+    stage: ltf_confirmation_or_session_gatekeeper_stage
+    triggers:
+      - no_m3_m1_choch_or_bos_inside_confluence
+      - no_local_liquidity_sweep
+      - choch_outside_allowed_sessions
+    reason: no_valid_ltf_reversal
+  ST-C3-R7:
+    local_code: R7_ENTRY_WINDOW_EXPIRED
+    meaning: entry_window_expired
+    message: "Rejected: Entry window exceeded MAX_ENTRY_BARS."
+    stage: entry_window_stage
+    triggers:
+      - max_entry_bars_exceeded
+      - entry_zone_touched_too_late
+      - ltf_choch_too_old_to_confirm
+    reason: timing_invalid
   # owner requirement: every rejection carries rejection code, reason,
   # evidence IDs, and the funnel stage where the failure occurred.
+
+termination_codes:
+  ST-C3-ERR_HTF_BIAS_FLIP:
+    local_code: ERR_HTF_BIAS_FLIP
+    meaning: htf_bias_flip_after_signal
+    message: "Terminated: HTF structure invalidated."
+    stage: expiry_stage
+    triggers:
+      - h4_bias_flips_after_trade_plan_creation
+      - htf_choch_invalidates_directional_context
+    reason: macro_structure_changed
+  ST-C3-ERR_ENTRY_WINDOW_EXPIRED:
+    local_code: ERR_ENTRY_WINDOW_EXPIRED
+    meaning: entry_window_expired_after_signal
+    message: "Terminated: Entry window closed before execution."
+    stage: expiry_stage
+    triggers:
+      - entry_window_closes_before_execution
+      - price_moves_away_from_entry_zone
+      - ltf_confirmation_becomes_stale
+    reason: trade_timing_invalidated
+  ST-C3-ERR_SL_INVALIDATION:
+    local_code: ERR_SL_INVALIDATION
+    meaning: structural_stop_invalidated
+    message: "Terminated: Price breached invalidation swing."
+    stage: expiry_stage
+    triggers:
+      - price_breaks_invalidation_swing
+      - sl_level_violated_before_entry
+      - structure_invalidates_trade_premise
+    reason: setup_structurally_broken
+  ST-C3-ERR_SUPERSEDED_SETUP:
+    local_code: ERR_SUPERSEDED_SETUP
+    meaning: newer_sweep_and_bos_superseded_setup
+    message: "Terminated: Newer sweep/BOS setup detected."
+    stage: expiry_stage
+    triggers:
+      - new_sweep_and_bos_appear
+      - new_dealing_range_forms
+      - new_ote_replaces_old_one
+      - new_confluence_zone_emerges
+    reason: newer_higher_priority_setup_exists
+
+rejection_code_json_schema:
+  R_CODES:
+    R1_HTF_BIAS_UNCLEAR: "Rejected: HTF bias not structurally defined."
+    R2_NO_SWEEP: "Rejected: No valid external liquidity sweep."
+    R3_NO_DISPLACEMENT_BOS: "Rejected: No valid displacement or BOS."
+    R4_NO_OTE_PULLBACK: "Rejected: Price did not retrace into OTE zone."
+    R5_NO_FVG_OB_CONFLUENCE: "Rejected: No valid FVG/OB confluence."
+    R6_NO_LTF_CONFIRMATION: "Rejected: No valid LTF CHoCH/BOS."
+    R7_ENTRY_WINDOW_EXPIRED: "Rejected: Entry window exceeded MAX_ENTRY_BARS."
+  ERR_CODES:
+    ERR_HTF_BIAS_FLIP: "Terminated: HTF structure invalidated."
+    ERR_ENTRY_WINDOW_EXPIRED: "Terminated: Entry window closed before execution."
+    ERR_SL_INVALIDATION: "Terminated: Price breached invalidation swing."
+    ERR_SUPERSEDED_SETUP: "Terminated: Newer sweep/BOS setup detected."
+
+# ============================================================
+# 4.1 State Machine — pre-freeze deterministic blueprint
+# ============================================================
+state_machine:
+  states:
+    S0: INIT
+    S1: HTF_BIAS
+    S2: SWEEP
+    S3: SWEEP_RECLAIM
+    S4: DISPLACEMENT_BOS
+    S5: BOS_EXTREME_LOCK
+    S6: DEALING_RANGE
+    S7: OTE
+    S8: FVG_OB_CONFLUENCE
+    S9: LTF_CONFIRMATION
+    S10: SESSION_GATEKEEPER
+    S11: ENTRY_WINDOW
+    S12: RISK_SL_TP_BUILD
+    S13: TRADE_PLAN_EMIT
+    S14: EXPIRY_TERMINATION
+    S15: TERMINAL
+  transitions:
+    - state: S0
+      description: INIT
+      guard: session_open_and_instrument_enabled
+      next: S1
+      failure_code: null
+    - state: S1
+      description: HTF_BIAS
+      guard: HTFBiasEvidence.valid == true
+      next: S2
+      failure_code: R1_HTF_BIAS_UNCLEAR
+    - state: S2
+      description: SWEEP
+      guard: SweepEvidence.valid == true
+      next: S3
+      failure_code: R2_NO_SWEEP
+    - state: S3
+      description: SWEEP_RECLAIM
+      guard: SweepReclaimEvidence.valid == true AND reclaimed == true
+      next: S4
+      failure_code: R2_NO_SWEEP
+    - state: S4
+      description: DISPLACEMENT_BOS
+      guard: DisplacementEvidence.valid == true AND BOSEvidence.valid == true
+      next: S5
+      failure_code: R3_NO_DISPLACEMENT_BOS
+    - state: S5
+      description: BOS_EXTREME_LOCK
+      guard: BOSExtremeEvidence.valid == true AND pullback_detected == true
+      next: S6
+      failure_code: R3_NO_DISPLACEMENT_BOS
+    - state: S6
+      description: DEALING_RANGE
+      guard: DealingRangeEvidence.valid == true
+      next: S7
+      failure_code: R4_NO_OTE_PULLBACK
+    - state: S7
+      description: OTE
+      guard: OTEEvidence.valid == true AND price_in_ote == true
+      next: S8
+      failure_code: R4_NO_OTE_PULLBACK
+    - state: S8
+      description: FVG_OB_CONFLUENCE
+      guard: (FVGEvidence.valid == true OR OrderBlockEvidence.valid == true) AND inside_ote == true
+      next: S9
+      failure_code: R5_NO_FVG_OB_CONFLUENCE
+    - state: S9
+      description: LTF_CONFIRMATION
+      guard: LTFConfirmationEvidence.valid == true AND sweep_local_liquidity == true
+      next: S10
+      failure_code: R6_NO_LTF_CONFIRMATION
+    - state: S10
+      description: SESSION_GATEKEEPER
+      guard: SessionWindowEvidence.valid == true AND session IN {LONDON, NY}
+      next: S11
+      failure_code: R6_NO_LTF_CONFIRMATION
+    - state: S11
+      description: ENTRY_WINDOW
+      guard: EntryWindowEvidence.valid == true AND inside_window == true
+      next: S12
+      failure_code: R7_ENTRY_WINDOW_EXPIRED
+    - state: S12
+      description: RISK_SL_TP_BUILD
+      guard: InvalidationSwingEvidence.valid == true AND TargetEvidence(valid for TP1/TP2/TP3) AND RR >= MIN_RR
+      next: S13
+      failure_code: appropriate_r_code_for_risk_or_target_rule_failure
+    - state: S13
+      description: TRADE_PLAN_EMIT
+      guard: all_prior_states_valid
+      next: S14
+      failure_code: internal_error_if_build_fails
+    - state: S14
+      description: EXPIRY_TERMINATION
+      guard: monitor_ExpiryEvidence_and_htf_ltf_updates
+      next: S15
+      termination_codes:
+        - ERR_HTF_BIAS_FLIP
+        - ERR_ENTRY_WINDOW_EXPIRED
+        - ERR_SL_INVALIDATION
+        - ERR_SUPERSEDED_SETUP
+    - state: S15
+      description: TERMINAL
+      guard: trade_closed_or_signal_terminated_archive_evidence_and_enums
+      next: S0
+      failure_code: null
+  priority_rules:
+    - no_state_can_be_skipped_or_revisited
+    - any_failed_guard_triggers_exactly_one_r_code_or_err_code
+    - trade_plan_only_exists_if_machine_reaches_s13
+    - after_s13_only_err_codes_are_allowed
+
+# ============================================================
+# 4.2 Evidence Object Schema — pre-freeze draft contract
+# ============================================================
+evidence_object_schema:
+  universal_required_fields:
+    id: str
+    tf: timeframe
+    valid: bool
+    reason: str
+    timestamp: bar_time
+    provenance: STC3_v1
+  object_types:
+    HTFBiasEvidence:
+      tf: [H4]
+      fields:
+        structure: [HHHL, LHLL, UNCLEAR]
+        bias: [BULLISH, BEARISH, NONE]
+    SweepEvidence:
+      tf: [H4, M15]
+      fields:
+        sweep_type: [BUY_SIDE, SELL_SIDE]
+        wick_penetration: bool
+        level: float
+    SweepReclaimEvidence:
+      tf: [H4, M15]
+      fields:
+        reclaim_within_bars: int
+        max_allowed_bars: int
+        reclaimed: bool
+    DisplacementEvidence:
+      tf: [M15]
+      fields:
+        impulse_strength: float
+        threshold: float
+    BOSEvidence:
+      tf: [M15]
+      fields:
+        bos_direction: [UP, DOWN]
+        body_close_break: bool
+        level: float
+    BOSExtremeEvidence:
+      tf: [M15]
+      fields:
+        provisional_extreme: float
+        locked_extreme: float
+        pullback_detected: bool
+    DealingRangeEvidence:
+      tf: [M15]
+      fields:
+        origin: float
+        bos_extreme: float
+        range_size: float
+    OTEEvidence:
+      tf: [M15]
+      fields:
+        ote_min: float
+        ote_max: float
+        price_in_ote: bool
+    FVGEvidence:
+      tf: [H4, M15]
+      fields:
+        gap_top: float
+        gap_bottom: float
+        fresh: bool
+        inside_ote: bool
+    OrderBlockEvidence:
+      tf: [H4, M15]
+      fields:
+        ob_high: float
+        ob_low: float
+        fresh: bool
+        inside_ote: bool
+    LTFConfirmationEvidence:
+      tf: [M3, M1]
+      fields:
+        choch_direction: [UP, DOWN]
+        sweep_local_liquidity: bool
+    SessionWindowEvidence:
+      tf: [M3, M1]
+      fields:
+        session: [LONDON, NY, INVALID]
+    EntryWindowEvidence:
+      tf: [M3, M1]
+      fields:
+        bars_since_ltf_choch: int
+        max_allowed_bars: int
+        inside_window: bool
+    InvalidationSwingEvidence:
+      tf: [M3, M1]
+      fields:
+        swing_level: float
+        direction: [LONG, SHORT]
+    TargetEvidence:
+      tf: [H4, M15]
+      fields:
+        target_type: [TP1_INTERNAL, TP2_EXTERNAL, TP3_HTF]
+        level: float
+        rr: float
+    ExpiryEvidence:
+      tf: [M3, M1]
+      fields:
+        expiry_reason: [BIAS_FLIP, ENTRY_WINDOW, SL_BREAK, SUPERSEDED]
+        valid: false
 
 # ============================================================
 # 5. Trade-Plan Object Schema (machine format, owner-specified shape)
@@ -221,13 +575,14 @@ rejection_codes:
 trade_plan_schema:
   direction: enum[LONG, SHORT]
   htf_bias: HTF_BIAS_ID
-  sweep: SWEEP_ID
+  sweep: [SWEEP_ID, SWEEP_RECLAIM_ID]
   displacement: DISPLACEMENT_ID
-  bos: BOS_ID
+  bos: [BOS_ID, BOS_EXTREME_ID]
   dealing_range: DEALING_RANGE_ID
   ote_zone: OTE_ZONE_ID
   confluence_zone: [FVG_ID, ORDERBLOCK_ID]
   ltf_confirmation: LTF_CHOCH_ID
+  session_window: SESSION_WINDOW_ID
   entry_zone: ENTRY_ZONE_ID
   entry_window: ENTRY_WINDOW_ID
   stop_loss: INVALIDATION_SWING_ID
@@ -235,7 +590,8 @@ trade_plan_schema:
   expiry: EXPIRY_ID
   rr: numeric
   evidence: array_of_all_ids
-  status: enum[VALID, REJECTED]
+  status: enum[VALID, REJECTED, TERMINATED]
+  code: enum[ST-C3-R*, ST-C3-ERR_*]
 
 # ============================================================
 # 6. Risk & Portfolio — UNRESOLVED (not carried over from ST-C2; new
@@ -243,7 +599,7 @@ trade_plan_schema:
 # ============================================================
 risk:
   per_trade_risk_pct: UNRESOLVED
-  min_rr: 3.0   # owner: TP1 3R minimum functions as the effective RR floor; ratify explicitly at S1-G1
+  min_rr: CONFIGURABLE_PROVISIONAL_3R   # owner example; ratify at S1-G1
   max_positions: UNRESOLVED
   portfolio_heat_pct: UNRESOLVED
   daily_loss_pct: UNRESOLVED

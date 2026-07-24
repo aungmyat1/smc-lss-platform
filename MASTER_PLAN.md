@@ -1,6 +1,6 @@
 # SMC-LSS PLATFORM - MASTER GOVERNANCE PLAN
 
-**Version:** 4.1.0
+**Version:** 4.1.1
 **Status:** AUTHORITATIVE PROJECT OPERATING INSTRUCTIONS
 **Recorded:** 2026-07-24
 **Supersedes:** v3.0.0 and the legacy active M1-M5 roadmap
@@ -57,29 +57,22 @@ Nothing is higher priority than reaching this state without breaking governance.
 
 ## Current Lifecycle Position
 
-| Field | State |
-|---|---|
-| Stage | Stage A - Strategy Validation |
-| Substage | A2 - Indicator, Event and Signal Conformance |
-| Gate | S1-G2 Reference Implementation Completion Review |
-| Strategy | ST-C2 v1.2.0 GBPUSD |
-| Status | Frozen |
-| Readiness | GREEN |
-| Frozen | YES |
-| Implementation | AUTHORIZED: S1-G2 REFERENCE ONLY |
-| A1 Logic Conformance | PASSED WITH TRACKED NON-BLOCKING RESIDUALS |
-| A2 Signal Conformance | IN PROGRESS: S1-G2 REMAINS OPEN |
-| A3 Statistical Validation | BLOCKED: A2 NOT PASSED |
-| Execution | BLOCKED |
-| Demo | BLOCKED |
-| Production | BLOCKED |
+| Candidate | Stage | Gate | Status | Active Work | Authority |
+|---|---|---|---|---|---|
+| ST-C3 v1.0.0 | Stage A / A1 | Pre-S1-G1 owner review and freeze preparation | Draft | ACTIVE GOVERNANCE SETUP | Documentation/governance only; no implementation, backtest, execution, demo, live, or production authority |
+| ST-C2 v1.2.0 GBPUSD | Stage A / A2 | S1-G2 Reference Implementation Completion Review | Frozen; S1-G2 remains open | PAUSED BY OWNER DIRECTION | Scoped S1-G2 reference authority remains recorded, but no new ST-C2 work is the active milestone |
 
-ST-C2 v1.2.0 is the active frozen GBPUSD-scoped specification created from
-frozen ST-C2 v1.1.0. Scoped S1-G2 reference implementation is authorized for
-golden-case tests, a conformance kernel, a minimum GBPUSD detector slice, and
-the GBPUSD existence check only. ST-C2 is not approved, historically validated,
-statistically validated, execution-authorized, demo-authorized, live-authorized,
-or production-authorized.
+ST-C3 v1.0.0 is the active owner-directed setup track for S1-G1 preparation.
+Its current work is limited to owner review of provisional thresholds, risk
+envelope, F1/F2/F3 relabeling, proposed agent roles, and freeze-readiness gaps.
+ST-C3 remains a draft candidate with `engine_implements_spec: false` and
+`implementation_authorization: null`.
+
+ST-C2 v1.2.0 remains preserved as the frozen GBPUSD-scoped specification.
+Pausing the active ST-C2 task does not approve, reject, mutate, supersede, or
+execute ST-C2. ST-C2 is not approved, historically validated, statistically
+validated, execution-authorized, demo-authorized, live-authorized, or
+production-authorized.
 
 ---
 
@@ -524,6 +517,10 @@ that only executes approved strategy packages.
 
 ## Changelog
 
+- **v4.1.1 - 2026-07-24** - Records owner-directed pivot of the active
+  milestone from ST-C2 S1-G2 work to ST-C3 S1-G1 preparation. Adds a
+  multi-candidate lifecycle position so ST-C3 can be active for governance
+  setup while ST-C2 remains frozen, preserved, and non-executable.
 - **v4.1.0 - 2026-07-24** - Applies the formal validation architecture:
   Stage A1 logic conformance, A2 indicator/event/signal conformance, A3
   statistical edge and robustness, and Stage B execution qualification. Records

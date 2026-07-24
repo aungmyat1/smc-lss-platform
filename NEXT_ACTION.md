@@ -2,22 +2,23 @@
 
 **One milestone at a time. This is the active milestone.**
 
-## S1-G2 Remaining Rule Closures - State, Trade Plan, and Rejection Evidence
+## ST-C3 S1-G1 Preparation - Owner Review and Freeze Readiness
 
 Current lifecycle position:
 
 | Field | State |
 |---|---|
 | Stage | Stage A - Strategy Validation |
-| Substage | A2 - Indicator, Event and Signal Conformance |
-| Gate | S1-G2 Reference Implementation Completion Review |
-| Strategy | ST-C2 v1.2.0 GBPUSD |
-| Status | Frozen |
-| Readiness | GREEN |
-| Frozen | YES |
-| Implementation | AUTHORIZED: S1-G2 REFERENCE ONLY |
-| A1 Logic Conformance | PASSED WITH TRACKED NON-BLOCKING RESIDUALS |
-| A2 Signal Conformance | IN PROGRESS: S1-G2 REMAINS OPEN |
+| Substage | A1 - Strategy Logic Contract and Conformance |
+| Gate | Pre-S1-G1 Owner Review / Specification Freeze Preparation |
+| Strategy | ST-C3 v1.0.0 |
+| Status | Draft |
+| Readiness | YELLOW |
+| Frozen | NO |
+| Implementation | BLOCKED |
+| Backtest | BLOCKED |
+| A1 Logic Conformance | NOT STARTED |
+| A2 Signal Conformance | BLOCKED: S1-G1 NOT PASSED |
 | A3 Statistical Validation | BLOCKED: A2 NOT PASSED |
 | Execution | BLOCKED |
 | Demo | BLOCKED |
@@ -25,73 +26,67 @@ Current lifecycle position:
 
 ## Objective
 
-Implement the next controlled S1-G2 gap-closure slice: deterministic state
-transitions, signal candidate evidence, logical trade-plan evidence, and
-remaining rejection-code coverage. S1-G2 remains open; A2/S1-G3 is not
-authorized.
+Prepare ST-C3 for its own S1-G1 specification-freeze decision without changing
+ST-C2, implementing ST-C3, running backtests, or granting execution authority.
 
 ## Current Evidence
 
-- Minimum reference kernel: `validation/st_c2_reference.py`.
-- Golden-case tests: `tests/test_st_c2_reference.py`.
-- Existence scan: `reports/ST-C2_V1.2_GBPUSD_EXISTENCE_CHECK.md`.
-- R1 diagnostic: `reports/ST-C2_V1.2_GBPUSD_R1_DIAGNOSTIC.md`.
-- A1 closure report:
-  `reports/validation/st_c2/A1_LOGIC_CONFORMANCE_CLOSURE.md`.
-- Stage status: `governance/st_c2_stage_status.yaml`.
-- Rule-to-test traceability: `specs/st_c2/rule_to_test_map.yaml`.
-- Conformance manifest: `specs/st_c2/conformance_manifest.yaml`.
-- Current existence verdict: `SIGNAL_FOUND`.
-- First qualifying signal: `2026-06-10 17:15`, direction `short`.
-- S1-G2 completion audit:
-  `reports/validation/st_c2/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md`.
-- A2 coverage matrix:
-  `reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json`.
-- A2 conformance results:
-  `reports/validation/st_c2/A2_CONFORMANCE_RESULTS.json`.
-- GC1 foundations report:
-  `reports/validation/st_c2/S1_G2_GC1_CONFORMANCE_FOUNDATIONS_REPORT.md`.
-- GC2 structural conformance report:
-  `reports/validation/st_c2/S1_G2_GC2_STRUCTURAL_CONFORMANCE_REPORT.md`.
-- HTF structure and bias report:
-  `reports/validation/st_c2/HTF_STRUCTURE_AND_BIAS_REPORT.md`.
-- Liquidity sweep conformance report:
-  `reports/validation/st_c2/LIQUIDITY_SWEEP_CONFORMANCE_REPORT.md`.
-- Dealing-range OTE conformance report:
-  `reports/validation/st_c2/DEALING_RANGE_OTE_CONFORMANCE_REPORT.md`.
-- Differential coverage audit:
-  `reports/validation/st_c2/DIFFERENTIAL_COVERAGE_AUDIT_GC2.md`.
-- GC3 FVG/LTF evidence report:
-  `reports/validation/st_c2/S1_G2_GC3_FVG_LTF_EVIDENCE_REPORT.md`.
-- Stable identifier contract:
-  `reports/validation/st_c2/STABLE_IDENTIFIER_CONTRACT.md`.
-- Golden-case library report:
-  `reports/validation/st_c2/GOLDEN_CASE_LIBRARY_REPORT.md`.
-
-## Data Finding
-
-The initial `NO_SIGNAL_FOUND` result was caused by insufficient M3 coverage.
-After extending M1-derived M3 history to 16,642 bars, the existence floor
-(`>=1 qualifying GBPUSD signal`) was satisfied.
+- ST-C3 intake ADR:
+  `docs/adr/ADR-0004-st-c3-candidate-intake.md`.
+- ST-C3 draft spec:
+  `specs/st-c3_v1.0.0.yaml`.
+- ST-C3 funnel overhaul plan:
+  `reports/ST-C3_FUNNEL_OVERHAUL_PLAN.md`.
+- ST-C3 foundation documents:
+  `docs/strategy/st_c3/ST-C3_STRATEGY_ARCHITECTURE.md`,
+  `docs/strategy/st_c3/ST-C3_FUNNEL_LIFECYCLE.md`,
+  `docs/strategy/st_c3/ST-C3_EVIDENCE_OBJECT_SPEC.md`, and
+  `docs/strategy/st_c3/ST-C3_REJECTION_CODE_SPEC.md`.
+- ST-C3 parameter sheet:
+  `docs/strategy/st_c3/ST-C3_PARAMETER_SHEET.md`.
+- ST-C3 state machine:
+  `docs/strategy/st_c3/ST-C3_STATE_MACHINE.md`.
+- ST-C3 RCR/intake entry:
+  `reports/research_log.md`.
+- Source reference documents:
+  `docs/reference/smc-definitive-guide-dailypriceaction.md` and
+  `docs/reference/smc-8step-entry-model-dailypriceaction.md`.
 
 ## Acceptance Criteria
 
-- Implement or formally close the audit blockers without changing frozen
-  strategy parameters.
-- Complete the remaining S1-G2 state, signal, trade-plan, and rejection-code
-  evidence objects.
-- Preserve the reproduced existence signal or explain any change.
-- Keep missing mappings honest; do not mark S1-G2 complete.
-- Keep A3 historical/statistical validation blocked until A2 passes.
-- Execution, demo, live, broker, and production authority remain blocked.
+- Confirm or correct the provisional thresholds in
+  `reports/ST-C3_FUNNEL_OVERHAUL_PLAN.md` section 16.
+- Confirm or correct the risk envelope described in the plan and represented
+  as unresolved fields in `specs/st-c3_v1.0.0.yaml`.
+- Confirm or correct the `F1`/`F2`/`F3` relabeling from ADR-0004.
+- Confirm whether the six proposed agent roles should be formalized by
+  ADR-0005 before S1-G1 freeze.
+- Resolve all `UNRESOLVED` fields required for S1-G1 freeze readiness.
+- Keep the four ST-C3 foundation documents aligned with the draft spec and
+  funnel overhaul plan.
+- Keep the ST-C3 state machine aligned with lifecycle, evidence, rejection,
+  termination, and trade-plan contracts.
+- Prepare the S1-G1 audit package, but do not freeze the spec until the owner
+  explicitly approves the freeze act.
 
 ## Blocking Gaps
 
-- FVG/LTF advanced confluence and sequencing remain partial.
-- Deterministic state machine is missing.
-- Full logical trade-plan object is missing.
-- R1-R7 detailed failure coverage is incomplete.
-- Stable identifiers are incomplete for FVG, confirmation, signal, and trade-plan
-  evidence.
-- Versioned golden-case library requires GC3+ expansion.
-- Hardcoded symbol precision in the reference kernel was closed by GC1.
+- Symbol scope and session windows are unresolved.
+- Sweep tolerance, wick-ratio, sweep age, `BOS_MIN_IMPULSE`, FVG/OB freshness,
+  exact `N_SWEEP`, exact `MAX_ENTRY_BARS`, stop buffer, TP2/TP3 RR floors, and
+  portfolio risk controls are unresolved or provisional.
+- Validation metrics and floors are unresolved.
+- Rejection-code coverage and session-close trigger policy still need S1-G1
+  decisions.
+- No ST-C3 reference kernel, golden-case tests, existence scanner, backtest,
+  or execution integration exists or is authorized.
+
+## Guardrails
+
+- Do not modify `specs/st-c2_v1.2.0.yaml`.
+- Do not continue ST-C2 S1-G2 implementation work under this milestone.
+- Do not implement ST-C3 code, tests, kernels, broker integration, demo
+  trading, live trading, or production paths.
+- Keep ST-C3 `status: draft`, `engine_implements_spec: false`, and
+  `implementation_authorization: null` until a separate S1-G1 freeze act
+  authorizes a different state.
