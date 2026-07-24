@@ -772,3 +772,109 @@ not confirmed as final). Both implementation gates remain unmet:
 `IMPLEMENTATION AUTHORIZATION: GRANTED` string exists anywhere in the
 repo — recording a verification result is not the same as authorizing
 implementation, same as every prior addendum in this file.
+
+---
+
+## Fifth addendum (2026-07-24, owner-decision session round 4 — duplicate-setup policy + portfolio loss circuit breaker)
+
+Documentation-only, same restriction as every prior addendum: does **not**
+authorize strategy-engine implementation, backtesting, optimization, demo
+execution, live execution, promotion, or broker operations. `specs/st-c2.yaml`
+(v1.0.0) remains unchanged; `engine_implements_spec` stays `false`. No code
+written, no backtest run, no execution/demo/live/promotion state changed.
+
+**Structural note on this session's format:** the owner proposed this
+session's content via a broader governance-restructuring plan that also
+proposed (a) marking `specs/st-c2.yaml` `status: frozen`, (b) a new,
+separate `governance/rcr_st-c2_v1.md` file, and (c) new dedicated
+"spec-audit," "determinism-audit," and "implementation-audit" agent
+prompts. Only the two substantive decisions below are recorded here, for
+stated reasons, not silently dropped:
+
+- **Not marking anything frozen.** `reports/ST-C2_IMPLEMENTATION_READINESS.md`
+  (2026-07-24) found 4 blocking gaps still open after this session's two
+  decisions (FVG zone-boundary formula, liquidity-pool stable-identifier
+  composition, session-close-forces-exit, post-fill event-priority
+  ordering). Declaring `frozen` status would misstate that. `status`
+  remains `candidate` in both `specs/st-c2.yaml` and
+  `specs/st-c2_v1.1.0.yaml`.
+- **Not creating a second RCR file.** This repo has one canonical RCR
+  chain for ST-C2 (this file, now five addenda deep). A parallel
+  `governance/rcr_st-c2_v1.md` would fork that history rather than extend
+  it. These decisions are recorded here instead.
+- **Not creating new agent files.** Per `CLAUDE.md`'s hard rule, new
+  agent/skill files that claim governance or enforcement authority (as
+  "spec-audit," "determinism-audit," and "implementation-audit" agents
+  explicitly would) require an Accepted ADR. None exists for these. Not
+  created here; the audit work those roles describe continues to be done
+  as ad hoc `project-governance-agent` tasks, matching how this RCR's
+  prior verification passes (e.g. the fourth addendum) were already done.
+
+### Decision A — Duplicate/concurrent-setup handling (closes the order-simulation residual)
+
+**Decision:** `duplicate_setup_policy = one_position_at_a_time`.
+
+**Rationale (recorded verbatim from the owner):**
+- Avoid correlated exposure from overlapping setups.
+- Mirror discretionary SMC behaviour (one clean narrative at a time).
+- Simplify risk and portfolio heat management.
+
+**Implementation rule:** when a valid ST-C2 setup exists and a position is
+already open, the new setup is logged (per
+`diagnostics.record_rejected_setups`) but not executed.
+
+This closes the item flagged in the third addendum as an unconfirmed
+proposal with no rationale — the rationale above is what was missing then.
+`specs/st-c2_v1.1.0.yaml`'s `execution_stage.entry.duplicate_setup_policy`
+is updated from `null` to this decision.
+
+### Decision B — Portfolio-level loss circuit breaker (new decision — does NOT close the emergency-exit numeric-threshold residual)
+
+**Decision:**
+- `max_daily_loss_pct = 3.0`
+- `max_weekly_loss_pct = 7.0`
+- `hard_kill_switch_enabled = true`
+
+**Status: PROVISIONAL** (recorded verbatim from the owner — subject to
+future risk research).
+
+**Rule:** if daily or weekly loss exceeds the threshold: immediately
+disable new entries; close all open ST-C2 positions if structural
+invalidation is near; require manual re-authorization to resume.
+
+**Provenance correction, stated plainly:** this is a *new* decision, not a
+closure of the third addendum's already-flagged "emergency-exit numeric
+thresholds" item (spread-spike points / connection-loss seconds, gating
+`management.emergency_exit_rules`'s `immediate_market_exit` concept from
+Cluster 4 Q12). The two are easy to conflate because both use the words
+"emergency exit," but they are mechanically different: this decision is a
+**portfolio-level, loss-percentage-triggered kill switch** using numbers
+that already existed in `specs/st-c2.yaml`'s `risk.daily_loss_pct` (3.0)
+and `risk.weekly_loss_pct` (7.0) — the new content is the hard-kill-switch
+enforcement behavior (disable entries, conditional close, manual
+re-authorization), not the thresholds themselves. The third addendum's
+item — numeric thresholds for a **spread-spike/connection-loss/
+volatility-shock-triggered** immediate market exit — remains **UNRESOLVED**,
+exactly as before. `specs/st-c2_v1.1.0.yaml` records this decision under a
+new `risk.hard_kill_switch` block that references the existing
+`daily_loss_pct`/`weekly_loss_pct` fields rather than duplicating their
+numbers, and keeps `management.emergency_exit_rules`'s spread-spike/
+connection-loss placeholders untouched and still flagged unresolved.
+
+### Status after this fifth addendum
+
+Closed this session: duplicate/concurrent-setup handling (order-simulation
+residual). Newly decided (PROVISIONAL): portfolio-level loss circuit
+breaker (not previously an identified gap in the governance audit's gate
+table — an owner-initiated addition).
+
+**Still open, unchanged:** emergency-exit's spread-spike/connection-loss
+numeric thresholds (illustrative, not confirmed final — distinct from
+Decision B above); FVG zone-boundary formula (G5); liquidity-pool
+stable-identifier composition (G2); session-close-forces-exit (G10);
+post-fill event-priority ordering (order-simulation). Both implementation
+gates remain unmet: `specs/st-c2.yaml` is still `status: candidate`, and no
+`IMPLEMENTATION AUTHORIZATION: GRANTED` string exists anywhere in the
+repo. No execution-layer code has been written and none is authorized by
+this addendum — per `CLAUDE.md`'s hard rule, that requires sequencing by
+`project-governance-agent` in addition to the two gates above.
