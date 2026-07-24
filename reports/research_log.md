@@ -701,3 +701,30 @@ No code written, no spec file mutated beyond the two closed fields, no
 backtest run, no execution/demo/live/promotion state changed. Full
 decision text in the ninth addendum appended to
 `ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`.
+
+## Addendum: owner-decision session round 9 — rejection codes closed, FVG-chain rule still open (2026-07-24)
+
+Closes audit item 12: `R1`-`R7` ratified as the canonical rejection-code
+scheme, **replacing** (not coexisting with) the prior 12-entry per-gate
+scheme in `specs/st-c2_v1.1.0.yaml` §6 — "ratified" read as a final
+designation since neither replace-vs-coexist was specified. Flags a
+coverage gap as a non-blocking residual: R1-R7 has no distinct code for
+stop-invalidity, insufficient net-R, missing cost-profile, or missing
+target (previously `STOP_INVALID`, `NET_R_INSUFFICIENT`,
+`COST_PROFILE_MISSING`, `TARGET_MISSING` in the replaced scheme).
+
+Does **not** close the FVG-chain continuity rule. The submission's new
+"MF displacement" definition ("wick-to-wick MF displacement relative to
+MF swing anchor") defines one undefined term using a second undefined
+term — no MF-level swing concept exists anywhere in this spec — and still
+never states whether "MF displacement" equals the already-closed G5 rule
+2's "HTF-MTF confluence zone." Also flags that "wick-to-wick" already has
+a specific, decided meaning elsewhere in this spec (the sixth addendum's
+FVG zone-boundary formula) that this definition may or may not be reusing
+— not stated either way. Third attempt at this specific item, still
+unresolved for the same root reason each time.
+
+No code written, no spec file mutated beyond the rejection-code block, no
+backtest run, no execution/demo/live/promotion state changed. Full
+decision text in the tenth addendum appended to
+`ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`.

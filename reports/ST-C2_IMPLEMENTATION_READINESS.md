@@ -52,30 +52,28 @@ closed:
 
 ## What is still open (non-blocking, tracked, not resolved here)
 
-**Updated 2026-07-24 (ninth addendum):** five of the original six
-low-risk items are now closed (bull/bear classification, bias-evidence-
-timestamp field, 4th+ CHoCH sequencing, `protected_level_lifecycle.create_on`,
-`internal_bos_required` restatement) — see `reports/ST-C2_SPEC_AUDIT.md`
-§4 items 5, 6, 9, 10, 11. One remains open:
+**Updated 2026-07-24 (tenth addendum):** all six of the original
+low-risk items are now closed, including rejection codes (R1-R7,
+ratified, replacing the prior 12-code scheme — see
+`reports/ST-C2_SPEC_AUDIT.md` §4 item 12). One new, non-blocking residual
+from that closure: R1-R7 has no distinct code for stop-invalidity,
+insufficient net-R, missing cost-profile, or missing target (§4 item 17).
 
-1. Rejection code strings — a resubmission was checked and found not to
-   close this: its "already appear in diagnostics logs" rationale is
-   false (no ST-C2 engine exists anywhere to log anything), and the
-   proposed 7-code scheme is coarser and different from the existing
-   12-code scheme, not a ratification of it. Needs clarification: replace
-   the existing scheme, or coexist as a summary layer above it?
+**Still open:** the FVG-chain continuity rule. Two restatement attempts
+(ninth and tenth addenda) have not resolved it — the second attempt
+defined "MF displacement" using a second undefined term ("MF swing
+anchor," which has no decided meaning anywhere in this spec) and still
+never stated whether it's the same thing as the already-closed G5 rule
+2's "HTF-MTF confluence zone." See `reports/ST-C2_SPEC_AUDIT.md` §4 item
+16 for the full account.
 
-**Also newly recorded, not yet applied to the spec:** an MF-to-LTF
-structural inheritance rule and a liquidity-tagging consistency rule
-remain unapplied pending owner confirmation they're intended as new
-scope. The FVG-chain continuity rule remains flagged, not applied — a
-restatement attempt (ninth addendum) still relies on an undefined term
-("MF displacement") and does not resolve its overlap with two
-already-closed G5 rules. See `reports/ST-C2_SPEC_AUDIT.md` §4 items
-14-16 for the full account. A units flag on the seventh addendum's `2.5`
-also remains (recorded as points, consistent with this spec's established
-`buffer_pips`-means-points precedent, but the owner's literal wording
-used "pips" — flagged for correction if that reading is wrong).
+**Also still unapplied:** an MF-to-LTF structural inheritance rule and a
+liquidity-tagging consistency rule, pending owner confirmation they're
+intended as new scope (§4 items 14-15). A units flag on the seventh
+addendum's `2.5` also remains (recorded as points, consistent with this
+spec's established `buffer_pips`-means-points precedent, but the owner's
+literal wording used "pips" — flagged for correction if that reading is
+wrong).
 
 None of these block a deterministic engine build in the judgment recorded
 here — each has an unambiguous default reading already stated in the
