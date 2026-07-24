@@ -1418,3 +1418,34 @@ string exists anywhere in the repo — closing every original checklist
 item does not itself constitute freeze or authorization, both of which
 remain separate governance acts per the standing `project-governance-agent`
 ruling on record for this candidate.
+
+## Addendum: S1-G1 freeze act — ST-C2 v1.1.0 promoted to frozen (2026-07-24)
+
+Per owner instruction to continue the next task of `MASTER_PLAN.md` v4.0.2,
+S1-G1 Specification Governance was evaluated against the current evidence.
+
+Evidence checked:
+
+- `reports/ST-C2_SPEC_AUDIT.md` closes every original ST-C2 checklist item
+  (items 1-13).
+- `reports/ST-C2_IMPLEMENTATION_READINESS.md` reports READY FOR
+  IMPLEMENTATION and explicitly preserves the separation between freeze and
+  implementation authorization.
+- `specs/st-c2_v1.1.0.yaml` is the consolidated candidate specification with
+  `engine_implements_spec: false` and `implementation_authorization: null`.
+
+Decision: `specs/st-c2_v1.1.0.yaml` is promoted from `status: candidate` to
+`status: frozen`, and `consolidation_status` is set to `COMPLETE`.
+
+Non-blocking carry-forward items remain unchanged:
+
+- MF-to-LTF structural inheritance and liquidity-tagging consistency are
+  unapplied new-scope proposals.
+- R1-R7 rejection-code coverage gap remains flagged for implementation time.
+- The session-close 2.5 points/pips wording note remains recorded.
+
+This freeze act does not approve ST-C2 as a strategy, does not authorize
+implementation, does not authorize historical replay, and does not authorize
+execution, demo, live, broker, or production work. Current lifecycle advances to
+S1-G2 Reference Implementation, BLOCKED pending a separate scoped authorization
+decision.

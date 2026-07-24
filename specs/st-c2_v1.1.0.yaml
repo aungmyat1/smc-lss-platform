@@ -11,8 +11,10 @@
 # what that audit documents as a direct, low-risk application of an existing
 # decision (and those cases are labeled `# applied:`, not `# decided:`).
 #
-# STATUS: NOT an owner-verified canonical/approved spec. See
-# reports/ST-C2_IMPLEMENTATION_READINESS.md for the current verdict.
+# STATUS: FROZEN canonical specification as of the 2026-07-24 S1-G1 freeze
+# act recorded in reports/audit/ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md and
+# reports/research_log.md. Frozen does not mean approved, implemented, or
+# authorized for execution.
 # specs/st-c2.yaml (v1.0.0) remains the RCR's original filed reference and is
 # NOT superseded or deleted by this file — this is an additive consolidation
 # artifact per the "canonical-specification-path question" the RCR's first
@@ -22,9 +24,8 @@ id: ST-C2
 name: Hybrid Liquidity-First Unified SMC Pipeline
 version: 1.1.0
 governance_profile: ST-C2_v1   # decided: fifth addendum — tracking label only, not a status change
-status: candidate   # deliberately NOT "frozen" — see reports/ST-C2_IMPLEMENTATION_READINESS.md and the fifth
-                     # addendum's "Structural note on this session's format" for why
-consolidation_status: PARTIAL   # see reports/ST-C2_SPEC_AUDIT.md for the full gate matrix
+status: frozen   # decided: S1-G1 freeze act, 2026-07-24; not implementation authorization
+consolidation_status: COMPLETE   # original ST-C2 audit checklist closed through eleventh addendum
 engine_implements_spec: false   # SAFETY INTERLOCK — no engine exists yet
 implementation_authorization: null   # no "IMPLEMENTATION AUTHORIZATION: GRANTED" string exists anywhere in the repo
 supersedes: specs/st-c2.yaml (v1.0.0)   # additive consolidation, does not delete or invalidate the original filed spec

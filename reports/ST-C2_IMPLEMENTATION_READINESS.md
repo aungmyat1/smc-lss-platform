@@ -10,6 +10,11 @@ Companion to `reports/ST-C2_SPEC_AUDIT.md` (full gate-by-gate matrix) and
 
 # READY FOR IMPLEMENTATION
 
+**Freeze update (2026-07-24):** the separate S1-G1 governance act has now
+promoted `specs/st-c2_v1.1.0.yaml` from `candidate` to `frozen`. This changes
+specification status only. It does not grant implementation authorization,
+execution authority, demo trading, live trading, or production promotion.
+
 **Updated 2026-07-24 (seventh addendum):** the seventh addendum closed
 the last substantive blocker (the session-close invalidation-buffer
 distance, 2.5 points, final). Combined with the fifth and sixth addenda,
@@ -82,28 +87,17 @@ silently forgotten because this report turned green.
 
 **Does not authorize:**
 - Any change to `specs/st-c2.yaml` (v1.0.0, still unchanged) or
-  `specs/st-c2_v1.1.0.yaml`'s `status` field (still `candidate` — this
-  report does not itself freeze the spec; see below).
+  any strategy logic beyond the separate S1-G1 status promotion already
+  recorded.
 - Creating, editing, or scaffolding any file under `src/`.
 - Any backtest, demo, live, or promotion action.
 - `IMPLEMENTATION AUTHORIZATION: GRANTED` — that string still does not
   exist anywhere in the repo, and this report does not create it.
 
-**Two separate governance questions remain, deliberately not decided by
+**One separate governance question remains, deliberately not decided by
 this report:**
 
-1. **Should `specs/st-c2_v1.1.0.yaml` be promoted from `status: candidate`
-   to `status: frozen`, now that the substantive blockers are closed?**
-   This is a real question this report's authors (the assistant, across
-   this session) are not the right authority to self-answer, especially
-   immediately after an owner request framed as "if satisfied, grant
-   authorization and permit engine-file creation" — collapsing evaluation
-   and authorization into one step is exactly the pattern this session's
-   `project-governance-agent` ruling already warned against when it
-   rejected treating repetition or self-styled request formatting as
-   authorization. This question is routed to `project-governance-agent`
-   as a separate act, not decided here.
-2. **If freeze is granted, what does `IMPLEMENTATION AUTHORIZATION:
+1. **What does `IMPLEMENTATION AUTHORIZATION:
    GRANTED` actually permit building first?** The `project-governance-agent`
    ruling already on record in this session (in response to the direct
    `src/strategies/st_c2/` skeleton request) was explicit: even full
@@ -125,8 +119,8 @@ this report:**
 - No execution, demo, live, or promotion state was changed.
 - No `IMPLEMENTATION AUTHORIZATION: GRANTED` string exists anywhere in the
   repo, and this report does not create one.
-- `specs/st-c2_v1.1.0.yaml` remains `status: candidate` — this report
-  does not freeze it; that is a separate act, per above.
+- `specs/st-c2_v1.1.0.yaml` is now `status: frozen` by separate S1-G1
+  governance act.
 
 ## Recommendation
 
@@ -136,9 +130,7 @@ substantively complete in the fullest sense this report has tracked. Two
 items remain genuinely open (the MF-to-LTF inheritance and
 liquidity-tagging proposals, §4 items 14-15) and two are flagged
 non-blocking residuals (R1-R7 coverage gap, points/pips interpretation).
-The next step is a `project-governance-agent` evaluation of (a) whether
-to promote `specs/st-c2_v1.1.0.yaml` to `status: frozen` given this state,
-and (b) if so, what `IMPLEMENTATION AUTHORIZATION: GRANTED`, once issued,
-would actually scope and sequence — per its own already-recorded ruling
-on this exact question. That evaluation is a separate act from this
-report and is not performed here.
+The next step is a `project-governance-agent` evaluation of what scoped
+`IMPLEMENTATION AUTHORIZATION: GRANTED`, once issued, would actually permit and
+sequence — per its own already-recorded ruling on this exact question. That
+evaluation is a separate act from this report and is not performed here.

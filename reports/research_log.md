@@ -751,3 +751,26 @@ No code written, no spec file mutated beyond the new
 `fvg_chain_continuity` block, no backtest run, no
 execution/demo/live/promotion state changed. Full decision text in the
 eleventh addendum appended to `ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`.
+
+## Addendum: S1-G1 freeze act — ST-C2 v1.1.0 promoted to frozen (2026-07-24)
+
+Owner instruction: clean unneeded branches and continue the next task of the
+master plan. Per `MASTER_PLAN.md` v4.0.2, the next task was S1-G1
+Specification Governance. Checked current evidence before acting:
+
+- `reports/ST-C2_SPEC_AUDIT.md` closes every original ST-C2 checklist item
+  (items 1-13) through the eleventh addendum.
+- `reports/ST-C2_IMPLEMENTATION_READINESS.md` reports READY FOR
+  IMPLEMENTATION and explicitly separates readiness from implementation
+  authorization.
+- `specs/st-c2_v1.1.0.yaml` was the consolidated candidate with
+  `engine_implements_spec: false` and `implementation_authorization: null`.
+
+Decision: promote `specs/st-c2_v1.1.0.yaml` from `status: candidate` to
+`status: frozen`, with `consolidation_status: COMPLETE`.
+
+Scope of this decision: specification freeze only. This does **not** approve the
+strategy, does **not** grant implementation authorization, does **not** run a
+backtest, and does **not** authorize execution, demo, live, broker, or production
+work. The current lifecycle moves to S1-G2 Reference Implementation, BLOCKED
+pending a separate scoped authorization decision.

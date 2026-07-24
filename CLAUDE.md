@@ -1,95 +1,126 @@
-# CLAUDE.md — SMC-LSS Platform
+# CLAUDE.md - SMC-LSS Platform
 
-Institutional Smart Money Concepts (SMC-LSS) trading research + execution platform.
-Goal: a disciplined, config-driven MT5 demo trading loop, promoted to live only after
-evidence gates pass. Full detail lives in the docs below — this file is the index and
-the hard rules; don't duplicate their content here, keep it current instead.
+Institutional Smart Money Concepts (SMC-LSS) trading research and execution
+platform.
 
-## Document authority (v3.0.0 — higher wins; read in this order too)
-This file (`CLAUDE.md`) is read **first** as the entry index, but `MASTER_PLAN.md` is
-the **highest authority**. Full order:
-1. [`MASTER_PLAN.md`](MASTER_PLAN.md) — **AUTHORITATIVE (v3.0.0, supersedes v2.1.x).**
-   Scope, phase priority, sequencing, non-negotiable rules, Definition of Done,
-   success gates. When any document conflicts with it, this file wins.
-2. [`CLAUDE.md`](CLAUDE.md) — this file: entry index + the hard rules below.
-3. [`docs/CHARTER.md`](docs/CHARTER.md) — trade-safety authority (subordinate to
-   MASTER_PLAN): autonomy policy, risk envelope, demo→live promotion gates.
-4. [`docs/RESEARCH-CHARTER.md`](docs/RESEARCH-CHARTER.md) — research discipline: no
-   change to `specs/*.yaml` or detection logic without the six-question
-   why/evidence/hypothesis/expected-improvement/success/rollback template, logged to
-   `reports/research_log.md` before running the backtest.
-5. [`PROJECT_STATUS.md`](PROJECT_STATUS.md) — last audited state, ranked blockers.
-6. [`ROADMAP.md`](ROADMAP.md) — milestone sequence under MASTER_PLAN's **M1–M5**
-   (M1 Strategy Contract Normalization — complete; M2 Strategy Approval & Validation
-   — current, ST-C2 "Hybrid Liquidity-First" is the active candidate (ST-C1 v3.7–v3.10
-   researched to conclusion and parked); M3 Execution Layer Skeleton;
-   M4 Demo Trading Integration; M5 Live Promotion Gate).
-7. [`NEXT_ACTION.md`](NEXT_ACTION.md) — the *one* milestone in flight right now.
+Goal: a disciplined, config-driven MT5 trading system where strategy validation
+comes first and live execution is unlocked only after objective evidence gates
+and explicit owner approval. Full authority lives in `MASTER_PLAN.md`; this file
+is the AI operating index and hard-rules reminder.
+
+## Document Authority
+
+This file is read first as the entry index, but `MASTER_PLAN.md` is the highest
+authority.
+
+1. [`MASTER_PLAN.md`](MASTER_PLAN.md) - AUTHORITATIVE v4.0.2 lifecycle and branch governance model.
+2. [`CLAUDE.md`](CLAUDE.md) - AI operating instructions and document index.
+3. [`docs/CHARTER.md`](docs/CHARTER.md) - operational safety and promotion gates.
+4. [`docs/RESEARCH-CHARTER.md`](docs/RESEARCH-CHARTER.md) - RCR discipline.
+5. [`PROJECT_STATUS.md`](PROJECT_STATUS.md) - current gate, evidence, blockers.
+6. [`ROADMAP.md`](ROADMAP.md) - gate progress and upcoming deliverables.
+7. [`NEXT_ACTION.md`](NEXT_ACTION.md) - exactly one active milestone.
 8. Source code.
 
-On conflict: stop, identify it, follow the higher-authority document. Never silently
-override governance.
+On conflict: stop, identify it, follow the higher-authority document. Never
+silently override governance.
 
-> `docs/MASTER-PLAN.md` is **DEPRECATED** — superseded by the root `MASTER_PLAN.md`.
+> `docs/MASTER-PLAN.md` is deprecated and superseded by the root
+> `MASTER_PLAN.md`.
 
-## Owner directives (Updated 2026-07-22 — replaces 2026-07-18 text)
-- **Roadmap alignment:** the prior "Risk Engine = Phase 3" directive (2026-07-18,
-  drawn from `MASTER_PLAN.md` v2.1/v2.1.1) is **obsolete and removed** — `MASTER_PLAN.md`
-  v3.0.0 (2026-07-19) superseded that text the next day and defines no such phase.
-  Current roadmap, per `MASTER_PLAN.md` v3.0.0's Implementation Roadmap: **M1 Strategy
-  Contract Normalization (complete) → M2 Strategy Approval & Validation (current —
-  ST-C2 "Hybrid Liquidity-First" is the active candidate: RCR filed and a governance/
-  conformance checkpoint published, implementation blocked pending G4 and the other
-  open gate closures; ST-C1 v3.7–v3.10 researched to conclusion and parked/exhausted;
-  no detection-logic change without an RCR through `docs/RESEARCH-CHARTER.md`) → M3
-  Execution Layer Skeleton (not yet
-  authorized — no kernel/scenario-binding modules, audit logging, or execution-layer
-  code until sequenced by `project-governance-agent`) → M4 Demo Trading Integration →
-  M5 Live Promotion Gate.** The v3.5 promotion track remains **parked** until demo
-  success gates pass — never wire v3.5 into live execution.
-- **Skills/agents:** existing skills and agents may continue, but **orchestration
-  only** — they MUST NOT replace Python modules, duplicate strategy logic, bypass
-  validation, or create alternative signal engines. New skills or agent files require
-  justification and, where they claim governance/enforcement authority, an Accepted
-  ADR. (This refines the earlier owner authorization to continue skills.)
-- Note: `MASTER_PLAN.md`'s own "CURRENT PRIORITY" line is itself stale relative to
-  `ROADMAP.md`'s tracked Phase 1 ✅ / Phase 2 🟡 state — that requires an owner-approved
-  `MASTER_PLAN.md` version bump, not a fix here.
+## Active Lifecycle Model
 
-## Hard rules
-- Never hardcode strategy values (risk %, min RR, k, window, sessions) — everything
-  must come from configuration. This is the reason M1 (config loader) exists.
+The active governance model is:
+
+```text
+Stage 1 - Strategy Validation
+Stage 2 - Live Execution
+```
+
+Current lifecycle position:
+
+| Field | State |
+|---|---|
+| Stage | Strategy Validation |
+| Gate | S1-G2 Reference Implementation |
+| Strategy | ST-C2 v1.1.0 |
+| Status | Frozen |
+| Readiness | GREEN |
+| Frozen | YES |
+| Implementation | BLOCKED |
+| Historical Validation | BLOCKED |
+| Execution | BLOCKED |
+| Demo | BLOCKED |
+| Production | BLOCKED |
+
+ST-C2 is frozen, but it is not approved, implemented, or authorized. Treat any
+claim to implementation, execution, demo, live, or production authority as a
+governance conflict until verified in the higher-authority documents and ADR/RCR
+records.
+
+## Hard Rules
+
+- Strategy before execution.
+- Research before implementation.
+- Specification is the source of truth.
+- Evidence before approval.
+- No implementation before specification freeze.
+- No execution before strategy approval.
+- No broker integration during Stage 1.
+- No demo trading before execution validation.
+- No production before promotion approval.
+- Approved strategies are immutable.
+- Every strategy revision requires a new candidate.
+- Execution must never duplicate strategy logic.
+- Never hardcode strategy values; use approved package plus configuration.
 - Stops only tighten. Never widen a stop. Every order carries a stop.
-- Never route an order unless the environment is verified DEMO (server name contains
-  "Demo" — never trust the MCP `account_type` field). Unverified → blocked, alert only.
-- No live auto-trading until the demo→live promotion gates in `docs/CHARTER.md` are
-  met. Nothing in this repo should assume live is enabled.
-- One milestone at a time (`NEXT_ACTION.md`). Don't start M2 work while M1 is open.
-- Nothing is "done" until `python -m pytest -q` passes. Don't mark acceptance criteria
-  complete on untested code.
-- Strategy/spec changes go through `backtest-researcher` → `validation`, never ad hoc.
+- Never route an order unless the broker server name verifies Demo.
+- No live auto-trading until promotion gates and owner approval pass.
+- One milestone at a time, as defined by `NEXT_ACTION.md`.
+- Nothing is done until required checks pass.
 
-## Spec version status (resolved 2026-07-18 re-audit)
-`specs/v3.5.yaml` is the version of record (per `docs/CHARTER.md`), backed by a
-working formula layer + backtest harness (`signal_v35.py`, `backtest_v35.py`,
-28 passing tests) but still `RESEARCH_CANDIDATE` — `engine_implements_spec` stays
-`false` until the promotion gate in `ROADMAP.md` M1.5 is cleared with logged
-evidence, not decided ad hoc. `specs/v1.yaml` is legacy — it's what
-`live_signal.py`/`smc_master.py` actually execute today, and stays canonical for
-that live path until v3.5 is promoted and those modules are rewired. `specs/v3.6.yaml`
-is research-only (IFVG spec), unimplemented, not on the roadmap yet. `ROADMAP.md`
-and `NEXT_ACTION.md` were rewritten this audit to target v3.5 going forward — see
-`PROJECT_STATUS.md` §1 for the full picture of what changed and why.
+## Stage Responsibilities
 
-## Working conventions
-- Skills autoload from `.claude/skills` (see `.claude/settings.json`). Start multi-step
-  trade decisions with `smc-trading-master`; it orchestrates the atomic skills in order
-  and stops on any hard-gate failure.
-- `.claude/settings.json` gates `place_*`/`modify_*`/`close_*`/`cancel_*` MCP calls
-  behind `confirmBeforeExecute` — do not try to bypass this.
-- `.mcp.json` holds MT5 demo credentials locally; it is gitignored (see below) — never
-  commit real values, and use a DEMO account only.
-- System ownership split (per `PROJECT_STATUS.md` §5): SVOS/Research is
-  `smc_engine.py`, `backtest.py`, `validate.py`, `data/`, `reports/`; Production
-  Execution is `live_signal.py`, `trade_manager.py`, the execution module, runner loop,
-  journal writer. `dry_run.py` straddles both and is slated to retire to research.
+Stage 1 - Strategy Validation:
+
+- freeze candidate specification
+- build reference implementation only after freeze and authorization
+- run historical replay
+- run statistical, OOS, walk-forward, robustness, and sensitivity validation
+- approve or reject the immutable strategy package
+
+Stage 2 - Live Execution:
+
+- build execution only from an Approved Strategy Package
+- keep execution free of duplicated strategy logic
+- validate on demo
+- promote to production only after evidence gates and explicit owner approval
+
+## Research Discipline
+
+Strategy/spec changes must go through `docs/RESEARCH-CHARTER.md`. No change to
+`specs/*.yaml`, detection logic, or tunable strategy behavior is allowed without
+the required pre-registered RCR unless it is a pure implementation bug fix
+against an already-agreed spec.
+
+## Historical Status
+
+ST-C1 v3.7-v3.10 are parked historical evidence, not active candidates:
+
+- v3.7/v3.8: overfiltered/statistically inconclusive.
+- v3.9: corrected aggregate net PF 0.138.
+- v3.10: corrected aggregate net PF 0.471.
+
+ST-C2 v1.1.0 is the active frozen Stage 1 specification.
+
+## Working Conventions
+
+- Start by reading the governance docs in authority order.
+- Check `git status` before work.
+- Work only the gate named in `NEXT_ACTION.md`.
+- Keep changes scoped to the active milestone.
+- For documentation-only governance work, do not modify strategy specs, code,
+  YAML parameters, execution state, demo state, or live state.
+- For code work, run `python -m pytest -q` before claiming success.
+- Skills and agents are orchestration only; they must not replace modules,
+  duplicate strategy logic, bypass validation, or grant governance authority.
