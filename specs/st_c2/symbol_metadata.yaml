@@ -1,0 +1,11 @@
+symbols:
+  GBPUSD:
+    symbol: GBPUSD
+    digits: 5
+    point_size: "0.00001"
+    pip_size: "0.0001"
+    points_per_pip: 10
+    price_rounding_digits: 5
+    volume_step: null
+    timezone_basis: UTC
+    rounding_mode: ROUND_HALF_UP

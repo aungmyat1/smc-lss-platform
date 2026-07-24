@@ -9,12 +9,14 @@ from __future__ import annotations
 import datetime as dt
 import bisect
 from dataclasses import dataclass, field
+from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
 import yaml
 
 from src import smc_engine as e
+from validation.st_c2.symbols import load_symbol_metadata, points_to_price
 
 
 SPEC_PATH = Path("specs/st-c2_v1.2.0.yaml")
@@ -135,7 +137,9 @@ def _in_discount_or_premium(mf: list[dict[str, Any]], direction: str) -> bool:
 
 def _matching_mf_fvg(mf: list[dict[str, Any]], direction: str, spec: dict[str, Any]) -> dict[str, Any] | None:
     want = "bull" if direction == "long" else "bear"
-    gap_min = float(spec["pipeline"]["liquidity_stage"]["poi_gap_reaction"]["gap_min_points"]) * 0.00001
+    metadata = load_symbol_metadata("GBPUSD")
+    gap_points = Decimal(str(spec["pipeline"]["liquidity_stage"]["poi_gap_reaction"]["gap_min_points"]))
+    gap_min = float(points_to_price(gap_points, metadata))
     matches = [f for f in e.fvgs(mf, min_gap=gap_min) if f["dir"] == want]
     return matches[-1] if matches else None
 

@@ -41,7 +41,13 @@ stage_a_strategy_validation:
       coverage_matrix: reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json
       conformance_results: reports/validation/st_c2/A2_CONFORMANCE_RESULTS.json
       missing_rule_test_mappings: 37
-    next_required_decision: close_s1_g2_blocking_gaps
+    gc1_foundations:
+      status: passed
+      report: reports/validation/st_c2/S1_G2_GC1_CONFORMANCE_FOUNDATIONS_REPORT.md
+      symbol_metadata: specs/st_c2/symbol_metadata.yaml
+      stable_identifier_contract: reports/validation/st_c2/STABLE_IDENTIFIER_CONTRACT.md
+      golden_case_library_report: reports/validation/st_c2/GOLDEN_CASE_LIBRARY_REPORT.md
+    next_required_decision: start_s1_g2_gc2_structural_bias_liquidity_dealing_range
 
   a3_statistical_validation:
     status: blocked

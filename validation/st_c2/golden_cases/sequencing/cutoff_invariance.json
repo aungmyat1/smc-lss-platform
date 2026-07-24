@@ -1,0 +1,1 @@
+{"case_id":"GC-STC2-GBPUSD-CUTOFF-001","source":"tests/test_st_c2_reference.py::test_cutoff_invariance_when_future_bars_excluded","expected":{"unchanged_when_future_excluded":true}}

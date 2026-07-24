@@ -991,3 +991,32 @@ rule-test mappings.
 
 A2/S1-G3, A3 historical/statistical validation, Stage B execution, demo, live,
 broker integration, and production remain blocked.
+
+## Addendum: S1-G2-GC1 conformance foundations pass (2026-07-24)
+
+The first controlled S1-G2 gap-closure slice was completed without changing the
+frozen ST-C2 v1.2.0 strategy parameters and without advancing S1-G2.
+
+Created foundation artifacts:
+
+- `specs/st_c2/symbol_metadata.yaml`
+- `validation/st_c2/symbols.py`
+- `validation/st_c2/schemas.py`
+- `validation/st_c2/identifiers.py`
+- `validation/st_c2/interfaces.py`
+- `validation/st_c2/golden_cases.py`
+- `validation/st_c2/traceability.py`
+- `reports/validation/st_c2/S1_G2_GC1_CONFORMANCE_FOUNDATIONS_REPORT.md`
+- `reports/validation/st_c2/STABLE_IDENTIFIER_CONTRACT.md`
+- `reports/validation/st_c2/GOLDEN_CASE_LIBRARY_REPORT.md`
+
+The hardcoded GBPUSD multiplier in `validation/st_c2_reference.py` was replaced
+with symbol metadata lookup and `points_to_price()`. The existing existence
+result remains unchanged: `SIGNAL_FOUND`, first signal `2026-06-10 17:15`,
+direction `short`.
+
+Slice verdict: **S1-G2-GC1 CONFORMANCE FOUNDATIONS: PASS**.
+
+S1-G2 remains open. The next milestone is S1-G2-GC2 structural bias, liquidity,
+and dealing-range conformance. A3, Stage B, execution, broker integration, demo,
+live, and production remain blocked.

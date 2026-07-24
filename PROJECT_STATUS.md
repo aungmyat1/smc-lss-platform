@@ -82,6 +82,12 @@ ST-C2 evidence:
   coverage matrix; 45 rules inventoried, 37 missing mappings.
 - `reports/validation/st_c2/A2_CONFORMANCE_RESULTS.json` - completion criteria
   results and reproduced existence signal.
+- `reports/validation/st_c2/S1_G2_GC1_CONFORMANCE_FOUNDATIONS_REPORT.md` -
+  GC1 conformance foundations; PASS while S1-G2 remains open.
+- `reports/validation/st_c2/STABLE_IDENTIFIER_CONTRACT.md` - stable ID
+  composition contract.
+- `reports/validation/st_c2/GOLDEN_CASE_LIBRARY_REPORT.md` - initial versioned
+  golden-case framework report.
 - `validation/st_c2_reference.py` - S1-G2 minimum GBPUSD reference kernel.
 - `validation/run_st_c2_gbp_existence.py` - S1-G2 existence-check scanner.
 - `tests/test_st_c2_reference.py` - golden-case, mirror, cutoff, determinism,
@@ -134,6 +140,9 @@ Remaining blocker:
   LTF confirmation evidence, deterministic state machine, logical trade plan,
   rejection subcodes, stable identifiers, golden-case library, and hardcoded
   symbol precision.
+- GC1 foundations closed the hardcoded reference-kernel symbol precision gap,
+  added metadata, stable schemas/IDs, golden-case scaffolding, traceability
+  validation, and structural interfaces.
 
 Non-blocking residuals to carry forward:
 
@@ -168,8 +177,9 @@ current Stage A lifecycle.
 
 ## Next Action
 
-Close S1-G2 audit blockers. Do not advance to S1-G3, A3, or Stage B until a
-new completion audit supports the gate.
+Continue with S1-G2-GC2: structural bias, liquidity, and dealing-range
+conformance. Do not advance to S1-G3, A3, or Stage B until a new completion
+audit supports the gate.
 
 Do not modify strategy specs, code, YAML parameters, execution state, demo
 settings, live settings, or authorization state as part of status maintenance.

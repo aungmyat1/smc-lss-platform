@@ -1,0 +1,1 @@
+{"case_id":"GC-STC2-GBPUSD-BEAR-POS-001","source":"tests/test_st_c2_reference.py::_mirror_bear_windows","expected":{"decision":"SIGNAL","direction":"short"}}

@@ -34,6 +34,12 @@ stage_a:
         - stable_identifiers_missing
         - golden_case_library_missing
         - hardcoded_symbol_precision_present
+    gc1_foundations:
+      status: passed
+      report: reports/validation/st_c2/S1_G2_GC1_CONFORMANCE_FOUNDATIONS_REPORT.md
+      symbol_metadata: specs/st_c2/symbol_metadata.yaml
+      stable_identifier_contract: reports/validation/st_c2/STABLE_IDENTIFIER_CONTRACT.md
+      golden_case_library_report: reports/validation/st_c2/GOLDEN_CASE_LIBRARY_REPORT.md
   a3:
     status: blocked
     blocked_by: a2

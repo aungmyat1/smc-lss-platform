@@ -1,0 +1,1 @@
+{"case_id":"GC-STC2-GBPUSD-BULL-POS-001","source":"tests/test_st_c2_reference.py::_positive_bull_windows","expected":{"decision":"SIGNAL","direction":"long"}}

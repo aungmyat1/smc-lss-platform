@@ -107,6 +107,9 @@ Completed:
 - `reports/validation/st_c2/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md`
 - `reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json`
 - `reports/validation/st_c2/A2_CONFORMANCE_RESULTS.json`
+- `reports/validation/st_c2/S1_G2_GC1_CONFORMANCE_FOUNDATIONS_REPORT.md`
+- `reports/validation/st_c2/STABLE_IDENTIFIER_CONTRACT.md`
+- `reports/validation/st_c2/GOLDEN_CASE_LIBRARY_REPORT.md`
 
 Blocker:
 
@@ -121,6 +124,10 @@ Blocker:
 - Blocking gaps: HTF structural bias, OTE/dealing-range lifecycle, FVG
   confluence, LTF event evidence, state machine, trade plan, rejection subcodes,
   stable IDs, golden-case library, hardcoded symbol precision.
+- GC1 foundations PASS: metadata, normalization, schemas, stable IDs,
+  golden-case scaffold, traceability validator, and structural interfaces.
+- Remaining next slice: S1-G2-GC2 structural bias, liquidity, and dealing-range
+  conformance.
 
 Allowed after authorization: feature generation, detector engine, parser, rule
 engine, conformance tests, golden datasets.

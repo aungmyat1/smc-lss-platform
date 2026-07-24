@@ -1,0 +1,1 @@
+{"case_id":"GC-STC2-GBPUSD-DETERMINISM-001","source":"tests/test_st_c2_reference.py::test_deterministic_clean_vs_rerun","expected":{"rerun_equal":true}}

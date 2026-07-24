@@ -4,6 +4,14 @@
   "symbol": "GBPUSD",
   "gate": "S1-G2 Reference Implementation Completion Review",
   "verdict": "S1-G2 REMAINS OPEN",
+  "gc1_foundations": {
+    "status": "passed",
+    "report": "reports/validation/st_c2/S1_G2_GC1_CONFORMANCE_FOUNDATIONS_REPORT.md",
+    "symbol_metadata_source": "specs/st_c2/symbol_metadata.yaml",
+    "stable_identifier_contract": "reports/validation/st_c2/STABLE_IDENTIFIER_CONTRACT.md",
+    "golden_case_library_report": "reports/validation/st_c2/GOLDEN_CASE_LIBRARY_REPORT.md",
+    "next_slice": "S1-G2-GC2 STRUCTURAL BIAS, LIQUIDITY, AND DEALING-RANGE CONFORMANCE"
+  },
   "s1_g2_completion_criteria": {
     "frozen_rule_inventory_complete": true,
     "missing_mappings_zero": false,
@@ -16,7 +24,7 @@
     "duplicate_signals": "not_implemented",
     "unexplained_differences": "not_measured",
     "broker_imports": 0,
-    "hardcoded_symbol_precision": 1,
+    "hardcoded_symbol_precision": 0,
     "full_logical_trade_plan_reproducible": false,
     "data_provenance_complete": true,
     "existence_result_reproducible": true
@@ -41,8 +49,8 @@
     "No full logical trade-plan object exists.",
     "R1-R7 rejection coverage is incomplete for stop invalidity, net-R insufficiency, missing cost profile, and missing target.",
     "Stable identifiers for pools/events/sweeps/FVGs/confirmations/signals/trade plans are not implemented.",
-    "Golden-case library is not versioned beyond inline helper arrays.",
-    "Rule-to-test map claims missing_rule_test_mappings: 0 but audit inventory finds 37 missing mappings."
+    "Golden-case library is initialized but not complete enough for S1-G2 qualification.",
+    "Rule-to-test map reports 37 missing mappings that must remain open until direct evidence exists."
   ],
   "commands": {
     "existence_reproduction": "python -m validation.run_st_c2_gbp_existence"

@@ -1,0 +1,149 @@
+strategy_id: ST-C2
+strategy_version: 1.2.0
+symbol: GBPUSD
+spec: specs/st-c2_v1.2.0.yaml
+cases:
+  - case_id: GC-STC2-GBPUSD-CONFIG-001
+    strategy_id: ST-C2
+    strategy_version: 1.2.0
+    symbol: GBPUSD
+    timeframes: {htf: H4, mf: M15, ltf: M3}
+    category: identity
+    description: GBPUSD-only frozen scope.
+    source_type: synthetic
+    source_data_hashes: {}
+    fixture_paths: [identity/config_scope.json]
+    causal_cutoff: "2026-01-02 00:18"
+    expected_events: []
+    expected_transitions: []
+    expected_signal: null
+    expected_rejection: null
+    expected_trade_plan: null
+    tolerance_policy: exact
+    rule_ids: [STC2-SCOPE-001]
+  - case_id: GC-STC2-GBPUSD-BULL-POS-001
+    strategy_id: ST-C2
+    strategy_version: 1.2.0
+    symbol: GBPUSD
+    timeframes: {htf: H4, mf: M15, ltf: M3}
+    category: positive
+    description: Existing positive bullish inline fixture migrated to versioned fixture.
+    source_type: synthetic
+    source_data_hashes: {}
+    fixture_paths: [positive/bull_positive.json]
+    causal_cutoff: "2026-01-02 00:18"
+    expected_events: [liquidity, htf_bias, ote, fvg_alignment, ltf_confirmation, risk]
+    expected_transitions: []
+    expected_signal: {decision: SIGNAL, direction: long}
+    expected_rejection: null
+    expected_trade_plan: null
+    tolerance_policy: exact
+    rule_ids: [STC2-LIQ-003, STC2-OTE-002, STC2-FVG-006, STC2-LTF-002]
+  - case_id: GC-STC2-GBPUSD-BEAR-POS-001
+    strategy_id: ST-C2
+    strategy_version: 1.2.0
+    symbol: GBPUSD
+    timeframes: {htf: H4, mf: M15, ltf: M3}
+    category: positive
+    description: Mirrored bearish fixture migrated from inline helper.
+    source_type: synthetic
+    source_data_hashes: {}
+    fixture_paths: [positive/bear_positive.json]
+    causal_cutoff: "2026-01-02 00:18"
+    expected_events: [liquidity, htf_bias, ote, fvg_alignment, ltf_confirmation, risk]
+    expected_transitions: []
+    expected_signal: {decision: SIGNAL, direction: short}
+    expected_rejection: null
+    expected_trade_plan: null
+    tolerance_policy: exact
+    rule_ids: [STC2-LIQ-003, STC2-OTE-002, STC2-LTF-002]
+  - case_id: GC-STC2-GBPUSD-LIQ-NEG-001
+    strategy_id: ST-C2
+    strategy_version: 1.2.0
+    symbol: GBPUSD
+    timeframes: {htf: H4, mf: M15, ltf: M3}
+    category: negative
+    description: Flat HTF window rejects at R1 liquidity.
+    source_type: synthetic
+    source_data_hashes: {}
+    fixture_paths: [negative/liquidity_r1.json]
+    causal_cutoff: "2026-01-02 00:18"
+    expected_events: []
+    expected_transitions: []
+    expected_signal: null
+    expected_rejection: {code: R1}
+    expected_trade_plan: null
+    tolerance_policy: exact
+    rule_ids: [STC2-LIQ-003, STC2-REJECT-001]
+  - case_id: GC-STC2-GBPUSD-CUTOFF-001
+    strategy_id: ST-C2
+    strategy_version: 1.2.0
+    symbol: GBPUSD
+    timeframes: {htf: H4, mf: M15, ltf: M3}
+    category: sequencing
+    description: Future bars excluded by causal cutoff do not alter result.
+    source_type: synthetic
+    source_data_hashes: {}
+    fixture_paths: [sequencing/cutoff_invariance.json]
+    causal_cutoff: "2026-01-02 00:18"
+    expected_events: []
+    expected_transitions: []
+    expected_signal: {decision: SIGNAL, direction: long}
+    expected_rejection: null
+    expected_trade_plan: null
+    tolerance_policy: exact
+    rule_ids: [STC2-G1-STRUCT-001]
+  - case_id: GC-STC2-GBPUSD-DETERMINISM-001
+    strategy_id: ST-C2
+    strategy_version: 1.2.0
+    symbol: GBPUSD
+    timeframes: {htf: H4, mf: M15, ltf: M3}
+    category: identity
+    description: Re-running fixed synthetic inputs yields identical logical result.
+    source_type: synthetic
+    source_data_hashes: {}
+    fixture_paths: [identity/determinism.json]
+    causal_cutoff: "2026-01-02 00:18"
+    expected_events: []
+    expected_transitions: []
+    expected_signal: {decision: SIGNAL, direction: long}
+    expected_rejection: null
+    expected_trade_plan: null
+    tolerance_policy: exact
+    rule_ids: [STC2-G1-STRUCT-001]
+  - case_id: GC-STC2-GBPUSD-POINTS-BOUNDARY-001
+    strategy_id: ST-C2
+    strategy_version: 1.2.0
+    symbol: GBPUSD
+    timeframes: {htf: H4, mf: M15, ltf: M3}
+    category: boundary
+    description: GBPUSD point and pip conversion boundaries.
+    source_type: synthetic
+    source_data_hashes: {}
+    fixture_paths: [boundary/points_boundary.json]
+    causal_cutoff: "2026-01-02 00:18"
+    expected_events: []
+    expected_transitions: []
+    expected_signal: null
+    expected_rejection: null
+    expected_trade_plan: null
+    tolerance_policy: exact_decimal
+    rule_ids: [STC2-RISK-001]
+  - case_id: GC-STC2-GBPUSD-ID-STABILITY-001
+    strategy_id: ST-C2
+    strategy_version: 1.2.0
+    symbol: GBPUSD
+    timeframes: {htf: H4, mf: M15, ltf: M3}
+    category: identity
+    description: Stable ID repeatability and defining-field mutation behavior.
+    source_type: synthetic
+    source_data_hashes: {}
+    fixture_paths: [identity/id_stability.json]
+    causal_cutoff: "2026-01-02 00:18"
+    expected_events: []
+    expected_transitions: []
+    expected_signal: null
+    expected_rejection: null
+    expected_trade_plan: null
+    tolerance_policy: exact
+    rule_ids: [STC2-LIQ-007, STC2-DEDUP-001]

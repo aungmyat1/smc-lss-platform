@@ -2,7 +2,7 @@
 
 **One milestone at a time. This is the active milestone.**
 
-## S1-G2 Gap Closure - Reference-Conformance Blockers
+## S1-G2-GC2 - Structural Bias, Liquidity, and Dealing-Range Conformance
 
 Current lifecycle position:
 
@@ -25,8 +25,9 @@ Current lifecycle position:
 
 ## Objective
 
-Close the blocking gaps found by the S1-G2 completion audit. S1-G2 remains
-open; A2/S1-G3 is not authorized.
+Implement the next controlled S1-G2 gap-closure slice: HTF structural
+BOS/CHoCH bias, liquidity-pool selection/reclaim evidence, and structural
+dealing-range/OTE lifecycle. S1-G2 remains open; A2/S1-G3 is not authorized.
 
 ## Current Evidence
 
@@ -47,6 +48,12 @@ open; A2/S1-G3 is not authorized.
   `reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json`.
 - A2 conformance results:
   `reports/validation/st_c2/A2_CONFORMANCE_RESULTS.json`.
+- GC1 foundations report:
+  `reports/validation/st_c2/S1_G2_GC1_CONFORMANCE_FOUNDATIONS_REPORT.md`.
+- Stable identifier contract:
+  `reports/validation/st_c2/STABLE_IDENTIFIER_CONTRACT.md`.
+- Golden-case library report:
+  `reports/validation/st_c2/GOLDEN_CASE_LIBRARY_REPORT.md`.
 
 ## Data Finding
 
@@ -58,10 +65,9 @@ After extending M1-derived M3 history to 16,642 bars, the existence floor
 
 - Implement or formally close the audit blockers without changing frozen
   strategy parameters.
-- Rule-to-test missing mappings must be reduced to `0` with direct evidence.
-- Critical implementation coverage must reach `100%` for the S1-G2 reference
-  contract.
-- Full logical trade plan and reproduced existence signal must be deterministic.
+- Complete the GC2 structural interfaces with deterministic evidence objects.
+- Preserve the reproduced existence signal or explain any change.
+- Keep missing mappings honest; do not mark S1-G2 complete.
 - Keep A3 historical/statistical validation blocked until A2 passes.
 - Execution, demo, live, broker, and production authority remain blocked.
 
@@ -77,4 +83,4 @@ After extending M1-derived M3 history to 16,642 bars, the existence floor
 - R1-R7 detailed failure coverage is incomplete.
 - Stable identifiers are missing.
 - Versioned golden-case library is missing.
-- Hardcoded symbol precision remains in the reference kernel.
+- Hardcoded symbol precision in the reference kernel was closed by GC1.

@@ -1,0 +1,1 @@
+{"case_id":"GC-STC2-GBPUSD-LIQ-NEG-001","source":"tests/test_st_c2_reference.py::test_negative_without_liquidity_rejects_r1","expected":{"decision":"NO_SIGNAL","rejection_code":"R1"}}

@@ -22,7 +22,33 @@ acceptance:
   s1_g2_completion_eligible: false
 
 rules:
-  STC2-G1-STRUCT-001:
+  STC2-SCOPE-001:
+    description: Active ST-C2 v1.2.0 scope is frozen to GBPUSD only.
+    implementation:
+      module: validation.st_c2_reference
+      function: enabled_symbols
+    tests:
+      - tests/test_st_c2_reference.py::test_spec_is_frozen_gbpusd_only
+    golden_cases:
+      - GC-STC2-GBPUSD-CONFIG-001
+    expected_rejection_behavior:
+      code: R6
+      condition: enabled symbol set differs from active GBPUSD-only scope
+
+  STC2-TF-001:
+    description: HTF/MF/LTF timeframes are H4/M15/M3.
+    implementation:
+      module: validation.st_c2_reference
+      function: data_availability
+    tests: []
+    golden_cases:
+      - GC-STC2-GBPUSD-CONFIG-001
+    expected_rejection_behavior:
+      code: DATA_MISSING
+      condition: one or more required timeframe files are absent
+    mapping_status: mapped_not_tested
+
+  STC2-STRUCT-001:
     description: H4 swing structure uses the frozen fractal definition and closed candles only.
     implementation:
       module: validation.st_c2_reference
@@ -36,7 +62,7 @@ rules:
       code: R1
       condition: no eligible recent liquidity sweep exists
 
-  STC2-G2-LIQ-001:
+  STC2-LIQ-003:
     description: Eligible H4 liquidity sweep must reclaim with the frozen wick-ratio and max-age rule.
     implementation:
       module: validation.st_c2_reference
@@ -51,7 +77,20 @@ rules:
       code: R1
       condition: liquidity sweep is absent or older than max_sweep_age_bars_htf
 
-  STC2-G4-OTE-001:
+  STC2-LIQ-005:
+    description: Eligible liquidity sweep must be within max_sweep_age_bars_htf.
+    implementation:
+      module: validation.st_c2_reference
+      function: _last_sweep
+    tests: []
+    golden_cases:
+      - GC-STC2-GBPUSD-LIQ-NEG-001
+    expected_rejection_behavior:
+      code: R1
+      condition: liquidity sweep exists but is older than max_sweep_age_bars_htf
+    mapping_status: mapped_not_tested
+
+  STC2-OTE-002:
     description: Long setups require discount and short setups require premium relative to the MF dealing range.
     implementation:
       module: validation.st_c2_reference
@@ -66,7 +105,7 @@ rules:
       code: R3
       condition: candidate closes on the wrong side of equilibrium
 
-  STC2-G5-FVG-001:
+  STC2-FVG-006:
     description: FVG alignment uses fixed three-candle wick-to-wick geometry in the setup direction.
     implementation:
       module: validation.st_c2_reference
@@ -79,7 +118,7 @@ rules:
       code: R4
       condition: no matching MF FVG exists
 
-  STC2-G6-CONF-001:
+  STC2-LTF-002:
     description: LTF confirmation requires a close beyond prior swing structure.
     implementation:
       module: validation.st_c2_reference
@@ -93,16 +132,3 @@ rules:
     expected_rejection_behavior:
       code: R5
       condition: no close-confirmed LTF break exists
-
-  STC2-G0-CONFIG-001:
-    description: Active ST-C2 v1.2.0 scope is frozen to GBPUSD only.
-    implementation:
-      module: validation.st_c2_reference
-      function: enabled_symbols
-    tests:
-      - tests/test_st_c2_reference.py::test_spec_is_frozen_gbpusd_only
-    golden_cases:
-      - GC-STC2-GBPUSD-CONFIG-001
-    expected_rejection_behavior:
-      code: R6
-      condition: enabled symbol set differs from active GBPUSD-only scope
