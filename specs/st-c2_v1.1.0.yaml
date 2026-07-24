@@ -347,19 +347,23 @@ diagnostics:
   store_structure_snapshots: true
 
 # ============================================================
-# 6. Rejection Codes (recommended, carried from the governance audit's
-#    naming — NOT separately owner-ratified as final code strings; a
-#    low-risk, non-blocking item to confirm at implementation time)
+# 6. Rejection Codes — decided: tenth addendum (R1-R7 ratified, REPLACING
+#    the prior 12-entry per-gate scheme carried from the governance audit)
 # ============================================================
 rejection_codes:
-  htf_bias_stage: [BIAS_UNAVAILABLE, BIAS_AMBIGUOUS]
-  liquidity_stage_structure: [STRUCTURE_UNCONFIRMED]
-  ote_stage: [WRONG_PREMIUM_DISCOUNT]
-  fvg_stage: [POI_STALE_OR_INVALID]
-  liquidity_stage_sweep: [SWEEP_NOT_RECLAIMED, CONFIRMATION_MISSING]
-  execution_stage_stop: [STOP_INVALID]
-  execution_stage_targets: [NET_R_INSUFFICIENT, COST_PROFILE_MISSING, TARGET_MISSING]
-  session: [SESSION_INELIGIBLE]
+  R1: liquidity_stage_failed
+  R2: htf_bias_failed
+  R3: ote_failed
+  R4: fvg_alignment_failed
+  R5: ltf_confirmation_failed
+  R6: risk_block
+  R7: session_close_exit
+  # COVERAGE GAP, flagged not resolved (tenth addendum): no distinct code for
+  # stop-invalidity (G7), insufficient net-R (G8), missing cost-profile (G8), or
+  # missing target (G9) — the original per-gate scheme had STOP_INVALID,
+  # NET_R_INSUFFICIENT, COST_PROFILE_MISSING, TARGET_MISSING for these. Likely
+  # fold under R6 (risk_block) for the cost/reward cases; no clear home for
+  # STOP_INVALID yet. Non-blocking residual, not resolved here.
 
 # ============================================================
 # 7. RCR Pre-Registration (all closed — second addendum)

@@ -1274,3 +1274,84 @@ Closed this session: audit items 10 (revised, not merely confirmed) and
 11. **Still open:** audit item 12 (scheme mismatch, unverified/false
 rationale) and the FVG-chain continuity rule (restatement still uses an
 undefined term). Both implementation gates remain unmet.
+
+---
+
+## Tenth addendum (2026-07-24, owner-decision session round 9 — rejection codes closed, FVG-chain rule still open)
+
+Documentation-only, same restriction as every prior addendum: does **not**
+authorize strategy-engine implementation, backtesting, optimization, demo
+execution, live execution, promotion, or broker operations. `specs/st-c2.yaml`
+(v1.0.0) remains unchanged; `engine_implements_spec` stays `false`. No code
+written, no backtest run, no execution/demo/live/promotion state changed.
+
+### Decision — Rejection-code scheme (closes audit item 12, all gates)
+
+**Decision:** `R1`-`R7` (`liquidity_stage_failed` through
+`session_close_exit`, per the ninth addendum's proposal) is ratified as
+the canonical rejection-code scheme, **replacing** the 12-entry, per-gate
+scheme previously in `specs/st-c2_v1.1.0.yaml` §6.
+
+**Interpretation recorded explicitly:** the submission said only
+"ratified," not "replace" or "coexist" — the ninth addendum had asked
+which was meant. Read as replacement, the single most natural reading of
+"ratified" as a final designation, and applied on that basis. If
+coexistence (a coarse summary layer above the still-active 12-code
+scheme) was actually intended, this needs correcting.
+
+**Coverage gap, flagged rather than silently accepted:** R1-R7 has no
+distinct code for stop-invalidity (G7), insufficient net-R (G8), missing
+cost-profile (G8), or missing target (G9) — territory the original
+governance audit's gate table explicitly required codes for
+(`STOP_INVALID`, `NET_R_INSUFFICIENT`, `COST_PROFILE_MISSING`,
+`TARGET_MISSING`). These presumably fall under the closest available
+R1-R7 code (likely `R6: risk_block` for the cost/reward-related ones, and
+no clear home for `STOP_INVALID`) — not resolved here, recorded as a
+residual for implementation time, non-blocking for this addendum's
+purposes since the scheme is otherwise complete for what it does cover.
+`specs/st-c2_v1.1.0.yaml` §6 is replaced with the R1-R7 scheme; the prior
+12-code scheme is removed, not merely superseded silently.
+
+### FVG-chain continuity rule — still not closed
+
+The same submission offered a definition for "MF displacement": "wick-to
+-wick MF displacement relative to MF swing anchor." **Checked, not
+applied — this does not resolve the gap.** Two problems:
+
+1. It defines one undefined term ("MF displacement") using a second
+   undefined term ("MF swing anchor"). No MF-level swing concept exists
+   anywhere in this spec — the only decided swing-confirmation window is
+   `htf_structure.htf_swing_fractal_k_h4` (H4 only), and `ote_stage`'s
+   dealing-range anchor is explicitly the *HTF* external-liquidity swing
+   (second addendum, G4 decision 1), not an MF-level one. "MF swing
+   anchor" would need its own definition before this closes anything.
+2. It still does not state whether this "MF displacement" is the same
+   thing as, or different from, the already-closed G5 rule 2's "HTF-MTF
+   confluence zone" — the exact question the eighth and ninth addenda
+   both asked. Additionally, "wick-to-wick" already has a specific,
+   decided meaning in this spec (the sixth addendum's FVG zone-boundary
+   formula, `wick_to_wick_displacement`, `src/smc_engine.py`'s 3-candle
+   `fvgs()` gap test) — reusing that exact phrase for what appears to be
+   a different mechanism (a distance-from-swing-anchor measure, not a
+   3-candle gap) without saying so risks the same terminology-collision
+   pattern this RCR has caught and corrected before (e.g. the "emergency
+   exit" naming collision in the fifth addendum).
+
+**Not applied.** `specs/st-c2_v1.1.0.yaml`'s FVG-chain continuity rule
+remains unrecorded. Still needs, precisely: either (a) "MF displacement"
+stated explicitly as identical to the confluence zone (making this a
+genuine restatement of G5 rule 2, nothing more), or (b) a real,
+standalone definition of "MF swing anchor" plus confirmation of whether
+the resulting "MF displacement" reuses the FVG zone-boundary formula or
+is a distinct calculation.
+
+### Status after this tenth addendum
+
+Closed this session: audit item 12 (rejection codes, R1-R7, replacing
+the prior 12-code scheme; coverage gap for G7/G8/G9 flagged as a
+residual). **Still open:** the FVG-chain continuity rule — third attempt,
+still not closed, same root cause each time (an undefined term standing
+in for a needed formula). Both implementation gates remain unmet:
+`specs/st-c2.yaml` is still `status: candidate`, and no
+`IMPLEMENTATION AUTHORIZATION: GRANTED` string exists anywhere in the
+repo.
