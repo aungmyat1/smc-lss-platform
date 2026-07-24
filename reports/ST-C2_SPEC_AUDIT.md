@@ -179,18 +179,19 @@ project's established verification practice.
 | 13 | `risk.hard_kill_switch` — PROVISIONAL, subject to future risk research per the owner's own label | Risk (new, beyond original gate table) | Not blocking initial implementation scope, but PROVISIONAL means it may change | New, 5th addendum Decision B |
 | 14 | MF-to-LTF structural inheritance rule (≤40 bars, LTF displacement confirms MF direction) | New, beyond original gate table | Not blocking; a submission framed as closing items 10-12 actually introduced this instead | New candidate, 8th addendum — **not yet applied**, needs owner confirmation it's intended scope |
 | 15 | Liquidity-tagging consistency rule (all tag types use the Addendum-6 stable-identifier hash) | New, extends G2 Decision 2's scope | Not blocking; same submission as #14 | New candidate, 8th addendum — **not yet applied**, needs owner confirmation |
-| 16 | FVG-chain continuity rule | G5 | Not blocking per se, but **overlaps two already-CLOSED G5 rules** (HTF-MTF alignment, LTF-inside-confluence-zone) with different wording ("MF displacement" vs. "confluence zone") — risks an internal contradiction if applied as-is | **STILL not applied after two restatement attempts (9th, 10th addenda)** — "MF displacement" was redefined as "relative to MF swing anchor," but no MF-level swing concept exists anywhere in this spec, and the relationship to G5 rule 2's confluence zone is still unstated. Also flags reuse of the already-decided `wick_to_wick_displacement` FVG-boundary phrase for what appears to be a different mechanism. |
+| 16 | ~~FVG-chain continuity rule~~ | G5 | — | **CLOSED, 11th addendum — "MF displacement" = the HTF-MTF confluence zone (G5 rules 1/2), verified as a pure restatement, no new term or threshold.** Fourth attempt, third addendum session, finally closed. |
 | 17 | R1-R7 coverage gap: no code for stop-invalidity, insufficient net-R, missing cost-profile, or missing target (formerly G7/G8/G9 in the replaced 12-code scheme) | G7/G8/G9 | Non-blocking, flagged residual for implementation time | New, 10th addendum |
 
-**Updated 2026-07-24 (eighth addendum):** items 5, 6, and 9 are now
-closed. **Items 10, 11, 12 remain open** — a submission framed as
-answering "the six confirmations" (audit items 5, 6, 9, 10, 11, 12) in
-fact answered only the first three; the other three of its six points
-were new content (items 14-16 above), not answers to 10-12. No
-substantive blockers remain among the original gate-matrix rows, but
-items 10-12 are still unconfirmed and items 14-16 are new, unapplied
-proposals — one of which (16) needs reconciliation against existing
-decisions before it can be applied at all.
+**Updated 2026-07-24 (eleventh addendum):** items 5, 6, 9, 10, 11, 12, and
+16 are all now closed. **Every item from this list's original numbered
+checklist (1-13) is closed.** Item 16 (FVG-chain continuity) took four
+attempts across three sessions before "MF displacement" was stated
+explicitly as identical to the already-closed G5 confluence-zone rule —
+recorded as a verified restatement, not a new rule. **Still open:** items
+14 and 15 (MF-to-LTF structural inheritance, liquidity-tagging
+consistency) — new proposals, never part of the original checklist,
+still pending owner confirmation they're intended scope expansions — and
+item 17 (R1-R7 coverage gap), a flagged non-blocking residual.
 
 ---
 

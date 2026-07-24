@@ -183,6 +183,13 @@ pipeline:
     cascade_invalidation: true                      # decided: second addendum, G5 rule 5 (one FVG in the confluence
                                                       # chain invalidates -> entire alignment result fails)
 
+    fvg_chain_continuity:   # decided: eleventh addendum — pure restatement, no new content
+      mf_displacement_definition: htf_mtf_confluence_zone   # "MF displacement" IS the confluence zone above,
+        # not a separate concept — see htf_mtf_directional_alignment_required and must_sit_inside_htf_mtf_confluence_zone
+      chain: [htf_fvg_valid, mf_fvg_overlaps_htf_fvg, ltf_fvg_within_mf_displacement]
+      swing_anchor_required: false   # explicitly declined — no MF-level swing concept introduced
+      new_threshold_introduced: false
+
     fvg_geometry_mode: fixed_three_candle   # decided: third addendum, Cluster 3 Q8 (semantic clarification only)
     zone_boundary_formula: wick_to_wick_displacement   # decided: sixth addendum, Decision 1 — verified against
       # src/smc_engine.py:135-143's fvgs(): bull gap = [c[i-2].high, c[i].low] where c[i-2].high < c[i].low;

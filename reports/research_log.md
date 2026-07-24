@@ -728,3 +728,26 @@ No code written, no spec file mutated beyond the rejection-code block, no
 backtest run, no execution/demo/live/promotion state changed. Full
 decision text in the tenth addendum appended to
 `ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`.
+
+## Addendum: owner-decision session round 10 — FVG-chain continuity rule closed (2026-07-24)
+
+Fourth attempt, finally closed: "MF displacement" is stated explicitly as
+identical to the already-closed G5 confluence zone (second addendum,
+rules 1-2) — the FVG-chain rule's "LTF FVG must be within MF displacement"
+clause is now, word for word, G5 rule 2's already-closed requirement, not
+new content. Verified against the pieces it claims to restate (the
+original `mf_fvg.must_overlap_htf_fvg` field, G5 rules 1-2, and the sixth
+addendum's `wick_to_wick_displacement` formula) before recording — a
+genuine restatement, not merely asserted as one.
+
+With this closure, every item on `reports/ST-C2_SPEC_AUDIT.md` §4's
+original numbered checklist (items 1-13) is closed. Two proposals remain
+outside that checklist, still pending owner confirmation of intended
+scope (MF-to-LTF structural inheritance, liquidity-tagging consistency),
+and two flagged non-blocking residuals remain (R1-R7 coverage gap,
+points/pips interpretation on the session-close buffer).
+
+No code written, no spec file mutated beyond the new
+`fvg_chain_continuity` block, no backtest run, no
+execution/demo/live/promotion state changed. Full decision text in the
+eleventh addendum appended to `ST_C2_HYBRID_LIQUIDITY_FIRST_RCR.md`.

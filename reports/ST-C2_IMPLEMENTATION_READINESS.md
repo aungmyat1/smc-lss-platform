@@ -1,6 +1,6 @@
 # ST-C2 Implementation Readiness Report
 
-**Date:** 2026-07-24 (updated after the seventh RCR addendum)
+**Date:** 2026-07-24 (updated after the eleventh RCR addendum)
 **Prepared per:** owner instruction to "prepare ST-C2 for implementation
 authorization" — explicitly **not** an instruction to begin implementation.
 Companion to `reports/ST-C2_SPEC_AUDIT.md` (full gate-by-gate matrix) and
@@ -52,28 +52,25 @@ closed:
 
 ## What is still open (non-blocking, tracked, not resolved here)
 
-**Updated 2026-07-24 (tenth addendum):** all six of the original
-low-risk items are now closed, including rejection codes (R1-R7,
-ratified, replacing the prior 12-code scheme — see
-`reports/ST-C2_SPEC_AUDIT.md` §4 item 12). One new, non-blocking residual
-from that closure: R1-R7 has no distinct code for stop-invalidity,
+**Updated 2026-07-24 (eleventh addendum):** every item from
+`reports/ST-C2_SPEC_AUDIT.md` §4's original numbered checklist (items
+1-13) is now closed — the FVG-chain continuity rule was last, closed on
+its fourth attempt: "MF displacement" is stated explicitly as the
+already-closed G5 confluence zone, a verified restatement rather than a
+new rule.
+
+**Still unapplied, both outside the original checklist:** an MF-to-LTF
+structural inheritance rule and a liquidity-tagging consistency rule
+(§4 items 14-15), pending owner confirmation they're intended as new
+scope rather than answers to anything that was open.
+
+**Non-blocking residuals, recorded not resolved:** the R1-R7
+rejection-code scheme has no distinct code for stop-invalidity,
 insufficient net-R, missing cost-profile, or missing target (§4 item 17).
-
-**Still open:** the FVG-chain continuity rule. Two restatement attempts
-(ninth and tenth addenda) have not resolved it — the second attempt
-defined "MF displacement" using a second undefined term ("MF swing
-anchor," which has no decided meaning anywhere in this spec) and still
-never stated whether it's the same thing as the already-closed G5 rule
-2's "HTF-MTF confluence zone." See `reports/ST-C2_SPEC_AUDIT.md` §4 item
-16 for the full account.
-
-**Also still unapplied:** an MF-to-LTF structural inheritance rule and a
-liquidity-tagging consistency rule, pending owner confirmation they're
-intended as new scope (§4 items 14-15). A units flag on the seventh
-addendum's `2.5` also remains (recorded as points, consistent with this
-spec's established `buffer_pips`-means-points precedent, but the owner's
-literal wording used "pips" — flagged for correction if that reading is
-wrong).
+A units flag on the seventh addendum's `2.5` also remains (recorded as
+points, consistent with this spec's established `buffer_pips`-means-points
+precedent, but the owner's literal wording used "pips" — flagged for
+correction if that reading is wrong).
 
 None of these block a deterministic engine build in the judgment recorded
 here — each has an unambiguous default reading already stated in the
@@ -133,10 +130,15 @@ this report:**
 
 ## Recommendation
 
-The specification is substantively complete. The next step is a
-`project-governance-agent` evaluation of (a) whether to promote
-`specs/st-c2_v1.1.0.yaml` to `status: frozen`, and (b) if so, what
-`IMPLEMENTATION AUTHORIZATION: GRANTED`, once issued, would actually
-scope and sequence — per its own already-recorded ruling on this exact
-question. That evaluation is a separate act from this report and is not
-performed here.
+As of the eleventh addendum, every item on `reports/ST-C2_SPEC_AUDIT.md`
+§4's original numbered checklist is closed — the specification is
+substantively complete in the fullest sense this report has tracked. Two
+items remain genuinely open (the MF-to-LTF inheritance and
+liquidity-tagging proposals, §4 items 14-15) and two are flagged
+non-blocking residuals (R1-R7 coverage gap, points/pips interpretation).
+The next step is a `project-governance-agent` evaluation of (a) whether
+to promote `specs/st-c2_v1.1.0.yaml` to `status: frozen` given this state,
+and (b) if so, what `IMPLEMENTATION AUTHORIZATION: GRANTED`, once issued,
+would actually scope and sequence — per its own already-recorded ruling
+on this exact question. That evaluation is a separate act from this
+report and is not performed here.
