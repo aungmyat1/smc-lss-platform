@@ -1,0 +1,281 @@
+{
+  "audit_date": "2026-07-24",
+  "verdict": "BLOCKED",
+  "audited_sha": "5ac448b962be255ef84538dfc2169dee2cad52d1",
+  "branch": "master",
+  "remote_master_sha": "5ac448b962be255ef84538dfc2169dee2cad52d1",
+  "counts": {
+    "P0": 0,
+    "P1": 4,
+    "P2": 4,
+    "P3": 1
+  },
+  "gate_recommendation": {
+    "s1_g2_work_may_continue": true,
+    "s1_g2_may_close": false,
+    "s1_g3_may_start": false,
+    "a3_may_start": false,
+    "stage_b_may_start": false
+  },
+  "repository_state": {
+    "current_branch": "master",
+    "head": "5ac448b962be255ef84538dfc2169dee2cad52d1",
+    "default_branch": "master",
+    "fetch_succeeded": true,
+    "merge_base_origin_master": "5ac448b962be255ef84538dfc2169dee2cad52d1",
+    "ahead": 0,
+    "behind": 0,
+    "worktree_dirty": true,
+    "open_pr_count": 1,
+    "ci_status": "failure",
+    "python": "Python 3.14.0"
+  },
+  "coverage_summary": {
+    "total_frozen_rules_in_inventory": 45,
+    "implemented_and_tested": 25,
+    "implemented_not_tested": 3,
+    "partially_implemented": 13,
+    "not_implemented": 4,
+    "missing_rule_test_mappings": 10,
+    "difference_from_starting_claim": "Current GC4 artifacts report 10 missing mappings; 20 was the earlier post-GC3 count."
+  },
+  "test_evidence": [
+    {
+      "command": "git diff --check",
+      "status": "pass"
+    },
+    {
+      "command": "python -m compileall -q src validation tests",
+      "status": "pass"
+    },
+    {
+      "command": "python -m pytest -q tests/test_st_c2_reference.py",
+      "status": "pass",
+      "result": "8 passed in 2.00s"
+    },
+    {
+      "command": "python -m pytest -q tests/st_c2/test_gc4_evidence.py",
+      "status": "pass",
+      "result": "4 passed in 1.35s"
+    },
+    {
+      "command": "python -m pytest -q tests/st_c2/test_evidence_gc3.py tests/st_c2/test_structural_conformance.py tests/st_c2/test_traceability.py",
+      "status": "pass",
+      "result": "15 passed in 6.70s"
+    },
+    {
+      "command": "python -m pytest -q tests/st_c2",
+      "status": "timeout",
+      "timeout_seconds": 120
+    },
+    {
+      "command": "python -m pytest -q tests/st_c2/test_existence_reproduction.py",
+      "status": "timeout",
+      "timeout_seconds": 180
+    },
+    {
+      "command": "python -m validation.run_st_c2_gbp_existence",
+      "status": "timeout",
+      "timeout_seconds": 240
+    },
+    {
+      "command": "python -m pytest -q",
+      "status": "timeout",
+      "timeout_seconds": 300
+    },
+    {
+      "command": "GitHub Actions CI run 30110038467",
+      "status": "fail",
+      "result": "1 failed, 214 passed, 4 skipped, 1 warning"
+    }
+  ],
+  "findings": [
+    {
+      "id": "P1-001",
+      "severity": "P1",
+      "title": "Higher-timeframe scanner can include unclosed H4/M15 candles",
+      "category": "data integrity / lookahead bias",
+      "locations": [
+        "validation/st_c2_reference.py:100-109",
+        "validation/st_c2_reference.py:286-305"
+      ],
+      "evidence": "_window_asof_indexed uses bisect_right(times, asof), and scan_history passes the current M3 timestamp as asof for H4/M15 windows.",
+      "reproduction": "Run scan_history with H4 open-time candles and inspect H4 windows for an M3 asof inside an H4 interval.",
+      "expected": "H4/M15 windows include only closed candles at the M3 decision time.",
+      "actual": "Bars with timestamp <= M3 asof are included, regardless of higher-timeframe close.",
+      "impact": "Invalidates closed-candle/no-lookahead evidence and signal timing.",
+      "affected_lifecycle_gate": "S1-G2",
+      "recommended_remediation": "Define timestamp semantics and slice H4/M15 using close times <= asof.",
+      "tests_required": "Intra-H4/M15 negative cutoff tests and exact signal reproduction after correction.",
+      "confidence": "high",
+      "blocks_s1_g2_closure": true
+    },
+    {
+      "id": "P1-002",
+      "severity": "P1",
+      "title": "FVG chain can pass without required HTF FVG overlap",
+      "category": "ST-C2 conformance",
+      "locations": [
+        "validation/st_c2/fvg_confirmation.py:145-177",
+        "validation/st_c2/evidence_fvg_ltf.py:72-83"
+      ],
+      "evidence": "FVG validity is mf_fvg != None and ltf_fvg != None; HTF FVG may be absent.",
+      "reproduction": "Construct MF and LTF overlapping FVGs with no overlapping H4 FVG and call EvidenceBuilder.build_fvg_chain.",
+      "expected": "HTF FVG valid -> MF overlap -> LTF within MF displacement is required.",
+      "actual": "MF+LTF evidence can be valid without HTF evidence.",
+      "impact": "Can manufacture confluence eligibility.",
+      "affected_lifecycle_gate": "S1-G2",
+      "recommended_remediation": "Require HTF FVG and explicit cascade rejection evidence.",
+      "tests_required": "Missing-HTF, non-overlap, and full-chain golden cases.",
+      "confidence": "high",
+      "blocks_s1_g2_closure": true
+    },
+    {
+      "id": "P1-003",
+      "severity": "P1",
+      "title": "Liquidity sweep max-age is evaluated at sweep time, not decision cutoff",
+      "category": "ST-C2 conformance / data integrity",
+      "locations": [
+        "validation/st_c2/structure.py:452-543"
+      ],
+      "evidence": "age is i - pool source index, and the earliest confirmed sweep is returned without current-cutoff age validation.",
+      "reproduction": "Create a valid sweep, append more than max_age H4 bars, and call structural_context.",
+      "expected": "Sweep age is valid relative to the current decision window.",
+      "actual": "Historically valid sweeps can remain eligible later.",
+      "impact": "Stale liquidity can pass R1.",
+      "affected_lifecycle_gate": "S1-G2",
+      "recommended_remediation": "Check age at current cutoff and select a deterministic current eligible sweep.",
+      "tests_required": "Age 20 pass, age 21 fail, multiple-sweep selection cases.",
+      "confidence": "high",
+      "blocks_s1_g2_closure": true
+    },
+    {
+      "id": "P1-004",
+      "severity": "P1",
+      "title": "Signal timestamp can differ from actual LTF confirmation timestamp",
+      "category": "ST-C2 conformance / deterministic state transitions",
+      "locations": [
+        "validation/st_c2_reference.py:239-249",
+        "validation/st_c2_reference.py:282-283",
+        "validation/st_c2/fvg_confirmation.py:180-237"
+      ],
+      "evidence": "detect_ltf_confirmation returns the first qualifying confirmation in the window, while analyze_windows stamps the signal at ltf[-1].",
+      "reproduction": "Append non-confirming bars after a valid LTF CHoCH and compare confirmation_timestamp with signal_time.",
+      "expected": "Signal timing follows first qualifying confirmation or a documented entry-window candidate rule.",
+      "actual": "Signal timing follows the last bar of the window.",
+      "impact": "Duplicate-signal and existence timestamp evidence are unreliable.",
+      "affected_lifecycle_gate": "S1-G2",
+      "recommended_remediation": "Separate confirmation, entry-window, duplicate, and expiry semantics.",
+      "tests_required": "First-bar, duplicate later-window, and expiry golden cases.",
+      "confidence": "high",
+      "blocks_s1_g2_closure": true
+    },
+    {
+      "id": "P2-001",
+      "severity": "P2",
+      "title": "Logical trade plan collapses T1 and T2 into one target",
+      "category": "ST-C2 conformance / trade-plan evidence",
+      "locations": [
+        "validation/st_c2/evidence_gc4.py:358-382"
+      ],
+      "evidence": "target_1 and target_2 both use the same target_price.",
+      "reproduction": "Inspect a confirmed LogicalTradePlan from DecisionEvidenceBuilder.",
+      "expected": "T1 and T2 are separately evidenced or the mapping remains incomplete.",
+      "actual": "One target is duplicated into both fields.",
+      "impact": "Trade-plan conformance is overstated.",
+      "affected_lifecycle_gate": "S1-G2",
+      "recommended_remediation": "Model separate T1/T2 evidence or mark target evidence incomplete.",
+      "tests_required": "Distinct target, missing T1, and missing T2 tests.",
+      "confidence": "high",
+      "blocks_s1_g2_closure": true
+    },
+    {
+      "id": "P2-002",
+      "severity": "P2",
+      "title": "Exact audited SHA has failing CI",
+      "category": "CI / reproducibility",
+      "locations": [
+        "GitHub Actions run 30110038467"
+      ],
+      "evidence": "CI failed tests/st_c2/test_existence_reproduction.py::test_existence_signal_reproduction.",
+      "reproduction": "View GitHub Actions run 30110038467 or run python -m pytest -q in the CI checkout.",
+      "expected": "Exact audited SHA has passing CI.",
+      "actual": "CI failed with 1 failed, 214 passed, 4 skipped.",
+      "impact": "Canonical reproducibility evidence is red.",
+      "affected_lifecycle_gate": "S1-G2",
+      "recommended_remediation": "Make existence data/report reproducible in CI or mark honestly data-blocked.",
+      "tests_required": "Full CI green.",
+      "confidence": "high",
+      "blocks_s1_g2_closure": true
+    },
+    {
+      "id": "P2-003",
+      "severity": "P2",
+      "title": "Baseline open-PR claim is stale",
+      "category": "governance / repository verification",
+      "locations": [
+        "GitHub PR #1"
+      ],
+      "evidence": "gh pr list returned one open PR.",
+      "reproduction": "gh pr list --repo aungmyat1/smc-lss-platform --state open",
+      "expected": "Audit baseline matches verified repository state.",
+      "actual": "Starting claim said zero open PRs.",
+      "impact": "Repository-state evidence would be inaccurate if not reverified.",
+      "affected_lifecycle_gate": "governance audit",
+      "recommended_remediation": "Update status/audit baseline when PR state changes.",
+      "tests_required": "N/A",
+      "confidence": "high",
+      "blocks_s1_g2_closure": false
+    },
+    {
+      "id": "P2-004",
+      "severity": "P2",
+      "title": "Requirements are unpinned and environments diverge",
+      "category": "reproducibility / dependency governance",
+      "locations": [
+        "requirements.txt:1-3",
+        ".github/workflows/ci.yml:12-17"
+      ],
+      "evidence": "requirements.txt lists pytest, pandas, PyYAML without versions; local and CI package versions differ.",
+      "reproduction": "Compare requirements.txt, CI install log, and local pip freeze.",
+      "expected": "Validation environment is reproducible.",
+      "actual": "Versions float across environments.",
+      "impact": "Validation output may vary by machine.",
+      "affected_lifecycle_gate": "S1-G2",
+      "recommended_remediation": "Pin constraints or declare supported validation environment.",
+      "tests_required": "CI and local reproduction under pinned environment.",
+      "confidence": "high",
+      "blocks_s1_g2_closure": false
+    },
+    {
+      "id": "P3-001",
+      "severity": "P3",
+      "title": "Existence reproduction command rewrites tracked evidence",
+      "category": "audit hygiene / test side effects",
+      "locations": [
+        "validation/run_st_c2_gbp_existence.py:13",
+        "validation/run_st_c2_gbp_existence.py:82"
+      ],
+      "evidence": "REPORT_PATH is the canonical tracked report and build_report writes it.",
+      "reproduction": "python -m validation.run_st_c2_gbp_existence",
+      "expected": "Pure reproduction does not mutate tracked evidence by default.",
+      "actual": "Command writes reports/ST-C2_V1.2_GBPUSD_EXISTENCE_CHECK.md.",
+      "impact": "Audit runs can mutate evidence files.",
+      "affected_lifecycle_gate": "S1-G2",
+      "recommended_remediation": "Separate pure check from report writer or require explicit output path.",
+      "tests_required": "No tracked-file write test.",
+      "confidence": "high",
+      "blocks_s1_g2_closure": false
+    }
+  ],
+  "unverified_items": [
+    "M1-to-M3 derivation was not regenerated.",
+    "Full local pytest did not complete.",
+    "Existence reproduction did not complete locally.",
+    "No statistical edge, OOS, walk-forward, robustness, demo, live, or production behavior was verified."
+  ],
+  "changed_files": [
+    "reports/audit/FULL_CODE_AUDIT_2026-07-24.md",
+    "reports/audit/FULL_CODE_AUDIT_FINDINGS_2026-07-24.json"
+  ]
+}
