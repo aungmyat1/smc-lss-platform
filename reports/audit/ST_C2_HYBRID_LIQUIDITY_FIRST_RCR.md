@@ -1355,3 +1355,66 @@ in for a needed formula). Both implementation gates remain unmet:
 `specs/st-c2.yaml` is still `status: candidate`, and no
 `IMPLEMENTATION AUTHORIZATION: GRANTED` string exists anywhere in the
 repo.
+
+---
+
+## Eleventh addendum (2026-07-24, owner-decision session round 10 — FVG-chain continuity rule closed, fourth and final attempt)
+
+Documentation-only, same restriction as every prior addendum: does **not**
+authorize strategy-engine implementation, backtesting, optimization, demo
+execution, live execution, promotion, or broker operations. `specs/st-c2.yaml`
+(v1.0.0) remains unchanged; `engine_implements_spec` stays `false`. No code
+written, no backtest run, no execution/demo/live/promotion state changed.
+
+### Decision — FVG-chain continuity rule (closes the item, G5)
+
+**Decision:** "MF displacement," as used in the FVG-chain continuity
+rule, **is** the HTF-MTF confluence zone — the region where the MF FVG
+must overlap the HTF FVG, both FVGs computed via the wick-to-wick
+displacement formula already ratified in G5 (sixth addendum, Decision 1).
+No swing-anchor definition and no new displacement threshold are
+introduced.
+
+**Verified, path (a) taken as offered:** the tenth addendum's closing
+note gave two paths to closure — (a) state "MF displacement" is identical
+to the confluence zone, making this a pure restatement of G5 rule 2, or
+(b) supply a standalone "MF swing anchor" definition distinct from it.
+This decision takes path (a). Checked against the pieces it claims to
+restate, not accepted on assertion:
+
+- `mf_fvg.must_overlap_htf_fvg: true` — the original spec field
+  (`specs/st-c2.yaml` v1.0.0), unchanged since filing.
+- G5 rule 1, `htf_mtf_directional_alignment_required: true` (second
+  addendum) — directional alignment, already closed.
+- G5 rule 2, `ltf_fvg.must_sit_inside_htf_mtf_confluence_zone: true`
+  (second addendum) — "LTF FVG must sit entirely inside the HTF-MTF
+  confluence zone," already closed.
+- `zone_boundary_formula: wick_to_wick_displacement` (sixth addendum,
+  Decision 1) — the FVG boundary formula each constituent FVG (HTF and
+  MF) is computed from.
+
+With "MF displacement" read as the confluence zone, the FVG-chain rule's
+"LTF FVG must be within MF displacement" clause is now, word for word,
+G5 rule 2's already-closed requirement — not new content. No conflict,
+no new term, no new threshold. This is a genuine restatement, not merely
+asserted as one.
+
+### Status after this eleventh addendum
+
+Closed this session: the FVG-chain continuity rule — the last item from
+`reports/ST-C2_SPEC_AUDIT.md` §4's original numbered checklist (items
+1-13) to remain open, now closed after four attempts across three
+sessions.
+
+**Still open, unchanged:** the two new candidate rules from the eighth
+addendum (MF-to-LTF structural inheritance, liquidity-tagging
+consistency) remain unapplied pending owner confirmation they're intended
+as new scope — these were never part of the original checklist. The
+R1-R7 coverage gap (tenth addendum) and the seventh addendum's
+points/pips interpretation flag remain as recorded, non-blocking
+residuals. Both implementation gates remain unmet: `specs/st-c2.yaml` is
+still `status: candidate`, and no `IMPLEMENTATION AUTHORIZATION: GRANTED`
+string exists anywhere in the repo — closing every original checklist
+item does not itself constitute freeze or authorization, both of which
+remain separate governance acts per the standing `project-governance-agent`
+ruling on record for this candidate.
