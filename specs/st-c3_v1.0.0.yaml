@@ -1,0 +1,267 @@
+# ST-C3 "Daily Price Action Deterministic Funnel" — draft candidate spec.
+#
+# THIS FILE IS A DRAFT INTAKE RECORD, NOT A FROZEN SPECIFICATION. It is not
+# implementation authorization and does not grant execution, demo, live, or
+# broker authority. See:
+#   - docs/adr/ADR-0004-st-c3-candidate-intake.md (intake decision)
+#   - reports/research_log.md, "ST-C3 v1.0.0 candidate intake" entry (RCR)
+#   - docs/reference/smc-definitive-guide-dailypriceaction.md
+#   - docs/reference/smc-8step-entry-model-dailypriceaction.md
+#
+# Fields below are one of:
+#   `# owner:`      — stated directly by the owner in the intake prompt/session.
+#   `# reference:`  — a specific number given in the two source reference docs
+#                     (docs/reference/*), carried here as a PROVISIONAL starting
+#                     point, not a decision. Must still be ratified or changed
+#                     at ST-C3's own S1-G1 spec-freeze act.
+#   `UNRESOLVED`    — no owner value and no reference-doc value exists; must be
+#                     resolved at S1-G1 before this file may leave draft status.
+# Nothing here is inferred or invented beyond what one of those three
+# provenance markers documents.
+#
+# STATUS: DRAFT. Does not supersede, mutate, or pause specs/st-c2_v1.2.0.yaml
+# (frozen) or NEXT_ACTION.md's active ST-C2 v1.2.0 S1-G2 milestone.
+
+id: ST-C3
+name: Daily Price Action Deterministic Funnel
+version: 1.0.0
+governance_profile: null   # UNRESOLVED — symbol/session scope not yet decided; set at S1-G1
+status: draft   # NOT frozen — see ADR-0004
+consolidation_status: INTAKE_ONLY   # no S1-G1 audit has run yet
+engine_implements_spec: false   # SAFETY INTERLOCK — no engine exists
+implementation_authorization: null   # nothing authorized — draft only
+supersedes: null   # new lineage; does not supersede or revise ST-C2 (ADR-0004)
+description: >
+  Deterministic funnel formalizing the Daily Price Action ("Justin Bennett")
+  8-step SMC entry model: HTF bias -> external liquidity sweep ->
+  displacement/BOS -> dealing-range OTE -> FVG/order-block confluence -> LTF
+  CHoCH confirmation -> entry window -> structural stop -> tiered liquidity
+  targets -> expiry. Distinct lineage from ST-C2; own rejection-code and
+  funnel-stage-cluster namespace (ADR-0004) to avoid audit-trail collision.
+
+# ============================================================
+# 1. Instruments & Sessions — UNRESOLVED
+# ============================================================
+instruments: []   # UNRESOLVED — owner did not specify symbol scope for ST-C3;
+                   # no instrument may be enabled before an explicit RCR addendum
+
+sessions: {}   # UNRESOLVED — owner did not specify session windows for ST-C3
+
+# ============================================================
+# 2. Timeframes — owner: matches the funnel prompt's stage-by-stage timeframe
+#    references (H4 bias, H4/M15 sweep, M15 displacement/BOS/OTE, H4/M15
+#    FVG/OB, M3 LTF confirmation)
+# ============================================================
+timeframes:
+  htf: H4      # owner: "HTF Bias (H4)"
+  mf: M15      # owner: "Displacement + BOS (M15)", "Dealing Range + OTE (M15)"
+  ltf: M3      # owner: "LTF Confirmation (M3 CHoCH/BOS)"
+
+# ============================================================
+# 3. Funnel Pipeline Stages
+# ============================================================
+pipeline:
+
+  # ------------------------------------------------------------
+  # 3.0 HTF Bias Stage (F1 cluster: 1D FVG/OB reaction, per ADR-0004 relabel)
+  # ------------------------------------------------------------
+  htf_bias_stage:
+    structure_source: hh_hl_lh_ll   # owner: "Identify HH/HL or LH/LL structure on H4"
+    bias_lock_policy: locked_until_valid_htf_choch   # owner: "Bias remains locked until a valid HTF CHoCH"
+    no_trade_against_bias: true   # owner: "No trades allowed against HTF bias"
+    evidence_ids: [HTF_BIAS_ID, HTF_SWING_ID]
+    rejection_code: ST-C3-R1   # owner meaning: HTF bias unclear — distinct from ST-C2's bare R1 (ADR-0004)
+
+  # ------------------------------------------------------------
+  # 3.1 External Liquidity Sweep Stage
+  # ------------------------------------------------------------
+  liquidity_sweep_stage:
+    sweep_definition:
+      breaks_buy_or_sell_side_liquidity: true   # owner
+      wick_penetration_required: true            # owner: "wick through the level"
+      close_back_inside_range_required: true      # owner: "close back inside the range"
+    wick_ratio_min: UNRESOLVED   # no owner number given; ST-C2 uses 0.6 but that is ST-C2's own
+                                  # decided value, not carried over per ADR-0004 (new lineage)
+    equal_highs_lows_tolerance: UNRESOLVED
+    max_sweep_age_bars: UNRESOLVED
+    evidence_ids: [SWEEP_ID, LIQUIDITY_ZONE_ID]
+    rejection_code: ST-C3-R2   # owner meaning: no external sweep
+
+  # ------------------------------------------------------------
+  # 3.2 Displacement + BOS Stage
+  # ------------------------------------------------------------
+  displacement_bos_stage:
+    displacement_definition: impulsive_candles   # owner: "displacement must show impulsive candles"
+    displacement_body_ratio_min: UNRESOLVED   # "impulsive" not given a numeric threshold by the owner
+    bos_confirmation_rule: body_close_required   # owner: "BOS must be a body close, not wick"
+    bos_defines_dealing_range: true   # owner: "BOS defines the dealing range"
+    evidence_ids: [DISPLACEMENT_ID, BOS_ID, DEALING_RANGE_ID]
+    rejection_code: ST-C3-R3   # owner meaning: no displacement/BOS
+
+  # ------------------------------------------------------------
+  # 3.3 Dealing Range / OTE Stage
+  # ------------------------------------------------------------
+  ote_stage:
+    dealing_range_definition: swing_origin_to_bos_extreme   # owner: "Dealing range = swing origin -> BOS extreme"
+    short_only_in_premium: true   # owner
+    long_only_in_discount: true   # owner
+    equilibrium_boundary: 0.5   # reference: docs/reference/smc-definitive-guide-dailypriceaction.md,
+                                 # "Premium and discount zones" (50% of dealing range) — PROVISIONAL
+    ote_band_min: 0.62   # reference: docs/reference/smc-definitive-guide-dailypriceaction.md,
+                          # "Optimal Trade Entry (OTE)" (62%-79% retracement) — PROVISIONAL
+    ote_band_max: 0.79   # reference: same source — PROVISIONAL
+    evidence_ids: [OTE_ZONE_ID]
+    rejection_code: ST-C3-R4   # owner meaning: no OTE pullback
+
+  # ------------------------------------------------------------
+  # 3.4 FVG / Order Block Confluence Stage
+  # ------------------------------------------------------------
+  fvg_ob_confluence_stage:
+    required_zone_types: [fresh_h4_or_m15_fvg, fresh_h4_or_m15_order_block]   # owner
+    must_sit_inside_ote: true   # owner: "inside OTE zone"
+    freshness_definition: UNRESOLVED   # owner says "fresh" but gives no max-age bar count
+    evidence_ids: [FVG_ID, ORDERBLOCK_ID]
+    rejection_code: ST-C3-R5   # owner meaning: no FVG/OB confluence
+
+  # ------------------------------------------------------------
+  # 3.5 LTF Confirmation Stage (M3)
+  # ------------------------------------------------------------
+  ltf_confirmation_stage:
+    short_confirmation:
+      sweep_local_highs_required: true   # owner
+      choch_or_bos_direction: down        # owner: "M3 CHoCH/BOS down"
+    long_confirmation:
+      sweep_local_lows_required: true    # owner
+      choch_or_bos_direction: up          # owner: "M3 CHoCH/BOS up"
+    zone_context_required: inside_fvg_ob_zone   # owner: "Inside the FVG/OB zone"
+    evidence_ids: [LTF_SWEEP_ID, LTF_CHOCH_ID]
+    rejection_code: ST-C3-R6   # owner meaning: no LTF CHoCH
+
+  # ------------------------------------------------------------
+  # 3.6 Entry Window Stage
+  # ------------------------------------------------------------
+  entry_window_stage:
+    entry_window_bars: UNRESOLVED   # owner: "within X bars after LTF CHoCH" — X not given
+    entry_zone_definition: [mf_ltf_fvg, refined_order_block]   # owner
+    evidence_ids: [ENTRY_WINDOW_ID, ENTRY_ZONE_ID]
+    rejection_code: ST-C3-R7   # owner meaning: entry window expired
+
+  # ------------------------------------------------------------
+  # 3.7 Stop-Loss (structural invalidation)
+  # ------------------------------------------------------------
+  stop_loss_stage:
+    mode: structural_invalidation   # owner: "never arbitrary"
+    short_anchor: above_m3_swing_that_formed_choch   # owner
+    long_anchor: below_m3_swing_that_formed_choch    # owner
+    buffer_points: UNRESOLVED   # owner gives no numeric buffer
+    evidence_ids: [INVALIDATION_SWING_ID]
+
+  # ------------------------------------------------------------
+  # 3.8 Take-Profit Targets
+  # ------------------------------------------------------------
+  targets_stage:
+    tp1_internal_liquidity:
+      definition: [prior_swing, internal_liquidity_pocket]   # owner
+      rr_min: 3.0   # owner: "TP1 — Internal Liquidity (3R minimum)" / "TP1 = 3R" (stated twice, consistent)
+    tp2_external_liquidity:
+      definition: [equal_highs_lows, major_liquidity_pool]   # owner
+      rr_min: UNRESOLVED   # owner gives no numeric floor for TP2
+    tp3_htf_objective:
+      definition: [h4_swing, deeper_liquidity_target]   # owner
+      rr_min: UNRESOLVED   # owner gives no numeric floor for TP3
+    evidence_ids: [TP1_ID, TP2_ID, TP3_ID]
+
+  # ------------------------------------------------------------
+  # 3.9 Expiry Logic
+  # ------------------------------------------------------------
+  expiry_stage:
+    triggers:
+      - invalidation_breaks   # owner
+      - entry_window_closes   # owner
+      - htf_bias_flips        # owner
+      - new_sweep_and_bos_creates_newer_setup   # owner
+    evidence_ids: [EXPIRY_ID]
+
+# ============================================================
+# 4. Rejection Codes — ST-C3-namespaced per ADR-0004 to avoid collision
+#    with ST-C2's bare R1-R7 (specs/st-c2_v1.2.0.yaml §6, different meanings)
+# ============================================================
+rejection_codes:
+  ST-C3-R1: htf_bias_unclear
+  ST-C3-R2: no_external_sweep
+  ST-C3-R3: no_displacement_bos
+  ST-C3-R4: no_ote_pullback
+  ST-C3-R5: no_fvg_ob_confluence
+  ST-C3-R6: no_ltf_choch
+  ST-C3-R7: entry_window_expired
+  # owner requirement: every rejection carries rejection code, reason,
+  # evidence IDs, and the funnel stage where the failure occurred.
+
+# ============================================================
+# 5. Trade-Plan Object Schema (machine format, owner-specified shape)
+# ============================================================
+trade_plan_schema:
+  direction: enum[LONG, SHORT]
+  htf_bias: HTF_BIAS_ID
+  sweep: SWEEP_ID
+  displacement: DISPLACEMENT_ID
+  bos: BOS_ID
+  dealing_range: DEALING_RANGE_ID
+  ote_zone: OTE_ZONE_ID
+  confluence_zone: [FVG_ID, ORDERBLOCK_ID]
+  ltf_confirmation: LTF_CHOCH_ID
+  entry_zone: ENTRY_ZONE_ID
+  entry_window: ENTRY_WINDOW_ID
+  stop_loss: INVALIDATION_SWING_ID
+  targets: [TP1_ID, TP2_ID, TP3_ID]
+  expiry: EXPIRY_ID
+  rr: numeric
+  evidence: array_of_all_ids
+  status: enum[VALID, REJECTED]
+
+# ============================================================
+# 6. Risk & Portfolio — UNRESOLVED (not carried over from ST-C2; new
+#    lineage per ADR-0004, must be independently decided at S1-G1)
+# ============================================================
+risk:
+  per_trade_risk_pct: UNRESOLVED
+  min_rr: 3.0   # owner: TP1 3R minimum functions as the effective RR floor; ratify explicitly at S1-G1
+  max_positions: UNRESOLVED
+  portfolio_heat_pct: UNRESOLVED
+  daily_loss_pct: UNRESOLVED
+  weekly_loss_pct: UNRESOLVED
+
+# ============================================================
+# 7. Conformance & Diagnostics
+# ============================================================
+conformance:
+  require_all_stages_pass: true   # owner: "If any stage fails, reject the signal using the correct rejection code"
+  log_level: info
+
+diagnostics:
+  enable_audit_logs: true
+  record_rejected_setups: true   # owner: every rejection must include code, reason, evidence IDs, stage
+
+# ============================================================
+# 8. RCR Pre-Registration
+# ============================================================
+rcr_preregistration:
+  research_log_entry: "ST-C3 v1.0.0 candidate intake — Daily Price Action funnel, reports/research_log.md, 2026-07-24"
+  primary_metric: UNRESOLVED   # deferred to S1-G1
+  secondary_metrics: UNRESOLVED
+  existence_check_floor: UNRESOLVED
+  population_feasibility_floor: UNRESOLVED
+  statistical_claim_floor: UNRESOLVED
+
+# ============================================================
+# 9. Source Reference Material (non-normative)
+# ============================================================
+reference_material:
+  files:
+    - docs/reference/smc-definitive-guide-dailypriceaction.md
+    - docs/reference/smc-8step-entry-model-dailypriceaction.md
+  note: >
+    Both are external, non-authoritative reference material per their own
+    file headers. Nothing in this spec is authoritative until S1-G1 freezes
+    it; the reference docs remain informative only, per
+    docs/RESEARCH-CHARTER.md.
