@@ -84,13 +84,14 @@ pipeline:
     multi_choch_sequencing:
       second_choch: confirm_continuation          # decided: third addendum, Cluster 1 Q4
       third_choch: trend_acceleration_or_reclassification   # decided: third addendum, Cluster 1 Q4
-      fourth_plus_choch: null   # UNRESOLVED — no decision covers a 4th+ CHoCH; see audit §G1/G3
+      fourth_plus_choch: continuation_unless_htf_displacement_exceeded   # decided: eighth addendum, Decision 3 —
+        # keyed to htf_bias_stage.choch.displacement_body_ratio_min: 0.6, not a new number
 
-    # UNRESOLVED — see audit §G1. Never addressed by any of the four addenda.
-    bull_bear_classification_rule: null   # e.g. "break above prior confirmed high = bullish shift" — mechanically
-                                           # implied by the strategy's own vocabulary but never stated as an explicit rule.
-    bias_evidence_timestamp_field: null   # what exact timestamp is recorded as the bias-confirmation evidence, for
-                                           # `diagnostics.record_rejected_setups`/`store_structure_snapshots` below.
+    bull_bear_classification_rule: htf_bos_and_choch_only   # decided: eighth addendum, Decision 1 — no alternative
+                                                             # classifier (EMA, swing-count, regression slope, etc.)
+    bias_evidence_timestamp_field: bias_evidence_timestamp   # decided: eighth addendum, Decision 2 — every bias
+      # decision (long/short/none) includes this field, referencing the structural event (BOS or CHoCH) that
+      # produced the bias
 
   # ------------------------------------------------------------
   # 3.1 Liquidity / Inducement Stage
