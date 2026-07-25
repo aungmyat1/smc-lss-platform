@@ -1,7 +1,15 @@
 # ST-C3 State Machine
 
 **Strategy ID:** ST-C3
+**Spec version:** v1.0.1 (see `specs/st-c3_v1.0.1.yaml`)
 **Status:** Pre-freeze draft foundation document
+
+**[v1.0.1, GR-1 fix]** `S12`'s `Reject / Terminate` column previously read
+"Appropriate R-code if any risk or target rule fails" — a placeholder
+matching v1.0.0's own internally-inconsistent `failure_code` (see
+`reports/validation/st_c3/GOVERNANCE_REVIEW_REPORT.md` Finding GR-1). It now
+names the real code, `R8_INVALID_RISK_OR_TARGET`, matching
+`ST-C3_EVIDENCE_BINDINGS.md` and `ST-C3_VALIDATOR_RULES.md`.
 
 This deterministic state machine matches the ST-C3 architecture, funnel
 lifecycle, evidence objects, rejection codes, and termination logic. It is a
@@ -49,7 +57,7 @@ gates authorize implementation.
 | `S9` | LTF CONFIRMATION | `LTFConfirmationEvidence.valid == true AND sweep_local_liquidity == true` | `S10` | `R6_NO_LTF_CONFIRMATION` |
 | `S10` | SESSION GATEKEEPER | `SessionWindowEvidence.valid == true AND session IN {LONDON, NY}` | `S11` | `R6_NO_LTF_CONFIRMATION` for invalid session |
 | `S11` | ENTRY WINDOW | `EntryWindowEvidence.valid == true AND inside_window == true` | `S12` | `R7_ENTRY_WINDOW_EXPIRED` |
-| `S12` | RISK & SL/TP BUILD | `InvalidationSwingEvidence.valid == true AND TargetEvidence(valid for TP1/TP2/TP3) AND RR >= MIN_RR` | `S13` | Appropriate R-code if any risk or target rule fails |
+| `S12` | RISK & SL/TP BUILD | `InvalidationSwingEvidence.valid == true AND TargetEvidence(valid for TP1/TP2/TP3) AND RR >= MIN_RR` | `S13` | `R8_INVALID_RISK_OR_TARGET` |
 | `S13` | TRADE_PLAN EMIT | All prior states valid; build `TRADE_PLAN` object | `S14` | Internal error if build fails |
 | `S14` | EXPIRY / TERMINATION | Monitor `ExpiryEvidence` plus HTF/LTF updates | `S15` | `ERR_HTF_BIAS_FLIP`, `ERR_ENTRY_WINDOW_EXPIRED`, `ERR_SL_INVALIDATION`, `ERR_SUPERSEDED_SETUP` |
 | `S15` | TERMINAL | Trade closed or signal terminated; archive evidence and enums | `S0` | None; reset for next setup |

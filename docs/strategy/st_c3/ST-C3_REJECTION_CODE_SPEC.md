@@ -1,7 +1,15 @@
 # ST-C3 Rejection Code Specification
 
 **Strategy ID:** ST-C3
+**Spec version:** v1.0.1 (see `specs/st-c3_v1.0.1.yaml`)
 **Status:** Pre-freeze draft foundation document
+
+**[v1.0.1] Revision note:** this revision adds `R8` (dedicated code for
+`S12_RISK_SLTP` failures — R-1 fix) and extends `R3`/`R4`'s triggers to
+explicitly justify their reuse by `S5_BOS_EXTREME_LOCK`/`S6_DEALING_RANGE`
+(R-3 fix). See `reports/validation/st_c3/ST-C3_v1.0.1_PATCH_RECOMMENDATION.md`
+and `reports/validation/st_c3/GOVERNANCE_REVIEW_REPORT.md` for the audit
+trail. No guard condition, evidence object, state, or threshold changed.
 
 This is the official ST-C3 rejection and termination layer. Every code is
 deterministic, machine-readable, and tied directly to a funnel stage.
@@ -51,6 +59,8 @@ Triggered when:
 - No impulsive move follows the sweep.
 - BOS fails to break structure with a body close.
 - BOS direction contradicts HTF bias.
+- `[v1.0.1]` BOS extreme pullback is not detected (justifies reuse by
+  `S5_BOS_EXTREME_LOCK`).
 
 Reason: No momentum shift.
 
@@ -61,6 +71,8 @@ Triggered when:
 - Price does not retrace into the 62-79% zone.
 - BOS extreme is not locked, so OTE cannot be computed.
 - Retrace occurs but stays outside OTE.
+- `[v1.0.1]` Dealing range is invalid or undefined (justifies reuse by
+  `S6_DEALING_RANGE`).
 
 Reason: No optimal entry zone.
 
@@ -93,6 +105,21 @@ Triggered when:
 - LTF CHoCH is too old to confirm.
 
 Reason: Timing invalid.
+
+### R8 - Invalid Risk or Target `[v1.0.1, new]`
+
+Triggered when:
+
+- Invalidation swing is undefined or ambiguous.
+- No valid target evidence exists.
+- Computed RR is below `MIN_RR`.
+
+Reason: Risk or target construction failed.
+
+Prior to v1.0.1, `S12_RISK_SLTP` failures were mis-coded as
+`R5_NO_FVG_OB_CONFLUENCE`, whose triggers are unrelated (see
+`reports/validation/st_c3/ST-C3_S1-G1C_LOGIC_CONFORMANCE_REPORT.md` Finding
+R-1). `R8` is the dedicated code for this stage as of v1.0.1.
 
 ---
 
@@ -155,7 +182,8 @@ This schema is used for logging, governance, and machine execution.
     "R4_NO_OTE_PULLBACK": "Rejected: Price did not retrace into OTE zone.",
     "R5_NO_FVG_OB_CONFLUENCE": "Rejected: No valid FVG/OB confluence.",
     "R6_NO_LTF_CONFIRMATION": "Rejected: No valid LTF CHoCH/BOS.",
-    "R7_ENTRY_WINDOW_EXPIRED": "Rejected: Entry window exceeded MAX_ENTRY_BARS."
+    "R7_ENTRY_WINDOW_EXPIRED": "Rejected: Entry window exceeded MAX_ENTRY_BARS.",
+    "R8_INVALID_RISK_OR_TARGET": "Rejected: No valid structural stop, target, or minimum RR."
   },
   "ERR_CODES": {
     "ERR_HTF_BIAS_FLIP": "Terminated: HTF structure invalidated.",

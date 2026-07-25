@@ -1,39 +1,48 @@
 strategy: ST-C3
-version: 1.0.0
+version: 1.0.1
 active_symbol: null  # not yet scoped to a single symbol at S1-G1C
-spec: specs/st-c3_v1.0.0.yaml
+spec: specs/st-c3_v1.0.1.yaml
+prior_spec: specs/st-c3_v1.0.0.yaml  # preserved unchanged as historical record
 
 stage_a_strategy_validation:
   status: in_progress
 
   a1_logic_conformance:
-    status: conditionally_ready
+    status: passed
     gate: S1-G1C
     report: reports/validation/st_c3/ST-C3_S1-G1C_LOGIC_CONFORMANCE_REPORT.md
     checklist: reports/validation/st_c3/st-c3_s1-g1c_checklist.md
-    tracked_findings:
+    governance_review: reports/validation/st_c3/GOVERNANCE_REVIEW_REPORT.md
+    patch_recommendation: reports/validation/st_c3/ST-C3_v1.0.1_PATCH_RECOMMENDATION.md
+    rerun_report: reports/validation/st_c3/S1-G1C_RERUN_REPORT.md
+    rcr_entry: "reports/research_log.md, 'ST-C3 rejection-code layer fix' entry, 2026-07-25"
+    closed_findings:
       - id: R-1
         severity: significant
         summary: S12_RISK_SLTP mis-coded as R5_NO_FVG_OB_CONFLUENCE
-        recommendation: reports/validation/st_c3/ST-C3_v1.0.1_PATCH_RECOMMENDATION.md
+        resolution: added dedicated R8_INVALID_RISK_OR_TARGET code, repointed S12
       - id: R-2
         severity: internal_inconsistency
-        summary: transitions.S12.failure_code placeholder disagrees with evidence_bindings/validator_rules
-        recommendation: reports/validation/st_c3/ST-C3_v1.0.1_PATCH_RECOMMENDATION.md
+        summary: transitions.S12.failure_code placeholder disagreed with evidence_bindings/validator_rules
+        resolution: replaced placeholder with R8_INVALID_RISK_OR_TARGET in all three representations
       - id: R-3
         severity: minor
         summary: S5/S6 rejection-code reuse not justified by target code's trigger list
-        recommendation: reports/validation/st_c3/ST-C3_v1.0.1_PATCH_RECOMMENDATION.md
+        resolution: extended R3/R4 trigger lists to explicitly cover S5/S6 reuse
       - id: G-4
         severity: preparation_gap
         summary: no governance/st_c3_stage_status.yaml existed prior to this file
-        recommendation: closed_by_this_file
-    next_required_decision: owner_decision_on_v1_0_1_patch_recommendation
+        resolution: closed_by_this_file
+      - id: GR-1
+        severity: minor
+        summary: ST-C3_STATE_MACHINE.md omitted from original patch recommendation's migration file list
+        resolution: added to migration scope and updated alongside the other three companion docs
+    next_required_decision: owner_decision_on_opening_a2_s1_g2
 
   a2_signal_conformance:
     status: blocked
     blocked_by:
-      - a1_logic_conformance
+      - owner_decision_on_opening_a2_s1_g2   # a1_logic_conformance passed; S1-G2 not yet opened as a milestone
     current_gate: S1-G2
     current_gate_name: Reference Implementation Authorization
     authorization: null

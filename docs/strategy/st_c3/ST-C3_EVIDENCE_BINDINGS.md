@@ -1,7 +1,14 @@
 # ST-C3 Evidence Bindings
 
 **Strategy ID:** ST-C3
+**Spec version:** v1.0.1 (see `specs/st-c3_v1.0.1.yaml`)
 **Status:** Pre-freeze draft foundation document
+
+**[v1.0.1]** `S12_RISK_SLTP`'s `Reject` code is `R8_INVALID_RISK_OR_TARGET`
+(was `R5_NO_FVG_OB_CONFLUENCE` under v1.0.0 — R-1 fix, see
+`reports/validation/st_c3/ST-C3_v1.0.1_PATCH_RECOMMENDATION.md`). `S5`/`S6`
+reuse of `R3`/`R4` is unchanged but now justified by triggers added to those
+codes' definitions in `ST-C3_REJECTION_CODE_SPEC.md` (R-3 fix).
 
 This document binds ST-C3 evidence objects into the state machine. It defines
 the deterministic relationship between funnel states, evidence consumed,
@@ -63,6 +70,6 @@ and non-executable until governance authorizes implementation.
 | `S9_LTF_CONFIRMATION` | `LTFConfirmationEvidence` | `LTFConfirmationEvidence` | `LTFConfirmationEvidence.valid == true and LTFConfirmationEvidence.sweep_local_liquidity == true` | `R6_NO_LTF_CONFIRMATION` |
 | `S10_SESSION_GATEKEEPER` | `SessionWindowEvidence` | `SessionWindowEvidence` | `SessionWindowEvidence.valid == true and SessionWindowEvidence.session in ["LONDON", "NY"]` | `R6_NO_LTF_CONFIRMATION` |
 | `S11_ENTRY_WINDOW` | `EntryWindowEvidence` | `EntryWindowEvidence` | `EntryWindowEvidence.valid == true and EntryWindowEvidence.inside_window == true` | `R7_ENTRY_WINDOW_EXPIRED` |
-| `S12_RISK_SLTP` | `InvalidationSwingEvidence`, `TargetEvidence` | `InvalidationSwingEvidence`, `TargetEvidence` | `InvalidationSwingEvidence.valid == true and TargetEvidence.valid == true` | `R5_NO_FVG_OB_CONFLUENCE` |
+| `S12_RISK_SLTP` | `InvalidationSwingEvidence`, `TargetEvidence` | `InvalidationSwingEvidence`, `TargetEvidence` | `InvalidationSwingEvidence.valid == true and TargetEvidence.valid == true` | `R8_INVALID_RISK_OR_TARGET` |
 | `S13_TRADE_PLAN_EMIT` | All pre-entry evidence | `TRADE_PLAN` | `all previous states valid` | none |
 | `S14_EXPIRY` | `ExpiryEvidence` | `ExpiryEvidence` | monitor expiry evidence | `ERR_HTF_BIAS_FLIP`, `ERR_ENTRY_WINDOW_EXPIRED`, `ERR_SL_INVALIDATION`, `ERR_SUPERSEDED_SETUP` |

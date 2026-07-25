@@ -1080,3 +1080,61 @@ are namespaced per ADR-0004 to avoid collision with ST-C2's existing bare
 scenario-cluster taxonomy (`specs/v3.9.yaml`, `specs/v3.10.yaml`). ST-C3 does
 not supersede, pause, or modify ST-C2; `NEXT_ACTION.md` continues to name
 ST-C2 v1.2.0 S1-G2 closure as the sole active execution milestone.
+
+## Change: ST-C3 rejection-code layer fix (spec version: v1.0.0 -> v1.0.1)
+Date: 2026-07-25
+Author: AI agent (governance review); owner-approved 2026-07-25
+
+### Why
+S1-G1C logic-conformance audit
+(`reports/validation/st_c3/ST-C3_S1-G1C_LOGIC_CONFORMANCE_REPORT.md`) found
+three rejection-code defects (R-1 significant, R-2 internal inconsistency,
+R-3 minor) that would cause a spec-faithful validator to mislabel RR/stop/
+target failures and two other guard failures with inaccurate rejection
+codes, corrupting rejection-log diagnostics without affecting which trades
+are accepted or rejected. A governance review
+(`reports/validation/st_c3/GOVERNANCE_REVIEW_REPORT.md`) independently
+verified all three findings against `specs/st-c3_v1.0.0.yaml` line-by-line
+and found one additional minor migration-scope gap (GR-1: companion doc
+`ST-C3_STATE_MACHINE.md` omitted from the original patch recommendation's
+file list). The owner approved the recommendation as written, with GR-1
+folded in, on 2026-07-25.
+
+### Evidence
+Direct line-level citation against `specs/st-c3_v1.0.0.yaml` (lines
+297-306, 526, 576, 581, 607-611, 695-697), confirmed in both the S1-G1C
+audit and the governance review's Verification Checklist.
+
+### Hypothesis
+Adding a dedicated `R8` code for `S12` and repointing `S12`'s placeholder
+`failure_code` at it (R-1/R-2), plus extending `R3`/`R4`'s trigger lists to
+cover the `S5`/`S6` reuse (R-3, trigger-list-amendment variant, not new
+codes), will make every rejection code's own trigger definition match the
+state(s) that actually emit it, with zero change to trade acceptance/
+rejection behavior.
+
+### Expected improvement
+Not a performance change — no trade-count, win-rate, or R-multiple
+difference is expected or measurable, since no guard condition changes.
+The only measurable difference is rejection-log code accuracy (100% of
+`S12` rejections previously mislabeled as `R5`; 0% after the fix).
+
+### Success criteria
+Re-run S1-G1C structural checks against v1.0.1: same PASS result, with
+R-1/R-2/R-3 closed (not merely tracked) and GR-1 folded into the migration.
+Recorded in `reports/validation/st_c3/S1-G1C_RERUN_REPORT.md`.
+
+### Rollback criteria
+If re-running S1-G1C against v1.0.1 finds any new structural, cross-link,
+or determinism defect introduced by the patch, revert to v1.0.0 as the
+active frozen spec and re-open R-1/R-2/R-3 as tracked residuals pending a
+corrected patch.
+
+### Disposition
+ACCEPTED. `specs/st-c3_v1.0.1.yaml` cut with exactly the diffs described
+above. `specs/st-c3_v1.0.0.yaml` preserved unchanged as historical record.
+S1-G1C re-run recorded a clean PASS — see
+`reports/validation/st_c3/S1-G1C_RERUN_REPORT.md`. This entry does not
+authorize A2/S1-G2 reference implementation, backtesting, replay, demo, or
+production — those remain separately gated per `NEXT_ACTION.md`/
+`PROJECT_STATUS.md`.

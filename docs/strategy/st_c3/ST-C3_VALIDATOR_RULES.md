@@ -1,7 +1,12 @@
 # ST-C3 Validator Rules
 
 **Strategy ID:** ST-C3
+**Spec version:** v1.0.1 (see `specs/st-c3_v1.0.1.yaml`)
 **Status:** Pre-freeze draft foundation document
+
+**[v1.0.1]** `S12_RISK_SLTP` now rejects with `R8_INVALID_RISK_OR_TARGET`
+(was `R5_NO_FVG_OB_CONFLUENCE` under v1.0.0 — R-1 fix). No guard condition
+changed.
 
 These rules define how the future ST-C3 validator agent enforces the state
 machine, evidence objects, rejection codes, termination codes, and trade-plan
@@ -61,7 +66,7 @@ funnel state.
 | `S9_LTF_CONFIRMATION` | `LTFConfirmationEvidence.valid == true AND LTFConfirmationEvidence.sweep_local_liquidity == true` | `R6_NO_LTF_CONFIRMATION` |
 | `S10_SESSION_GATEKEEPER` | `SessionWindowEvidence.valid == true AND SessionWindowEvidence.session IN ["LONDON", "NY"]` | `R6_NO_LTF_CONFIRMATION` |
 | `S11_ENTRY_WINDOW` | `EntryWindowEvidence.valid == true AND EntryWindowEvidence.inside_window == true` | `R7_ENTRY_WINDOW_EXPIRED` |
-| `S12_RISK_SLTP` | `InvalidationSwingEvidence.valid == true AND TargetEvidence.valid == true AND computed_rr >= MIN_RR` | `R5_NO_FVG_OB_CONFLUENCE` |
+| `S12_RISK_SLTP` | `InvalidationSwingEvidence.valid == true AND TargetEvidence.valid == true AND computed_rr >= MIN_RR` | `R8_INVALID_RISK_OR_TARGET` |
 | `S13_TRADE_PLAN_EMIT` | `all previous states valid` | emit `TRADE_PLAN` |
 
 ---
