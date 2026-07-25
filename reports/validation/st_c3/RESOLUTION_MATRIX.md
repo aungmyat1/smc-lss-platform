@@ -34,9 +34,9 @@ and must independently decide its own values, not inherit ST-C2's.
 | R-01 | `governance_profile` | Symbol/session scope not chosen | Owner decision required | **DECIDED 2026-07-25 — see `OWNER_DECISION_LOG.md`** ("Strict Deterministic Governance Profile"; clarified as not altering the frozen funnel's required gates) | Blocks everything; nothing can run without a scope | Critical |
 | R-02 | `instruments` | No symbol enabled | Owner decision required | Not proposed — this is the single highest-leverage decision in the whole matrix | Blocks Phase 3-9 entirely; determines which historical data even matters | Critical |
 | R-03 | `sessions.low_liquidity_filters` | No filter rule despite `optional_low_liquidity_filters: true` | Owner decision required | PROPOSED: `disabled_by_default` (simplest deterministic starting point; can be added as a v1.0.3 addendum once R-02/R-04 data exists to justify a filter) | Low — only affects edge-case session windows | Low |
-| R-04 | `wick_ratio_min` | No minimum wick-penetration ratio | Research required | PROPOSED range: `0.5-0.7`, cite `specs/st-c2_v1.2.0.yaml:104` (`0.6`) as a reference point only, not inherited | Medium — affects sweep detection sensitivity | High (blocks Package B) |
+| R-04 | `wick_ratio_min` | No minimum wick-penetration ratio | Research required | **DECIDED 2026-07-26 — 0.50, from empirical GBPUSD M15 distribution; see `R04_R06_RESEARCH_REPORT.md` and `OWNER_DECISION_LOG.md`** | Medium — affects sweep detection sensitivity | Resolved |
 | R-05 | `equal_highs_lows_tolerance` | No tolerance band for equal-highs/lows pools | Research required | **DECIDED 2026-07-26 — 0.10 x MF ATR(1), same unit convention as R-07; see `OWNER_DECISION_LOG.md`** (owner decided directly rather than via an existence-check pass — not empirically validated against historical data yet) | Medium | Resolved |
-| R-06 | `max_sweep_age_bars` | No upper bound on swept-level age | Research required | PROPOSED range: 20-60 bars, cite `specs/st-c2_v1.2.0.yaml:167,175` (`max_age_bars: 60`/`20` for its own OB freshness, different field but same order of magnitude) as reference only | Medium | Medium |
+| R-06 | `max_sweep_age_bars` | No upper bound on swept-level age | Research required | **DECIDED 2026-07-26 — 15 bars, from empirical GBPUSD M15 distribution (proposed 20-60 range was non-binding above ~30); see `R04_R06_RESEARCH_REPORT.md` and `OWNER_DECISION_LOG.md`** | Medium | Resolved |
 | R-07 | `displacement_body_ratio_min` | "Impulsive candles" has no numeric threshold | Research required | **DECIDED 2026-07-25 — 0.50 body-ratio AND total_range >= 1.0 x MF ATR(1); see `OWNER_DECISION_LOG.md`** (owner value below this matrix's proposed 0.6-0.7 range, combined with a new ATR-floor condition not previously tracked) | High — this gates the entire displacement/BOS stage (§3.2), the funnel's second major filter | Resolved — was Critical, last remaining Critical item |
 | R-08 | `buffer_points` | No numeric buffer on the structural stop | Research required | **DECIDED (value) 2026-07-26 — 0.20 x MF ATR(1); guard formulation flagged as non-directional, needs correction — see `OWNER_DECISION_LOG.md`** | Medium — affects every SL price computed | Resolved (value), open (guard direction) |
 | R-09 | `tp2_external_liquidity.rr_min` | No RR floor for TP2 | Owner decision required | PROPOSED: `5.0R` (between TP1's fixed `3.0R` and a plausible TP3, preserving strict ordering TP1 < TP2 < TP3) | Medium | Medium |
@@ -61,13 +61,14 @@ and must independently decide its own values, not inherit ST-C2's.
 ## Priority Summary
 
 - **Critical:** none remaining.
-- **High:** R-04 (still needs research pass).
-- **Medium:** R-06 (still needs research pass).
-- **Remaining pending (4 of 26):** R-03 (`sessions.low_liquidity_filters`,
-  untouched, not an owner-decision blocker, just never picked yet), R-04,
-  R-06 (both need `tools/existence_check.py` against real candle data),
-  R-18 (`existence_check_floor` — unblocked, needs an actual data run, not
-  an owner pick).
+- **High/Medium:** none remaining — R-04 and R-06 decided 2026-07-26 via
+  empirical research.
+- **Remaining pending (2 of 26):** R-03 (`sessions.low_liquidity_filters`
+  — needs an explicit "low-liquidity signature" definition before any scan
+  is meaningful, not attempted yet), R-18 (`existence_check_floor` — needs
+  a working signal function across the entire funnel, which would mean
+  assembling the ST-C3 reference kernel before A2/S1-G2 is open; held
+  pending that decision).
 - **Superseded, no longer tracked as its own decision:** R-11 (`per_trade_risk_pct`) — removed from v1.x scope 2026-07-25; see `OWNER_DECISION_LOG.md`.
 - **Decided (see `OWNER_DECISION_LOG.md` for authoritative values — this
   matrix keeps the original proposals for audit-trail comparison only):**
