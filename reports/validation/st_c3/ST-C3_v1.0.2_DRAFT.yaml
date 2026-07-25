@@ -1,0 +1,234 @@
+# ST-C3 "Next-Generation SMC Funnel" — SPECIFICATION CLOSURE DRAFT, NOT FROZEN.
+#
+# ============================================================
+# THIS IS A DRAFT FOR OWNER REVIEW. IT IS NOT A SPEC. IT IS NOT FROZEN.
+# IT IS NOT AUTHORIZED FOR ANY IMPLEMENTATION, BACKTEST, OR EXECUTION USE.
+# ============================================================
+#
+# This file is a COPY of the frozen `specs/st-c3_v1.0.1.yaml` with
+# `# PROPOSED (R-XX): ...` comments added next to every UNRESOLVED/PROVISIONAL
+# field, per `RESOLUTION_MATRIX.md` and `DECISION_PACKAGES.md`. NO VALUE IN
+# THIS FILE HAS BEEN CHANGED FROM v1.0.1 — every `UNRESOLVED` stays
+# `UNRESOLVED`, every `PROVISIONAL_*` stays as-is. The agent that produced
+# this file was explicitly instructed not to invent values, so it did not:
+# it only annotated what a *proposed* resolution could look like, for the
+# owner to accept, amend, or reject via `OWNER_DECISION_LOG.md`.
+#
+# Deliberately placed under reports/validation/st_c3/, NOT specs/, so it is
+# never mistaken for a real candidate spec sitting next to
+# specs/st-c3_v1.0.1.yaml (the actual frozen file). If and when the owner
+# ratifies some or all proposals here, the RCR process used for R-1/R-2/R-3
+# applies again: file an RCR, THEN cut a real specs/st-c3_v1.0.2.yaml with
+# only the ratified values — never promote this draft file itself in place.
+#
+# See also: RESOLUTION_MATRIX.md, DEPENDENCY_GRAPH.md, DECISION_PACKAGES.md,
+# OWNER_DECISION_LOG.md, SPECIFICATION_CLOSURE_REPORT.md (all in this
+# directory).
+# ============================================================
+
+id: ST-C3
+name: Next-Generation SMC Funnel
+version: 1.0.2-draft   # NOT a real version; no v1.0.2 exists until this closes
+governance_profile: null   # PROPOSED (R-01): depends on R-02; not itself proposed — see R-02
+status: draft_specification_closure_proposal   # NOT frozen, NOT approved
+consolidation_status: SPECIFICATION_CLOSURE_IN_PROGRESS
+engine_implements_spec: false
+implementation_authorization: null
+supersedes: null   # this draft supersedes nothing; it is not a spec revision yet
+
+description: >
+  DRAFT ONLY. Proposes candidate resolutions for the 20 UNRESOLVED/ambiguous
+  fields catalogued in SPECIFICATION_VALIDATION.md and RESOLUTION_MATRIX.md.
+  Every PROPOSED comment below requires an explicit owner decision recorded
+  in OWNER_DECISION_LOG.md before it may enter any real frozen spec version.
+
+# ============================================================
+# 1. Instruments & Sessions
+# ============================================================
+instruments: []   # PROPOSED (R-02): NOT PROPOSED — root decision, owner must name a symbol. No default exists.
+
+sessions:
+  london_window_utc: PROVISIONAL_07_00_TO_10_00   # unchanged from v1.0.1
+  ny_window_utc: PROVISIONAL_13_00_TO_16_00       # unchanged from v1.0.1
+  low_liquidity_filters: UNRESOLVED   # PROPOSED (R-03): disabled_by_default
+
+parameters:
+  N_SWEEP:
+    value: PROVISIONAL_1_TO_3   # unchanged from v1.0.1
+    unit: bars_on_sweep_timeframe
+    status: provisional
+  MAX_ENTRY_BARS:
+    value: PROVISIONAL_3_TO_5   # unchanged from v1.0.1
+    unit: M3_bars
+    status: provisional
+  OTE_MIN:
+    value: 0.62
+    status: provisional
+  OTE_MAX:
+    value: 0.79
+    status: provisional
+  SESSION_LONDON:
+    value: "07:00-10:00 UTC"
+    status: provisional
+  SESSION_NY:
+    value: "13:00-16:00 UTC"
+    status: provisional
+  MIN_RR:
+    value: CONFIGURABLE_PROVISIONAL_3R   # unchanged; see risk.min_rr below (same field, duplicated location)
+    status: provisional
+
+timeframes:
+  htf: H4
+  mf: M15
+  ltf: [M3, M1]
+
+pipeline:
+
+  htf_bias_stage:
+    structure_source: hh_hl_lh_ll
+    bias_lock_policy: locked_until_valid_htf_choch
+    no_trade_against_bias: true
+    evidence_ids: [HTF_BIAS_ID, HTF_SWING_ID]
+    rejection_code: ST-C3-R1
+
+  liquidity_sweep_stage:
+    sweep_definition:
+      breaks_buy_or_sell_side_liquidity: true
+      wick_penetration_required: true
+      close_back_inside_range_required: true
+    wick_ratio_min: UNRESOLVED   # PROPOSED (R-04): 0.5-0.7 range; specs/st-c2_v1.2.0.yaml:104 uses 0.6 as a reference point only, not inherited (ADR-0004)
+    equal_highs_lows_tolerance: UNRESOLVED   # PROPOSED (R-05): needs research pass via tools/existence_check.py once R-02 resolved; no default proposed
+    max_sweep_age_bars: UNRESOLVED   # PROPOSED (R-06): 20-60 bars; specs/st-c2_v1.2.0.yaml:167,175 use 60/20 for a different (OB freshness) field, reference only
+    sweep_wick_penetration: true
+    sweep_close_reclaim: required
+    sweep_reclaim_max_bars: PROVISIONAL_1_TO_3
+    evidence_ids: [SWEEP_ID, SWEEP_RECLAIM_ID, LIQUIDITY_ZONE_ID]
+    rejection_code: ST-C3-R2
+
+  displacement_bos_stage:
+    displacement_definition: impulsive_candles
+    displacement_body_ratio_min: CONFIGURABLE_UNRESOLVED   # PROPOSED (R-07): 0.6-0.7 body-to-range ratio, matching this codebase's general SMC displacement/BOS convention
+    bos_confirmation_rule: body_close_required
+    bos_status: provisional_until_first_pullback
+    bos_extreme_lock_policy: lock_after_first_pullback
+    bos_defines_dealing_range: true
+    evidence_ids: [DISPLACEMENT_ID, BOS_ID, BOS_EXTREME_ID, DEALING_RANGE_ID]
+    rejection_code: ST-C3-R3
+
+  ote_stage:
+    dealing_range_definition: swing_origin_to_bos_extreme
+    short_only_in_premium: true
+    long_only_in_discount: true
+    equilibrium_boundary: 0.5
+    ote_band_min: 0.62
+    ote_band_max: 0.79
+    evidence_ids: [OTE_ZONE_ID]
+    rejection_code: ST-C3-R4
+
+  fvg_ob_confluence_stage:
+    required_zone_types: [fresh_h4_or_m15_fvg, fresh_h4_or_m15_order_block]
+    must_sit_inside_ote: true
+    freshness_definition: UNRESOLVED   # PROPOSED (Package C): needs research pass once R-02 resolved; src/features.py's poi_max_age is a DIFFERENT candidate's decision, not inherited (ADR-0004)
+    evidence_ids: [FVG_ID, ORDERBLOCK_ID]
+    rejection_code: ST-C3-R5
+
+  ltf_confirmation_stage:
+    short_confirmation:
+      sweep_local_highs_required: true
+      choch_or_bos_direction: down
+    long_confirmation:
+      sweep_local_lows_required: true
+      choch_or_bos_direction: up
+    zone_context_required: inside_fvg_ob_zone
+    evidence_ids: [LTF_SWEEP_ID, LTF_CHOCH_ID]
+    rejection_code: ST-C3-R6
+
+  session_gatekeeper_stage:
+    allowed_windows: [london_window_utc, ny_window_utc]
+    required_for_ltf_confirmation: true
+    optional_low_liquidity_filters: true
+    evidence_ids: [SESSION_WINDOW_ID]
+    rejection_code: ST-C3-R6
+
+  entry_window_stage:
+    entry_window_bars: PROVISIONAL_3_TO_5_M3_BARS
+    entry_zone_definition: [mf_ltf_fvg, refined_order_block]
+    evidence_ids: [ENTRY_WINDOW_ID, ENTRY_ZONE_ID]
+    rejection_code: ST-C3-R7
+
+  stop_loss_stage:
+    mode: structural_invalidation
+    short_anchor: above_m3_swing_that_formed_choch
+    long_anchor: below_m3_swing_that_formed_choch
+    buffer_points: UNRESOLVED   # PROPOSED (R-08): ATR-multiple, e.g. 0.1-0.2 * ATR rather than a fixed point count; needs research to pick the multiple once R-02 resolved
+    evidence_ids: [INVALIDATION_SWING_ID]
+
+  targets_stage:
+    tp1_internal_liquidity:
+      definition: [prior_swing, internal_liquidity_pocket]
+      rr_min: 3.0   # unchanged — already owner-ratified, not a proposal
+    tp2_external_liquidity:
+      definition: [equal_highs_lows, major_liquidity_pool]
+      rr_min: UNRESOLVED   # PROPOSED (R-09): 5.0R, must stay > TP1's 3.0R to preserve strict ordering
+    tp3_htf_objective:
+      definition: [h4_swing, deeper_liquidity_target]
+      rr_min: UNRESOLVED   # PROPOSED (R-10): 8.0R, must stay > R-09's resolved value
+    evidence_ids: [TP1_ID, TP2_ID, TP3_ID]
+
+  expiry_stage:
+    triggers:
+      - invalidation_breaks
+      - entry_window_closes
+      - htf_bias_flips
+      - new_sweep_and_bos_creates_newer_setup
+    evidence_ids: [EXPIRY_ID]
+
+# ============================================================
+# Rejection/termination codes, evidence registry, state machine,
+# validator rules, evidence object schema, trade-plan schema, and
+# execution-agent sections are IDENTICAL to specs/st-c3_v1.0.1.yaml —
+# omitted here for brevity since Specification Closure does not propose
+# any change to them. See specs/st-c3_v1.0.1.yaml directly for those
+# sections; this draft only concerns the fields listed above and in
+# risk:/rcr_preregistration: below.
+# ============================================================
+
+# ============================================================
+# 6. Risk & Portfolio
+# ============================================================
+risk:
+  per_trade_risk_pct: UNRESOLVED   # PROPOSED (R-11): 0.5%, matches docs/CHARTER.md platform convention and specs/st-c2_v1.2.0.yaml:323
+  min_rr: CONFIGURABLE_PROVISIONAL_3R
+  max_positions: UNRESOLVED   # PROPOSED (R-12): 3, matches docs/CHARTER.md and specs/st-c2_v1.2.0.yaml:325
+  portfolio_heat_pct: UNRESOLVED   # PROPOSED (R-13): 3.0% or 4.0% — owner's choice between two existing platform precedents (ST-C2 uses 3.0%, CHARTER.md states 4%)
+  daily_loss_pct: UNRESOLVED   # PROPOSED (R-14): 3.0%, matches docs/CHARTER.md and specs/st-c2_v1.2.0.yaml:327
+  weekly_loss_pct: UNRESOLVED   # PROPOSED (R-15): 7.0%, matches specs/st-c2_v1.2.0.yaml:328 (no CHARTER equivalent exists)
+
+conformance:
+  require_all_stages_pass: true
+  log_level: info
+
+diagnostics:
+  enable_audit_logs: true
+  record_rejected_setups: true
+
+# ============================================================
+# 8. RCR Pre-Registration
+# ============================================================
+rcr_preregistration:
+  research_log_entry: "ST-C3 v1.0.0 candidate intake — Daily Price Action funnel, reports/research_log.md, 2026-07-24"
+  revision_rcr_entry: "ST-C3 rejection-code layer fix, reports/research_log.md, 2026-07-25"
+  primary_metric: UNRESOLVED   # PROPOSED (R-16): expectancy_r, matches this repo's existing A3 promotion-gate convention
+  secondary_metrics: UNRESOLVED   # PROPOSED (R-17): [profit_factor, sharpe_ratio, maximum_drawdown_r], matches validation/performance_metrics.py's existing metric set
+  existence_check_floor: UNRESOLVED   # PROPOSED (R-18): compute via tools/power_planning.py once R-02/R-16/R-20 resolved; no number proposed without that data
+  population_feasibility_floor: UNRESOLVED   # PROPOSED (R-19): 300 trades, matches this project's stated A3 promotion-gate convention elsewhere
+  statistical_claim_floor: UNRESOLVED   # PROPOSED (R-20): PF >= 1.40, expectancy >= 0.20R, Sharpe >= 1.20, matches this project's A3 promotion-gate language used elsewhere
+
+reference_material:
+  files:
+    - docs/reference/smc-definitive-guide-dailypriceaction.md
+    - docs/reference/smc-8step-entry-model-dailypriceaction.md
+  note: >
+    Both are external, non-authoritative reference material per their own
+    file headers. Nothing in this draft is authoritative — see the file
+    header above.
