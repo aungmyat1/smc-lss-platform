@@ -1,0 +1,64 @@
+strategy: ST-C3
+version: 1.0.0
+active_symbol: null  # not yet scoped to a single symbol at S1-G1C
+spec: specs/st-c3_v1.0.0.yaml
+
+stage_a_strategy_validation:
+  status: in_progress
+
+  a1_logic_conformance:
+    status: conditionally_ready
+    gate: S1-G1C
+    report: reports/validation/st_c3/ST-C3_S1-G1C_LOGIC_CONFORMANCE_REPORT.md
+    checklist: reports/validation/st_c3/st-c3_s1-g1c_checklist.md
+    tracked_findings:
+      - id: R-1
+        severity: significant
+        summary: S12_RISK_SLTP mis-coded as R5_NO_FVG_OB_CONFLUENCE
+        recommendation: reports/validation/st_c3/ST-C3_v1.0.1_PATCH_RECOMMENDATION.md
+      - id: R-2
+        severity: internal_inconsistency
+        summary: transitions.S12.failure_code placeholder disagrees with evidence_bindings/validator_rules
+        recommendation: reports/validation/st_c3/ST-C3_v1.0.1_PATCH_RECOMMENDATION.md
+      - id: R-3
+        severity: minor
+        summary: S5/S6 rejection-code reuse not justified by target code's trigger list
+        recommendation: reports/validation/st_c3/ST-C3_v1.0.1_PATCH_RECOMMENDATION.md
+      - id: G-4
+        severity: preparation_gap
+        summary: no governance/st_c3_stage_status.yaml existed prior to this file
+        recommendation: closed_by_this_file
+    next_required_decision: owner_decision_on_v1_0_1_patch_recommendation
+
+  a2_signal_conformance:
+    status: blocked
+    blocked_by:
+      - a1_logic_conformance
+    current_gate: S1-G2
+    current_gate_name: Reference Implementation Authorization
+    authorization: null
+
+  a3_statistical_validation:
+    status: blocked
+    blocked_by:
+      - a2_signal_conformance
+
+stage_b_execution_qualification:
+  status: blocked
+  blocked_by:
+    - a3_statistical_validation
+
+freeze_state:
+  strategy_frozen: true
+  engine_implements_spec: false
+  implementation_authorization: null
+
+forbidden_until_authorized:
+  - reference_implementation
+  - historical_baseline
+  - cost_adjusted_backtest
+  - walk_forward
+  - broker_integration
+  - demo_trading
+  - live_trading
+  - production_promotion
