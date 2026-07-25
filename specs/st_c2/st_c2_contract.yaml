@@ -1,0 +1,122 @@
+strategy:
+  id: ST-C2
+  version: 1.2.0
+  symbol: GBPUSD
+  authority_spec: specs/st-c2_v1.2.0.yaml
+  conformance_stage: A2
+  execution_authority: none
+  completion_policy: A2 closes only when every contract rule has implementation, tests, output shape, failure-code coverage, and validation metric coverage.
+
+funnel_stages:
+  - id: S1
+    key: market_context
+    implementation_stage_names: [htf_bias]
+    required_inputs: [H4 candles, ST-C2 spec, GBPUSD symbol metadata, causal cutoff]
+    required_outputs: [bias, trend_state, context_confidence, reason, bias_evidence_timestamp]
+    deterministic_rules: [STC2-STRUCT-001, STC2-STRUCT-004, STC2-STRUCT-005, STC2-STRUCT-006, STC2-BIAS-001, STC2-BIAS-002, STC2-BIAS-003, STC2-BIAS-004, STC2-BIAS-005]
+    failure_codes: [R2, INSUFFICIENT_CHOCH_DISPLACEMENT, NO_CONFIRMED_HTF_BOS_OR_CHOCH]
+    validation_metrics: [htf_bias_accuracy, ambiguity_count, structural_event_match_rate]
+  - id: S2
+    key: session_filter
+    implementation_stage_names: [session, config]
+    required_inputs: [candidate timestamp, configured London session, configured New York session, causal cutoff]
+    required_outputs: [session_valid, session_name, reason]
+    deterministic_rules: [STC2-SCOPE-001, STC2-TF-001, STC2-MGMT-001]
+    failure_codes: [R6, R7, OUTSIDE_TRADING_SESSION, SESSION_CONFIG_MISSING]
+    validation_metrics: [session_acceptance_rate, dst_ambiguity_count, session_rejection_count]
+  - id: S3
+    key: market_structure_ltf
+    implementation_stage_names: [ltf_confirmation]
+    required_inputs: [M3 candles, HTF bias evidence, POI/FVG context, causal cutoff]
+    required_outputs: [structure_valid, trend_state, reason, confirmation_event_id]
+    deterministic_rules: [STC2-STRUCT-002, STC2-STRUCT-003, STC2-LTF-001, STC2-LTF-002, STC2-LTF-003, STC2-LTF-004]
+    failure_codes: [R5, INTERNAL_BOS_MISSING, CHOCH_CLOSE_CONFIRMATION_MISSING, MAX_SETUP_BARS_EXCEEDED]
+    validation_metrics: [bos_precision, choch_precision, swing_accuracy]
+  - id: S4
+    key: liquidity
+    implementation_stage_names: [liquidity]
+    required_inputs: [H4 candles, structural events, direction, current price, causal cutoff]
+    required_outputs: [liquidity_event, liquidity_type, sweep_direction, confidence]
+    deterministic_rules: [STC2-LIQ-001, STC2-LIQ-002, STC2-LIQ-003, STC2-LIQ-004, STC2-LIQ-005, STC2-LIQ-006, STC2-LIQ-007]
+    failure_codes: [R1, NO_ELIGIBLE_LIQUIDITY_POOL, SWEEP_WICK_RATIO_INSUFFICIENT, SWEEP_NOT_RECLAIMED, SWEEP_AGE_EXCEEDED]
+    validation_metrics: [sweep_accuracy, false_positive_rate, pool_tiebreak_count]
+  - id: S5
+    key: poi
+    implementation_stage_names: [ote, fvg_alignment]
+    required_inputs: [H4 candles, M15 candles, M3 candles, dealing range, liquidity event, causal cutoff]
+    required_outputs: [poi_valid, poi_type, distance, strength_score, mitigation_state, fvg_event_ids]
+    deterministic_rules: [STC2-POI-001, STC2-OTE-001, STC2-OTE-002, STC2-OTE-003, STC2-FVG-001, STC2-FVG-002, STC2-FVG-003, STC2-FVG-004, STC2-FVG-005, STC2-FVG-006, STC2-FVG-007]
+    failure_codes: [R3, R4, OTE_LOCATION_FAILED, FVG_CHAIN_MISSING, FVG_MITIGATED_BEYOND_THRESHOLD]
+    validation_metrics: [poi_detection_precision, mitigation_accuracy, fvg_chain_match_rate]
+  - id: S6
+    key: entry_confirmation
+    implementation_stage_names: [ltf_confirmation, signal_candidate]
+    required_inputs: [M3 candles, valid POI, LTF confirmation event, causal cutoff]
+    required_outputs: [entry_approved, trigger_type, trigger_confidence, confirmation_reason, invalidation_swing, execution_bar_index]
+    deterministic_rules: [STC2-ENTRY-001, STC2-ENTRY-002, STC2-ENTRY-003, STC2-DEDUP-001]
+    failure_codes: [R5, DUPLICATE_SETUP_REJECTED, ENTRY_WINDOW_EXPIRED, EARLIEST_FILL_BAR_NOT_REACHED]
+    validation_metrics: [trigger_success_rate, false_trigger_rate, duplicate_rejection_count]
+  - id: S7
+    key: risk_validation
+    implementation_stage_names: [trade_plan, risk]
+    required_inputs: [signal candidate, source events, GBPUSD cost profile, portfolio state, causal cutoff]
+    required_outputs: [trade_approved, risk_pct, rr, sl, tp, reason, trade_plan_id]
+    deterministic_rules: [STC2-STOP-001, STC2-STOP-002, STC2-TARGET-001, STC2-RISK-001, STC2-REJECT-001]
+    failure_codes: [R6, STOP_INVALID, STOP_DISTANCE_OUT_OF_BOUNDS, TARGET_MISSING, NET_R_INSUFFICIENT, COST_PROFILE_MISSING, DUPLICATE_TRADE]
+    validation_metrics: [invalid_rr, invalid_sl, duplicate_trade_prevention, cost_adjusted_rr_rejection_count]
+
+traceability:
+  STC2-SCOPE-001: {stage: session_filter, component: scope_contract, implementation: validation.st_c2_reference::enabled_symbols, tests: [tests/test_st_c2_reference.py::test_spec_is_frozen_gbpusd_only], validation_metric: symbol_scope_match_rate, conformance_status: implemented_tested}
+  STC2-TF-001: {stage: session_filter, component: data_contract, implementation: validation.st_c2_reference::REQUIRED_DATA, tests: [], validation_metric: timeframe_contract_match_rate, conformance_status: implemented_missing_tests}
+  STC2-STRUCT-001: {stage: market_context, component: htf_structure, implementation: validation.st_c2.structure::detect_htf_structure, tests: [tests/st_c2/test_structural_conformance.py::test_htf_bias_uses_closed_candle_bos_choch_not_wick_only], validation_metric: swing_accuracy, conformance_status: implemented_tested}
+  STC2-STRUCT-002: {stage: market_structure_ltf, component: htf_structure, implementation: null, tests: [], validation_metric: external_structure_classification_rate, conformance_status: not_implemented}
+  STC2-STRUCT-003: {stage: market_structure_ltf, component: ltf_structure, implementation: null, tests: [], validation_metric: internal_structure_classification_rate, conformance_status: not_implemented}
+  STC2-STRUCT-004: {stage: market_context, component: htf_structure, implementation: validation.st_c2.structure::detect_htf_structure, tests: [tests/st_c2/test_structural_conformance.py::test_htf_bias_uses_closed_candle_bos_choch_not_wick_only], validation_metric: protected_level_creation_match_rate, conformance_status: implemented_tested}
+  STC2-STRUCT-005: {stage: market_context, component: htf_structure, implementation: validation.st_c2.structure::detect_htf_structure, tests: [tests/st_c2/test_structural_conformance.py::test_choch_flip_requires_displacement_threshold], validation_metric: protected_level_invalidation_match_rate, conformance_status: implemented_tested}
+  STC2-STRUCT-006: {stage: market_context, component: htf_structure, implementation: null, tests: [], validation_metric: multi_choch_classification_rate, conformance_status: not_implemented}
+  STC2-BIAS-001: {stage: market_context, component: htf_bias, implementation: validation.st_c2.structure::classify_htf_bias, tests: [tests/st_c2/test_structural_conformance.py::test_htf_bias_uses_closed_candle_bos_choch_not_wick_only, tests/st_c2/test_structural_conformance.py::test_choch_flip_requires_displacement_threshold], validation_metric: htf_bias_accuracy, conformance_status: implemented_tested}
+  STC2-BIAS-002: {stage: market_context, component: htf_bias, implementation: validation.st_c2.structure::classify_htf_bias, tests: [tests/st_c2/test_structural_conformance.py::test_htf_bias_uses_closed_candle_bos_choch_not_wick_only], validation_metric: bias_evidence_timestamp_coverage, conformance_status: implemented_tested}
+  STC2-LIQ-001: {stage: liquidity, component: liquidity_pool, implementation: validation.st_c2_reference::scan_history, tests: [], validation_metric: liquidity_lookback_match_rate, conformance_status: implemented_missing_tests}
+  STC2-LIQ-002: {stage: liquidity, component: liquidity_pool, implementation: null, tests: [], validation_metric: equal_high_low_tolerance_match_rate, conformance_status: not_implemented}
+  STC2-LIQ-003: {stage: liquidity, component: liquidity_sweep, implementation: validation.st_c2.structure::detect_sweep_and_reclaim, tests: [tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal, tests/test_st_c2_reference.py::test_negative_without_liquidity_rejects_r1, tests/st_c2/test_structural_conformance.py::test_sweep_requires_pierce_reclaim_wick_ratio_and_age], validation_metric: sweep_wick_ratio_match_rate, conformance_status: implemented_tested}
+  STC2-LIQ-004: {stage: liquidity, component: liquidity_sweep, implementation: validation.st_c2.structure::detect_sweep_and_reclaim, tests: [tests/test_st_c2_reference.py::test_negative_without_liquidity_rejects_r1, tests/st_c2/test_structural_conformance.py::test_sweep_requires_pierce_reclaim_wick_ratio_and_age], validation_metric: reclaim_match_rate, conformance_status: implemented_tested}
+  STC2-LIQ-005: {stage: liquidity, component: liquidity_sweep, implementation: validation.st_c2_reference::_last_sweep, tests: [], validation_metric: sweep_age_match_rate, conformance_status: implemented_missing_tests}
+  STC2-LIQ-006: {stage: liquidity, component: liquidity_sweep, implementation: validation.st_c2_reference::_last_sweep, tests: [], validation_metric: reclaim_close_bar_match_rate, conformance_status: partial_missing_tests}
+  STC2-LIQ-007: {stage: liquidity, component: liquidity_pool, implementation: validation.st_c2.structure::select_liquidity_pool, tests: [tests/st_c2/test_structural_conformance.py::test_liquidity_pool_selection_is_stable_and_directional], validation_metric: pool_tiebreak_stability_rate, conformance_status: implemented_tested}
+  STC2-POI-001: {stage: poi, component: poi_gap_reaction, implementation: validation.st_c2_reference::_matching_mf_fvg, tests: [], validation_metric: poi_gap_reaction_match_rate, conformance_status: partial_missing_tests}
+  STC2-BIAS-003: {stage: market_context, component: htf_bias, implementation: validation.st_c2.structure::detect_htf_structure, tests: [tests/st_c2/test_structural_conformance.py::test_htf_bias_uses_closed_candle_bos_choch_not_wick_only], validation_metric: bos_precision, conformance_status: implemented_tested}
+  STC2-BIAS-004: {stage: market_context, component: htf_bias, implementation: validation.st_c2.structure::detect_htf_structure, tests: [tests/st_c2/test_structural_conformance.py::test_choch_flip_requires_displacement_threshold], validation_metric: choch_precision, conformance_status: partial_tested}
+  STC2-BIAS-005: {stage: market_context, component: htf_bias, implementation: validation.st_c2.structure::detect_htf_structure, tests: [tests/st_c2/test_structural_conformance.py::test_htf_bias_uses_closed_candle_bos_choch_not_wick_only, tests/st_c2/test_structural_conformance.py::test_choch_flip_requires_displacement_threshold], validation_metric: bos_choch_exclusivity_rate, conformance_status: implemented_tested}
+  STC2-OTE-001: {stage: poi, component: ote, implementation: validation.st_c2.structure::select_structural_dealing_range, tests: [tests/st_c2/test_structural_conformance.py::test_structural_context_is_causal_and_deterministic], validation_metric: dealing_range_anchor_match_rate, conformance_status: implemented_tested}
+  STC2-OTE-002: {stage: poi, component: ote, implementation: validation.st_c2.structure::evaluate_ote_location, tests: [tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal, tests/test_st_c2_reference.py::test_bearish_mirror_emits_short_signal, tests/st_c2/test_structural_conformance.py::test_structural_dealing_range_ote_boundaries_are_deterministic], validation_metric: premium_discount_boundary_match_rate, conformance_status: implemented_tested}
+  STC2-OTE-003: {stage: poi, component: ote, implementation: validation.st_c2.structure::evaluate_ote_location, tests: [tests/st_c2/test_structural_conformance.py::test_structural_dealing_range_ote_boundaries_are_deterministic], validation_metric: max_retrace_match_rate, conformance_status: implemented_tested}
+  STC2-FVG-001: {stage: poi, component: fvg_chain, implementation: validation.st_c2.fvg_confirmation::detect_fvg_chain, tests: [tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_valid_fvg_chain_evidence, tests/st_c2/test_evidence_gc3.py::test_gc3_builder_rejects_fvg_chain_without_ltf_continuity], validation_metric: htf_fvg_match_rate, conformance_status: implemented_tested}
+  STC2-FVG-002: {stage: poi, component: fvg_chain, implementation: validation.st_c2.fvg_confirmation::detect_fvg_chain, tests: [tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_valid_fvg_chain_evidence], validation_metric: mf_fvg_overlap_match_rate, conformance_status: implemented_tested}
+  STC2-FVG-003: {stage: poi, component: fvg_chain, implementation: validation.st_c2.fvg_confirmation::detect_fvg_chain, tests: [tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_valid_fvg_chain_evidence, tests/st_c2/test_evidence_gc3.py::test_gc3_builder_rejects_fvg_chain_without_ltf_continuity], validation_metric: ltf_fvg_required_match_rate, conformance_status: partial_tested}
+  STC2-FVG-004: {stage: poi, component: fvg_chain, implementation: validation.st_c2.fvg_confirmation::detect_fvg_chain, tests: [tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_valid_fvg_chain_evidence, tests/st_c2/test_evidence_gc3.py::test_gc3_builder_rejects_fvg_chain_without_ltf_continuity], validation_metric: fvg_directional_alignment_rate, conformance_status: partial_tested}
+  STC2-FVG-005: {stage: poi, component: fvg_chain, implementation: validation.st_c2.fvg_confirmation::detect_fvg_chain, tests: [tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_valid_fvg_chain_evidence, tests/st_c2/test_evidence_gc3.py::test_gc3_builder_rejects_fvg_chain_without_ltf_continuity], validation_metric: fvg_chain_continuity_rate, conformance_status: partial_tested}
+  STC2-FVG-006: {stage: poi, component: fvg_geometry, implementation: validation.st_c2.fvg_confirmation::detect_fvg_events, tests: [tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal, tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_valid_fvg_chain_evidence], validation_metric: fvg_geometry_match_rate, conformance_status: implemented_tested}
+  STC2-FVG-007: {stage: poi, component: fvg_mitigation, implementation: null, tests: [], validation_metric: fvg_mitigation_rounding_match_rate, conformance_status: not_implemented}
+  STC2-LTF-001: {stage: market_structure_ltf, component: ltf_confirmation, implementation: validation.st_c2.fvg_confirmation::detect_ltf_confirmation, tests: [tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_ltf_confirmation_evidence], validation_metric: internal_bos_precedes_choch_rate, conformance_status: partial_tested}
+  STC2-LTF-002: {stage: market_structure_ltf, component: ltf_confirmation, implementation: validation.st_c2.fvg_confirmation::detect_ltf_confirmation, tests: [tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal, tests/test_st_c2_reference.py::test_bearish_mirror_emits_short_signal, tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_ltf_confirmation_evidence, tests/st_c2/test_evidence_gc3.py::test_gc3_builder_rejects_ltf_confirmation_without_displacement], validation_metric: ltf_close_displacement_match_rate, conformance_status: implemented_tested}
+  STC2-LTF-003: {stage: market_structure_ltf, component: ltf_confirmation, implementation: validation.st_c2.fvg_confirmation::detect_ltf_confirmation, tests: [tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_ltf_confirmation_evidence], validation_metric: stronger_choch_match_rate, conformance_status: partial_tested}
+  STC2-LTF-004: {stage: market_structure_ltf, component: ltf_confirmation, implementation: validation.st_c2.fvg_confirmation::detect_ltf_confirmation, tests: [tests/st_c2/test_evidence_gc3.py::test_gc3_builder_emits_ltf_confirmation_evidence, tests/st_c2/test_evidence_gc3.py::test_gc3_builder_rejects_ltf_confirmation_without_displacement], validation_metric: entry_window_first_bar_match_rate, conformance_status: implemented_tested}
+  STC2-ENTRY-001: {stage: entry_confirmation, component: decision_evidence, implementation: validation.st_c2.evidence_gc4::DecisionEvidenceBuilder, tests: [tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan, tests/test_st_c2_reference.py::test_positive_golden_case_emits_signal], validation_metric: next_bar_entry_match_rate, conformance_status: partial_tested}
+  STC2-ENTRY-002: {stage: entry_confirmation, component: decision_evidence, implementation: validation.st_c2.evidence_gc4::DecisionEvidenceBuilder, tests: [tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan], validation_metric: entry_expiry_cancellation_match_rate, conformance_status: partial_tested}
+  STC2-ENTRY-003: {stage: entry_confirmation, component: decision_evidence, implementation: validation.st_c2.evidence_gc4::DecisionEvidenceBuilder, tests: [tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan], validation_metric: same_bar_priority_match_rate, conformance_status: partial_tested}
+  STC2-STOP-001: {stage: risk_validation, component: decision_evidence, implementation: validation.st_c2.evidence_gc4::DecisionEvidenceBuilder, tests: [tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan], validation_metric: stop_anchor_match_rate, conformance_status: implemented_tested}
+  STC2-STOP-002: {stage: risk_validation, component: decision_evidence, implementation: validation.st_c2.evidence_gc4::DecisionEvidenceBuilder, tests: [tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan], validation_metric: stop_distance_bounds_match_rate, conformance_status: implemented_tested}
+  STC2-TARGET-001: {stage: risk_validation, component: decision_evidence, implementation: validation.st_c2.evidence_gc4::DecisionEvidenceBuilder, tests: [tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan], validation_metric: target_selection_match_rate, conformance_status: partial_tested}
+  STC2-RISK-001: {stage: risk_validation, component: decision_evidence, implementation: validation.st_c2.evidence_gc4::DecisionEvidenceBuilder, tests: [tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan, tests/st_c2/test_gc4_evidence.py::test_gc4_rejection_evidence_is_stable_and_canonical], validation_metric: cost_adjusted_rr_match_rate, conformance_status: implemented_tested}
+  STC2-MGMT-001: {stage: session_filter, component: rejection_evidence, implementation: validation.st_c2.evidence_gc4::build_rejection_evidence, tests: [tests/st_c2/test_gc4_evidence.py::test_gc4_rejection_evidence_is_stable_and_canonical], validation_metric: session_close_management_match_rate, conformance_status: partial_tested}
+  STC2-REJECT-001: {stage: risk_validation, component: rejection_evidence, implementation: validation.st_c2.evidence_gc4::build_rejection_evidence, tests: [tests/st_c2/test_gc4_evidence.py::test_gc4_rejection_evidence_is_stable_and_canonical], validation_metric: rejection_code_coverage_rate, conformance_status: partial_tested}
+  STC2-DEDUP-001: {stage: entry_confirmation, component: decision_evidence, implementation: validation.st_c2.evidence_gc4::DecisionEvidenceBuilder, tests: [tests/st_c2/test_gc4_evidence.py::test_gc4_builds_complete_state_signal_and_trade_plan, tests/st_c2/test_gc4_evidence.py::test_gc4_detects_illegal_transition_sequence], validation_metric: duplicate_signal_rate, conformance_status: partial_tested}
+
+ci_guardrails:
+  fail_on_contract_rule_missing_from_coverage: true
+  fail_on_coverage_rule_missing_from_contract: true
+  fail_on_implemented_rule_without_importable_mapping: true
+  fail_on_implemented_rule_without_test: true
+  fail_on_stage_rule_id_drift: true
+  fail_on_missing_validation_metric: true
+  fail_on_execution_authority: true
