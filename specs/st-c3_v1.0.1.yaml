@@ -45,8 +45,8 @@ governance_profile: null   # UNRESOLVED — symbol/session scope not yet decided
 status: frozen   # v1.0.0 S1-G1 freeze act recorded in docs/strategy/st_c3/ST-C3_FREEZE_ACTION_LOG.md;
                   # this revision recorded in reports/research_log.md "ST-C3 rejection-code layer fix"
 consolidation_status: S1_G1C_REVISION_READY_FOR_RERUN
-engine_implements_spec: false   # SAFETY INTERLOCK — no engine exists
-implementation_authorization: null   # freeze does not authorize implementation
+engine_implements_spec: false   # SAFETY INTERLOCK — no engine exists yet
+implementation_authorization: scoped_reference_implementation_granted   # S1-G2 only, owner directive 2026-07-26; scope: golden/negative-case tests, existence-check research; NOT execution, optimization, A3, demo, or live — see governance/st_c3_stage_status.yaml
 supersedes: st-c3_v1.0.0   # patch revision of ST-C3 itself; does not supersede or revise ST-C2 (ADR-0004)
 freeze:
   timestamp: "2026-07-24T23:50:00 MMT"   # original v1.0.0 freeze, unchanged by this revision

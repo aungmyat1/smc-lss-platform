@@ -2,27 +2,35 @@
 
 **One milestone at a time. This is the active milestone.**
 
-## ST-C3 S1-G1C Closed (v1.0.1) — Awaiting A2/S1-G2 Opening Decision
+## ST-C3 A2/S1-G2 OPEN (Scoped Research/Validation) — Active Milestone
 
 Current lifecycle position:
 
 | Field | State |
 |---|---|
 | Stage | Stage A - Strategy Validation |
-| Substage | A1 - Strategy Logic Contract and Conformance |
-| Gate | S1-G1C Logic-Conformance Closure |
+| Substage | A2 - Indicator, Event and Signal Conformance |
+| Gate | S1-G2 Reference Implementation Authorization |
 | Strategy | ST-C3 v1.0.1 (revision of v1.0.0, see `specs/st-c3_v1.0.1.yaml`) |
-| Status | FROZEN -> S1-G1C CLOSED |
+| Status | FROZEN -> S1-G1C CLOSED -> A2/S1-G2 OPEN (scoped) |
 | Readiness | GREEN |
 | Frozen | YES |
-| Implementation | BLOCKED |
-| Backtest | BLOCKED |
+| Implementation | AUTHORIZED: S1-G2 SCOPED RESEARCH/VALIDATION ONLY |
+| Backtest | BLOCKED (historical baseline is A3/S1-G7) |
 | A1 Logic Conformance | PASSED — see `reports/validation/st_c3/S1-G1C_RERUN_REPORT.md` |
-| A2 Signal Conformance | BLOCKED: S1-G2 not yet opened as a milestone (owner decision pending) |
-| A3 Statistical Validation | BLOCKED: A2 NOT PASSED |
-| Execution | BLOCKED |
+| A2 Signal Conformance | IN PROGRESS: opened 2026-07-26 by owner directive, scoped (see below) |
+| A3 Statistical Validation | BLOCKED: A2 NOT PASSED, and A3 opening itself explicitly not authorized yet |
+| Execution | BLOCKED (explicitly not authorized) |
 | Demo | BLOCKED |
 | Production | BLOCKED |
+
+**A2/S1-G2 scope (owner directive, 2026-07-26):** authorized —
+reference-funnel assembly, golden-case tests (Phase 3), negative-case
+tests (Phase 4), existence-check conformance runs (resolves R-18),
+research/validation tasks. **Explicitly NOT authorized:** execution,
+optimization, opening A3, demo trading, live trading, production
+promotion. See `governance/st_c3_stage_status.yaml`
+`a2_signal_conformance.opened` for the authoritative record.
 
 ## Objective
 
@@ -35,16 +43,32 @@ historical record); and the S1-G1C structural checks were re-run clean
 against v1.0.1 with zero critical/major findings
 (`reports/validation/st_c3/S1-G1C_RERUN_REPORT.md`).
 
-The next milestone — opening A2/S1-G2 (Reference Implementation
-Authorization) — requires its own explicit owner decision and its own
-`NEXT_ACTION.md` update. It is not opened by this entry. Until that decision
-is made, no implementation, kernel, scanner, backtest, broker integration,
-demo, or production work is authorized.
+Specification Closure ran alongside/after S1-G1C: 21 of 26 tracked
+parameter/decision fields are now owner-decided (see
+`reports/validation/st_c3/OWNER_DECISION_LOG.md` and `RESOLUTION_MATRIX.md`),
+2 explicitly deferred to a possible v2.x cycle (fixed lot size, instrument
+selection logic), 4 proposed architecture changes ruled out of v1.x scope
+(break-even, trailing-stop, session-close forced-exit, dual-timeframe bias
+confirmation — all deferred to v2.x, none applied to the frozen funnel),
+and 2 still pending (R-03 low-liquidity filter definition, R-18 existence
+check floor — R-18 now unblocked by this milestone).
+
+The owner opened A2/S1-G2 on 2026-07-26 with the scope stated above. This
+milestone authorizes assembling a scoped ST-C3 reference funnel for
+golden/negative-case testing and existence-check research — it does NOT
+authorize execution, optimization, A3 opening, demo, live, or production
+work, which all remain blocked pending their own separate, future owner
+decisions.
 
 ## Current Evidence
 
 - ST-C3 active frozen spec: `specs/st-c3_v1.0.1.yaml` (revision of
   `specs/st-c3_v1.0.0.yaml`, preserved unchanged as historical record).
+- ST-C3 Specification Closure tracking: `reports/validation/st_c3/RESOLUTION_MATRIX.md`,
+  `DEPENDENCY_GRAPH.md`, `DECISION_PACKAGES.md`, `OWNER_DECISION_LOG.md`,
+  `SPECIFICATION_CLOSURE_REPORT.md`, `R04_R06_RESEARCH_REPORT.md`.
+- ST-C3 A2/S1-G2 opening decision: `governance/st_c3_stage_status.yaml`
+  `a2_signal_conformance.opened` (owner directive, 2026-07-26).
 - ST-C3 S1-G1C audit (against v1.0.0): `reports/validation/st_c3/ST-C3_S1-G1C_LOGIC_CONFORMANCE_REPORT.md`.
 - ST-C3 patch recommendation (R-1/R-2/R-3): `reports/validation/st_c3/ST-C3_v1.0.1_PATCH_RECOMMENDATION.md`.
 - ST-C3 governance review (verified findings, found GR-1): `reports/validation/st_c3/GOVERNANCE_REVIEW_REPORT.md`.
@@ -82,7 +106,7 @@ demo, or production work is authorized.
   `docs/adr/ADR-0004-st-c3-candidate-intake.md`.
 - ST-C3 RCR/intake entry: `reports/research_log.md`.
 
-## Acceptance Criteria (S1-G1C — met)
+## Acceptance Criteria (S1-G1C — met; A2/S1-G2 — scoped and open)
 
 - Build an S1-G1C logic-conformance checklist for the frozen ST-C3 artifacts. DONE.
 - Verify artifact cross-links and no dangling references. DONE.
@@ -94,23 +118,27 @@ demo, or production work is authorized.
   governance-approved revision before treating S1-G1C as closed. DONE —
   `specs/st-c3_v1.0.1.yaml`, owner-approved 2026-07-25.
 - Preserve `docs/strategy/st_c3/ST-C3_BACKTEST_SPEC.md` as A3 planning
-  material only; do not run backtests until A2 passes and A3 is authorized.
-  Still in force.
-- Do not implement ST-C3 code, kernels, scanners, backtests, broker adapters,
-  demo, live, or production paths. Still in force — unaffected by S1-G1C
-  closure.
+  material only; do not run backtests (historical_baseline is A3/S1-G7)
+  until A2 passes and A3 is separately authorized. Still in force.
+- Within A2/S1-G2's scoped authorization: build golden-case tests,
+  negative-case tests, and existence-check research against a reference
+  funnel. NOT authorized within this scope: execution, optimization,
+  demo, live, or production paths, or opening A3.
 
 ## Guardrails
 
 - Do not modify frozen ST-C3 strategy logic except through a new
   governance-approved revision or candidate lineage.
 - Do not modify `specs/st-c2_v1.2.0.yaml`.
-- Keep ST-C3 `engine_implements_spec: false` and
-  `implementation_authorization: null` until a later gate authorizes a
-  different state.
-- Opening A2/S1-G2 (Reference Implementation Authorization) requires its own
-  explicit owner decision and its own `NEXT_ACTION.md` update — S1-G1C
-  closure does not implicitly open it.
+- `engine_implements_spec` may become `true` only once a reference funnel
+  actually exists under the A2/S1-G2 scope below; `implementation_authorization`
+  is now `scoped_reference_implementation_granted` (owner directive,
+  2026-07-26) — not full/unscoped authorization.
+- A2/S1-G2's scope is exactly what's listed in
+  `governance/st_c3_stage_status.yaml` `a2_signal_conformance.opened` —
+  execution, optimization, A3 opening, demo, and live are explicitly not
+  authorized by this milestone and each require their own future, separate
+  owner decision.
 
 ---
 

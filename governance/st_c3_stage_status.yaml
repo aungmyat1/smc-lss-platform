@@ -37,20 +37,37 @@ stage_a_strategy_validation:
         severity: minor
         summary: ST-C3_STATE_MACHINE.md omitted from original patch recommendation's migration file list
         resolution: added to migration scope and updated alongside the other three companion docs
-    next_required_decision: owner_decision_on_opening_a2_s1_g2
+    next_required_decision: null   # satisfied 2026-07-26, see a2_signal_conformance below
 
   a2_signal_conformance:
-    status: blocked
-    blocked_by:
-      - owner_decision_on_opening_a2_s1_g2   # a1_logic_conformance passed; S1-G2 not yet opened as a milestone
+    status: in_progress
     current_gate: S1-G2
     current_gate_name: Reference Implementation Authorization
-    authorization: null
+    authorization: scoped_reference_implementation_granted
+    opened:
+      decision: owner_directive
+      timestamp: "2026-07-26"
+      authorized_scope:
+        - reference_funnel_assembly   # building the ST-C3 detection pipeline itself
+        - golden_case_tests           # Phase 3 of the validation lifecycle
+        - negative_case_tests         # Phase 4
+        - existence_check_conformance_run   # resolves R-18 once the funnel exists
+        - research_and_validation_tasks
+      explicitly_not_authorized:
+        - execution
+        - optimization
+        - a3_statistical_validation_opening
+        - demo_trading
+        - live_trading
+        - production_promotion
+      spec_resolution_status: "21/26 decided, 2 deferred (R-21 fixed_lot_size, R-22 selection_logic), 2 pending (R-03 low_liquidity_filters, R-18 existence_check_floor). R-18 unblocks now that the funnel may be assembled; R-03 still needs an explicit low-liquidity-signature definition."
+    decision_log: reports/validation/st_c3/OWNER_DECISION_LOG.md
+    resolution_matrix: reports/validation/st_c3/RESOLUTION_MATRIX.md
 
   a3_statistical_validation:
     status: blocked
     blocked_by:
-      - a2_signal_conformance
+      - a2_signal_conformance   # not yet passed/closed, only opened; A3 opening itself remains a separate future owner decision per explicitly_not_authorized above
 
 stage_b_execution_qualification:
   status: blocked
@@ -59,15 +76,19 @@ stage_b_execution_qualification:
 
 freeze_state:
   strategy_frozen: true
-  engine_implements_spec: false
-  implementation_authorization: null
+  engine_implements_spec: false   # still false — authorization to assemble a reference funnel does not itself mean one exists yet
+  implementation_authorization: scoped_reference_implementation_granted   # S1-G2 research/validation scope only; see a2_signal_conformance.opened above
 
 forbidden_until_authorized:
-  - reference_implementation
-  - historical_baseline
+  - historical_baseline   # A3/S1-G7 per PROJECT_STATUS.md's path — owner explicitly said "no A3 opening"
   - cost_adjusted_backtest
   - walk_forward
   - broker_integration
   - demo_trading
   - live_trading
   - production_promotion
+  # NOTE: "reference_implementation" removed from this list 2026-07-26 —
+  # funnel assembly for golden/negative-case tests and existence-check
+  # research is now authorized under scoped S1-G2. Everything else here
+  # (including historical_baseline, which is A3/S1-G7 work) remains
+  # forbidden per a2_signal_conformance.opened.explicitly_not_authorized.

@@ -1138,3 +1138,55 @@ S1-G1C re-run recorded a clean PASS — see
 authorize A2/S1-G2 reference implementation, backtesting, replay, demo, or
 production — those remain separately gated per `NEXT_ACTION.md`/
 `PROJECT_STATUS.md`.
+
+## Governance milestone: ST-C3 Specification Closure and A2/S1-G2 opening
+Date: 2026-07-26
+Author: AI agent (governance tracking); owner-decided
+
+### What happened
+Following S1-G1C closure, a Specification Closure pass classified and
+resolved the majority of ST-C3's remaining `UNRESOLVED`/ambiguous spec
+fields. Full record: `reports/validation/st_c3/RESOLUTION_MATRIX.md`,
+`DEPENDENCY_GRAPH.md`, `DECISION_PACKAGES.md`, `OWNER_DECISION_LOG.md`,
+`SPECIFICATION_CLOSURE_REPORT.md`, `R04_R06_RESEARCH_REPORT.md`. Outcome:
+21 of 26 tracked fields owner-decided (instrument scope EURUSD/GBPUSD/
+XAUUSD; fixed-lot risk model; TP2/TP3 RR floors; daily/weekly loss caps;
+portfolio heat/position limits; displacement and sweep thresholds — the
+latter two informed by empirical research against GBPUSD M15 data, not
+owner intuition alone); 2 deferred to a possible v2.x cycle
+(`risk.fixed_lot_size` value, `instrument.selection_logic`); 4 proposed
+architecture changes (break-even, trailing-stop, session-close forced-exit,
+dual-timeframe bias confirmation) explicitly ruled **out of v1.x scope** —
+none applied to the frozen funnel; 2 fields remain pending
+(`sessions.low_liquidity_filters` — needs a low-liquidity-signature
+definition; `rcr_preregistration.existence_check_floor` — needs a
+reference funnel to exist).
+
+On 2026-07-26 the owner made the explicit decision to open A2/S1-G2
+(Reference Implementation Authorization), with a stated scope: authorized
+— reference-funnel assembly, golden-case tests, negative-case tests,
+existence-check conformance runs, research/validation tasks; **not
+authorized** — execution, optimization, opening A3, demo trading, live
+trading, production promotion.
+
+### Governance artifacts updated
+`specs/st-c3_v1.0.1.yaml` (`implementation_authorization` ->
+`scoped_reference_implementation_granted`, mirroring the same field/value
+already used by `specs/st-c2_v1.2.0.yaml` for its own S1-G2 grant),
+`governance/st_c3_stage_status.yaml` (`a2_signal_conformance.status` ->
+`in_progress`, full scope recorded under `.opened`), `NEXT_ACTION.md`,
+`PROJECT_STATUS.md`.
+
+### Why this is a governance-tracking entry, not an RCR
+No detection logic, evidence object, state, or guard condition changed —
+this entry records parameter decisions already made through the owner
+decision process (analogous in kind to the v1.0.1 rejection-code RCR, but
+for previously-`UNRESOLVED` fields rather than a diagnostic-layer fix) and
+an authorization-state change (A2/S1-G2 opening), not new spec content
+requiring its own six-question RCR template.
+
+### Rollback / scope note
+`explicitly_not_authorized` items above remain hard blockers regardless of
+this entry: no execution, optimization, A3 opening, demo, live, or
+production work is sanctioned until each receives its own separate,
+future, explicit owner decision.
