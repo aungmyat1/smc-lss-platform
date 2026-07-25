@@ -67,6 +67,15 @@ def test_gc3_builder_rejects_fvg_chain_without_ltf_continuity():
     assert evidence.rejection_code == "R4"
 
 
+def test_fvg_tie_break_and_mitigation_policy_remain_unimplemented_inventory_items():
+    evidence = _builder().build_fvg_chain(*_fvg_frames(), direction="long")
+    assert evidence.valid
+    assert evidence.mf_fvg is not None
+    assert "tie_break_policy" not in evidence.mf_fvg.metadata
+    assert evidence.mf_fvg.invalidation_reason is None
+    assert evidence.mf_fvg.metadata["geometry_mode"] == "fixed_three_candle"
+
+
 def test_gc3_builder_emits_ltf_confirmation_evidence():
     evidence = _builder().build_ltf_confirmation(_ltf_confirmation_frames(), direction="long")
     assert isinstance(evidence, LTFConfirmationEvidence)

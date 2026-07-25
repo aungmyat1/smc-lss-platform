@@ -75,6 +75,10 @@ def _event_id(value: Any) -> str | None:
     return getattr(value, "event_id", None) or getattr(value, "id", None) or getattr(value, "range_id", None)
 
 
+def _source_ids(source_event_ids: Sequence[str | None]) -> tuple[str, ...]:
+    return tuple(item for item in source_event_ids if item)
+
+
 def _load_costs(symbol: str, path: Path | str = "config/research_costs.yaml") -> dict[str, Decimal]:
     raw = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
     row = raw.get("symbols", {}).get(symbol)
@@ -154,7 +158,7 @@ def build_rejection_evidence(
 ) -> RejectionEvidence:
     if rejection_code not in REJECTION_SUBCODES:
         raise ValueError(f"unsupported ST-C2 rejection subcode: {rejection_code}")
-    source_ids = tuple(item for item in source_event_ids if item)
+    source_ids = _source_ids(source_event_ids)
     attrs = {
         "symbol": symbol,
         "rule_id": rule_id,
@@ -235,7 +239,7 @@ class DecisionEvidenceBuilder:
         status: str = "confirmed",
         rejection_code: str | None = None,
     ) -> SignalCandidate:
-        source_ids = tuple(item for item in source_event_ids if item)
+        source_ids = _source_ids(source_event_ids)
         attrs = {
             "symbol": self.symbol_metadata.symbol,
             "direction": direction,
@@ -362,7 +366,7 @@ class DecisionEvidenceBuilder:
             "target_1": str(target_price),
             "target_2": str(target_price),
             "causal_cutoff": self.causal_cutoff,
-            "source_event_ids": tuple(item for item in source_event_ids if item),
+            "source_event_ids": _source_ids(source_event_ids),
         }
         return (
             LogicalTradePlan(
@@ -384,7 +388,7 @@ class DecisionEvidenceBuilder:
                 estimated_cost_points=str(estimated_cost_points),
                 net_reward_risk=str(net_r),
                 expiration_time=expiration,
-                source_event_ids=tuple(item for item in source_event_ids if item),
+                source_event_ids=_source_ids(source_event_ids),
                 rule_ids=rule_ids,
                 status="confirmed",
                 metadata={
@@ -430,7 +434,7 @@ class DecisionEvidenceBuilder:
             estimated_cost_points=None,
             net_reward_risk=None,
             expiration_time=None,
-            source_event_ids=tuple(item for item in source_event_ids if item),
+            source_event_ids=_source_ids(source_event_ids),
             rule_ids=(rejection.rule_id,),
             status="rejected",
             rejection_code=rejection.rejection_code,

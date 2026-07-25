@@ -17,7 +17,7 @@ acceptance:
   illegal_state_transitions: 0
   lookahead_violations: 0
   unexplained_differences: 0
-  missing_rule_test_mappings: 10
+  missing_rule_test_mappings: 0
   audit_source: reports/validation/st_c2/A2_RULE_COVERAGE_MATRIX.json
   s1_g2_completion_eligible: false
 
@@ -40,13 +40,14 @@ rules:
     implementation:
       module: validation.st_c2_reference
       function: data_availability
-    tests: []
+    tests:
+      - tests/test_st_c2_reference.py::test_timeframe_paths_and_external_liquidity_lookback_are_frozen
     golden_cases:
       - GC-STC2-GBPUSD-CONFIG-001
     expected_rejection_behavior:
       code: DATA_MISSING
       condition: one or more required timeframe files are absent
-    mapping_status: mapped_not_tested
+    mapping_status: implemented
 
   STC2-STRUCT-001:
     description: H4 swing structure uses the frozen fractal definition and closed candles only.
@@ -62,6 +63,34 @@ rules:
     expected_rejection_behavior:
       code: R2
       condition: no close-confirmed HTF structural bias exists
+
+  STC2-STRUCT-002:
+    description: External swing definition is outside_dealing_range.
+    implementation:
+      module: validation.st_c2.structure
+      function: detect_htf_structure
+    tests:
+      - tests/st_c2/test_structural_conformance.py::test_external_internal_and_multi_choch_rules_remain_explicitly_unimplemented
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R2
+      condition: external swing classification remains explicit current-slice gap
+    mapping_status: explicitly_unimplemented
+
+  STC2-STRUCT-003:
+    description: Internal swing definition is inside_dealing_range_pre_bos.
+    implementation:
+      module: validation.st_c2.structure
+      function: detect_htf_structure
+    tests:
+      - tests/st_c2/test_structural_conformance.py::test_external_internal_and_multi_choch_rules_remain_explicitly_unimplemented
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R2
+      condition: internal swing classification remains explicit current-slice gap
+    mapping_status: explicitly_unimplemented
 
   STC2-STRUCT-004:
     description: Protected levels are created by structural bias evidence and represented with stable IDs.
@@ -90,6 +119,20 @@ rules:
       code: R2
       condition: opposite CHoCH attempt lacks required displacement
     mapping_status: implemented
+
+  STC2-STRUCT-006:
+    description: Multi-CHoCH sequencing has second/third/fourth-plus classifications.
+    implementation:
+      module: validation.st_c2.structure
+      function: detect_htf_structure
+    tests:
+      - tests/st_c2/test_structural_conformance.py::test_external_internal_and_multi_choch_rules_remain_explicitly_unimplemented
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R2
+      condition: multi-CHoCH sequence labels remain explicit current-slice gap
+    mapping_status: explicitly_unimplemented
 
   STC2-BIAS-001:
     description: Bull/bear HTF bias classification uses only HTF BOS/CHoCH evidence.
@@ -164,6 +207,34 @@ rules:
       condition: structural event is absent or rejected before bias authority changes
     mapping_status: implemented
 
+  STC2-LIQ-001:
+    description: External liquidity lookback is 300 H4 bars.
+    implementation:
+      module: validation.st_c2_reference
+      function: scan_history
+    tests:
+      - tests/test_st_c2_reference.py::test_timeframe_paths_and_external_liquidity_lookback_are_frozen
+    golden_cases:
+      - GC-STC2-GBPUSD-CONFIG-001
+    expected_rejection_behavior:
+      code: R1
+      condition: no eligible liquidity pool appears inside the frozen lookback window
+    mapping_status: implemented
+
+  STC2-LIQ-002:
+    description: Equal-high/low tolerance is 5 pips.
+    implementation:
+      module: validation.st_c2.structure
+      function: build_liquidity_pools
+    tests:
+      - tests/st_c2/test_structural_conformance.py::test_equal_high_low_tolerance_is_recorded_but_not_clustered
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R1
+      condition: current reference slice records tolerance metadata but does not cluster equal highs/lows
+    mapping_status: explicitly_unimplemented
+
   STC2-LIQ-003:
     description: Eligible H4 liquidity sweep must reclaim with the frozen wick-ratio and max-age rule.
     implementation:
@@ -180,18 +251,48 @@ rules:
       code: R1
       condition: liquidity sweep is absent or older than max_sweep_age_bars_htf
 
+  STC2-LIQ-004:
+    description: Sweep must close back in range.
+    implementation:
+      module: validation.st_c2.structure
+      function: detect_sweep_and_reclaim
+    tests:
+      - tests/st_c2/test_structural_conformance.py::test_sweep_requires_pierce_reclaim_wick_ratio_and_age
+    golden_cases:
+      - GC-STC2-GBPUSD-LIQ-NEG-001
+    expected_rejection_behavior:
+      code: R1
+      condition: pierced liquidity that does not close back in range is rejected
+    mapping_status: implemented
+
   STC2-LIQ-005:
     description: Eligible liquidity sweep must be within max_sweep_age_bars_htf.
     implementation:
       module: validation.st_c2_reference
       function: _last_sweep
-    tests: []
+    tests:
+      - tests/test_st_c2_reference.py::test_legacy_sweep_helper_preserves_max_age_and_single_bar_reclaim
     golden_cases:
       - GC-STC2-GBPUSD-LIQ-NEG-001
     expected_rejection_behavior:
       code: R1
       condition: liquidity sweep exists but is older than max_sweep_age_bars_htf
-    mapping_status: mapped_not_tested
+    mapping_status: implemented
+
+  STC2-LIQ-006:
+    description: Reclaim close bar rule is single_bar_only.
+    implementation:
+      module: validation.st_c2_reference
+      function: _last_sweep
+    tests:
+      - tests/test_st_c2_reference.py::test_legacy_sweep_helper_preserves_max_age_and_single_bar_reclaim
+      - tests/st_c2/test_structural_conformance.py::test_sweep_requires_pierce_reclaim_wick_ratio_and_age
+    golden_cases:
+      - GC-STC2-GBPUSD-LIQ-NEG-001
+    expected_rejection_behavior:
+      code: R1
+      condition: liquidity sweep exists but is not reclaimed on the same bar
+    mapping_status: partially_implemented
 
   STC2-LIQ-007:
     description: Liquidity pool selection uses direction, nearest price, recent confirmation, and stable identifier tie-breaks.
@@ -205,6 +306,35 @@ rules:
     expected_rejection_behavior:
       code: R1
       condition: no eligible directional liquidity pool is available
+    mapping_status: implemented
+
+  STC2-POI-001:
+    description: POI gap reaction min is 10 points, max age 40 H4 bars, partial fill required.
+    implementation:
+      module: validation.st_c2_reference
+      function: _matching_mf_fvg
+    tests:
+      - tests/test_st_c2_reference.py::test_poi_gap_reaction_uses_gbpusd_point_threshold
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R4
+      condition: no MF FVG meets the frozen GBPUSD gap threshold
+    mapping_status: partially_implemented
+
+  STC2-OTE-001:
+    description: Dealing range anchors come from triggering liquidity external swing and freeze at trigger.
+    implementation:
+      module: validation.st_c2.structure
+      function: select_structural_dealing_range
+    tests:
+      - tests/st_c2/test_structural_conformance.py::test_dealing_range_anchors_freeze_from_confirmed_structure_before_sweep
+      - tests/st_c2/test_structural_conformance.py::test_structural_context_is_causal_and_deterministic
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R3
+      condition: no confirmed structural dealing range is available before OTE evaluation
     mapping_status: implemented
 
   STC2-OTE-002:
@@ -325,6 +455,20 @@ rules:
     expected_rejection_behavior:
       code: R4
       condition: no matching fixed-geometry FVG exists
+
+  STC2-FVG-007:
+    description: FVG tie-break, mitigation invalidation threshold, and rounding.
+    implementation:
+      module: validation.st_c2.evidence_gc3
+      function: EvidenceBuilder
+    tests:
+      - tests/st_c2/test_evidence_gc3.py::test_fvg_tie_break_and_mitigation_policy_remain_unimplemented_inventory_items
+    golden_cases:
+      - GC-STC2-GBPUSD-BULL-POS-001
+    expected_rejection_behavior:
+      code: R4
+      condition: current reference slice emits fixed geometry but no mitigation/tie-break policy evidence
+    mapping_status: explicitly_unimplemented
 
   STC2-LTF-001:
     description: LTF confirmation evidence records the internal BOS prerequisite.

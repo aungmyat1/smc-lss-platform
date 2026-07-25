@@ -113,6 +113,15 @@ def _stage(stage: str, passed: bool, code: str, **detail: Any) -> StageEvidence:
     return StageEvidence(stage=stage, passed=passed, code=code, detail=detail)
 
 
+def _no_signal(
+    symbol: str,
+    direction: str | None,
+    rejection_code: str,
+    stages: list[StageEvidence],
+) -> DetectionResult:
+    return DetectionResult("NO_SIGNAL", symbol, direction, rejection_code, tuple(stages))
+
+
 def _last_sweep(htf: list[dict[str, Any]], spec: dict[str, Any]) -> dict[str, Any] | None:
     params = spec["pipeline"]["liquidity_stage"]["detect_sweep"]
     sweeps = e.liquidity_sweeps(
@@ -185,14 +194,14 @@ def analyze_windows(
     configured_symbols = enabled_symbols(spec)
     if configured_symbols != [symbol]:
         stages.append(_stage("config", False, "R6", enabled_symbols=configured_symbols))
-        return DetectionResult("NO_SIGNAL", symbol, None, "R6", tuple(stages))
+        return _no_signal(symbol, None, "R6", stages)
 
     context = structural_context(htf, mf, spec=spec, symbol=symbol)
     bias = context["bias"]
     direction = bias.direction if bias.direction in {"long", "short"} else None
     if direction is None:
         stages.append(_stage("htf_bias", False, "R2", reason=bias.reason, structural_events=len(context["events"])))
-        return DetectionResult("NO_SIGNAL", symbol, None, "R2", tuple(stages))
+        return _no_signal(symbol, None, "R2", stages)
     stages.append(
         _stage(
             "htf_bias",
@@ -210,7 +219,7 @@ def analyze_windows(
     if sweep is None or sweep.status != "confirmed":
         reason = None if sweep is None else sweep.metadata.get("detail_reason")
         stages.append(_stage("liquidity", False, "R1", reason=reason or "NO_ELIGIBLE_LIQUIDITY_POOL"))
-        return DetectionResult("NO_SIGNAL", symbol, direction, "R1", tuple(stages))
+        return _no_signal(symbol, direction, "R1", stages)
     stages.append(_stage("liquidity", True, "PASS", sweep=sweep.to_dict()))
 
     ote = context["ote"]
@@ -224,7 +233,7 @@ def analyze_windows(
                 reason=None if ote is None else ote.rejection_detail,
             )
         )
-        return DetectionResult("NO_SIGNAL", symbol, direction, "R3", tuple(stages))
+        return _no_signal(symbol, direction, "R3", stages)
     stages.append(_stage("ote", True, "PASS", direction=direction, ote=ote.__dict__))
 
     metadata = load_symbol_metadata(symbol)
@@ -233,13 +242,13 @@ def analyze_windows(
     fvg_chain = evidence_builder.build_fvg_chain(htf, mf, ltf, direction=direction)
     if not fvg_chain.valid:
         stages.append(_stage("fvg_alignment", False, "R4", direction=direction))
-        return DetectionResult("NO_SIGNAL", symbol, direction, "R4", tuple(stages))
+        return _no_signal(symbol, direction, "R4", stages)
     stages.append(_stage("fvg_alignment", True, "PASS", fvg_chain=fvg_chain.to_dict()))
 
     confirmation = evidence_builder.build_ltf_confirmation(ltf, direction=direction)
     if not confirmation.valid:
         stages.append(_stage("ltf_confirmation", False, "R5", direction=direction))
-        return DetectionResult("NO_SIGNAL", symbol, direction, "R5", tuple(stages))
+        return _no_signal(symbol, direction, "R5", stages)
     stages.append(_stage("ltf_confirmation", True, "PASS", confirmation=confirmation.to_dict()))
 
     decision_builder = DecisionEvidenceBuilder(spec=spec, symbol_metadata=metadata, causal_cutoff=causal_cutoff)
@@ -266,7 +275,7 @@ def analyze_windows(
                 rejection=None if rejection is None else rejection.to_dict(),
             )
         )
-        return DetectionResult("NO_SIGNAL", symbol, direction, "R6", tuple(stages))
+        return _no_signal(symbol, direction, "R6", stages)
     stages.append(
         _stage(
             "state_machine",

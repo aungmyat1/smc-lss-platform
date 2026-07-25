@@ -10,6 +10,7 @@ import yaml
 
 
 METADATA_PATH = Path("specs/st_c2/symbol_metadata.yaml")
+DecimalInput = Decimal | int | float | str
 
 
 @dataclass(frozen=True)
@@ -55,30 +56,30 @@ def _rounding_mode(meta: SymbolMetadata) -> str:
     return ROUND_HALF_UP
 
 
-def points_to_price(points: Decimal | int | float | str, meta: SymbolMetadata) -> Decimal:
+def points_to_price(points: DecimalInput, meta: SymbolMetadata) -> Decimal:
     return _decimal(points) * meta.point_size
 
 
-def price_to_points(price_distance: Decimal | int | float | str, meta: SymbolMetadata) -> Decimal:
+def price_to_points(price_distance: DecimalInput, meta: SymbolMetadata) -> Decimal:
     return _decimal(price_distance) / meta.point_size
 
 
-def pips_to_price(pips: Decimal | int | float | str, meta: SymbolMetadata) -> Decimal:
+def pips_to_price(pips: DecimalInput, meta: SymbolMetadata) -> Decimal:
     return _decimal(pips) * meta.pip_size
 
 
-def normalize_price(price: Decimal | int | float | str, meta: SymbolMetadata) -> Decimal:
+def normalize_price(price: DecimalInput, meta: SymbolMetadata) -> Decimal:
     return _decimal(price).quantize(meta.quantum, rounding=_rounding_mode(meta))
 
 
-def normalize_distance(distance: Decimal | int | float | str, meta: SymbolMetadata) -> Decimal:
+def normalize_distance(distance: DecimalInput, meta: SymbolMetadata) -> Decimal:
     return abs(_decimal(distance)).quantize(meta.quantum, rounding=_rounding_mode(meta))
 
 
 def compare_price_with_tolerance(
-    left: Decimal | int | float | str,
-    right: Decimal | int | float | str,
-    tolerance_points: Decimal | int | float | str,
+    left: DecimalInput,
+    right: DecimalInput,
+    tolerance_points: DecimalInput,
     meta: SymbolMetadata,
 ) -> bool:
     tolerance = points_to_price(tolerance_points, meta)

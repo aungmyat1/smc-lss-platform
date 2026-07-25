@@ -16,6 +16,9 @@ from validation.st_c2.schemas import LiquidityPool, LiquiditySweep, StructuralEv
 from validation.st_c2.symbols import SymbolMetadata, load_symbol_metadata
 
 Candle = dict[str, Any]
+BIAS_EVENT_TYPES = {"BULLISH_BOS", "BEARISH_BOS", "BULLISH_CHOCH", "BEARISH_CHOCH"}
+PROTECTED_EVENT_TYPES = {"PROTECTED_HIGH_CREATED", "PROTECTED_LOW_CREATED"}
+SWING_EVENT_TYPES = {"SWING_HIGH", "SWING_LOW"}
 
 
 @dataclass(frozen=True)
@@ -122,6 +125,15 @@ def _body_ratio(candle: Candle) -> Decimal:
     return abs(_price(candle["close"]) - _price(candle["open"])) / (high - low)
 
 
+def _bias_event_type(direction: str, classification: str) -> str:
+    prefix = "BULLISH" if direction == "long" else "BEARISH"
+    return f"{prefix}_{classification}"
+
+
+def _protected_event_type(direction: str) -> str:
+    return "PROTECTED_LOW_CREATED" if direction == "long" else "PROTECTED_HIGH_CREATED"
+
+
 def detect_htf_structure(
     htf_candles: Sequence[Candle],
     *,
@@ -215,7 +227,7 @@ def detect_htf_structure(
         bias_before = active_bias
         displacement_score = _body_ratio(candle)
         if active_bias == "none":
-            event_type = "BULLISH_BOS" if break_dir == "long" else "BEARISH_BOS"
+            event_type = _bias_event_type(break_dir, "BOS")
             rule_id = "STC2-BIAS-003"
             active_bias = break_dir
         elif active_bias != break_dir:
@@ -247,7 +259,7 @@ def detect_htf_structure(
                     )
                 )
                 continue
-            event_type = "BULLISH_CHOCH" if break_dir == "long" else "BEARISH_CHOCH"
+            event_type = _bias_event_type(break_dir, "CHOCH")
             rule_id = "STC2-BIAS-004"
             if protected is not None:
                 invalidated = _mk_struct_event(
@@ -267,7 +279,7 @@ def detect_htf_structure(
                 events.append(invalidated)
             active_bias = break_dir
             protected_source = last_low[2] if break_dir == "long" and last_low else last_high[2] if break_dir == "short" and last_high else source_event
-            protected_type = "PROTECTED_LOW_CREATED" if break_dir == "long" else "PROTECTED_HIGH_CREATED"
+            protected_type = _protected_event_type(break_dir)
             protected_price = _price(protected_source.reference_levels["price"])
             protected = _mk_struct_event(
                 event_type=protected_type,
@@ -285,11 +297,11 @@ def detect_htf_structure(
             )
             events.append(protected)
         else:
-            event_type = "BULLISH_BOS" if break_dir == "long" else "BEARISH_BOS"
+            event_type = _bias_event_type(break_dir, "BOS")
             rule_id = "STC2-BIAS-003"
         if protected is None and active_bias != "none":
             protected_source = last_low[2] if break_dir == "long" and last_low else last_high[2] if break_dir == "short" and last_high else source_event
-            protected_type = "PROTECTED_LOW_CREATED" if break_dir == "long" else "PROTECTED_HIGH_CREATED"
+            protected_type = _protected_event_type(break_dir)
             protected_price = _price(protected_source.reference_levels["price"])
             protected = _mk_struct_event(
                 event_type=protected_type,
@@ -347,7 +359,7 @@ def classify_htf_bias(
     bias_events = [
         ev
         for ev in structure_events
-        if ev.event_type in {"BULLISH_BOS", "BEARISH_BOS", "BULLISH_CHOCH", "BEARISH_CHOCH"}
+        if ev.event_type in BIAS_EVENT_TYPES
     ]
     if not bias_events:
         return BiasEvidence("none", None, None, None, None, "STC2-BIAS-001", cutoff, "NO_STRUCTURAL_BIAS_EVENT")
@@ -355,7 +367,7 @@ def classify_htf_bias(
     protected = [
         ev
         for ev in structure_events
-        if ev.event_type in {"PROTECTED_HIGH_CREATED", "PROTECTED_LOW_CREATED"}
+        if ev.event_type in PROTECTED_EVENT_TYPES
         and ev.direction == latest.direction
         and (ev.confirmation_timestamp or "") <= (latest.confirmation_timestamp or "")
     ]
@@ -382,7 +394,7 @@ def build_liquidity_pools(
 ) -> tuple[LiquidityPool, ...]:
     tol_pips = Decimal(str(spec["pipeline"]["liquidity_stage"]["detect_external_liquidity"]["equal_highs_tolerance_pips"]))
     pools: list[LiquidityPool] = []
-    swing_events = [ev for ev in structure_events if ev.event_type in {"SWING_HIGH", "SWING_LOW"}]
+    swing_events = [ev for ev in structure_events if ev.event_type in SWING_EVENT_TYPES]
     for ev in swing_events:
         price = ev.reference_levels["price"]
         pool_type = "BUY_SIDE" if ev.event_type == "SWING_HIGH" else "SELL_SIDE"

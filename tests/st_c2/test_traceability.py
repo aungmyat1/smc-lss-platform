@@ -6,10 +6,10 @@ import yaml
 from validation.st_c2.traceability import validate_traceability
 
 
-def test_traceability_current_inventory_reports_missing_mappings_honestly():
+def test_traceability_current_inventory_has_no_missing_rule_mappings():
     result = validate_traceability()
     assert result.valid
-    assert result.missing_mappings == 10
+    assert result.missing_mappings == 0
 
 
 def test_coverage_inventory_has_structured_provenance():

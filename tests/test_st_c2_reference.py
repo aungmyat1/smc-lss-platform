@@ -62,6 +62,16 @@ def test_spec_is_frozen_gbpusd_only():
     assert stc2.enabled_symbols(spec) == ["GBPUSD"]
 
 
+def test_timeframe_paths_and_external_liquidity_lookback_are_frozen():
+    spec = stc2.load_spec()
+    assert stc2.REQUIRED_DATA == {
+        "htf": Path("data/GBPUSD_H4.csv"),
+        "mf": Path("data/GBPUSD_M15.csv"),
+        "ltf": Path("data/GBPUSD_M3.csv"),
+    }
+    assert spec["pipeline"]["liquidity_stage"]["detect_external_liquidity"]["lookback_bars_htf"] == 300
+
+
 def test_positive_golden_case_emits_signal():
     result = stc2.analyze_windows(*_positive_bull_windows())
     assert result.decision == "SIGNAL"
@@ -108,6 +118,39 @@ def test_deterministic_clean_vs_rerun():
     result1 = stc2.analyze_windows(*_positive_bull_windows())
     result2 = stc2.analyze_windows(*_positive_bull_windows())
     assert result1 == result2
+
+
+def test_legacy_sweep_helper_preserves_max_age_and_single_bar_reclaim(monkeypatch):
+    spec = stc2.load_spec()
+    calls = {}
+
+    def fake_sweeps(candles, *, k, min_wick_ratio):
+        calls["k"] = k
+        calls["min_wick_ratio"] = min_wick_ratio
+        return [{"i": 1, "dir": "bull"}, {"i": 2, "dir": "bear"}]
+
+    monkeypatch.setattr(stc2.e, "liquidity_sweeps", fake_sweeps)
+    htf = [bar(f"2026-01-01 {hour:02d}:00", 1, 2, 0, 1) for hour in range(23)]
+    assert stc2._last_sweep(htf, spec) == {"i": 2, "dir": "bear"}
+    assert calls == {"k": 3, "min_wick_ratio": 0.6}
+
+    stale_only = lambda *_args, **_kwargs: [{"i": 1, "dir": "bull"}]
+    monkeypatch.setattr(stc2.e, "liquidity_sweeps", stale_only)
+    assert stc2._last_sweep(htf, spec) is None
+
+
+def test_poi_gap_reaction_uses_gbpusd_point_threshold():
+    spec = stc2.load_spec()
+    mf = [
+        bar("2026-01-01 00:00", 1.1000, 1.1000, 1.0990, 1.0995),
+        bar("2026-01-01 00:15", 1.0995, 1.1001, 1.0991, 1.0996),
+        bar("2026-01-01 00:30", 1.1011, 1.1015, 1.1010, 1.1012),
+    ]
+    fvg = stc2._matching_mf_fvg(mf, "long", spec)
+    assert fvg is not None
+    assert fvg["dir"] == "bull"
+    assert fvg["lower"] == 1.1
+    assert fvg["upper"] == 1.101
 
 
 def test_no_broker_imports_in_reference_kernel():

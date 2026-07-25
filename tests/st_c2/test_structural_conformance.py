@@ -11,6 +11,7 @@ from validation.st_c2.structure import (
     detect_sweep_and_reclaim,
     evaluate_ote_location,
     select_liquidity_pool,
+    select_structural_dealing_range,
     structural_context,
 )
 from validation.st_c2.symbols import load_symbol_metadata
@@ -61,6 +62,14 @@ def test_htf_bias_uses_closed_candle_bos_choch_not_wick_only():
     assert rejected_bias.direction == "none"
 
 
+def test_external_internal_and_multi_choch_rules_remain_explicitly_unimplemented():
+    spec, meta = _spec_meta()
+    events = detect_htf_structure(gc2_long_htf(), spec=spec, symbol_metadata=meta)
+    assert all(ev.metadata.get("swing_type") == "external_candidate" for ev in events if ev.event_type.startswith("SWING_"))
+    assert not any(ev.metadata.get("swing_type") == "inside_dealing_range_pre_bos" for ev in events)
+    assert not any("choch_sequence_classification" in ev.metadata for ev in events)
+
+
 def test_choch_flip_requires_displacement_threshold():
     spec, meta = _spec_meta()
     htf = gc2_long_htf() + [
@@ -109,6 +118,23 @@ def test_sweep_requires_pierce_reclaim_wick_ratio_and_age():
     assert rejected.status == "rejected"
     assert rejected.invalidation_reason == "SWEEP_WICK_RATIO_INSUFFICIENT"
 
+    not_reclaimed = list(gc2_long_htf())
+    not_reclaimed[11] = bar("2026-01-02 20:00", 1.1000, 1.1030, 1.0940, 1.0945)
+    unreclaimed = detect_sweep_and_reclaim(not_reclaimed, pool, spec=spec, symbol_metadata=meta, causal_cutoff="2026-01-03 00:00")
+    assert unreclaimed is not None
+    assert unreclaimed.status == "rejected"
+    assert unreclaimed.invalidation_reason == "SWEEP_NOT_RECLAIMED"
+    assert unreclaimed.metadata["reclaim_status"] == "not_reclaimed"
+
+
+def test_equal_high_low_tolerance_is_recorded_but_not_clustered():
+    spec, meta = _spec_meta()
+    events = detect_htf_structure(gc2_long_htf(), spec=spec, symbol_metadata=meta)
+    pools = build_liquidity_pools(events, spec=spec, symbol_metadata=meta, causal_cutoff="2026-01-03 00:00")
+    assert pools
+    assert {pool.metadata["equal_tolerance_pips"] for pool in pools} == {"5"}
+    assert {pool.metadata["equal_tolerance_price"] for pool in pools} == {"0.0005"}
+
 
 def test_structural_dealing_range_ote_boundaries_are_deterministic():
     spec, _meta = _spec_meta()
@@ -133,6 +159,29 @@ def test_structural_dealing_range_ote_boundaries_are_deterministic():
     assert evaluate_ote_location(Decimal("1.786"), dr, direction="short", spec=spec, causal_cutoff=dr.causal_cutoff).ote_eligible
     assert evaluate_ote_location(Decimal("1.500"), dr, direction="short", spec=spec, causal_cutoff=dr.causal_cutoff).ote_eligible
     assert not evaluate_ote_location(Decimal("1.900"), dr, direction="short", spec=spec, causal_cutoff=dr.causal_cutoff).ote_eligible
+
+
+def test_dealing_range_anchors_freeze_from_confirmed_structure_before_sweep():
+    spec, meta = _spec_meta()
+    events = detect_htf_structure(gc2_long_htf(), spec=spec, symbol_metadata=meta)
+    pool = select_liquidity_pool(
+        build_liquidity_pools(events, spec=spec, symbol_metadata=meta, causal_cutoff="2026-01-03 00:00"),
+        current_price=Decimal("1.1120"),
+        direction="long",
+    )
+    sweep = detect_sweep_and_reclaim(gc2_long_htf(), pool, spec=spec, symbol_metadata=meta, causal_cutoff="2026-01-03 00:00")
+    dealing_range = select_structural_dealing_range(
+        events,
+        sweep,
+        spec=spec,
+        symbol_metadata=meta,
+        causal_cutoff="2026-01-03 00:00",
+    )
+    assert dealing_range is not None
+    assert dealing_range.status == "confirmed"
+    assert dealing_range.confirmation_timestamp == sweep.confirmation_timestamp
+    assert dealing_range.anchor_high_event_id.startswith("STRUCTURE-")
+    assert dealing_range.anchor_low_event_id.startswith("STRUCTURE-")
 
 
 def test_structural_context_is_causal_and_deterministic():
