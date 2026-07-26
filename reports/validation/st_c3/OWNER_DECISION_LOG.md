@@ -73,13 +73,29 @@ than direct owner-supplied values. See `R18_R27_R30_RESEARCH_PLAN.md`.
 ran — `reports/validation/st_c3/R27_R30_RESEARCH_REPORT.md`
 (`scripts/research_r27_r30_gbpusd.py`, GBPUSD H4/M15 only — EURUSD's H4/M15
 CSVs have only 19-21 rows, insufficient for distribution research). No
-value is decided by this report; it surfaces tradeoff curves (R-27), a
-modeling-ambiguity finding rather than a clean threshold (R-28), a
-candidate range (R-29 FVG gap-size; R-29's OB half needs no new number,
-already answered by `smc_engine.order_blocks()`'s existing rule), and
-another modeling-ambiguity finding (R-30). All four rows above updated
-accordingly. Still all `PENDING` — awaiting owner ratification, and for
-R-28/R-30, likely a refined follow-up analysis first.
+value is decided by this report; it surfaces tradeoff curves for R-27
+(swing/fractal k) and R-29's FVG half, and initially flagged R-28/R-30 as
+needing reformulation.
+
+**2026-07-26 update (same day, later still):** on reflection, R-28's
+"modeling ambiguity" finding was a self-correction of an overclaim, not a
+real defect — a monotonically-climbing whipsaw rate as the confirmation
+window grows is expected (a longer window has strictly more chances to
+observe a reversal), and re-read correctly it's the same kind of tradeoff
+curve as R-27. Reclassified as ready for ratification. R-30 genuinely did
+need reformulation (the naive "first opposite close" measure really is too
+permissive); a depth-filtered follow-up ran and produced a real tradeoff
+curve. **All four of R-27/R-28/R-29/R-30 are now ready for owner
+ratification** — none require further research. See the updated
+`R27_R30_RESEARCH_REPORT.md`.
+
+**2026-07-26 update (same day, final):** owner ratified all four —
+R-27 k=2, R-28 N=2, R-29 (FVG half) 0.15x MF_ATR(1), R-30 0.30x ATR(1).
+Folded into `specs/st-c3_v1.0.5.yaml`. **Status: R-18 is now the only
+tracked field left unresolved, and it no longer needs any further spec
+decision — only real detection-module code, built against the now-fully-frozen
+parameter set, and a run against real candle data.** See
+`reports/governance/st_c3/RCR_ST-C3_v1.0.5_REPORT.md`.
 
 **Source of the two decisions below:** an owner-submitted decision document
 dated 2026-07-25 used a different ID scheme than `RESOLUTION_MATRIX.md`
@@ -120,10 +136,10 @@ tracked as one of the 20 fields — see "Open Conflicts" below.
 | R-24 | `fvg_ob_confluence_stage.freshness_definition` — **FVG half** (companion to R-23) | Not proposed | **APPROVED: FVG fresh for <= 1 MF swing after creation** | Owner | 2026-07-26 | Deterministic rule: `Let FVG.creation_swing = MF swing in which the FVG is formed. IF (current_MF_swing_index - FVG.creation_swing_index) <= 1 AND FVG is not expired THEN fvg_fresh = true ELSE false.` Shorter window than R-23's OB rule (1 swing vs. 3) — rationale given: FVGs are short-lived imbalances, OBs have longer structural relevance. **Unresolved dependency, not silently assumed:** the rule's "AND FVG is not expired (R-06)" clause cites R-06, but this log's R-06 is `max_sweep_age_bars` — a sweep-stage field with no relationship to FVGs. No separate "FVG expiration" concept (distinct from this freshness rule) has been tracked or decided anywhere in `RESOLUTION_MATRIX.md`. Until clarified, this rule is recorded with its freshness clause only; the expiration clause's actual condition is undefined. |
 | R-25 | `portfolio.max_positions_per_instrument` (NEW — submitted as "R-13," mismatched this log's actual R-13; added 2026-07-26) | Not proposed | **APPROVED: 1** | Owner | 2026-07-26 | Combined with R-12 (max concurrent positions = 2), this means at most 2 total open positions across all instruments, at most 1 per instrument — the 2 concurrent slots must be on 2 different symbols. Internally consistent with R-12, no conflict. |
 | R-26 | `risk.daily_max_trades` (NEW — submitted as "R-15," mismatched this log's actual R-15; added 2026-07-26) | Not proposed | **APPROVED: 4 trades/day** | Owner | 2026-07-26 | New concept — a cap on trades *initiated* per day, distinct from R-14's loss-percentage circuit breaker. No conflict with any existing decision. |
-| R-27 | HTF swing/fractal lookback definition (NEW — found 2026-07-26 attempting real R-18 detection work; see `R18_DETECTION_GAP_REPORT.md`) | Not proposed | PENDING — empirical distribution across k=1..5 in `R27_R30_RESEARCH_REPORT.md`; no single value stands out, awaiting owner pick | — | — | Blocks all real price-level `S1_HTF_BIAS` detection. Not inherited from ST-C2 per ADR-0004. |
-| R-28 | BOS confirmation-bar rule (NEW — found 2026-07-26) | Not proposed | PENDING — `R27_R30_RESEARCH_REPORT.md` found the straightforward "reversed after N bars" framing doesn't produce a clean threshold; likely needs a "survives N bars" reformulation before a number can even be proposed | — | — | Blocks all real price-level `S4_DISPLACEMENT_BOS` detection. |
-| R-29 | FVG minimum gap-size / OB candle-selection rule (NEW — found 2026-07-26) | Not proposed | PENDING — OB half already answered by reusing `smc_engine.order_blocks()`'s existing structural rule (no number needed); FVG minimum-gap-size has a candidate range (0.1-0.3x MF_ATR(1)) in `R27_R30_RESEARCH_REPORT.md`, awaiting owner pick | — | — | Blocks all real price-level `S8_FVG_OB_CONFLUENCE` detection. |
-| R-30 | Pullback definition for `BOS_EXTREME_LOCK` (NEW — found 2026-07-26) | Not proposed | PENDING — `R27_R30_RESEARCH_REPORT.md` found the naive "first opposite close" definition is too permissive (median 1 bar, essentially every BOS); a depth-filtered variant is recommended but not decided | — | — | Blocks all real price-level `S5_BOS_EXTREME_LOCK` detection. |
+| R-27 | HTF swing/fractal lookback definition (NEW — found 2026-07-26 attempting real R-18 detection work; see `R18_DETECTION_GAP_REPORT.md`) | Not proposed | **APPROVED: k=2** | Owner | 2026-07-26 | Chosen from the k=1..5 tradeoff curve in `R27_R30_RESEARCH_REPORT.md` (1,379 swings over 5,000 GBPUSD H4 bars at k=2). Not inherited from ST-C2 (ADR-0004) — independently decided, though it happens to match `smc_engine.swings()`'s own default. Folded into `specs/st-c3_v1.0.5.yaml`'s `htf_bias_stage.swing_fractal_lookback_k`. |
+| R-28 | BOS confirmation-bar rule (NEW — found 2026-07-26) | Not proposed | **APPROVED: N=2 bars** | Owner | 2026-07-26 | Chosen from the N=0..5 tradeoff curve in `R27_R30_RESEARCH_REPORT.md` (rejects ~25% of raw body-close breaks as whipsaws on the GBPUSD M15 sample). Folded into `specs/st-c3_v1.0.5.yaml`'s `displacement_bos_stage.bos_confirmation_bars`. |
+| R-29 | FVG minimum gap-size / OB candle-selection rule (NEW — found 2026-07-26) | Not proposed | **APPROVED (FVG half): 0.15x MF_ATR(1)** | Owner | 2026-07-26 | Chosen from the 0.1-0.3x candidate range in `R27_R30_RESEARCH_REPORT.md`. OB half needs no number — already a structural rule via `smc_engine.order_blocks()`. Folded into `specs/st-c3_v1.0.5.yaml`'s `fvg_ob_confluence_stage.fvg_min_gap_atr_multiplier`. |
+| R-30 | Pullback definition for `BOS_EXTREME_LOCK` (NEW — found 2026-07-26) | Not proposed | **APPROVED: 0.30x ATR(1) depth** | Owner | 2026-07-26 | Chosen from the depth-filtered 0.1-1.0x ATR(1) tradeoff curve in `R27_R30_RESEARCH_REPORT.md` (reaches within 40 bars for 86.3% of BOS candidates, median 2 bars). Folded into `specs/st-c3_v1.0.5.yaml`'s `displacement_bos_stage.pullback_depth_atr_multiplier`. |
 
 ---
 

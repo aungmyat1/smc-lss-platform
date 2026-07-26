@@ -183,6 +183,42 @@ def research_r30(m15, k=2):
     summarize("  pullback depth, in ATR(1) units (negative = still favorable)", depth_atr)
 
 
+# ---------------------------------------------------------------------
+# R-30 follow-up: depth-filtered pullback definition. Requires the
+# retracement to reach a minimum depth (in ATR(1) units) against the BOS
+# direction, not just any single opposite-direction close.
+# ---------------------------------------------------------------------
+def research_r30_depth_filtered(m15, k=2, window=40):
+    print("\n" + "=" * 70)
+    print(f"R-30 follow-up — depth-filtered pullback, GBPUSD M15 (swings k={k})")
+    print("=" * 70)
+    bos = find_bos_candidates(m15, k)
+    # exclude degenerate near-zero-ATR bars, flagged as a data-quality issue
+    # in the first pass, from skewing this follow-up
+    min_atr = 1e-6
+    for threshold in (0.1, 0.2, 0.3, 0.5, 0.75, 1.0):
+        bars_until = []
+        found = 0
+        for ev in bos:
+            i, direction = ev["i"], ev["dir"]
+            bos_close = m15[i]["close"]
+            a = atr(m15, i, n=1)
+            if a <= min_atr:
+                continue
+            for j in range(i + 1, min(i + window, len(m15))):
+                close = m15[j]["close"]
+                depth = (bos_close - close) if direction == "bull" else (close - bos_close)
+                if depth / a >= threshold:
+                    bars_until.append(j - i)
+                    found += 1
+                    break
+        rate = 100.0 * found / len(bos) if bos else 0.0
+        print(f"\ndepth_threshold={threshold} x ATR(1): {found}/{len(bos)} BOS candidates "
+              f"reach this depth within {window} bars ({rate:.1f}%)")
+        if bars_until:
+            summarize(f"  bars until depth={threshold} reached", bars_until)
+
+
 def main():
     h4 = load_candles(str(H4_PATH))
     m15 = load_candles(str(M15_PATH))
@@ -193,6 +229,7 @@ def main():
     research_r28(m15)
     research_r29(h4, m15)
     research_r30(m15)
+    research_r30_depth_filtered(m15)
 
 
 if __name__ == "__main__":

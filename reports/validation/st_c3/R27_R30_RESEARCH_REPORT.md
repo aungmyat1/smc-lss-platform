@@ -61,21 +61,19 @@ broken level within N bars of the break:
 | 3 | 3267 / 10417 | 31.4% |
 | 5 | 4164 / 10417 | 40.0% |
 
-**Reading:** this is an unusual monotonic climb — waiting *longer* after a
-body-close break makes the measured "whipsaw rate" go *up*, not down,
-because this metric counts any later reversal of the break level, not just
-an immediate failed break. It shows that a large fraction of body-close
-breaks get revisited/reversed within a few bars regardless of confirmation
-window (consistent with GBPUSD M15 being a fairly choppy series at this
-raw signal density — 10,417 BOS candidates over 30,000 bars is a very high
-hit rate with no other filter applied). This suggests confirmation-bar
-count alone is a weak filter here; a "confirmation bars" rule based purely
-on holding through N bars would need a different formulation (e.g.
-requiring the break to *survive* N bars without closing back, which is a
-narrower, more standard definition) than this straightforward "reversed at
-any point after N bars" measurement — flagging this as a modeling
-ambiguity for the owner/whoever finalizes R-28's exact guard formulation,
-not resolving it here.
+**Reading (corrected from an earlier draft of this report):** waiting
+longer after a body-close break makes the measured "whipsaw rate" climb
+monotonically (0% at N=0 up to 40% at N=5) because a longer window has
+strictly more chances to observe *any* reversal — this is expected
+behavior of the metric, not evidence the confirmation-bars concept itself
+is broken. Read correctly, "whipsaw rate at N" is exactly "fraction of raw
+BOS candidates that would be rejected by a rule requiring the break to
+hold for N bars without closing back" — i.e. the same kind of
+responsiveness-vs-reliability tradeoff curve as R-27, not a flaw needing
+reformulation. **N=0** (no confirmation delay, accept every body-close
+break) keeps 100% of candidates; **N=5** keeps only 60% (rejecting the 40%
+that reverse within 5 bars) in exchange for higher confidence and slower
+entries. This is ready for the owner to pick a point on, same as R-27.
 
 ## R-29 — FVG Minimum Gap-Size
 
@@ -126,41 +124,63 @@ direction relative to the prior bar's close ("first pullback"):
 **Reading:** under this measurement, a "first pullback" (any single
 opposite-direction close) shows up almost immediately (median 1 bar) after
 essentially every BOS — consistent with normal bar-to-bar noise, not a
-meaningful structural pullback. This is the same modeling-ambiguity issue
-flagged in R-28: a literal "first opposite close" definition is too
+meaningful structural pullback. Unlike R-28, this genuinely is too
 permissive to be a useful gate (it would lock the BOS extreme on the very
 next bar in the median case, regardless of whether any real retracement
-happened). A depth-filtered variant (e.g. requiring the opposite move to
-reach some ATR(1)-multiple, per the depth distribution above) would be a
-more standard "pullback," but picking that threshold is an owner decision
-this report doesn't make. One data-quality note: the depth distribution's
-minimum (-18.24 ATR units) is an extreme outlier, likely from a bar where
-the local ATR(1) was very small (near-zero true range) rather than a real
-18-ATR pullback — worth excluding degenerate near-zero-ATR bars in any
-follow-up analysis rather than treating that tail literally.
+happened). One data-quality note: the raw depth distribution's minimum
+(-18.24 ATR units) is an extreme outlier, likely from a bar where the local
+ATR(1) was very small (near-zero true range) — excluded from the
+depth-filtered follow-up below via a near-zero-ATR floor.
+
+### R-30 Follow-Up — Depth-Filtered Pullback Definition
+
+Requiring the retracement to reach a minimum depth (in ATR(1) units)
+against the BOS direction, within 40 bars, degenerate near-zero-ATR bars
+excluded:
+
+| Depth threshold (x ATR(1)) | Reach rate within 40 bars | Median bars until reached | p90 bars until reached |
+|---|---|---|---|
+| 0.1 | 89.9% | 2 | 11 |
+| 0.2 | 88.2% | 2 | 13 |
+| 0.3 | 86.3% | 2 | 15 |
+| 0.5 | 82.3% | 3 | 18 |
+| 0.75 | 77.1% | 4 | 22 |
+| 1.0 | 72.4% | 6 | 24 |
+
+**Reading:** this is a genuinely different, more usable curve than the raw
+"first opposite close" measurement — reach-rate degrades smoothly as the
+depth requirement rises, and the bars-until-reached distribution scales
+sensibly (deeper retracements take longer to arrive, as expected). This is
+now a real tradeoff for the owner to pick a point on: a shallow threshold
+(e.g. 0.1-0.2x ATR) locks the BOS extreme quickly and for most setups; a
+deeper one (e.g. 0.5-1.0x ATR) waits for a more convincing retracement at
+the cost of slower confirmation and ~10-18% of BOS events never
+qualifying within the 40-bar window at all.
 
 ---
 
 ## Summary for owner ratification
 
 None of R-27/R-28/R-29/R-30 is resolved by this report — each still needs
-an explicit owner decision (or a further-refined research pass, per the
-R-28/R-30 modeling-ambiguity notes above, before a clean number/threshold
-can even be proposed with confidence). What this report establishes:
+an explicit owner decision. What this report establishes:
 
 - **R-27**: a real tradeoff curve (responsiveness vs. confirmation delay)
-  across `k=1..5`; no single value stands out as objectively correct.
-- **R-28**: the straightforward "reversed at any point after N bars"
-  framing doesn't produce a clean threshold — the guard likely needs a
-  different formulation (e.g. "survives N bars without closing back")
-  before a bar-count is chosen.
+  across `k=1..5`; ready for the owner to pick a point on.
+- **R-28**: also a real, ready tradeoff curve (bars-held vs. false-BOS
+  rejection rate), `N=0..5`; an earlier draft of this report mischaracterized
+  it as needing reformulation — corrected above. Ready for the owner to
+  pick a point on, same as R-27.
 - **R-29**: OB candle-selection needs no new number (already a structural
   rule via `smc_engine.order_blocks()`); FVG minimum gap-size has a
   reasonable candidate range (0.1-0.3x `MF_ATR(1)`, 38-75% pass-rate) for
   the owner to pick from, consistent across H4/M15.
 - **R-30**: the naive "first opposite close" pullback definition is too
-  permissive to be structurally meaningful; a depth-filtered variant is
-  recommended but not decided here.
+  permissive to be structurally meaningful. The depth-filtered follow-up
+  above is a real, usable tradeoff curve (0.1-1.0x ATR(1) depth vs.
+  reach-rate/bars-until-reached); ready for the owner to pick a point on.
+
+**All four are now ready for ratification** — none require further research
+before the owner can choose a value.
 
 No spec files were changed by this report. `specs/st-c3_v1.0.4.yaml`
 remains frozen and validated as-is.

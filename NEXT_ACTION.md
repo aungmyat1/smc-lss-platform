@@ -11,7 +11,7 @@ Current lifecycle position:
 | Stage | Stage A - Strategy Validation |
 | Substage | A2 - Indicator, Event and Signal Conformance |
 | Gate | S1-G2 Reference Implementation Authorization |
-| Strategy | ST-C3 v1.0.4 (instrument tie-breaking rule, revision of v1.0.3, see `specs/st-c3_v1.0.4.yaml`) |
+| Strategy | ST-C3 v1.0.5 (structural-detection algorithm parameters, revision of v1.0.4, see `specs/st-c3_v1.0.5.yaml`) |
 | Status | FROZEN -> S1-G1C CLOSED -> A2/S1-G2 OPEN (scoped) |
 | Readiness | GREEN |
 | Frozen | YES |
@@ -62,19 +62,20 @@ decisions.
 
 ## Current Evidence
 
-- **R-18 detection gap found (2026-07-26):** attempting to begin real
-  price-level detection work for R-18 surfaced a deeper, previously
-  untracked gap — the structural-detection *algorithms* (swing/fractal
-  lookback, BOS confirmation bars, FVG/OB identification, pullback
-  definition) have no defined parameters anywhere in the spec or
-  `OWNER_DECISION_LOG.md`, unlike the filter thresholds (wick ratio,
-  displacement body-ratio) already decided. No code was written; no
-  parameter was invented or inherited from ST-C2 (forbidden by ADR-0004).
-  Tracked as new **R-27 through R-30** (all `PENDING`) in
-  `RESOLUTION_MATRIX.md`/`OWNER_DECISION_LOG.md`. See
-  `reports/validation/st_c3/R18_DETECTION_GAP_REPORT.md`. Parked as a future
-  dedicated detection-research task per owner direction — not blocking
-  anything else; ST-C3 v1.0.4 remains frozen and validated as-is.
+- **ST-C3 v1.0.5 revision (2026-07-26):** decides R-27 (swing/fractal
+  `k`=2), R-28 (BOS confirmation bars `N`=2), R-29 FVG half (min gap-size
+  = 0.15x MF_ATR(1)), and R-30 (pullback depth = 0.30x ATR(1)) — the
+  structural-detection-algorithm gap found while attempting real R-18
+  work. Each value was chosen by the owner from an empirically-researched
+  tradeoff curve in `reports/validation/st_c3/R27_R30_RESEARCH_REPORT.md`
+  (GBPUSD H4/M15 real data; reused existing generic `smc_engine`
+  primitives, no invented or ST-C2-inherited logic). R-29's OB half needed
+  no new number (already a structural rule via `smc_engine.order_blocks()`).
+  See `specs/st-c3_v1.0.5.yaml`, `reports/governance/st_c3/RCR_ST-C3_v1.0.5_REPORT.md`.
+  **Every field on the R-01–R-30 tracker is now decided except R-18**,
+  which no longer needs a spec decision — only real detection-module code
+  and a data run (a separate engineering task, not yet started; still
+  within the existing A2/S1-G2 scope, no new authorization granted).
 - ST-C3 v1.0.4 revision: `specs/st-c3_v1.0.4.yaml`,
   `reports/governance/st_c3/RCR_ST-C3_v1.0.4_REPORT.md`. Decides R-22
   (`risk.instrument_tie_breaking_rule`: higher `computed_rr` wins between
@@ -107,19 +108,21 @@ decisions.
 - ST-C3 A2/S1-G2 reference funnel (evidence-to-trade-plan validator kernel,
   golden/negative-case tests, existence-check readiness):
   `reports/validation/st_c3/S1-G2_REFERENCE_FUNNEL_REPORT.md`,
-  `validation/st_c3/` (now pointed at `specs/st-c3_v1.0.4.yaml`),
+  `validation/st_c3/` (now pointed at `specs/st-c3_v1.0.5.yaml`),
   `tests/st_c3/` (20/20 passing). Builds the deterministic kernel the frozen
   spec fully specifies (`state_machine`/`evidence_bindings`/`trade_plan.schema`);
   does not build real price-bar SMC detection. With v1.0.2 now freezing the
   detection thresholds, that price-level detection work is unblocked in
   principle but remains a separate, not-yet-started engineering task — R-18's
   real existence-check number still requires it.
-- ST-C3 active frozen spec: `specs/st-c3_v1.0.4.yaml` (instrument
-  tie-breaking revision of `specs/st-c3_v1.0.3.yaml`, itself a fixed-lot +
-  instrument-scope revision of `specs/st-c3_v1.0.2.yaml`, itself a
-  governance parameter-freeze revision of `specs/st-c3_v1.0.1.yaml`, itself
-  a rejection-code revision of `specs/st-c3_v1.0.0.yaml` — all four
-  preserved unchanged as historical record).
+- ST-C3 active frozen spec: `specs/st-c3_v1.0.5.yaml` (structural-detection
+  algorithm parameter revision of `specs/st-c3_v1.0.4.yaml`, itself an
+  instrument tie-breaking revision of `specs/st-c3_v1.0.3.yaml`, itself a
+  fixed-lot + instrument-scope revision of `specs/st-c3_v1.0.2.yaml`,
+  itself a governance parameter-freeze revision of
+  `specs/st-c3_v1.0.1.yaml`, itself a rejection-code revision of
+  `specs/st-c3_v1.0.0.yaml` — all five preserved unchanged as historical
+  record).
 - ST-C3 Specification Closure tracking: `reports/validation/st_c3/RESOLUTION_MATRIX.md`,
   `DEPENDENCY_GRAPH.md`, `DECISION_PACKAGES.md`, `OWNER_DECISION_LOG.md`,
   `SPECIFICATION_CLOSURE_REPORT.md`, `R04_R06_RESEARCH_REPORT.md`.

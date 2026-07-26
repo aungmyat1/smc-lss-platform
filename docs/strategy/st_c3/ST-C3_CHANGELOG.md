@@ -7,6 +7,34 @@ rationale behind every field below.
 
 ---
 
+## v1.0.5 — 2026-07-26 (structural-detection algorithm parameters)
+
+**RCR:** `reports/governance/st_c3/RCR_ST-C3_v1.0.5_REPORT.md`
+**Supersedes:** v1.0.4 (preserved unchanged as historical record)
+
+Decides R-27–R-30 (the structural-detection-algorithm gap found while
+attempting real R-18 detection work, distinct from the R-01–R-26 filter
+thresholds already frozen), each chosen by the owner from an
+empirically-researched tradeoff curve in `R27_R30_RESEARCH_REPORT.md`:
+
+- **R-27** — HTF swing/fractal lookback `k` = 2
+- **R-28** — BOS confirmation bars `N` = 2
+- **R-29** (FVG half) — FVG minimum gap-size = 0.15x MF_ATR(1) (OB half
+  needed no new number — already a structural rule via
+  `smc_engine.order_blocks()`)
+- **R-30** — pullback depth = 0.30x ATR(1)
+
+**Not changed:** any evidence object, state, transition, guard, or
+rejection/termination code. No detection-module code was written — these
+are spec-text values only.
+
+**Governance milestone:** every field on the R-01–R-30 tracker is now
+decided except **R-18** (`existence_check_floor`), which no longer needs
+any further spec decision — only real detection-module implementation and
+a data run, a distinct engineering task within the existing A2/S1-G2
+scope. Execution/optimization/demo/live/A3 remain exactly as blocked as
+before.
+
 ## v1.0.4 — 2026-07-26 (instrument tie-breaking rule)
 
 **RCR:** `reports/governance/st_c3/RCR_ST-C3_v1.0.4_REPORT.md`

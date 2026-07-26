@@ -18,7 +18,7 @@ rules.
 | Stage | Stage A - Strategy Validation |
 | Substage | A2 - Indicator, Event and Signal Conformance |
 | Gate | S1-G2 Reference Implementation Authorization |
-| Strategy | ST-C3 v1.0.4 (instrument tie-breaking revision of v1.0.3, itself a fixed-lot + instrument-scope revision of v1.0.2, itself a governance parameter-freeze revision of v1.0.1, itself a revision of v1.0.0) |
+| Strategy | ST-C3 v1.0.5 (structural-detection algorithm parameters, revision of v1.0.4, itself an instrument tie-breaking revision of v1.0.3, itself a fixed-lot + instrument-scope revision of v1.0.2, itself a governance parameter-freeze revision of v1.0.1, itself a revision of v1.0.0) |
 | Status | FROZEN -> S1-G1C CLOSED -> A2/S1-G2 OPEN (scoped) |
 | Readiness | GREEN |
 | Frozen | YES |
@@ -147,9 +147,18 @@ ST-C3 evidence:
   attempting to begin real R-18 price-level detection found a deeper gap:
   the structural-detection algorithms (swing/fractal lookback, BOS
   confirmation bars, FVG/OB identification, pullback definition) have no
-  defined parameters anywhere. Tracked as new R-27 through R-30 (`PENDING`)
-  in `RESOLUTION_MATRIX.md`. No code written, nothing invented or inherited
-  from ST-C2. Parked as a future dedicated detection-research task.
+  defined parameters anywhere. Tracked as new R-27 through R-30 in
+  `RESOLUTION_MATRIX.md`. No code written, nothing invented or inherited
+  from ST-C2.
+- `reports/validation/st_c3/R27_R30_RESEARCH_REPORT.md` - empirical
+  distribution analysis (GBPUSD H4/M15) producing tradeoff curves for
+  R-27/R-28/R-30 and a candidate range for R-29's FVG half; R-29's OB half
+  needed no new number (`smc_engine.order_blocks()` already structural).
+- `specs/st-c3_v1.0.5.yaml` / `reports/governance/st_c3/RCR_ST-C3_v1.0.5_REPORT.md`
+  - owner ratified all four: R-27 k=2, R-28 N=2, R-29 (FVG) 0.15x
+  MF_ATR(1), R-30 0.30x ATR(1). **Every field on the R-01-R-30 tracker is
+  now decided except R-18**, which needs only real detection-module code
+  and a data run, not a further spec decision.
 
 ---
 
@@ -180,19 +189,19 @@ Stage A3 / Stage B blockers (unaffected by A2/S1-G2 opening):
 The reference funnel (evidence-to-trade-plan validator kernel), golden-case
 tests, negative-case tests, and existence-check readiness are built and
 passing — see `reports/validation/st_c3/S1-G2_REFERENCE_FUNNEL_REPORT.md`.
-`specs/st-c3_v1.0.2.yaml` through `v1.0.4.yaml` have since frozen the
-detection *filter* thresholds, sizing/instrument-scope values, and
-instrument tie-breaking rule that were originally blocking. R-18
-(existence-check floor) is the only unresolved field of the original 26
-tracked, but real price-level detection work is now further blocked on a
-separate, deeper gap: the structural-detection *algorithms* (swing/fractal
-lookback, BOS confirmation, FVG/OB identification, pullback definition)
-have no defined parameters anywhere — tracked as new R-27 through R-30, see
-`reports/validation/st_c3/R18_DETECTION_GAP_REPORT.md`. Parked as a future
-dedicated detection-research task per owner direction; not blocking
-anything else. Do not authorize execution, optimization, backtesting,
-broker integration, demo, live, or A3 opening until their own separate
-owner decisions permit them.
+`specs/st-c3_v1.0.2.yaml` through `v1.0.5.yaml` have now frozen every
+numeric parameter on the R-01–R-30 tracker: the original detection *filter*
+thresholds, sizing/instrument-scope values, instrument tie-breaking rule,
+and (as of v1.0.5) the structural-detection *algorithm* parameters
+(swing/fractal `k`=2, BOS confirmation `N`=2, FVG min gap=0.15x MF_ATR(1),
+pullback depth=0.30x ATR(1)). **R-18 (existence-check floor) is the only
+field left unresolved on the entire tracker**, and it no longer needs any
+further spec decision — only real price-level detection-module code built
+against these now-fully-frozen numbers, then a signal-rate run over real
+candle data (a distinct engineering task, not yet started; still within
+the existing A2/S1-G2 scope). Do not authorize execution, optimization,
+backtesting, broker integration, demo, live, or A3 opening until their own
+separate owner decisions permit them.
 
 ---
 
