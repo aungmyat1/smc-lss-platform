@@ -393,6 +393,50 @@ This decision does **not** authorize A3 — opening A3 remains a separate,
 future owner decision per `explicitly_not_authorized` in that same file.
 Execution, optimization, demo, and live trading remain explicitly blocked.
 
+### A3 statistical validation — **OPENED, owner decision 2026-07-26**
+
+**Context:** A2/S1-G2 was declared PASSED earlier the same day (entry
+above). That closure explicitly did not authorize opening A3 — a separate,
+distinct owner decision was required.
+
+**Owner Decision:** A3 (statistical edge and robustness qualification,
+S1-G7 through S1-G10) is hereby **OPENED**. Authorized scope: building and
+running a historical multi-timeframe replay engine
+(`validation/st_c3/a3_replay_engine.py`) over the frozen `v1.0.6` funnel —
+`historical_baseline`, `cost_adjusted_backtest`, and `walk_forward` research
+per `docs/strategy/st_c3/ST-C3_BACKTEST_SPEC.md`'s planning requirements —
+producing behavioral/statistical metrics (signal rate, TradePlan emission
+rate, rejection distribution, RR distribution, session behavior) over real
+historical candle data.
+
+**Decided by:** Owner (Aung), 2026-07-26.
+
+**Consequence:** `governance/st_c3_stage_status.yaml`'s
+`a3_statistical_validation.status` moves from `blocked` to `open`, and
+`historical_baseline`/`cost_adjusted_backtest`/`walk_forward` are removed
+from `forbidden_until_authorized`. **Explicitly NOT authorized by this
+decision:** `broker_integration`, `demo_trading`, `live_trading`,
+`production_promotion`, or any Stage B execution work — these remain
+blocked pending their own separate future owner decisions and, per
+`MASTER_PLAN.md`/`CLAUDE.md` hard rules, pending A3's own pass/fail
+qualification outcome and explicit promotion approval.
+
+**2026-07-27 update:** `validation/st_c3/a3_replay_engine.py` built (reuses
+`evidence_builder`/`kernel` unchanged; adds TradePlan lifecycle simulation
+and metrics rollup) and run against real GBPUSD H4/M15/M3 data — same
+window R-18 used. Result: **0 TradePlans emitted**, identical
+rejection-code breakdown to R-18. The replay engine's signal-detection
+path is confirmed correct (reproduces R-18 exactly); the new lifecycle
+code it adds (SL/TP tracking, RR realization, BIAS_FLIP monitoring) was
+never exercised, since no TradePlan was ever produced to simulate. Owner
+directed publishing this result as-is rather than pausing for synthetic
+lifecycle-logic test coverage first. See
+`reports/validation/st_c3/A3_REPLAY_RESULTS.md`. A3 remains open; further
+progress needs more/longer historical data (current GBPUSD window is ~7
+weeks; EURUSD's CSVs are unusably short), not more code. No RR
+distribution, win rate, or session-behavior data exists yet. This does not
+authorize execution, optimization, demo, live, or production.
+
 ---
 
 ## How to use this log

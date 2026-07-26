@@ -2,24 +2,24 @@
 
 **One milestone at a time. This is the active milestone.**
 
-## ST-C3 A2/S1-G2 PASSED — Awaiting A3 Opening Decision — Active Milestone
+## ST-C3 A3 OPEN — Replay Engine Built, Data-Blocked — Active Milestone
 
 Current lifecycle position:
 
 | Field | State |
 |---|---|
 | Stage | Stage A - Strategy Validation |
-| Substage | A2 - Indicator, Event and Signal Conformance |
-| Gate | S1-G2 Reference Implementation Authorization |
+| Substage | A3 - Statistical Edge and Robustness Qualification |
+| Gate | S1-G7 Historical Baseline / Replay |
 | Strategy | ST-C3 v1.0.6 (evidence-builder Tier 3 gap resolution, revision of v1.0.5, see `specs/st-c3_v1.0.6.yaml`) |
-| Status | FROZEN -> S1-G1C CLOSED -> A2/S1-G2 PASSED (owner decision, 2026-07-26) |
+| Status | FROZEN -> S1-G1C CLOSED -> A2/S1-G2 PASSED -> A3 OPEN (owner decisions, 2026-07-26) |
 | Readiness | GREEN |
 | Frozen | YES |
-| Implementation | S1-G2 scoped reference implementation complete |
-| Backtest | BLOCKED (historical baseline is A3/S1-G7) |
+| Implementation | S1-G2 scoped reference implementation complete; A3 replay engine built and run once |
+| Backtest | A3 replay engine built and run (zero signals on available data) — full historical baseline still requires more data |
 | A1 Logic Conformance | PASSED — see `reports/validation/st_c3/S1-G1C_RERUN_REPORT.md` |
 | A2 Signal Conformance | PASSED: owner decision 2026-07-26 — see `reports/validation/st_c3/OWNER_DECISION_LOG.md`, "A2/S1-G2 gate closure" entry |
-| A3 Statistical Validation | BLOCKED: opening A3 is a separate, distinct future owner decision, not yet made |
+| A3 Statistical Validation | OPEN: owner decision 2026-07-26. First replay run (2026-07-27) produced 0 TradePlans — data-blocked, not code-blocked. See `reports/validation/st_c3/A3_REPLAY_RESULTS.md`. |
 | Execution | BLOCKED (explicitly not authorized) |
 | Demo | BLOCKED |
 | Production | BLOCKED |
@@ -30,11 +30,20 @@ fields resolved; spec `v1.0.6` frozen (resolves R-31/R-32/R-33:
 reference funnel (all 15 evidence types) fully implemented and conformant;
 R-18 existence-check floor computed (`signal_rate=0.0`, real GBPUSD
 H4/M15/M3 data, see `reports/validation/st_c3/R18_EXISTENCE_CHECK_RESULTS.md`).
-**Still explicitly NOT authorized by this closure:** execution,
-optimization, opening A3, demo trading, live trading, production
-promotion — each requires its own separate future owner decision. See
-`governance/st_c3_stage_status.yaml` `a2_signal_conformance` for the
-authoritative record.
+
+**A3 opening (owner decision, 2026-07-26):** authorized —
+`historical_baseline`, `cost_adjusted_backtest`, `walk_forward` research
+per `docs/strategy/st_c3/ST-C3_BACKTEST_SPEC.md`. `validation/st_c3/a3_replay_engine.py`
+built (reuses `evidence_builder`/`kernel` unchanged, adds TradePlan
+lifecycle simulation and metrics rollup) and run once against real GBPUSD
+data (2026-07-27): **0 TradePlans emitted**, same rejection breakdown as
+R-18 — confirms the engine's signal-detection path but never exercised its
+new lifecycle-simulation code. See `reports/validation/st_c3/A3_REPLAY_RESULTS.md`.
+**Still explicitly NOT authorized:** execution, optimization, demo
+trading, live trading, production promotion — each requires its own
+separate future owner decision. See `governance/st_c3_stage_status.yaml`
+`a2_signal_conformance` / `a3_statistical_validation` for the authoritative
+record.
 
 ## Objective
 
@@ -224,10 +233,16 @@ their own separate, future owner decisions.
   (owner directive, 2026-07-26) — A2/S1-G2 PASSED does not itself grant
   full/unscoped implementation authority beyond that scope.
 - A2/S1-G2's scope was exactly what's listed in
-  `governance/st_c3_stage_status.yaml` `a2_signal_conformance.opened` —
-  execution, optimization, A3 opening, demo, and live are explicitly not
-  authorized by this milestone and each require their own future, separate
-  owner decision.
+  `governance/st_c3_stage_status.yaml` `a2_signal_conformance.opened`.
+  A3's scope is exactly what's listed in that same file's
+  `a3_statistical_validation.opened` — `historical_baseline`,
+  `cost_adjusted_backtest`, `walk_forward` research only. Execution,
+  optimization, demo, and live remain explicitly not authorized and each
+  require their own future, separate owner decision.
+- A3 is open but its replay engine has produced zero TradePlans on the
+  only data available — treat any future A3 report as data-limited until
+  a longer/deeper historical dataset exists. Do not treat the current
+  zero-signal result as a pass, fail, or statistical verdict on ST-C3.
 
 ---
 

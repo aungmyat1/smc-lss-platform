@@ -191,9 +191,31 @@ stage_a_strategy_validation:
           `reason` above. Every field on the R-01-R-33 tracker is resolved.
 
   a3_statistical_validation:
-    status: blocked
-    blocked_by:
-      - a3_opening_authorization   # a2_signal_conformance now PASSED (2026-07-26), but A3 opening itself is a distinct, separate future owner decision not yet made -- see a2_signal_conformance.opened.explicitly_not_authorized above
+    status: open
+    opened:
+      decision: owner_directive
+      timestamp: "2026-07-26"
+      decided_by: Owner (Aung)
+      decision_log: reports/validation/st_c3/OWNER_DECISION_LOG.md, "A3 statistical validation -- OPENED" entry
+      authorized_scope: [historical_baseline, cost_adjusted_backtest, walk_forward]
+      explicitly_not_authorized: [broker_integration, demo_trading, live_trading, production_promotion, stage_b_execution]
+    replay_engine:
+      status: built_and_run_zero_signals
+      builder_module: validation/st_c3/a3_replay_engine.py
+      runner_script: validation/run_st_c3_a3_replay.py
+      results: reports/validation/st_c3/A3_REPLAY_RESULTS.md
+      raw_output: reports/a3/ST-C3_v1.0.6_GBPUSD_M15_a3_replay.json
+      run_date: "2026-07-27"
+      summary: >
+        Run against real GBPUSD H4/M15/M3 data (same 3,339-bar window as
+        R-18): 0 TradePlans emitted, rejection-code breakdown identical to
+        R-18. Confirms the replay engine's signal-detection path is
+        correct; the new lifecycle-simulation code (SL/TP tracking, RR
+        realization, BIAS_FLIP monitoring) has not been exercised by real
+        data or by synthetic unit tests. No RR distribution, win rate, or
+        session-behavior data exists yet. Further progress requires more
+        historical data, not more code.
+    blocked_by: []   # A3 itself is open; producing a statistical qualification verdict is blocked on data volume, tracked in replay_engine.summary above, not on authorization
 
 stage_b_execution_qualification:
   status: blocked
