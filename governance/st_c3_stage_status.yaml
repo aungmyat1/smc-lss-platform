@@ -109,7 +109,7 @@ stage_a_strategy_validation:
       built: [validation/st_c3/evidence.py, validation/st_c3/rejection_codes.py,
         validation/st_c3/kernel.py, validation/st_c3/trade_plan.py,
         validation/run_st_c3_existence_readiness.py]
-      tests: tests/st_c3/ (20 passed: golden-case, negative-case, existence-check readiness)
+      tests: "tests/st_c3/ (20 passed: golden-case, negative-case, existence-check readiness)"
       scope_note: >
         Implements the deterministic evidence-to-trade-plan validator kernel
         (state_machine.transitions / evidence_bindings / trade_plan.schema),
@@ -140,6 +140,17 @@ stage_a_strategy_validation:
           (forbidden by ADR-0004's distinct-lineage ruling).
         blocked_by: [R-27, R-28, R-29, R-30]
         gap_report: reports/validation/st_c3/R18_DETECTION_GAP_REPORT.md
+        research_plan: reports/validation/st_c3/R18_R27_R30_RESEARCH_PLAN.md
+        research_report: reports/validation/st_c3/R27_R30_RESEARCH_REPORT.md
+        research_status: >
+          Empirical pass complete (GBPUSD H4/M15 only; EURUSD's H4/M15 CSVs
+          have insufficient rows). No value decided. R-27 (swing/fractal k)
+          and R-29's FVG-gap-size half have candidate ranges awaiting owner
+          ratification; R-28 (BOS confirmation) and R-30 (pullback) surfaced
+          modeling ambiguities needing a reformulated follow-up analysis
+          before a clean threshold can be proposed. R-29's OB half needs no
+          new number (smc_engine.order_blocks() already supplies a
+          structural rule).
 
   a3_statistical_validation:
     status: blocked
