@@ -11,7 +11,7 @@ Current lifecycle position:
 | Stage | Stage A - Strategy Validation |
 | Substage | A2 - Indicator, Event and Signal Conformance |
 | Gate | S1-G2 Reference Implementation Authorization |
-| Strategy | ST-C3 v1.0.3 (fixed-lot value + instrument-scope revision of v1.0.2, see `specs/st-c3_v1.0.3.yaml`) |
+| Strategy | ST-C3 v1.0.4 (instrument tie-breaking rule, revision of v1.0.3, see `specs/st-c3_v1.0.4.yaml`) |
 | Status | FROZEN -> S1-G1C CLOSED -> A2/S1-G2 OPEN (scoped) |
 | Readiness | GREEN |
 | Frozen | YES |
@@ -62,6 +62,13 @@ decisions.
 
 ## Current Evidence
 
+- ST-C3 v1.0.4 revision: `specs/st-c3_v1.0.4.yaml`,
+  `reports/governance/st_c3/RCR_ST-C3_v1.0.4_REPORT.md`. Decides R-22
+  (`risk.instrument_tie_breaking_rule`: higher `computed_rr` wins between
+  EURUSD/GBPUSD; EURUSD fixed-priority fallback on exact tie). Stage B /
+  portfolio-level arbitration only — no execution code, no change to the
+  S0-S13 state machine. **R-18 (existence-check floor) is now the only
+  unresolved field of the 26 tracked.**
 - ST-C3 v1.0.3 revision: `specs/st-c3_v1.0.3.yaml`,
   `reports/governance/st_c3/RCR_ST-C3_v1.0.3_REPORT.md`. Decides R-21
   (`fixed_lot_size` = 0.01, owner rationale: $1000 account capital) and
@@ -87,17 +94,18 @@ decisions.
 - ST-C3 A2/S1-G2 reference funnel (evidence-to-trade-plan validator kernel,
   golden/negative-case tests, existence-check readiness):
   `reports/validation/st_c3/S1-G2_REFERENCE_FUNNEL_REPORT.md`,
-  `validation/st_c3/` (now pointed at `specs/st-c3_v1.0.3.yaml`),
+  `validation/st_c3/` (now pointed at `specs/st-c3_v1.0.4.yaml`),
   `tests/st_c3/` (20/20 passing). Builds the deterministic kernel the frozen
   spec fully specifies (`state_machine`/`evidence_bindings`/`trade_plan.schema`);
   does not build real price-bar SMC detection. With v1.0.2 now freezing the
   detection thresholds, that price-level detection work is unblocked in
   principle but remains a separate, not-yet-started engineering task — R-18's
   real existence-check number still requires it.
-- ST-C3 active frozen spec: `specs/st-c3_v1.0.3.yaml` (fixed-lot +
+- ST-C3 active frozen spec: `specs/st-c3_v1.0.4.yaml` (instrument
+  tie-breaking revision of `specs/st-c3_v1.0.3.yaml`, itself a fixed-lot +
   instrument-scope revision of `specs/st-c3_v1.0.2.yaml`, itself a
   governance parameter-freeze revision of `specs/st-c3_v1.0.1.yaml`, itself
-  a rejection-code revision of `specs/st-c3_v1.0.0.yaml` — all three
+  a rejection-code revision of `specs/st-c3_v1.0.0.yaml` — all four
   preserved unchanged as historical record).
 - ST-C3 Specification Closure tracking: `reports/validation/st_c3/RESOLUTION_MATRIX.md`,
   `DEPENDENCY_GRAPH.md`, `DECISION_PACKAGES.md`, `OWNER_DECISION_LOG.md`,

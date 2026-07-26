@@ -7,6 +7,28 @@ rationale behind every field below.
 
 ---
 
+## v1.0.4 — 2026-07-26 (instrument tie-breaking rule)
+
+**RCR:** `reports/governance/st_c3/RCR_ST-C3_v1.0.4_REPORT.md`
+**Supersedes:** v1.0.3 (preserved unchanged as historical record)
+
+- **R-22 decided:** new `risk.instrument_tie_breaking_rule` field. When
+  both R-02 instruments (EURUSD, GBPUSD) qualify concurrently near the
+  position cap, the instrument with the higher `computed_rr` wins; on an
+  exact tie, EURUSD wins by fixed priority (lower volatility, tighter
+  spreads). Reuses the existing `trade_plan.schema.risk.computed_rr` field
+  — no new metric introduced.
+- Stage B / portfolio-level arbitration only — does not affect the S0-S13
+  state machine (which already runs per-instrument independently) and is
+  not implemented as executable code, since no execution agent exists or is
+  authorized.
+
+**Not changed:** any evidence object, state, transition, guard, or
+rejection/termination code.
+
+**Still unresolved after v1.0.4:** R-18 (`existence_check_floor`) — the
+only field remaining unresolved of the 26 tracked.
+
 ## v1.0.3 — 2026-07-26 (fixed-lot value decision + instrument-scope revision)
 
 **RCR:** `reports/governance/st_c3/RCR_ST-C3_v1.0.3_REPORT.md`

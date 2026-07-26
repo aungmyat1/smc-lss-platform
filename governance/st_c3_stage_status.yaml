@@ -1,10 +1,11 @@
 strategy: ST-C3
-version: 1.0.3
+version: 1.0.4
 active_symbol: null  # not yet scoped to a single symbol at S1-G1C; instruments now decided (R-02: EURUSD/GBPUSD, revised 2026-07-26) but no single active symbol chosen
-spec: specs/st-c3_v1.0.3.yaml
-prior_spec: specs/st-c3_v1.0.2.yaml  # preserved unchanged as historical record
-prior_prior_spec: specs/st-c3_v1.0.1.yaml  # preserved unchanged as historical record
-prior_prior_prior_spec: specs/st-c3_v1.0.0.yaml  # preserved unchanged as historical record
+spec: specs/st-c3_v1.0.4.yaml
+prior_spec: specs/st-c3_v1.0.3.yaml  # preserved unchanged as historical record
+prior_prior_spec: specs/st-c3_v1.0.2.yaml  # preserved unchanged as historical record
+prior_prior_prior_spec: specs/st-c3_v1.0.1.yaml  # preserved unchanged as historical record
+prior_prior_prior_prior_spec: specs/st-c3_v1.0.0.yaml  # preserved unchanged as historical record
 
 v1_0_2_revision:
   type: governance_decision_parameter_freeze
@@ -30,6 +31,16 @@ v1_0_3_revision:
     (instrument.selection_logic, cross-instrument tie-breaking). Corrected
     per the same ID-mismatch-detection precedent already applied to other
     submissions in OWNER_DECISION_LOG.md. R-22 remains genuinely unresolved.
+  no_structural_change: true
+  no_new_logic_execution_optimization_or_a3: true
+
+v1_0_4_revision:
+  type: instrument_tie_breaking_rule_decision
+  rcr_entry: reports/governance/st_c3/RCR_ST-C3_v1.0.4_REPORT.md
+  timestamp: "2026-07-26"
+  fields_resolved: [R-22]   # instrument.selection_logic — computed_rr tie-break, EURUSD fallback
+  fields_still_unresolved: [R-18]   # only remaining unresolved field of the 26 tracked
+  stage_b_only: true   # portfolio-level arbitration; does not affect S0-S13 state machine, no execution code implemented
   no_structural_change: true
   no_new_logic_execution_optimization_or_a3: true
 
