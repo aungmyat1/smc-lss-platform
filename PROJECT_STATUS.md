@@ -141,8 +141,15 @@ ST-C3 evidence:
 - `specs/st-c3_v1.0.4.yaml` / `reports/governance/st_c3/RCR_ST-C3_v1.0.4_REPORT.md`
   - decides R-22 (`risk.instrument_tie_breaking_rule`: higher `computed_rr`
   wins between EURUSD/GBPUSD, EURUSD fallback on exact tie). Stage B /
-  portfolio-level only, no execution code. **R-18 is now the only
-  unresolved field of 26 tracked.**
+  portfolio-level only, no execution code. R-18 is the only unresolved
+  field of the original 26 tracked.
+- `reports/validation/st_c3/R18_DETECTION_GAP_REPORT.md` (2026-07-26) -
+  attempting to begin real R-18 price-level detection found a deeper gap:
+  the structural-detection algorithms (swing/fractal lookback, BOS
+  confirmation bars, FVG/OB identification, pullback definition) have no
+  defined parameters anywhere. Tracked as new R-27 through R-30 (`PENDING`)
+  in `RESOLUTION_MATRIX.md`. No code written, nothing invented or inherited
+  from ST-C2. Parked as a future dedicated detection-research task.
 
 ---
 
@@ -174,14 +181,18 @@ The reference funnel (evidence-to-trade-plan validator kernel), golden-case
 tests, negative-case tests, and existence-check readiness are built and
 passing — see `reports/validation/st_c3/S1-G2_REFERENCE_FUNNEL_REPORT.md`.
 `specs/st-c3_v1.0.2.yaml` through `v1.0.4.yaml` have since frozen the
-detection thresholds, sizing/instrument-scope values, and instrument
-tie-breaking rule that were blocking. R-18 (existence-check floor) is now
-the only unresolved field of 26 tracked. Remaining within A2/S1-G2 scope:
-build real price-level detection modules against v1.0.4's now-frozen
-thresholds (a distinct engineering task, not yet started), then run a real
-R-18 existence-check pass against market data using those modules. Do not
-authorize execution, optimization, backtesting, broker integration, demo,
-live, or A3 opening until their own separate owner decisions permit them.
+detection *filter* thresholds, sizing/instrument-scope values, and
+instrument tie-breaking rule that were originally blocking. R-18
+(existence-check floor) is the only unresolved field of the original 26
+tracked, but real price-level detection work is now further blocked on a
+separate, deeper gap: the structural-detection *algorithms* (swing/fractal
+lookback, BOS confirmation, FVG/OB identification, pullback definition)
+have no defined parameters anywhere — tracked as new R-27 through R-30, see
+`reports/validation/st_c3/R18_DETECTION_GAP_REPORT.md`. Parked as a future
+dedicated detection-research task per owner direction; not blocking
+anything else. Do not authorize execution, optimization, backtesting,
+broker integration, demo, live, or A3 opening until their own separate
+owner decisions permit them.
 
 ---
 

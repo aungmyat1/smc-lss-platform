@@ -100,7 +100,7 @@ stage_a_strategy_validation:
         - demo_trading
         - live_trading
         - production_promotion
-      spec_resolution_status: "21/26 decided, 2 deferred (R-21 fixed_lot_size, R-22 selection_logic), 2 pending (R-03 low_liquidity_filters, R-18 existence_check_floor). R-18 unblocks now that the funnel may be assembled; R-03 still needs an explicit low-liquidity-signature definition."
+      spec_resolution_status: "24/26 of the original tracked fields decided (see v1_0_2/v1_0_3/v1_0_4_revision blocks above), 1 revised (R-02), 4 ruled out of v1.x scope, 1 pending (R-18 existence_check_floor -- now blocked by a separate, newly-found gap: R-27 through R-30, structural-detection algorithm parameters with no owner decision on record; see reference_funnel.existence_check_r18 below and R18_DETECTION_GAP_REPORT.md)."
     decision_log: reports/validation/st_c3/OWNER_DECISION_LOG.md
     resolution_matrix: reports/validation/st_c3/RESOLUTION_MATRIX.md
     reference_funnel:
@@ -121,15 +121,25 @@ stage_a_strategy_validation:
         frozen spec revision, so using them would implement un-frozen
         values. A v1.0.2+ spec cut is required before price-level detection
         modules can be built.
-      existence_check_r18: >
-        Not resolved by this work. run_st_c3_existence_readiness.py proves
-        wire-compatibility with tools/existence_check.py using a synthetic
-        hand-built evidence set only -- it is not a real R-18 signal-rate
-        result. specs/st-c3_v1.0.2.yaml (v1_0_2_revision above) has since
-        frozen the detection thresholds this was blocked on, but a real R-18
-        run still needs price-level detection modules built against those
-        now-frozen numbers -- that implementation work is separate from and
-        follows this parameter-freeze revision, not automatic from it.
+      existence_check_r18:
+        status: blocked
+        reason: >
+          Not resolved by this work. run_st_c3_existence_readiness.py proves
+          wire-compatibility with tools/existence_check.py using a synthetic
+          hand-built evidence set only -- it is not a real R-18 signal-rate
+          result. specs/st-c3_v1.0.2.yaml through v1.0.4.yaml have since
+          frozen the filter thresholds (wick ratio, displacement body-ratio,
+          freshness windows, etc.) this was originally blocked on, but a
+          2026-07-26 attempt to begin real detection-module work found a
+          deeper, previously-untracked gap: the structural-detection
+          *algorithms* themselves (swing/fractal lookback, BOS confirmation
+          bars, FVG/OB identification rule, pullback definition) have no
+          defined parameters anywhere in the spec or OWNER_DECISION_LOG.md --
+          see reports/validation/st_c3/R18_DETECTION_GAP_REPORT.md. No code
+          was written and no parameter was invented or inherited from ST-C2
+          (forbidden by ADR-0004's distinct-lineage ruling).
+        blocked_by: [R-27, R-28, R-29, R-30]
+        gap_report: reports/validation/st_c3/R18_DETECTION_GAP_REPORT.md
 
   a3_statistical_validation:
     status: blocked

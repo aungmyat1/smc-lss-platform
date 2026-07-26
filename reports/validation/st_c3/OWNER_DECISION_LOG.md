@@ -52,8 +52,18 @@ unresolved), 4 ruled out of v1.x scope, 1 pending (R-18). Folded into
 is now separately, correctly decided — computed_rr-based tie-break with an
 EURUSD fixed-priority fallback; see its row above. **Status: 24 of 26
 fields decided, 1 revised (R-02), 4 ruled out of v1.x scope, 1 pending
-(R-18 — the only field left unresolved). Folded into
+(R-18 — the only field left unresolved of the original 26). Folded into
 `specs/st-c3_v1.0.4.yaml`** (see `reports/governance/st_c3/RCR_ST-C3_v1.0.4_REPORT.md`).
+
+**2026-07-26 update (same day, later still):** attempting to begin real R-18
+price-level detection work surfaced a new, lower-level gap — the
+structural-detection *algorithms* (swing/fractal lookback, BOS confirmation
+bars, FVG/OB identification, pullback definition) have no defined
+parameters anywhere, unlike the filter thresholds R-04/R-06/R-07 etc.
+already decided. Tracked as new **R-27 through R-30** (all `PENDING`, none
+proposed on the owner's behalf per this log's own convention). See
+`R18_DETECTION_GAP_REPORT.md`. R-18 itself remains blocked on these — no
+code was written, no parameter was invented or inherited from ST-C2.
 
 **Source of the two decisions below:** an owner-submitted decision document
 dated 2026-07-25 used a different ID scheme than `RESOLUTION_MATRIX.md`
@@ -94,6 +104,10 @@ tracked as one of the 20 fields — see "Open Conflicts" below.
 | R-24 | `fvg_ob_confluence_stage.freshness_definition` — **FVG half** (companion to R-23) | Not proposed | **APPROVED: FVG fresh for <= 1 MF swing after creation** | Owner | 2026-07-26 | Deterministic rule: `Let FVG.creation_swing = MF swing in which the FVG is formed. IF (current_MF_swing_index - FVG.creation_swing_index) <= 1 AND FVG is not expired THEN fvg_fresh = true ELSE false.` Shorter window than R-23's OB rule (1 swing vs. 3) — rationale given: FVGs are short-lived imbalances, OBs have longer structural relevance. **Unresolved dependency, not silently assumed:** the rule's "AND FVG is not expired (R-06)" clause cites R-06, but this log's R-06 is `max_sweep_age_bars` — a sweep-stage field with no relationship to FVGs. No separate "FVG expiration" concept (distinct from this freshness rule) has been tracked or decided anywhere in `RESOLUTION_MATRIX.md`. Until clarified, this rule is recorded with its freshness clause only; the expiration clause's actual condition is undefined. |
 | R-25 | `portfolio.max_positions_per_instrument` (NEW — submitted as "R-13," mismatched this log's actual R-13; added 2026-07-26) | Not proposed | **APPROVED: 1** | Owner | 2026-07-26 | Combined with R-12 (max concurrent positions = 2), this means at most 2 total open positions across all instruments, at most 1 per instrument — the 2 concurrent slots must be on 2 different symbols. Internally consistent with R-12, no conflict. |
 | R-26 | `risk.daily_max_trades` (NEW — submitted as "R-15," mismatched this log's actual R-15; added 2026-07-26) | Not proposed | **APPROVED: 4 trades/day** | Owner | 2026-07-26 | New concept — a cap on trades *initiated* per day, distinct from R-14's loss-percentage circuit breaker. No conflict with any existing decision. |
+| R-27 | HTF swing/fractal lookback definition (NEW — found 2026-07-26 attempting real R-18 detection work; see `R18_DETECTION_GAP_REPORT.md`) | Not proposed | PENDING | — | — | Blocks all real price-level `S1_HTF_BIAS` detection. Not inherited from ST-C2 per ADR-0004. |
+| R-28 | BOS confirmation-bar rule (NEW — found 2026-07-26) | Not proposed | PENDING | — | — | Blocks all real price-level `S4_DISPLACEMENT_BOS` detection. |
+| R-29 | FVG minimum gap-size / OB candle-selection rule (NEW — found 2026-07-26) | Not proposed | PENDING | — | — | Blocks all real price-level `S8_FVG_OB_CONFLUENCE` detection. |
+| R-30 | Pullback definition for `BOS_EXTREME_LOCK` (NEW — found 2026-07-26) | Not proposed | PENDING | — | — | Blocks all real price-level `S5_BOS_EXTREME_LOCK` detection. |
 
 ---
 

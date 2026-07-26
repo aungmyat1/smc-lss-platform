@@ -57,10 +57,24 @@ and must independently decide its own values, not inherit ST-C2's.
 | R-24 | `fvg_ob_confluence_stage.freshness_definition` — **FVG half (companion to R-23)** | No max-age rule for FVGs specifically | Research required | **DECIDED 2026-07-26 — FVG fresh for <= 1 MF swing after creation; see `OWNER_DECISION_LOG.md`** — shorter window than R-23's OB rule (1 vs. 3 swings), rationale: FVGs are shorter-lived than OBs | Medium — gates S8 (FVG/OB confluence) for the FVG path | Resolved, with one open dependency (see below) |
 | R-25 | `portfolio.max_positions_per_instrument` **(NEW — added 2026-07-26)** | Not previously tracked | Owner decision required | **DECIDED 2026-07-26 — 1; see `OWNER_DECISION_LOG.md`** (consistent with R-12's max-concurrent=2: the 2 slots must be on different symbols) | Low | Resolved |
 | R-26 | `risk.daily_max_trades` **(NEW — added 2026-07-26)** | Not previously tracked | Owner decision required | **DECIDED 2026-07-26 — 4 trades/day; see `OWNER_DECISION_LOG.md`** | Low | Resolved |
+| R-27 | HTF swing/fractal lookback definition (`htf_bias_stage.structure_source`) **(NEW — added 2026-07-26, found attempting real R-18 detection work; see `R18_DETECTION_GAP_REPORT.md`)** | No fractal lookback (`k`) for identifying HH/HL/LH/LL swing points on H4; unlike `specs/st-c2_v1.2.0.yaml`'s explicit `htf_swing_fractal_k_h4`, ST-C3 has no equivalent | Owner decision required (or research required, owner's choice — same category as R-04/R-06) | Not proposed — per ADR-0004, ST-C3 must not silently inherit ST-C2's value | Critical — blocks S1_HTF_BIAS real detection, and everything downstream of it | PENDING |
+| R-28 | BOS confirmation-bar rule (`displacement_bos_stage.bos_confirmation_rule`) **(NEW — added 2026-07-26)** | `body_close_required` states a body close breaks structure but gives no confirmation-bar count | Owner decision required (or research required) | Not proposed | Critical — blocks S4_DISPLACEMENT_BOS real detection | PENDING |
+| R-29 | FVG minimum gap-size definition + OB candle-selection rule (`fvg_ob_confluence_stage`) **(NEW — added 2026-07-26)** | No numeric floor for what counts as a fair-value gap; no rule for which candle qualifies as an order block | Owner decision required (or research required) | Not proposed | High — blocks S8_FVG_OB_CONFLUENCE real detection | PENDING |
+| R-30 | Pullback definition for `BOS_EXTREME_LOCK` (`displacement_bos_stage.bos_extreme_lock_policy`) **(NEW — added 2026-07-26)** | "Lock after first pullback" has no numeric or structural definition of what counts as a pullback | Owner decision required (or research required) | Not proposed | High — blocks S5_BOS_EXTREME_LOCK real detection | PENDING |
 
 ## Priority Summary
 
-- **Critical:** none remaining.
+**2026-07-26 addition:** R-27 through R-30 are a *new gap category*, found
+while attempting to begin real R-18 price-level detection work — see
+`R18_DETECTION_GAP_REPORT.md`. They are structural-detection-*algorithm*
+parameters (swing fractal lookback, BOS confirmation bars, FVG/OB
+identification rules, pullback definition), not filter thresholds like the
+original 26 fields. They are additional to, not part of, the "26 tracked
+fields" count used elsewhere in this document and in `OWNER_DECISION_LOG.md`.
+R-27/R-28 are Critical (they block `S1_HTF_BIAS`/`S4_DISPLACEMENT_BOS`
+respectively, i.e. everything); R-29/R-30 are High.
+
+- **Critical (original 26):** none remaining.
 - **High/Medium:** none remaining — R-04 and R-06 decided 2026-07-26 via
   empirical research; R-03 decided 2026-07-26 via the RCR-ST-C3-v1.0.2
   directive.

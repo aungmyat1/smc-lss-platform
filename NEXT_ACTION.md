@@ -62,6 +62,19 @@ decisions.
 
 ## Current Evidence
 
+- **R-18 detection gap found (2026-07-26):** attempting to begin real
+  price-level detection work for R-18 surfaced a deeper, previously
+  untracked gap — the structural-detection *algorithms* (swing/fractal
+  lookback, BOS confirmation bars, FVG/OB identification, pullback
+  definition) have no defined parameters anywhere in the spec or
+  `OWNER_DECISION_LOG.md`, unlike the filter thresholds (wick ratio,
+  displacement body-ratio) already decided. No code was written; no
+  parameter was invented or inherited from ST-C2 (forbidden by ADR-0004).
+  Tracked as new **R-27 through R-30** (all `PENDING`) in
+  `RESOLUTION_MATRIX.md`/`OWNER_DECISION_LOG.md`. See
+  `reports/validation/st_c3/R18_DETECTION_GAP_REPORT.md`. Parked as a future
+  dedicated detection-research task per owner direction — not blocking
+  anything else; ST-C3 v1.0.4 remains frozen and validated as-is.
 - ST-C3 v1.0.4 revision: `specs/st-c3_v1.0.4.yaml`,
   `reports/governance/st_c3/RCR_ST-C3_v1.0.4_REPORT.md`. Decides R-22
   (`risk.instrument_tie_breaking_rule`: higher `computed_rr` wins between
