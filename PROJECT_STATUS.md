@@ -3,7 +3,7 @@
 **Audit date:** 2026-07-26
 **Governance model:** `MASTER_PLAN.md` v4.1.2 Stage A/Stage B validation architecture
 **Current lifecycle position:** Stage A - Strategy Validation, A2 / S1-G2 -
-ST-C3 Reference Implementation Authorization OPEN (scoped)
+ST-C3 Reference Implementation Authorization PASSED (owner decision, 2026-07-26)
 
 This file records current gate state, evidence, blockers, and metrics. It is
 subordinate to `MASTER_PLAN.md` and should not duplicate the full lifecycle
@@ -18,15 +18,15 @@ rules.
 | Stage | Stage A - Strategy Validation |
 | Substage | A2 - Indicator, Event and Signal Conformance |
 | Gate | S1-G2 Reference Implementation Authorization |
-| Strategy | ST-C3 v1.0.5 (structural-detection algorithm parameters, revision of v1.0.4, itself an instrument tie-breaking revision of v1.0.3, itself a fixed-lot + instrument-scope revision of v1.0.2, itself a governance parameter-freeze revision of v1.0.1, itself a revision of v1.0.0) |
-| Status | FROZEN -> S1-G1C CLOSED -> A2/S1-G2 OPEN (scoped) |
+| Strategy | ST-C3 v1.0.6 (evidence-builder Tier 3 gap resolution, revision of v1.0.5, itself a structural-detection algorithm parameter revision of v1.0.4, itself an instrument tie-breaking revision of v1.0.3, itself a fixed-lot + instrument-scope revision of v1.0.2, itself a governance parameter-freeze revision of v1.0.1, itself a revision of v1.0.0) |
+| Status | FROZEN -> S1-G1C CLOSED -> A2/S1-G2 PASSED (owner decision, 2026-07-26) |
 | Readiness | GREEN |
 | Frozen | YES |
-| Implementation | AUTHORIZED: S1-G2 SCOPED RESEARCH/VALIDATION ONLY |
+| Implementation | S1-G2 scoped reference implementation complete |
 | Backtest | BLOCKED (historical_baseline is A3/S1-G7) |
 | A1 Logic Conformance | PASSED — `reports/validation/st_c3/S1-G1C_RERUN_REPORT.md` |
-| A2 Signal Conformance | IN PROGRESS — opened 2026-07-26 by owner directive, scoped |
-| A3 Statistical Validation | BLOCKED: A2 NOT PASSED; A3 opening itself not authorized |
+| A2 Signal Conformance | PASSED — owner decision 2026-07-26, see `reports/validation/st_c3/OWNER_DECISION_LOG.md`, "A2/S1-G2 gate closure" entry |
+| A3 Statistical Validation | BLOCKED: opening A3 is a separate, distinct future owner decision, not yet made |
 | Execution | BLOCKED (explicitly not authorized) |
 | Demo | BLOCKED |
 | Production | BLOCKED |
@@ -37,40 +37,46 @@ a governance review found one additional migration-scope gap (GR-1); the
 owner approved a patch recommendation on 2026-07-25; `specs/st-c3_v1.0.1.yaml`
 was cut with exactly those fixes (v1.0.0 preserved unchanged as historical
 record); and the S1-G1C structural checks were re-run clean against v1.0.1
-with zero critical/major findings. Specification Closure then resolved 21
-of 26 tracked parameter fields (owner decisions logged in
-`reports/validation/st_c3/OWNER_DECISION_LOG.md`), deferred 2 to a possible
-v2.x cycle, and ruled 4 proposed architecture changes out of v1.x scope
-(none applied to the frozen funnel). On 2026-07-26 the owner opened
-A2/S1-G2 with an explicitly scoped authorization: reference-funnel
-assembly, golden/negative-case tests, and existence-check research —
-**not** execution, optimization, A3 opening, demo, or live. See
-`governance/st_c3_stage_status.yaml` `a2_signal_conformance.opened` for the
-authoritative scope record. ST-C2 v1.2.0 remains preserved as the frozen
-GBPUSD-scoped specification with its own S1-G2 open, but new ST-C2 work is
-paused by owner direction. None of this approves, rejects, mutates,
-supersedes, or executes ST-C2.
+with zero critical/major findings. Specification Closure then resolved all
+33 tracked parameter fields (owner decisions logged in
+`reports/validation/st_c3/OWNER_DECISION_LOG.md`), with 2 explicitly
+deferred to a possible v2.x cycle (later separately decided as R-21/R-22)
+and 4 proposed architecture changes ruled out of v1.x scope (none applied
+to the frozen funnel). On 2026-07-26 the owner opened A2/S1-G2 with an
+explicitly scoped authorization (reference-funnel assembly, golden/negative-case
+tests, existence-check research), and — once that scoped work was complete,
+spec `v1.0.6` was frozen, and R-18's existence-check floor was computed
+against real GBPUSD data (`signal_rate=0.0`) — declared **A2/S1-G2 PASSED**
+the same day. This closure still does **not** authorize execution,
+optimization, A3 opening, demo, or live — each remains a separate, future
+owner decision. See `governance/st_c3_stage_status.yaml`
+`a2_signal_conformance` for the authoritative record. ST-C2 v1.2.0 remains
+preserved as the frozen GBPUSD-scoped specification with its own S1-G2
+open, but new ST-C2 work is paused by owner direction. None of this
+approves, rejects, mutates, supersedes, or executes ST-C2.
 
 ---
 
 ## Objective
 
 S1-G1C logic conformance is complete for ST-C3 (v1.0.1). Specification
-Closure resolved the great majority of tracked parameter fields (21/26
-decided). A2/S1-G2 is now open with a scoped authorization: build a
-reference funnel for golden/negative-case testing and existence-check
-research — still without execution, optimization, backtesting/historical
-baseline, broker integration, demo trading, live trading, A3 opening, or
-production.
+Closure resolved all tracked parameter fields (33/33 decided, R-01–R-33).
+A2/S1-G2 was opened with a scoped authorization (build a reference funnel
+for golden/negative-case testing and existence-check research), that
+scoped work completed with spec `v1.0.6` frozen and R-18's existence-check
+floor computed, and the owner declared **A2/S1-G2 PASSED** on 2026-07-26 —
+still without execution, optimization, backtesting/historical baseline,
+broker integration, demo trading, live trading, A3 opening, or production,
+each of which remains its own separate future owner decision.
 
 Current path:
 
 ```text
 ST-C3 v1.0.0 frozen specification
 -> S1-G1C logic-conformance closure (DONE, closed as v1.0.1)
--> Specification Closure (DONE: 21/26 decided, 2 deferred, 2 pending — R-03, R-18)
--> S1-G2 scoped reference implementation authorization (OPEN as of 2026-07-26, scoped to research/validation)
--> A2/S1-G3-S1-G6 conformance qualification (in progress within S1-G2 scope)
+-> Specification Closure (DONE: 33/33 decided, R-01-R-33, 2 deferred-then-decided, 4 ruled out of v1.x scope)
+-> S1-G2 scoped reference implementation authorization (PASSED, owner decision 2026-07-26)
+-> A2/S1-G3-S1-G6 conformance qualification (satisfied within S1-G2 scope; gate declared PASSED)
 -> A3/S1-G7-S1-G10 statistical edge and robustness qualification (BLOCKED — opening A3 not authorized)
 -> Stage B execution qualification (BLOCKED)
 ```
@@ -159,6 +165,19 @@ ST-C3 evidence:
   MF_ATR(1), R-30 0.30x ATR(1). **Every field on the R-01-R-30 tracker is
   now decided except R-18**, which needs only real detection-module code
   and a data run, not a further spec decision.
+- `specs/st-c3_v1.0.6.yaml` / `reports/governance/st_c3/RCR_ST-C3_v1.0.6_REPORT.md`
+  - resolves R-31 (`sweep_reclaim_max_bars`=2), R-32 (`entry_window_bars`=4),
+  R-33 (session UTC bounds ratified) — the Tier 3 evidence-builder gap found
+  while scoping `build_evidence_bundle()`. `validation/st_c3/evidence_builder.py`
+  (442 lines, all 15 evidence types) built and run against real GBPUSD
+  H4/M15/M3 data via `validation/run_st_c3_existence_check.py`: **R-18
+  resolved, `signal_rate=0.0`** over 3,339 M15 bars (2026-06-05 ->
+  2026-07-24) — see `reports/validation/st_c3/R18_EXISTENCE_CHECK_RESULTS.md`.
+  Every field on the R-01-R-33 tracker is now resolved. Owner declared
+  **A2/S1-G2 PASSED** the same day — see
+  `reports/validation/st_c3/OWNER_DECISION_LOG.md`, "A2/S1-G2 gate
+  closure" entry, and `governance/st_c3_stage_status.yaml`
+  `a2_signal_conformance`.
 
 ---
 
@@ -167,16 +186,16 @@ ST-C3 evidence:
 S1-G1C blockers: none remaining — closed as v1.0.1, see
 `reports/validation/st_c3/S1-G1C_RERUN_REPORT.md`.
 
-S1-G2 blockers: none remaining for the scoped authorization — opened
-2026-07-26. R-18 (`existence_check_floor`) is now unblocked and may be
-computed once a reference funnel exists; R-03 (`sessions.low_liquidity_filters`)
-still needs an explicit low-liquidity-signature definition before it can
-be researched.
+S1-G2 blockers: none remaining — A2/S1-G2 declared PASSED by owner
+decision, 2026-07-26. All 33 tracked fields (R-01–R-33) resolved,
+including R-18 (`existence_check_floor`, computed against real GBPUSD
+data) and R-03 (`sessions.low_liquidity_filters`, decided via the
+v1.0.2 governance parameter-freeze directive).
 
-Stage A3 / Stage B blockers (unaffected by A2/S1-G2 opening):
+Stage A3 / Stage B blockers (unaffected by A2/S1-G2 closure):
 
-- A3 opening itself is explicitly not authorized by the current A2/S1-G2
-  scope — requires its own separate future owner decision.
+- A3 opening itself is explicitly not authorized by the A2/S1-G2 closure
+  decision — requires its own separate future owner decision.
 - No backtest, historical baseline, broker integration, demo path, live
   path, or production path exists or is authorized.
 - ST-C3 backtest specification exists as planning material only; backtest
@@ -186,22 +205,24 @@ Stage A3 / Stage B blockers (unaffected by A2/S1-G2 opening):
 
 ## Next Action
 
-The reference funnel (evidence-to-trade-plan validator kernel), golden-case
-tests, negative-case tests, and existence-check readiness are built and
-passing — see `reports/validation/st_c3/S1-G2_REFERENCE_FUNNEL_REPORT.md`.
-`specs/st-c3_v1.0.2.yaml` through `v1.0.5.yaml` have now frozen every
-numeric parameter on the R-01–R-30 tracker: the original detection *filter*
-thresholds, sizing/instrument-scope values, instrument tie-breaking rule,
-and (as of v1.0.5) the structural-detection *algorithm* parameters
+A2/S1-G2 is closed. The reference funnel (evidence-to-trade-plan validator
+kernel plus real price-level detection via
+`validation/st_c3/evidence_builder.py`, all 15 evidence types), golden-case
+tests, negative-case tests, and the R-18 existence-check run are complete
+— see `reports/validation/st_c3/S1-G2_REFERENCE_FUNNEL_REPORT.md` and
+`reports/validation/st_c3/R18_EXISTENCE_CHECK_RESULTS.md`. `specs/st-c3_v1.0.2.yaml`
+through `v1.0.6.yaml` have frozen every numeric parameter on the R-01–R-33
+tracker: detection *filter* thresholds, sizing/instrument-scope values,
+instrument tie-breaking rule, structural-detection *algorithm* parameters
 (swing/fractal `k`=2, BOS confirmation `N`=2, FVG min gap=0.15x MF_ATR(1),
-pullback depth=0.30x ATR(1)). **R-18 (existence-check floor) is the only
-field left unresolved on the entire tracker**, and it no longer needs any
-further spec decision — only real price-level detection-module code built
-against these now-fully-frozen numbers, then a signal-rate run over real
-candle data (a distinct engineering task, not yet started; still within
-the existing A2/S1-G2 scope). Do not authorize execution, optimization,
-backtesting, broker integration, demo, live, or A3 opening until their own
-separate owner decisions permit them.
+pullback depth=0.30x ATR(1)), and the evidence-builder Tier 3 values
+(`sweep_reclaim_max_bars`=2, `entry_window_bars`=4, session UTC bounds).
+Every field is resolved, and R-18's existence-check floor produced
+`signal_rate=0.0` over a 3,339-bar GBPUSD H4/M15/M3 window — a real data
+point, not a strategy-level verdict (see the results report for caveats).
+**Awaiting a separate owner decision on whether to open A3.** Do not
+authorize execution, optimization, backtesting, broker integration, demo,
+live, or A3 opening until their own separate owner decisions permit them.
 
 ---
 

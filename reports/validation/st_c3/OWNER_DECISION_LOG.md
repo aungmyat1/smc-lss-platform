@@ -367,6 +367,32 @@ the submission's `d = |price - invalidation_level|` reuses the same
 non-directional formulation flagged in R-08's notes — if this rule is
 revisited for a v2.x cycle, that direction issue would need the same fix.
 
+### A2/S1-G2 gate closure — **PASSED, owner decision 2026-07-26**
+
+**Context:** R-18 (`existence_check_floor`) resolved earlier the same day —
+real detection-module code (`validation/st_c3/evidence_builder.py`) run
+against real GBPUSD H4/M15/M3 data, signal_rate = 0.0 over the 3,339-bar
+window (see `R18_EXISTENCE_CHECK_RESULTS.md`). That resolution explicitly
+disclaimed closing the broader A2/S1-G2 gate on its own — a distinct,
+separate owner decision was required to do that.
+
+**Owner Decision:** A2/S1-G2 is hereby declared **PASSED**. All required
+A2/S1-G2 conformance work for ST-C3 is complete: spec `v1.0.6` frozen
+(resolves R-31/R-32/R-33: `sweep_reclaim_max_bars=2`, `entry_window_bars=4`,
+session UTC bounds), the reference funnel (all 15 evidence types, Tier 1
+direct-reuse + Tier 2 glue logic) is fully implemented and conformant with
+v1.0.6, and R-18's existence-check floor has been computed and published.
+Every field on the R-01-R-33 tracker is resolved. No further A2-phase
+conformance checks are required.
+
+**Decided by:** Owner (Aung), 2026-07-26.
+
+**Consequence:** `governance/st_c3_stage_status.yaml`'s
+`a2_signal_conformance.status` moves from `in_progress` to `passed`.
+This decision does **not** authorize A3 — opening A3 remains a separate,
+future owner decision per `explicitly_not_authorized` in that same file.
+Execution, optimization, demo, and live trading remain explicitly blocked.
+
 ---
 
 ## How to use this log

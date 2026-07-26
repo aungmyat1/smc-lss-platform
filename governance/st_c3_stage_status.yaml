@@ -102,7 +102,20 @@ stage_a_strategy_validation:
     next_required_decision: null   # satisfied 2026-07-26, see a2_signal_conformance below
 
   a2_signal_conformance:
-    status: in_progress
+    status: passed
+    closure_decision:
+      decision: owner_directive
+      timestamp: "2026-07-26"
+      decided_by: Owner (Aung)
+      decision_log: reports/validation/st_c3/OWNER_DECISION_LOG.md, "A2/S1-G2 gate closure" entry
+      summary: >
+        A2/S1-G2 declared PASSED. All required conformance work complete:
+        spec v1.0.6 frozen (R-31/R-32/R-33 resolved), reference funnel
+        (all 15 evidence types) fully implemented and conformant, R-18
+        existence-check floor computed and published. Every field on the
+        R-01-R-33 tracker resolved. Does not authorize A3, execution,
+        optimization, demo, or live -- each remains a separate future
+        owner decision.
     current_gate: S1-G2
     current_gate_name: Reference Implementation Authorization
     authorization: scoped_reference_implementation_granted
@@ -180,7 +193,7 @@ stage_a_strategy_validation:
   a3_statistical_validation:
     status: blocked
     blocked_by:
-      - a2_signal_conformance   # not yet passed/closed, only opened; A3 opening itself remains a separate future owner decision per explicitly_not_authorized above
+      - a3_opening_authorization   # a2_signal_conformance now PASSED (2026-07-26), but A3 opening itself is a distinct, separate future owner decision not yet made -- see a2_signal_conformance.opened.explicitly_not_authorized above
 
 stage_b_execution_qualification:
   status: blocked
@@ -189,7 +202,7 @@ stage_b_execution_qualification:
 
 freeze_state:
   strategy_frozen: true
-  engine_implements_spec: false   # still false — authorization to assemble a reference funnel does not itself mean one exists yet
+  engine_implements_spec: true   # reference funnel (all 15 evidence types, validation/st_c3/evidence_builder.py) built and conformant with specs/st-c3_v1.0.6.yaml; A2/S1-G2 declared PASSED 2026-07-26
   implementation_authorization: scoped_reference_implementation_granted   # S1-G2 research/validation scope only; see a2_signal_conformance.opened above
 
 forbidden_until_authorized:
