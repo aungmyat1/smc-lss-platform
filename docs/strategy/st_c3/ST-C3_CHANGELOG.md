@@ -7,6 +7,39 @@ rationale behind every field below.
 
 ---
 
+## v1.0.6 — 2026-07-26 (evidence-builder Tier 3 gap resolution)
+
+**RCR:** `reports/governance/st_c3/RCR_ST-C3_v1.0.6_REPORT.md`
+**Supersedes:** v1.0.5 (preserved unchanged as historical record)
+
+Decides R-31–R-33 — three fields surfaced by `R18_EVIDENCE_BUILDER_DESIGN.md`'s
+Tier 3 gap analysis while scoping `build_evidence_bundle()` (R-18's
+remaining engineering task, not yet implemented). Unlike R-27–R-30 (missing
+algorithms), these had a defined algorithm but the spec text still carried
+a literal placeholder string instead of a usable number:
+
+- **R-31** — `sweep_reclaim_max_bars` (N_SWEEP) = **2 bars** (owner's
+  phase-conditional pick for the current A2/S1-G2 research/validation
+  phase; 1 bar and 3 bars recorded as alternatives for other phases, not
+  adopted)
+- **R-32** — `entry_window_bars` (MAX_ENTRY_BARS) = **4 M3 bars** (owner's
+  mid-range pick, avoiding bias toward either end of the prior provisional
+  range)
+- **R-33** — `sessions.london_window_utc`/`ny_window_utc` = **London
+  07:00-10:00 UTC, NY 13:00-16:00 UTC** (owner ratified the spec's own
+  long-standing provisional values as final; clock times unchanged)
+
+**Not changed:** any evidence object, state, transition, guard, or
+rejection/termination code. No detection-module code was written — these
+are spec-text values only; `build_evidence_bundle()` remains a design
+artifact, not implemented code.
+
+**Governance milestone:** every field on the R-01–R-33 tracker is now
+decided except **R-18** (`existence_check_floor`), which still needs only
+real detection-module implementation and a data run, not any further spec
+decision. Execution/optimization/demo/live/A3 remain exactly as blocked as
+before.
+
 ## v1.0.5 — 2026-07-26 (structural-detection algorithm parameters)
 
 **RCR:** `reports/governance/st_c3/RCR_ST-C3_v1.0.5_REPORT.md`

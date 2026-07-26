@@ -16,7 +16,7 @@ from typing import Any, Mapping
 
 import yaml
 
-SPEC_PATH = Path("specs/st-c3_v1.0.5.yaml")
+SPEC_PATH = Path("specs/st-c3_v1.0.6.yaml")
 
 _UNIVERSAL_FIELDS = frozenset({"valid", "reason"})
 

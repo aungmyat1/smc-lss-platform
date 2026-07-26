@@ -1,12 +1,23 @@
 strategy: ST-C3
-version: 1.0.5
+version: 1.0.6
 active_symbol: null  # not yet scoped to a single symbol at S1-G1C; instruments now decided (R-02: EURUSD/GBPUSD, revised 2026-07-26) but no single active symbol chosen
-spec: specs/st-c3_v1.0.5.yaml
-prior_spec: specs/st-c3_v1.0.4.yaml  # preserved unchanged as historical record
-prior_prior_spec: specs/st-c3_v1.0.3.yaml  # preserved unchanged as historical record
-prior_prior_prior_spec: specs/st-c3_v1.0.2.yaml  # preserved unchanged as historical record
-prior_prior_prior_prior_spec: specs/st-c3_v1.0.1.yaml  # preserved unchanged as historical record
-prior_prior_prior_prior_prior_spec: specs/st-c3_v1.0.0.yaml  # preserved unchanged as historical record
+spec: specs/st-c3_v1.0.6.yaml
+prior_spec: specs/st-c3_v1.0.5.yaml  # preserved unchanged as historical record
+prior_prior_spec: specs/st-c3_v1.0.4.yaml  # preserved unchanged as historical record
+prior_prior_prior_spec: specs/st-c3_v1.0.3.yaml  # preserved unchanged as historical record
+prior_prior_prior_prior_spec: specs/st-c3_v1.0.2.yaml  # preserved unchanged as historical record
+prior_prior_prior_prior_prior_spec: specs/st-c3_v1.0.1.yaml  # preserved unchanged as historical record
+prior_prior_prior_prior_prior_prior_spec: specs/st-c3_v1.0.0.yaml  # preserved unchanged as historical record
+
+v1_0_6_revision:
+  type: evidence_builder_tier_3_gap_resolution
+  rcr_entry: reports/governance/st_c3/RCR_ST-C3_v1.0.6_REPORT.md
+  timestamp: "2026-07-26"
+  fields_resolved: [R-31, R-32, R-33]   # sweep_reclaim_max_bars=2, entry_window_bars=4, session UTC bounds ratified
+  fields_still_unresolved: [R-18]   # only remaining unresolved field on the entire tracker
+  source: reports/validation/st_c3/R18_EVIDENCE_BUILDER_DESIGN.md   # Tier 3 gap analysis that surfaced these three fields
+  no_structural_change: true   # no evidence object, state, transition, or rejection/termination code changed
+  no_new_logic_execution_optimization_or_a3: true   # values recorded in spec text only; build_evidence_bundle() remains an unimplemented design artifact
 
 v1_0_2_revision:
   type: governance_decision_parameter_freeze
@@ -111,7 +122,7 @@ stage_a_strategy_validation:
         - demo_trading
         - live_trading
         - production_promotion
-      spec_resolution_status: "24/26 of the original tracked fields decided (see v1_0_2/v1_0_3/v1_0_4_revision blocks above), 1 revised (R-02), 4 ruled out of v1.x scope, 1 pending (R-18 existence_check_floor). R-27 through R-30 (the structural-detection-algorithm gap found while attempting real R-18 work) are now all DECIDED as of v1_0_5_revision below. R-18 itself remains the only unresolved field of any kind -- and no longer needs a spec decision, only detection-module implementation; see reference_funnel.existence_check_r18 below."
+      spec_resolution_status: "24/26 of the original tracked fields decided (see v1_0_2/v1_0_3/v1_0_4_revision blocks above), 1 revised (R-02), 4 ruled out of v1.x scope, 1 pending (R-18 existence_check_floor). R-27 through R-30 (the structural-detection-algorithm gap found while attempting real R-18 work) are DECIDED as of v1_0_5_revision. R-31 through R-33 (the evidence-builder Tier 3 numeric-placeholder gap found while scoping build_evidence_bundle()) are DECIDED as of v1_0_6_revision above. R-18 itself remains the only unresolved field of any kind on the entire R-01-R-33 tracker -- and no longer needs a spec decision, only detection-module implementation; see reference_funnel.existence_check_r18 below."
     decision_log: reports/validation/st_c3/OWNER_DECISION_LOG.md
     resolution_matrix: reports/validation/st_c3/RESOLUTION_MATRIX.md
     reference_funnel:

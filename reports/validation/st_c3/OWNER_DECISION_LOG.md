@@ -97,6 +97,41 @@ decision — only real detection-module code, built against the now-fully-frozen
 parameter set, and a run against real candle data.** See
 `reports/governance/st_c3/RCR_ST-C3_v1.0.5_REPORT.md`.
 
+**2026-07-26 update (same day, later still): PENDING RATIFICATION — R-18
+EvidenceBundle Builder Design.** Before writing the real detection-module
+code `RCR_ST-C3_v1.0.5_REPORT.md`'s Next Steps called for, a design pass was
+run against the actual repo contracts (`tools/existence_check.py`'s
+`SignalFn`, `validation/st_c3/kernel.py`'s `EvidenceBundle`/`run_kernel()`,
+`validation/st_c3/evidence.py`'s `make_evidence()` registry validation, and
+the hand-built bundles in `_readiness_bundles.py`/`tests/st_c3/fixtures.py`)
+to scope `build_evidence_bundle(candles, i, spec) -> EvidenceBundle` before
+any code is written. Result: `reports/validation/st_c3/
+R18_EVIDENCE_BUILDER_DESIGN.md` — not decided here, per this log's own
+convention. Three findings, not proposed as decisions:
+- **Tier 1** (direct reuse, no new logic): `HTFBiasEvidence`,
+  `SweepEvidence`, `DisplacementEvidence`+`BOSEvidence`, `FVGEvidence`,
+  `OrderBlockEvidence`, `InvalidationSwingEvidence`, `DealingRangeEvidence`,
+  `OTEEvidence` — each maps directly onto an existing `src/smc_engine.py`
+  primitive using already-frozen v1.0.2-v1.0.5 parameters.
+- **Tier 2** (new glue logic, but every number it needs is already frozen):
+  `SweepReclaimEvidence`, `BOSExtremeEvidence` (R-30's pullback definition),
+  `LTFConfirmationEvidence`, `TargetEvidence` (tp1/tp2/tp3 RR computation).
+- **Tier 3** (blocked — new finding, not previously tracked anywhere):
+  `sweep_reclaim_max_bars` (N_SWEEP), `entry_window_bars` (MAX_ENTRY_BARS),
+  and `sessions.london_window_utc`/`ny_window_utc` are still literal
+  placeholder strings (e.g. `"PROVISIONAL_1_TO_3"`) in
+  `specs/st-c3_v1.0.5.yaml` — not numbers a builder can compare against, and
+  not tracked under any existing R-number in `RESOLUTION_MATRIX.md`. No
+  value is proposed for these here; see the design doc's Section 5 and 8 for
+  the three explicit owner decisions requested (ratify Tier 1/2 approach;
+  decide how Tier 3 gets resolved — owner-supplied or empirical-research
+  path, same as R-04/R-06/R-27-R-30; decide whether a partial S1-S9
+  existence-check run is an acceptable interim R-18 data point while Tier 3
+  is open). No code has been written; no spec value proposed. R-18 remains
+  the only field open on the R-01-R-30 tracker itself, but this design
+  surfaces Tier 3 as new, not-yet-numbered gaps the owner has not seen
+  before.
+
 **Source of the two decisions below:** an owner-submitted decision document
 dated 2026-07-25 used a different ID scheme than `RESOLUTION_MATRIX.md`
 (its "R-01/R-07/R-11/R-14" did not correspond to this log's R-01/R-07/R-11/
@@ -140,6 +175,18 @@ tracked as one of the 20 fields — see "Open Conflicts" below.
 | R-28 | BOS confirmation-bar rule (NEW — found 2026-07-26) | Not proposed | **APPROVED: N=2 bars** | Owner | 2026-07-26 | Chosen from the N=0..5 tradeoff curve in `R27_R30_RESEARCH_REPORT.md` (rejects ~25% of raw body-close breaks as whipsaws on the GBPUSD M15 sample). Folded into `specs/st-c3_v1.0.5.yaml`'s `displacement_bos_stage.bos_confirmation_bars`. |
 | R-29 | FVG minimum gap-size / OB candle-selection rule (NEW — found 2026-07-26) | Not proposed | **APPROVED (FVG half): 0.15x MF_ATR(1)** | Owner | 2026-07-26 | Chosen from the 0.1-0.3x candidate range in `R27_R30_RESEARCH_REPORT.md`. OB half needs no number — already a structural rule via `smc_engine.order_blocks()`. Folded into `specs/st-c3_v1.0.5.yaml`'s `fvg_ob_confluence_stage.fvg_min_gap_atr_multiplier`. |
 | R-30 | Pullback definition for `BOS_EXTREME_LOCK` (NEW — found 2026-07-26) | Not proposed | **APPROVED: 0.30x ATR(1) depth** | Owner | 2026-07-26 | Chosen from the depth-filtered 0.1-1.0x ATR(1) tradeoff curve in `R27_R30_RESEARCH_REPORT.md` (reaches within 40 bars for 86.3% of BOS candidates, median 2 bars). Folded into `specs/st-c3_v1.0.5.yaml`'s `displacement_bos_stage.pullback_depth_atr_multiplier`. |
+| R-31 | `liquidity_sweep_stage.sweep_reclaim_max_bars` (N_SWEEP) (NEW — found 2026-07-26 during `R18_EVIDENCE_BUILDER_DESIGN.md` Tier 3 gap analysis; spec carried the literal placeholder string `"PROVISIONAL_1_TO_3"`, not a number, and was untracked by any R-item) | Not proposed | **APPROVED: 2 bars (for the current A2/S1-G2 phase)** | Owner | 2026-07-26 | Owner gave phase-conditional guidance rather than a single fixed number: 2 bars for the current research/validation phase (A2/S1-G2), 1 bar if/when a future A3+/production-prep phase tightens the funnel, 3 bars for exploratory robustness testing. Since A2/S1-G2 is the active phase per `NEXT_ACTION.md`, **2 bars is the value folded into `specs/st-c3_v1.0.6.yaml`**. The 1-bar and 3-bar alternatives are recorded here, not implemented, in case the owner revisits this for a later phase — re-opening this field for a phase change is a new decision, not an automatic switch. |
+| R-32 | `entry_window_stage.entry_window_bars` (MAX_ENTRY_BARS) (NEW — found 2026-07-26, same Tier 3 gap analysis; spec carried literal `"PROVISIONAL_3_TO_5_M3_BARS"`) | Not proposed | **APPROVED: 4 M3 bars** | Owner | 2026-07-26 | Owner's stated rationale: 4 is the mid-range pick for A2/S1-G2, chosen to avoid biasing the signal-rate study toward either the tight (3-bar) or loose (5-bar) end of the spec's own provisional range. Folded into `specs/st-c3_v1.0.6.yaml`'s `entry_window_stage.entry_window_bars`. |
+| R-33 | `sessions.london_window_utc` / `sessions.ny_window_utc` (NEW — found 2026-07-26, same Tier 3 gap analysis; spec carried literal `"PROVISIONAL_07_00_TO_10_00"` / `"PROVISIONAL_13_00_TO_16_00"`) | Not proposed | **APPROVED: ratify existing provisional values as final — London 07:00-10:00 UTC, NY 13:00-16:00 UTC** | Owner | 2026-07-26 | Owner chose to keep the spec's own long-standing provisional session times rather than change them; this decision converts them from an unratified placeholder string to a decided, frozen value — the clock times themselves are unchanged. Folded into `specs/st-c3_v1.0.6.yaml`. |
+
+**2026-07-26 update (same day, later still): R-31/R-32/R-33 decided —
+Tier 3 of `R18_EVIDENCE_BUILDER_DESIGN.md` resolved.** These three fields
+were surfaced by that design document's gap analysis, not previously
+tracked anywhere. All three are now folded into `specs/st-c3_v1.0.6.yaml`
+via `reports/governance/st_c3/RCR_ST-C3_v1.0.6_REPORT.md`. **R-18 remains
+the only field on the entire R-01–R-33 tracker without a resolved value —
+and, as before, it needs no further spec decision, only the
+`build_evidence_bundle()` implementation and a real data run.**
 
 ---
 
