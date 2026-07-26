@@ -122,7 +122,7 @@ stage_a_strategy_validation:
         - demo_trading
         - live_trading
         - production_promotion
-      spec_resolution_status: "24/26 of the original tracked fields decided (see v1_0_2/v1_0_3/v1_0_4_revision blocks above), 1 revised (R-02), 4 ruled out of v1.x scope, 1 pending (R-18 existence_check_floor). R-27 through R-30 (the structural-detection-algorithm gap found while attempting real R-18 work) are DECIDED as of v1_0_5_revision. R-31 through R-33 (the evidence-builder Tier 3 numeric-placeholder gap found while scoping build_evidence_bundle()) are DECIDED as of v1_0_6_revision above. R-18 itself remains the only unresolved field of any kind on the entire R-01-R-33 tracker -- and no longer needs a spec decision, only detection-module implementation; see reference_funnel.existence_check_r18 below."
+      spec_resolution_status: "24/26 of the original tracked fields decided (see v1_0_2/v1_0_3/v1_0_4_revision blocks above), 1 revised (R-02), 4 ruled out of v1.x scope. R-27 through R-30 (the structural-detection-algorithm gap found while attempting real R-18 work) are DECIDED as of v1_0_5_revision. R-31 through R-33 (the evidence-builder Tier 3 numeric-placeholder gap found while scoping build_evidence_bundle()) are DECIDED as of v1_0_6_revision. R-18 itself is now RESOLVED (signal_rate=0.0, real GBPUSD data) as of 2026-07-26 -- see reference_funnel.existence_check_r18 below. Every field on the entire R-01-R-33 tracker is resolved. This closes the R-18 research item only; it does not itself close the broader A2/S1-G2 gate or authorize A3/execution/demo/live."
     decision_log: reports/validation/st_c3/OWNER_DECISION_LOG.md
     resolution_matrix: reports/validation/st_c3/RESOLUTION_MATRIX.md
     reference_funnel:
@@ -144,36 +144,38 @@ stage_a_strategy_validation:
         values. A v1.0.2+ spec cut is required before price-level detection
         modules can be built.
       existence_check_r18:
-        status: blocked_on_implementation_only   # all spec-level prerequisites now decided; only detection-module code + a real data run remain
+        status: resolved   # real detection-module code written and run against real candle data
         reason: >
-          Not resolved by this work. run_st_c3_existence_readiness.py proves
-          wire-compatibility with tools/existence_check.py using a synthetic
-          hand-built evidence set only -- it is not a real R-18 signal-rate
-          result. specs/st-c3_v1.0.2.yaml through v1.0.5.yaml have now
-          frozen every numeric parameter R-18 needs (filter thresholds:
-          wick ratio, displacement body-ratio, freshness windows, etc.; and
-          structural-detection algorithm parameters: R-27 swing/fractal k=2,
-          R-28 BOS confirmation bars=2, R-29 FVG min gap=0.15x MF_ATR(1),
-          R-30 pullback depth=0.30x ATR(1)). What remains is pure
-          engineering: writing real price-level detection modules against
-          these now-fully-frozen numbers (reusing existing generic
-          smc_engine primitives per R27_R30_RESEARCH_REPORT.md's precedent),
-          wiring them into validation/st_c3/kernel.py's EvidenceBundle
-          inputs, and running the result over real GBPUSD/EURUSD candle
-          data via tools/existence_check.py + tools/power_planning.py. No
-          code was written by this revision.
-        blocked_by: []   # was [R-27, R-28, R-29, R-30] -- all four now DECIDED, see v1_0_5_revision above
+          RESOLVED 2026-07-26. validation/st_c3/evidence_builder.py
+          implements build_evidence_bundle() per
+          R18_EVIDENCE_BUILDER_DESIGN.md's Tier 1 (direct smc_engine
+          primitive reuse) and Tier 2 (new glue logic, e.g. BOSExtreme
+          pullback tracking, LTF confirmation, target/RR computation),
+          using every v1.0.6-frozen parameter (R-04..R-33). Wired into
+          tools/existence_check.py's unmodified SignalFn contract via
+          validation/run_st_c3_existence_check.py. Run against real GBPUSD
+          H4/M15/M3 data (EURUSD excluded -- insufficient history, see
+          R27_R30_RESEARCH_REPORT.md). Result: signal_rate = 0.0 over the
+          3,339-bar H4/M15/M3 overlap window (2026-06-05 to 2026-07-24,
+          bounded by GBPUSD_M3.csv's start date). See
+          reports/validation/st_c3/R18_EXISTENCE_CHECK_RESULTS.md for the
+          full rejection-code breakdown and documented implementation
+          caveats. This result does not itself approve, reject, or
+          invalidate ST-C3 -- it satisfies R-18's mechanical requirement (a
+          real number in place of UNRESOLVED), nothing more. Does not
+          authorize A3, execution, optimization, demo, or live.
+        blocked_by: []
         gap_report: reports/validation/st_c3/R18_DETECTION_GAP_REPORT.md
         research_plan: reports/validation/st_c3/R18_R27_R30_RESEARCH_PLAN.md
         research_report: reports/validation/st_c3/R27_R30_RESEARCH_REPORT.md
+        design_doc: reports/validation/st_c3/R18_EVIDENCE_BUILDER_DESIGN.md
+        results: reports/validation/st_c3/R18_EXISTENCE_CHECK_RESULTS.md
+        builder_module: validation/st_c3/evidence_builder.py
+        runner_script: validation/run_st_c3_existence_check.py
         decision_status: >
-          All four of R-27/R-28/R-29/R-30 decided 2026-07-26 (see
-          v1_0_5_revision above and OWNER_DECISION_LOG.md). R-29's OB half
-          needed no new number (smc_engine.order_blocks() already supplies a
-          structural rule). R-18 itself is not yet resolved -- it requires
-          the actual detection-module implementation and data run described
-          in `reason` above, a distinct engineering task from this spec
-          revision.
+          All of R-27/R-28/R-29/R-30 (v1_0_5_revision) and R-31/R-32/R-33
+          (v1_0_6_revision) decided. R-18 itself is now RESOLVED -- see
+          `reason` above. Every field on the R-01-R-33 tracker is resolved.
 
   a3_statistical_validation:
     status: blocked

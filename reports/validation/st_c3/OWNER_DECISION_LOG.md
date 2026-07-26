@@ -162,7 +162,7 @@ tracked as one of the 20 fields — see "Open Conflicts" below.
 | R-15 | `risk.weekly_loss_pct` | `7.0%` | **APPROVED: 7.0%** | Owner | 2026-07-26 | Matches ST-C2's own value (no CHARTER equivalent existed to cross-check against). Not the same field as the earlier-submitted "R-15 portfolio.daily_max_trades" (recorded separately as R-26). |
 | R-16 | `rcr_preregistration.primary_metric` | `expectancy_r` | **APPROVED: expectancy_r** | Owner | 2026-07-26 | Matches this repo's existing A3 promotion-gate convention. |
 | R-17 | `rcr_preregistration.secondary_metrics` | `[profit_factor, sharpe_ratio, maximum_drawdown_r]` | **APPROVED: [profit_factor, sharpe_ratio, maximum_drawdown_r]** | Owner | 2026-07-26 | Matches `validation/performance_metrics.py`'s existing metric set. |
-| R-18 | `rcr_preregistration.existence_check_floor` | Compute after R-02/R-16/R-20 | PENDING | — | — | R-02, R-16, R-20 now all resolved; still needs an actual `tools/existence_check.py` + `tools/power_planning.py` run against real candle data before a number can be computed — this is not an owner-pick field. |
+| R-18 | `rcr_preregistration.existence_check_floor` | Compute after R-02/R-16/R-20 | **COMPUTED 2026-07-26 — signal_rate = 0.0 (0/3339 GBPUSD M15 windows, 2026-06-05 to 2026-07-24)** | Tool (`tools/existence_check.py`) | 2026-07-26 | Not an owner pick — a real detection-module run (`validation/st_c3/evidence_builder.py`) against real GBPUSD H4/M15/M3 data (EURUSD excluded, insufficient history). See `reports/validation/st_c3/R18_EXISTENCE_CHECK_RESULTS.md` for the full rejection-code breakdown and caveats (short 7-week window bounded by M3 data availability; documented implementation simplifications in `SweepReclaimEvidence`/`TargetEvidence`/`LTFConfirmationEvidence`). Result does not itself approve, reject, or invalidate ST-C3 — it satisfies R-18's mechanical requirement (a real signal-rate number in place of `UNRESOLVED`), nothing more. |
 | R-19 | `rcr_preregistration.population_feasibility_floor` | `300` trades | **APPROVED: 300 trades** | Owner | 2026-07-26 | Matches this project's stated A3 promotion-gate convention elsewhere. |
 | R-20 | `rcr_preregistration.statistical_claim_floor` | PF≥1.40, expectancy≥0.20R, Sharpe≥1.20 | **APPROVED: PF >= 1.40, expectancy >= 0.20R, Sharpe >= 1.20** | Owner | 2026-07-26 | Matches this project's A3 promotion-gate language used elsewhere. This is the real tracked field — distinct from the earlier-rejected "R-20 session-close forced-exit" mismatch. |
 | R-21 | `risk.fixed_lot_size` (NEW — not in original 20; added 2026-07-25 by Open Conflict 1 resolution) | Not proposed | **APPROVED: 0.01 (micro-lot)** | Owner | 2026-07-26 | Decided via chat directive. Rationale given: the only fixed-lot value the owner assessed as keeping risk within ST-C3's frozen caps (`portfolio_heat_pct`/`daily_loss_pct`/`weekly_loss_pct`) at the owner's stated $1000 account capital — an owner-asserted risk-appetite judgment, not independently re-derived here (no SL-distance/pip-value computation was run to verify "only" — recorded as the owner's decision regardless, same category as R-05's directly-decided ATR tolerance). Folded into `specs/st-c3_v1.0.3.yaml`. |
@@ -187,6 +187,25 @@ via `reports/governance/st_c3/RCR_ST-C3_v1.0.6_REPORT.md`. **R-18 remains
 the only field on the entire R-01–R-33 tracker without a resolved value —
 and, as before, it needs no further spec decision, only the
 `build_evidence_bundle()` implementation and a real data run.**
+
+**2026-07-26 update (same day, final): R-18 CLOSED.** Owner ratified
+`R18_EVIDENCE_BUILDER_DESIGN.md`'s Tier 1/Tier 2 approach and a full
+S1-S13 run (Design Section 8, items 1 and 3). `validation/st_c3/evidence_builder.py`
+was implemented per that design, wired into `tools/existence_check.py`'s
+unmodified `SignalFn` contract via `validation/run_st_c3_existence_check.py`,
+and run against real GBPUSD H4/M15/M3 candle data (EURUSD excluded — its
+H4/M15 CSVs cover only a few hours, already flagged insufficient in
+`R27_R30_RESEARCH_REPORT.md`). Result: **signal_rate = 0.0** over the
+3,339-bar H4/M15/M3 overlap window (2026-06-05 to 2026-07-24, bounded by
+`data/GBPUSD_M3.csv`'s start date). See
+`reports/validation/st_c3/R18_EXISTENCE_CHECK_RESULTS.md` for the full
+rejection-code breakdown, the documented implementation simplifications,
+and why a 0.0 rate here does not itself approve, reject, or invalidate
+ST-C3 — R-18 only required a real number in place of `UNRESOLVED`, which
+this run supplies. **Every field on the R-01–R-33 tracker, including R-18,
+is now resolved.** Execution, optimization, A3 opening, demo, and live
+remain exactly as blocked as before — this closes a research/validation
+data point, not a governance gate.
 
 ---
 

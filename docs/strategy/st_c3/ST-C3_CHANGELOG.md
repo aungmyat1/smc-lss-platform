@@ -7,6 +7,20 @@ rationale behind every field below.
 
 ---
 
+## R-18 closed — 2026-07-26 (existence-check result, no spec change)
+
+**Not a spec revision** — `specs/st-c3_v1.0.6.yaml` is unchanged by this
+entry. Recorded here because it closes the last open item on the R-01–R-33
+tracker. `validation/st_c3/evidence_builder.py` (real detection-module
+code, per `R18_EVIDENCE_BUILDER_DESIGN.md`, Tier 1/2 owner-ratified
+2026-07-26) was wired into `tools/existence_check.py`'s unmodified
+`SignalFn` contract and run against real GBPUSD H4/M15/M3 candle data.
+**Result: signal_rate = 0.0** over the 3,339-bar overlap window
+(2026-06-05 to 2026-07-24). See `reports/validation/st_c3/R18_EXISTENCE_CHECK_RESULTS.md`
+for the rejection-code breakdown and caveats. Does not authorize A3,
+execution, optimization, demo, or live — those remain exactly as blocked
+as before; this closes a research data point, not a governance gate.
+
 ## v1.0.6 — 2026-07-26 (evidence-builder Tier 3 gap resolution)
 
 **RCR:** `reports/governance/st_c3/RCR_ST-C3_v1.0.6_REPORT.md`

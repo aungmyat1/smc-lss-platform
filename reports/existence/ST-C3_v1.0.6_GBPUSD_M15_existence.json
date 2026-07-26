@@ -1,0 +1,16 @@
+{
+  "bars_scanned": 30000,
+  "rejections_by_code": {
+    "R1_HTF_BIAS_UNCLEAR": 304,
+    "R2_NO_SWEEP": 304,
+    "R3_NO_DISPLACEMENT_BOS": 202,
+    "R4_NO_OTE_PULLBACK": 16,
+    "R6_NO_LTF_CONFIRMATION": 2
+  },
+  "signal_rate": 0.0,
+  "signals": 0,
+  "spec_id": "ST-C3_v1.0.6",
+  "symbol": "GBPUSD",
+  "timeframe": "M15",
+  "total_windows": 3339
+}
