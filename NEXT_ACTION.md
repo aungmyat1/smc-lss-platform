@@ -62,6 +62,18 @@ decisions.
 
 ## Current Evidence
 
+- ST-C3 A2/S1-G2 reference funnel (evidence-to-trade-plan validator kernel,
+  golden/negative-case tests, existence-check readiness):
+  `reports/validation/st_c3/S1-G2_REFERENCE_FUNNEL_REPORT.md`,
+  `validation/st_c3/`, `tests/st_c3/` (20/20 passing). Builds the
+  deterministic kernel the frozen spec fully specifies
+  (`state_machine`/`evidence_bindings`/`trade_plan.schema`); does not build
+  real price-bar SMC detection, since those thresholds remain
+  `UNRESOLVED`/`PROVISIONAL` in the frozen v1.0.1 spec even where
+  `OWNER_DECISION_LOG.md` records owner decisions not yet folded into a
+  frozen revision. R-18 (existence-check floor) real computation and
+  price-level detection modules both remain blocked on a future v1.0.2+
+  spec cut.
 - ST-C3 active frozen spec: `specs/st-c3_v1.0.1.yaml` (revision of
   `specs/st-c3_v1.0.0.yaml`, preserved unchanged as historical record).
 - ST-C3 Specification Closure tracking: `reports/validation/st_c3/RESOLUTION_MATRIX.md`,
@@ -124,6 +136,10 @@ decisions.
   negative-case tests, and existence-check research against a reference
   funnel. NOT authorized within this scope: execution, optimization,
   demo, live, or production paths, or opening A3.
+  DONE (evidence-level kernel scope) — see reference-funnel evidence entry
+  above. Remaining within this milestone's scope: a real R-18
+  price-data existence-check pass, blocked pending a v1.0.2+ spec cut that
+  freezes the RESOLUTION_MATRIX-decided detection thresholds.
 
 ## Guardrails
 

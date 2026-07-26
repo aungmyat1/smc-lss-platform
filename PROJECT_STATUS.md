@@ -122,6 +122,12 @@ ST-C3 evidence:
   backtesting remains blocked.
 - `docs/adr/ADR-0004-st-c3-candidate-intake.md` - accepted intake ADR.
 - `reports/research_log.md` - ST-C3 RCR/intake entry.
+- `reports/validation/st_c3/S1-G2_REFERENCE_FUNNEL_REPORT.md` - A2/S1-G2
+  reference-funnel deliverable: deterministic evidence-to-trade-plan
+  validator kernel (`validation/st_c3/`), golden/negative-case tests, and
+  existence-check readiness (`tests/st_c3/`, 20/20 passing). Does not
+  include real price-bar SMC detection modules — see report for the
+  frozen-spec-vs-OWNER_DECISION_LOG scope boundary.
 
 ---
 
@@ -149,11 +155,15 @@ Stage A3 / Stage B blockers (unaffected by A2/S1-G2 opening):
 
 ## Next Action
 
-Within the scoped A2/S1-G2 authorization: build golden-case tests,
-negative-case tests, and run existence-check research (R-18) once a
-reference funnel exists. Do not authorize execution, optimization,
-backtesting, broker integration, demo, live, or A3 opening until their own
-separate owner decisions permit them.
+The reference funnel (evidence-to-trade-plan validator kernel), golden-case
+tests, negative-case tests, and existence-check readiness are built and
+passing — see `reports/validation/st_c3/S1-G2_REFERENCE_FUNNEL_REPORT.md`.
+Remaining within A2/S1-G2 scope: a real R-18 existence-check pass against
+market data, which needs price-level SMC detection modules; those require a
+future v1.0.2+ spec cut folding in the `RESOLUTION_MATRIX.md`-decided
+thresholds (its own RCR + owner freeze act), not assumed here. Do not
+authorize execution, optimization, backtesting, broker integration, demo,
+live, or A3 opening until their own separate owner decisions permit them.
 
 ---
 

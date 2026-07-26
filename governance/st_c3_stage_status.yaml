@@ -63,6 +63,29 @@ stage_a_strategy_validation:
       spec_resolution_status: "21/26 decided, 2 deferred (R-21 fixed_lot_size, R-22 selection_logic), 2 pending (R-03 low_liquidity_filters, R-18 existence_check_floor). R-18 unblocks now that the funnel may be assembled; R-03 still needs an explicit low-liquidity-signature definition."
     decision_log: reports/validation/st_c3/OWNER_DECISION_LOG.md
     resolution_matrix: reports/validation/st_c3/RESOLUTION_MATRIX.md
+    reference_funnel:
+      status: kernel_built_price_detection_not_started
+      report: reports/validation/st_c3/S1-G2_REFERENCE_FUNNEL_REPORT.md
+      built: [validation/st_c3/evidence.py, validation/st_c3/rejection_codes.py,
+        validation/st_c3/kernel.py, validation/st_c3/trade_plan.py,
+        validation/run_st_c3_existence_readiness.py]
+      tests: tests/st_c3/ (20 passed: golden-case, negative-case, existence-check readiness)
+      scope_note: >
+        Implements the deterministic evidence-to-trade-plan validator kernel
+        (state_machine.transitions / evidence_bindings / trade_plan.schema),
+        which v1.0.1 fully specifies. Does NOT implement real price-bar SMC
+        detection (sweep/displacement/freshness/etc.) because those
+        thresholds remain UNRESOLVED/PROVISIONAL in the frozen spec even
+        though OWNER_DECISION_LOG.md records owner decisions for most of
+        them (R-04..R-26) -- those decisions are not yet folded into a
+        frozen spec revision, so using them would implement un-frozen
+        values. A v1.0.2+ spec cut is required before price-level detection
+        modules can be built.
+      existence_check_r18: >
+        Not resolved by this work. run_st_c3_existence_readiness.py proves
+        wire-compatibility with tools/existence_check.py using a synthetic
+        hand-built evidence set only -- it is not a real R-18 signal-rate
+        result, which remains blocked on the same v1.0.2+ spec revision.
 
   a3_statistical_validation:
     status: blocked
