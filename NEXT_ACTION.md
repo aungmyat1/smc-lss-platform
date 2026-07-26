@@ -11,7 +11,7 @@ Current lifecycle position:
 | Stage | Stage A - Strategy Validation |
 | Substage | A2 - Indicator, Event and Signal Conformance |
 | Gate | S1-G2 Reference Implementation Authorization |
-| Strategy | ST-C3 v1.0.2 (governance parameter-freeze revision of v1.0.1, see `specs/st-c3_v1.0.2.yaml`) |
+| Strategy | ST-C3 v1.0.3 (fixed-lot value + instrument-scope revision of v1.0.2, see `specs/st-c3_v1.0.3.yaml`) |
 | Status | FROZEN -> S1-G1C CLOSED -> A2/S1-G2 OPEN (scoped) |
 | Readiness | GREEN |
 | Frozen | YES |
@@ -62,6 +62,17 @@ decisions.
 
 ## Current Evidence
 
+- ST-C3 v1.0.3 revision: `specs/st-c3_v1.0.3.yaml`,
+  `reports/governance/st_c3/RCR_ST-C3_v1.0.3_REPORT.md`. Decides R-21
+  (`fixed_lot_size` = 0.01, owner rationale: $1000 account capital) and
+  revises R-02 (`instruments` narrowed to EURUSD/GBPUSD). **Correction on
+  record:** the instrument-scope change was submitted mislabeled as "R-22"
+  — R-22 (`instrument.selection_logic`, cross-instrument tie-breaking) is a
+  different field and remains genuinely unresolved; the change was recorded
+  as an R-02 revision instead, per the same ID-mismatch-detection precedent
+  `OWNER_DECISION_LOG.md` already applies elsewhere. Only R-18
+  (existence-check floor) and R-22 remain unresolved of the 26 tracked
+  fields. No structural (evidence/state/guard/code) change.
 - ST-C3 v1.0.2 governance parameter-freeze revision:
   `specs/st-c3_v1.0.2.yaml`, `reports/governance/st_c3/RCR_ST-C3_v1.0.2_REPORT.md`,
   `docs/strategy/st_c3/ST-C3_CHANGELOG.md`. Folds in 22 owner-decided fields
@@ -76,17 +87,18 @@ decisions.
 - ST-C3 A2/S1-G2 reference funnel (evidence-to-trade-plan validator kernel,
   golden/negative-case tests, existence-check readiness):
   `reports/validation/st_c3/S1-G2_REFERENCE_FUNNEL_REPORT.md`,
-  `validation/st_c3/` (now pointed at `specs/st-c3_v1.0.2.yaml`),
+  `validation/st_c3/` (now pointed at `specs/st-c3_v1.0.3.yaml`),
   `tests/st_c3/` (20/20 passing). Builds the deterministic kernel the frozen
   spec fully specifies (`state_machine`/`evidence_bindings`/`trade_plan.schema`);
   does not build real price-bar SMC detection. With v1.0.2 now freezing the
   detection thresholds, that price-level detection work is unblocked in
   principle but remains a separate, not-yet-started engineering task — R-18's
   real existence-check number still requires it.
-- ST-C3 active frozen spec: `specs/st-c3_v1.0.2.yaml` (governance
-  parameter-freeze revision of `specs/st-c3_v1.0.1.yaml`, itself a
-  rejection-code revision of `specs/st-c3_v1.0.0.yaml` — both preserved
-  unchanged as historical record).
+- ST-C3 active frozen spec: `specs/st-c3_v1.0.3.yaml` (fixed-lot +
+  instrument-scope revision of `specs/st-c3_v1.0.2.yaml`, itself a
+  governance parameter-freeze revision of `specs/st-c3_v1.0.1.yaml`, itself
+  a rejection-code revision of `specs/st-c3_v1.0.0.yaml` — all three
+  preserved unchanged as historical record).
 - ST-C3 Specification Closure tracking: `reports/validation/st_c3/RESOLUTION_MATRIX.md`,
   `DEPENDENCY_GRAPH.md`, `DECISION_PACKAGES.md`, `OWNER_DECISION_LOG.md`,
   `SPECIFICATION_CLOSURE_REPORT.md`, `R04_R06_RESEARCH_REPORT.md`.

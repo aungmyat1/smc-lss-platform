@@ -32,7 +32,7 @@ and must independently decide its own values, not inherit ST-C2's.
 | ID | Field | Missing Information | Decision Owner | Recommended Default/Range (PROPOSED) | Impact | Priority |
 |---|---|---|---|---|---|---|
 | R-01 | `governance_profile` | Symbol/session scope not chosen | Owner decision required | **DECIDED 2026-07-25 — see `OWNER_DECISION_LOG.md`** ("Strict Deterministic Governance Profile"; clarified as not altering the frozen funnel's required gates) | Blocks everything; nothing can run without a scope | Critical |
-| R-02 | `instruments` | No symbol enabled | Owner decision required | Not proposed — this is the single highest-leverage decision in the whole matrix | Blocks Phase 3-9 entirely; determines which historical data even matters | Critical |
+| R-02 | `instruments` | No symbol enabled | Owner decision required | **DECIDED 2026-07-25 — EURUSD, GBPUSD, XAUUSD; REVISED 2026-07-26 — EURUSD, GBPUSD (XAUUSD removed, fixed-lot risk envelope at $1000 capital); see `OWNER_DECISION_LOG.md`** | Blocks Phase 3-9 entirely; determines which historical data even matters | Resolved |
 | R-03 | `sessions.low_liquidity_filters` | No filter rule despite `optional_low_liquidity_filters: true` | Owner decision required | **DECIDED 2026-07-26 — structured low-liquidity signature (wick_body_ratio_min=2.0, spread_expansion_factor=1.5, atr_compression_ratio=0.40, excluded_time_windows); see `OWNER_DECISION_LOG.md` and `specs/st-c3_v1.0.2.yaml`** | Low — only affects edge-case session windows | Resolved |
 | R-04 | `wick_ratio_min` | No minimum wick-penetration ratio | Research required | **DECIDED 2026-07-26 — 0.50, from empirical GBPUSD M15 distribution; see `R04_R06_RESEARCH_REPORT.md` and `OWNER_DECISION_LOG.md`** | Medium — affects sweep detection sensitivity | Resolved |
 | R-05 | `equal_highs_lows_tolerance` | No tolerance band for equal-highs/lows pools | Research required | **DECIDED 2026-07-26 — 0.10 x MF ATR(1), same unit convention as R-07; see `OWNER_DECISION_LOG.md`** (owner decided directly rather than via an existence-check pass — not empirically validated against historical data yet) | Medium | Resolved |
@@ -51,8 +51,8 @@ and must independently decide its own values, not inherit ST-C2's.
 | R-18 | `rcr_preregistration.existence_check_floor` | No minimum signal rate | Research required | Unblocked (R-02/R-16/R-20 all decided) but still needs an actual `tools/existence_check.py` + `tools/power_planning.py` run — not an owner-pick field | Low — a Lever-A/B concern, not a blocker for Phases 3-4 | Low, research-required |
 | R-19 | `rcr_preregistration.population_feasibility_floor` | No minimum trade-population target | Owner decision required | **DECIDED 2026-07-26 — 300 trades; see `OWNER_DECISION_LOG.md`** | Low | Resolved |
 | R-20 | `rcr_preregistration.statistical_claim_floor` | No pre-registered PF/expectancy/Sharpe bar | Owner decision required | **DECIDED 2026-07-26 — PF >= 1.40, expectancy >= 0.20R, Sharpe >= 1.20; see `OWNER_DECISION_LOG.md`** | Low — needed before A3, not before A2 | Resolved |
-| R-21 | `risk.fixed_lot_size` **(NEW — added 2026-07-25)** | R-11 (`per_trade_risk_pct`) was decided then superseded same-day: owner chose fixed lot as the authoritative v1.x sizing model, removing the percentage-risk field. "Fixed lot" states a model, not a number — the actual lot size is undecided | Owner decision required | Not proposed — no natural cross-instrument reference point the way percentage-risk had a CHARTER/ST-C2 convention to cite. Owner should also decide: one value for all three R-02 instruments, or per-instrument values (EURUSD/GBPUSD/XAUUSD pip values differ by orders of magnitude) | High — blocks any position-sizing computation, but NOT Phases 3-8 (R-multiple statistics/replay/golden-cases don't depend on lot size) | **DEFERRED 2026-07-25** — see `OWNER_DECISION_LOG.md` |
-| R-22 | `instrument.selection_logic` **(NEW — added 2026-07-25)** | Cross-instrument prioritization ("which pair under which conditions") not addressed by R-02's instrument-scope decision | Owner decision required | Not proposed | Low for Stage A (state machine/golden cases run per-instrument independently); relevant later for R-12/R-13 tie-breaking at Stage B | **DEFERRED 2026-07-25** — see `OWNER_DECISION_LOG.md` |
+| R-21 | `risk.fixed_lot_size` **(NEW — added 2026-07-25)** | R-11 (`per_trade_risk_pct`) was decided then superseded same-day: owner chose fixed lot as the authoritative v1.x sizing model, removing the percentage-risk field. "Fixed lot" states a model, not a number — the actual lot size is undecided | Owner decision required | **DECIDED 2026-07-26 — 0.01 (micro-lot), single value for all enabled instruments; see `OWNER_DECISION_LOG.md`** | High — blocks any position-sizing computation, but NOT Phases 3-8 (R-multiple statistics/replay/golden-cases don't depend on lot size) | Resolved |
+| R-22 | `instrument.selection_logic` **(NEW — added 2026-07-25)** | Cross-instrument prioritization ("which pair under which conditions") not addressed by R-02's instrument-scope decision | Owner decision required | Not proposed | Low for Stage A (state machine/golden cases run per-instrument independently); relevant later for R-12/R-13 tie-breaking at Stage B | **STILL PENDING 2026-07-26 — a submission mislabeled "R-22" actually revised R-02 (instruments narrowed to EURUSD/GBPUSD), not this field; see `OWNER_DECISION_LOG.md`** |
 | R-23 | `fvg_ob_confluence_stage.freshness_definition` — **OB half** **(NEW — split from the ambiguous "fresh" term, `SPECIFICATION_VALIDATION.md` #2)** | No max-age rule for Order Blocks | Research required | **DECIDED 2026-07-25 — OB fresh for <= 3 MF (M15) swings after creation — see `OWNER_DECISION_LOG.md`** | Medium — gates S8 (FVG/OB confluence) for the OB path | Resolved |
 | R-24 | `fvg_ob_confluence_stage.freshness_definition` — **FVG half (companion to R-23)** | No max-age rule for FVGs specifically | Research required | **DECIDED 2026-07-26 — FVG fresh for <= 1 MF swing after creation; see `OWNER_DECISION_LOG.md`** — shorter window than R-23's OB rule (1 vs. 3 swings), rationale: FVGs are shorter-lived than OBs | Medium — gates S8 (FVG/OB confluence) for the FVG path | Resolved, with one open dependency (see below) |
 | R-25 | `portfolio.max_positions_per_instrument` **(NEW — added 2026-07-26)** | Not previously tracked | Owner decision required | **DECIDED 2026-07-26 — 1; see `OWNER_DECISION_LOG.md`** (consistent with R-12's max-concurrent=2: the 2 slots must be on different symbols) | Low | Resolved |
@@ -68,15 +68,19 @@ and must independently decide its own values, not inherit ST-C2's.
   ST-C3 reference kernel now exists (`validation/st_c3/kernel.py`,
   A2/S1-G2) and is existence-check-tool wire-compatible, but a real R-18
   number still needs price-level detection modules run against real
-  candle data, which `specs/st-c3_v1.0.2.yaml`'s parameter freeze does not
-  itself build — see `reports/governance/st_c3/RCR_ST-C3_v1.0.2_REPORT.md`).
+  candle data, which the v1.0.2/v1.0.3 parameter freezes do not themselves
+  build).
+- **Still deferred (1 of 26):** R-22 (`instrument.selection_logic` —
+  cross-instrument tie-breaking rule; a 2026-07-26 submission labeled
+  "R-22" actually revised R-02 instead, see that row and
+  `OWNER_DECISION_LOG.md`).
 - **Superseded, no longer tracked as its own decision:** R-11 (`per_trade_risk_pct`) — removed from v1.x scope 2026-07-25; see `OWNER_DECISION_LOG.md`.
-- **Decided and integrated into `specs/st-c3_v1.0.2.yaml`** (see
+- **Decided and integrated into `specs/st-c3_v1.0.3.yaml`** (see
   `OWNER_DECISION_LOG.md` for authoritative values — this matrix keeps the
-  original proposals for audit-trail comparison only): R-01, R-02, R-03,
-  R-05, R-07, R-08 (value only, guard direction flagged), R-09, R-10, R-12,
-  R-13, R-14, R-15, R-16, R-17, R-19, R-20, R-23, R-24, R-25, R-26, plus
-  R-04/R-06 below (22 total).
+  original proposals for audit-trail comparison only): R-01, R-02 (revised
+  2026-07-26), R-03, R-04, R-05, R-06, R-07, R-08 (value only, guard
+  direction flagged), R-09, R-10, R-12, R-13, R-14, R-15, R-16, R-17, R-19,
+  R-20, R-21, R-23, R-24, R-25, R-26 (23 total).
 - **Deferred (explicit owner decision, not blocking Phases 3-8):**
   R-21 (`risk.fixed_lot_size`), R-22 (`instrument.selection_logic`). Both
   remain blocking for Stage B execution work specifically, which was

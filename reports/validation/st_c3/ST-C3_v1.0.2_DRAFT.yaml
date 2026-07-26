@@ -1,5 +1,12 @@
 # ST-C3 "Next-Generation SMC Funnel" — SPECIFICATION CLOSURE DRAFT, NOT FROZEN.
 #
+# SUPERSEDED: the real, frozen specs/st-c3_v1.0.2.yaml and specs/st-c3_v1.0.3.yaml
+# now exist (via reports/governance/st_c3/RCR_ST-C3_v1.0.2_REPORT.md and
+# RCR_ST-C3_v1.0.3_REPORT.md), built exactly as this file's own header
+# instructed — a fresh RCR + a real spec cut with only ratified values, not
+# a promotion of this draft. This file is kept only as the historical
+# proposal record.
+#
 # ============================================================
 # THIS IS A DRAFT FOR OWNER REVIEW. IT IS NOT A SPEC. IT IS NOT FROZEN.
 # IT IS NOT AUTHORIZED FOR ANY IMPLEMENTATION, BACKTEST, OR EXECUTION USE.

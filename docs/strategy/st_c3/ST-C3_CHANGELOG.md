@@ -7,6 +7,32 @@ rationale behind every field below.
 
 ---
 
+## v1.0.3 — 2026-07-26 (fixed-lot value decision + instrument-scope revision)
+
+**RCR:** `reports/governance/st_c3/RCR_ST-C3_v1.0.3_REPORT.md`
+**Supersedes:** v1.0.2 (preserved unchanged as historical record)
+
+- **R-21 decided:** `risk.fixed_lot_size` = `0.01` (micro-lot). Owner
+  rationale: the only fixed-lot value assessed as compatible with ST-C3's
+  frozen risk caps at a stated $1000 account capital (owner-asserted
+  risk-appetite judgment, not independently re-derived).
+- **R-02 revised:** `instruments` narrowed from `[EURUSD, GBPUSD, XAUUSD]`
+  to `[EURUSD, GBPUSD]`. Owner rationale: XAUUSD's pip-value x SL-distance
+  geometry exceeds the risk envelope under 0.01-lot fixed sizing.
+- **Correction on record:** the owner's submission labeled the
+  instrument-scope change "R-22." R-22 (`instrument.selection_logic`) is
+  actually a different, still-unresolved field — cross-instrument
+  tie-breaking logic. The change was recorded as a revision to R-02
+  instead; R-22 remains genuinely unresolved. See the RCR report for the
+  full correction.
+
+**Not changed:** any evidence object, state, transition, guard, or
+rejection/termination code. No execution, optimization, demo, live, or A3
+logic.
+
+**Still unresolved after v1.0.3:** R-18 (`existence_check_floor`), R-22
+(`instrument.selection_logic`).
+
 ## v1.0.2 — 2026-07-26 (governance decision parameter freeze)
 
 **RCR:** `reports/governance/st_c3/RCR_ST-C3_v1.0.2_REPORT.md`

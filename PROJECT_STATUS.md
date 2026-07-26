@@ -18,7 +18,7 @@ rules.
 | Stage | Stage A - Strategy Validation |
 | Substage | A2 - Indicator, Event and Signal Conformance |
 | Gate | S1-G2 Reference Implementation Authorization |
-| Strategy | ST-C3 v1.0.2 (governance parameter-freeze revision of v1.0.1, itself a revision of v1.0.0) |
+| Strategy | ST-C3 v1.0.3 (fixed-lot + instrument-scope revision of v1.0.2, itself a governance parameter-freeze revision of v1.0.1, itself a revision of v1.0.0) |
 | Status | FROZEN -> S1-G1C CLOSED -> A2/S1-G2 OPEN (scoped) |
 | Readiness | GREEN |
 | Frozen | YES |
@@ -133,7 +133,12 @@ ST-C3 evidence:
   / `docs/strategy/st_c3/ST-C3_CHANGELOG.md` - governance parameter-freeze
   revision folding in 22 owner-decided fields (R-01 through R-26 minus
   R-11/R-18/R-21/R-22, plus both resolved Open Conflicts). No structural
-  (evidence/state/guard/code) change. R-18/R-21/R-22 remain unresolved.
+  (evidence/state/guard/code) change.
+- `specs/st-c3_v1.0.3.yaml` / `reports/governance/st_c3/RCR_ST-C3_v1.0.3_REPORT.md`
+  - decides R-21 (`fixed_lot_size`=0.01) and revises R-02 (`instruments`
+  narrowed to EURUSD/GBPUSD); corrects a submission mislabeled "R-22" (that
+  field is unrelated and remains unresolved). Only R-18 and R-22 remain
+  unresolved of 26 tracked fields.
 
 ---
 
@@ -164,14 +169,15 @@ Stage A3 / Stage B blockers (unaffected by A2/S1-G2 opening):
 The reference funnel (evidence-to-trade-plan validator kernel), golden-case
 tests, negative-case tests, and existence-check readiness are built and
 passing — see `reports/validation/st_c3/S1-G2_REFERENCE_FUNNEL_REPORT.md`.
-`specs/st-c3_v1.0.2.yaml` has since frozen the detection thresholds that
-blocked real price-level SMC detection. Remaining within A2/S1-G2 scope: (1)
-build real price-level detection modules against v1.0.2's now-frozen
-thresholds (a distinct engineering task, not yet started), then (2) run a
-real R-18 existence-check pass against market data using those modules. Do
-not authorize execution, optimization, backtesting, broker integration,
-demo, live, or A3 opening until their own separate owner decisions permit
-them.
+`specs/st-c3_v1.0.2.yaml`/`v1.0.3.yaml` have since frozen the detection
+thresholds and sizing/instrument-scope values that were blocking. Remaining
+within A2/S1-G2 scope: (1) build real price-level detection modules against
+v1.0.3's now-frozen thresholds (a distinct engineering task, not yet
+started), then (2) run a real R-18 existence-check pass against market data
+using those modules. R-22 (instrument tie-breaking) also remains open, not
+urgent for Stage A. Do not authorize execution, optimization, backtesting,
+broker integration, demo, live, or A3 opening until their own separate
+owner decisions permit them.
 
 ---
 

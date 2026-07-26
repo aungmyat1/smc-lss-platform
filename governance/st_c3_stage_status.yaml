@@ -1,9 +1,10 @@
 strategy: ST-C3
-version: 1.0.2
-active_symbol: null  # not yet scoped to a single symbol at S1-G1C; instruments now decided (R-02: EURUSD/GBPUSD/XAUUSD) but no single active symbol chosen
-spec: specs/st-c3_v1.0.2.yaml
-prior_spec: specs/st-c3_v1.0.1.yaml  # preserved unchanged as historical record
-prior_prior_spec: specs/st-c3_v1.0.0.yaml  # preserved unchanged as historical record
+version: 1.0.3
+active_symbol: null  # not yet scoped to a single symbol at S1-G1C; instruments now decided (R-02: EURUSD/GBPUSD, revised 2026-07-26) but no single active symbol chosen
+spec: specs/st-c3_v1.0.3.yaml
+prior_spec: specs/st-c3_v1.0.2.yaml  # preserved unchanged as historical record
+prior_prior_spec: specs/st-c3_v1.0.1.yaml  # preserved unchanged as historical record
+prior_prior_prior_spec: specs/st-c3_v1.0.0.yaml  # preserved unchanged as historical record
 
 v1_0_2_revision:
   type: governance_decision_parameter_freeze
@@ -14,6 +15,22 @@ v1_0_2_revision:
     R-26, OPEN_CONFLICT_1, OPEN_CONFLICT_2]
   fields_still_unresolved: [R-18, R-21, R-22]
   no_structural_change: true   # no evidence object, state, transition, or rejection/termination code changed; parameter values and trade_plan.risk sizing fields only
+  no_new_logic_execution_optimization_or_a3: true
+
+v1_0_3_revision:
+  type: fixed_lot_decision_plus_instrument_scope_revision
+  rcr_entry: reports/governance/st_c3/RCR_ST-C3_v1.0.3_REPORT.md
+  timestamp: "2026-07-26"
+  fields_resolved: [R-21]   # risk.fixed_lot_size = 0.01, rationale: $1000 account capital
+  fields_revised: [R-02]    # instruments narrowed to [EURUSD, GBPUSD] (XAUUSD removed)
+  fields_still_unresolved: [R-18, R-22]
+  correction_note: >
+    Owner submission labeled this decision "R-22" but actually supplied a
+    revision to R-02 (instrument scope), not R-22's own field
+    (instrument.selection_logic, cross-instrument tie-breaking). Corrected
+    per the same ID-mismatch-detection precedent already applied to other
+    submissions in OWNER_DECISION_LOG.md. R-22 remains genuinely unresolved.
+  no_structural_change: true
   no_new_logic_execution_optimization_or_a3: true
 
 stage_a_strategy_validation:
