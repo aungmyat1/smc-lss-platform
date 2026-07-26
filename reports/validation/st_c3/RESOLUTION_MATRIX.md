@@ -33,7 +33,7 @@ and must independently decide its own values, not inherit ST-C2's.
 |---|---|---|---|---|---|---|
 | R-01 | `governance_profile` | Symbol/session scope not chosen | Owner decision required | **DECIDED 2026-07-25 — see `OWNER_DECISION_LOG.md`** ("Strict Deterministic Governance Profile"; clarified as not altering the frozen funnel's required gates) | Blocks everything; nothing can run without a scope | Critical |
 | R-02 | `instruments` | No symbol enabled | Owner decision required | Not proposed — this is the single highest-leverage decision in the whole matrix | Blocks Phase 3-9 entirely; determines which historical data even matters | Critical |
-| R-03 | `sessions.low_liquidity_filters` | No filter rule despite `optional_low_liquidity_filters: true` | Owner decision required | PROPOSED: `disabled_by_default` (simplest deterministic starting point; can be added as a v1.0.3 addendum once R-02/R-04 data exists to justify a filter) | Low — only affects edge-case session windows | Low |
+| R-03 | `sessions.low_liquidity_filters` | No filter rule despite `optional_low_liquidity_filters: true` | Owner decision required | **DECIDED 2026-07-26 — structured low-liquidity signature (wick_body_ratio_min=2.0, spread_expansion_factor=1.5, atr_compression_ratio=0.40, excluded_time_windows); see `OWNER_DECISION_LOG.md` and `specs/st-c3_v1.0.2.yaml`** | Low — only affects edge-case session windows | Resolved |
 | R-04 | `wick_ratio_min` | No minimum wick-penetration ratio | Research required | **DECIDED 2026-07-26 — 0.50, from empirical GBPUSD M15 distribution; see `R04_R06_RESEARCH_REPORT.md` and `OWNER_DECISION_LOG.md`** | Medium — affects sweep detection sensitivity | Resolved |
 | R-05 | `equal_highs_lows_tolerance` | No tolerance band for equal-highs/lows pools | Research required | **DECIDED 2026-07-26 — 0.10 x MF ATR(1), same unit convention as R-07; see `OWNER_DECISION_LOG.md`** (owner decided directly rather than via an existence-check pass — not empirically validated against historical data yet) | Medium | Resolved |
 | R-06 | `max_sweep_age_bars` | No upper bound on swept-level age | Research required | **DECIDED 2026-07-26 — 15 bars, from empirical GBPUSD M15 distribution (proposed 20-60 range was non-binding above ~30); see `R04_R06_RESEARCH_REPORT.md` and `OWNER_DECISION_LOG.md`** | Medium | Resolved |
@@ -62,19 +62,21 @@ and must independently decide its own values, not inherit ST-C2's.
 
 - **Critical:** none remaining.
 - **High/Medium:** none remaining — R-04 and R-06 decided 2026-07-26 via
-  empirical research.
-- **Remaining pending (2 of 26):** R-03 (`sessions.low_liquidity_filters`
-  — needs an explicit "low-liquidity signature" definition before any scan
-  is meaningful, not attempted yet), R-18 (`existence_check_floor` — needs
-  a working signal function across the entire funnel, which would mean
-  assembling the ST-C3 reference kernel before A2/S1-G2 is open; held
-  pending that decision).
+  empirical research; R-03 decided 2026-07-26 via the RCR-ST-C3-v1.0.2
+  directive.
+- **Remaining pending (1 of 26):** R-18 (`existence_check_floor` — the
+  ST-C3 reference kernel now exists (`validation/st_c3/kernel.py`,
+  A2/S1-G2) and is existence-check-tool wire-compatible, but a real R-18
+  number still needs price-level detection modules run against real
+  candle data, which `specs/st-c3_v1.0.2.yaml`'s parameter freeze does not
+  itself build — see `reports/governance/st_c3/RCR_ST-C3_v1.0.2_REPORT.md`).
 - **Superseded, no longer tracked as its own decision:** R-11 (`per_trade_risk_pct`) — removed from v1.x scope 2026-07-25; see `OWNER_DECISION_LOG.md`.
-- **Decided (see `OWNER_DECISION_LOG.md` for authoritative values — this
-  matrix keeps the original proposals for audit-trail comparison only):**
-  R-01, R-02, R-05, R-07, R-08 (value only, guard direction flagged), R-09,
-  R-10, R-12, R-13, R-14, R-15, R-16, R-17, R-19, R-20, R-23, R-24, R-25,
-  R-26 (19 total).
+- **Decided and integrated into `specs/st-c3_v1.0.2.yaml`** (see
+  `OWNER_DECISION_LOG.md` for authoritative values — this matrix keeps the
+  original proposals for audit-trail comparison only): R-01, R-02, R-03,
+  R-05, R-07, R-08 (value only, guard direction flagged), R-09, R-10, R-12,
+  R-13, R-14, R-15, R-16, R-17, R-19, R-20, R-23, R-24, R-25, R-26, plus
+  R-04/R-06 below (22 total).
 - **Deferred (explicit owner decision, not blocking Phases 3-8):**
   R-21 (`risk.fixed_lot_size`), R-22 (`instrument.selection_logic`). Both
   remain blocking for Stage B execution work specifically, which was

@@ -1,8 +1,20 @@
 strategy: ST-C3
-version: 1.0.1
-active_symbol: null  # not yet scoped to a single symbol at S1-G1C
-spec: specs/st-c3_v1.0.1.yaml
-prior_spec: specs/st-c3_v1.0.0.yaml  # preserved unchanged as historical record
+version: 1.0.2
+active_symbol: null  # not yet scoped to a single symbol at S1-G1C; instruments now decided (R-02: EURUSD/GBPUSD/XAUUSD) but no single active symbol chosen
+spec: specs/st-c3_v1.0.2.yaml
+prior_spec: specs/st-c3_v1.0.1.yaml  # preserved unchanged as historical record
+prior_prior_spec: specs/st-c3_v1.0.0.yaml  # preserved unchanged as historical record
+
+v1_0_2_revision:
+  type: governance_decision_parameter_freeze
+  rcr_entry: reports/governance/st_c3/RCR_ST-C3_v1.0.2_REPORT.md
+  timestamp: "2026-07-26"
+  fields_resolved: [R-01, R-02, R-03, R-04, R-05, R-06, R-07, R-08, R-09,
+    R-10, R-12, R-13, R-14, R-15, R-16, R-17, R-19, R-20, R-23, R-24, R-25,
+    R-26, OPEN_CONFLICT_1, OPEN_CONFLICT_2]
+  fields_still_unresolved: [R-18, R-21, R-22]
+  no_structural_change: true   # no evidence object, state, transition, or rejection/termination code changed; parameter values and trade_plan.risk sizing fields only
+  no_new_logic_execution_optimization_or_a3: true
 
 stage_a_strategy_validation:
   status: in_progress
@@ -85,7 +97,11 @@ stage_a_strategy_validation:
         Not resolved by this work. run_st_c3_existence_readiness.py proves
         wire-compatibility with tools/existence_check.py using a synthetic
         hand-built evidence set only -- it is not a real R-18 signal-rate
-        result, which remains blocked on the same v1.0.2+ spec revision.
+        result. specs/st-c3_v1.0.2.yaml (v1_0_2_revision above) has since
+        frozen the detection thresholds this was blocked on, but a real R-18
+        run still needs price-level detection modules built against those
+        now-frozen numbers -- that implementation work is separate from and
+        follows this parameter-freeze revision, not automatic from it.
 
   a3_statistical_validation:
     status: blocked

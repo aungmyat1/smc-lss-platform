@@ -25,16 +25,20 @@ ruled out of v1.x scope** (deferred to a possible v2.x cycle): break-even,
 trailing-stop, session-close forced-exit ("R-20" mismatch — distinct from
 the real, now-decided R-20 field below), and dual-timeframe bias
 confirmation ("R-03" mismatch — distinct from the real, still-pending R-03
-field below). **Remaining 2 rows genuinely `PENDING`: R-03
-(`sessions.low_liquidity_filters` — needs an explicit "low-liquidity
-signature" definition before any scan is meaningful, not yet attempted) and
-R-18 (`existence_check_floor` — needs a working signal function across the
-entire funnel to run, which would mean assembling the ST-C3 reference
-kernel itself before A2/S1-G2 is open; held pending that decision, not
-built).** R-04 and R-06 are now decided (2026-07-26) via empirical research
-against GBPUSD M15 — see `reports/validation/st_c3/R04_R06_RESEARCH_REPORT.md`.
-**Status: 21 of 26 fields decided, 2 deferred, 4 ruled out of v1.x scope,
-2 pending.**
+field below). **R-04 and R-06 are now decided (2026-07-26) via empirical research against
+GBPUSD M15 — see `reports/validation/st_c3/R04_R06_RESEARCH_REPORT.md`. R-03
+(`sessions.low_liquidity_filters`) is now decided (2026-07-26) via the
+RCR-ST-C3-v1.0.2 governance parameter-freeze directive — see its row above.**
+**Remaining 1 row genuinely `PENDING`: R-18 (`existence_check_floor` — needs
+a working signal function across the entire funnel plus real price-level
+detection modules run against real candle data; the ST-C3 reference kernel
+(`validation/st_c3/kernel.py`) now exists and is existence-check-tool
+wire-compatible, but a real R-18 number still requires those price-level
+detection modules, which the v1.0.2 parameter freeze does not itself build —
+see `reports/governance/st_c3/RCR_ST-C3_v1.0.2_REPORT.md`).**
+**Status: 22 of 26 fields decided, 2 deferred, 4 ruled out of v1.x scope,
+1 pending. All 22 decided fields are folded into `specs/st-c3_v1.0.2.yaml`
+(see `reports/governance/st_c3/RCR_ST-C3_v1.0.2_REPORT.md`).**
 
 **Source of the two decisions below:** an owner-submitted decision document
 dated 2026-07-25 used a different ID scheme than `RESOLUTION_MATRIX.md`
@@ -51,7 +55,7 @@ tracked as one of the 20 fields — see "Open Conflicts" below.
 |---|---|---|---|---|---|---|
 | R-01 | `governance_profile` | Depends on R-02 | **APPROVED: "Strict Deterministic Governance Profile"** | Owner | 2026-07-25 | Value: boolean/measurable/deterministic/reproducible rules only; state machine is sole source of truth, no discretionary overrides; no adaptive thresholds (all numeric thresholds explicit); fixed-lot model frozen with value deferred (matches R-21); no cross-instrument arbitration, per-instrument only (matches R-22). **Clarified scope (owner-confirmed, "Reading A"):** the line "bias, invalidation, and continuation confirmed ONLY by BOS/CHoCH" refers narrowly to `HTFBiasEvidence`'s own value (already true per frozen `htf_bias_stage.structure_source`/`bias_lock_policy`) — it does NOT remove sweep (S2), displacement (S4), FVG/OB confluence (S8), or LTF confirmation (S9) as required funnel gates. Those remain exactly as frozen in v1.0.1: hard, non-skippable stages per `priority_rules.no_state_can_be_skipped_or_revisited`. No funnel/state-machine change results from this decision. |
 | R-02 | `instruments` | Not proposed | **APPROVED: EURUSD, GBPUSD, XAUUSD** | Owner | 2026-07-25 | Multi-instrument scope. No crypto/indices/exotics. Replay requirement noted: min. 3yr per instrument, preferred 5-10yr (applies at Phase 5, not before). |
-| R-03 | `sessions.low_liquidity_filters` | `disabled_by_default` | PENDING | — | — | |
+| R-03 | `sessions.low_liquidity_filters` | `disabled_by_default` | **APPROVED: structured low-liquidity signature** | Owner | 2026-07-26 | Decided via the RCR-ST-C3-v1.0.2 directive (governance parameter-freeze revision), superseding the matrix's `disabled_by_default` fallback. Deterministic rule: `low_liquidity_signature: {wick_body_ratio_min: 2.0, spread_expansion_factor: 1.5, atr_compression_ratio: 0.40, excluded_time_windows: [{start: "00:00", end: "02:00"}, {start: "20:00", end: "22:00"}]}`. Folded into `specs/st-c3_v1.0.2.yaml`'s `sessions.low_liquidity_filters`. Not empirically validated against historical data — an owner-decided starting point, same category as R-05's ATR-tolerance decision. |
 | R-04 | `wick_ratio_min` | `0.5-0.7` range | **APPROVED: 0.50** | Owner | 2026-07-26 | Decided from the empirical distribution in `reports/validation/st_c3/R04_R06_RESEARCH_REPORT.md`: keeps 28.5% of naturally-occurring pierce+reclaim candidates (median wick ratio 0.33), filters weak/noise sweeps without over-filtering; aligns with ST-C2's 0.6 reference point without inheriting it. |
 | R-05 | `equal_highs_lows_tolerance` | Research required | **APPROVED: 0.10 x MF ATR(1)** | Owner | 2026-07-26 | Deterministic rule: `Two highs are equal if \|H1 - H2\| <= 0.10 * MF_ATR(1); two lows are equal if \|L1 - L2\| <= 0.10 * MF_ATR(1).` Prevents micro-tick noise from triggering false sweeps; numeric, frozen, non-adaptive. Reuses the same "MF ATR-1" reference point as R-07's displacement rule — consistent unit convention across both decisions. **Note:** this matrix classified R-05 as "research required" (i.e. needing an `tools/existence_check.py` pass against real candle data before picking a number) — owner decided directly instead, which is a legitimate choice, not a process violation; flagged only so a future review knows this wasn't empirically validated against historical data yet. |
 | R-06 | `max_sweep_age_bars` | `20-60` bars | **APPROVED: 15 bars** | Owner | 2026-07-26 | Decided from the empirical distribution in `reports/validation/st_c3/R04_R06_RESEARCH_REPORT.md`: applies a meaningful, binding freshness constraint (between the 89.6%-at-10 and 99.9%-at-20 pass rates) without over-filtering; avoids the non-binding-rule problem the originally proposed 20-60 range had (anything >=30 filtered nothing on the observed data). |
