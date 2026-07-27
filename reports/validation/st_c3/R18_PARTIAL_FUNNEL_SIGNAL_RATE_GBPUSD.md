@@ -32,28 +32,43 @@ session's evidence builder, or its A2/A3 status claims.
 
 ## Results
 
+Two runs are reported: an initial bounded sample (first 5,000 M15 bars,
+sampled every 5th BOS candidate — used for a fast turnaround), and a later
+full, unsampled run over the entire 30,000-bar M15 series that completed
+in the background afterward. Both are kept for transparency; the full run
+is the more accurate one and should be preferred where they differ.
+
 **S1 — HTF bias** (single current-context check, end of H4 series):
 valid=True, bias=BEARISH.
 
-**S2 — raw sweep** (sampled every 3rd M15 bar, indices 500-2500, R-04/R-05/
-R-06 thresholds): **11/667 valid (1.6%)**.
+**S2 — raw sweep:**
 
-**S4/S5/S6/S8 — chained per BOS candidate** (first 5,000 M15 bars, sampled
-every 5th of 1,741 raw BOS candidates -> 349 evaluated; each stage requires
-all prior stages in this chain to also pass):
+| Run | Window | Pass rate |
+|---|---|---|
+| Sampled (every 3rd bar) | [500:2500] | 11/667 (1.6%) |
+| Full (every bar) | [2000:7000] | 11/5000 (0.2%) |
 
-| Stage | Parameters | Pass count | Rate |
+The two windows don't overlap and use different sampling, so this isn't a
+direct contradiction, but the ~8x difference shows the S2 pass rate is
+notably window-sensitive — worth keeping in mind before treating either
+number as "the" sweep rate.
+
+**S4/S5/S6/S8 — chained per BOS candidate** (each stage requires all prior
+stages in this chain to also pass):
+
+| Stage | Parameters | Sampled (349 of 1,741, first 5,000 bars) | Full (10,417, all 30,000 bars) |
 |---|---|---|---|
-| S4 displacement+BOS | body_ratio>=0.50, ATR floor=1.0x, N=2 confirmation bars | 83/349 | 23.8% |
-| S5 BOS extreme lock | pullback depth>=0.30x ATR(1) | 66/349 | 18.9% |
-| S6 dealing range | derived geometry, k=2 | 66/349 | 18.9% |
-| S8 FVG/OB confluence | FVG gap>=0.15x MF_ATR(1), OB via `smc_engine.order_blocks()` | 66/349 | 18.9% |
+| S4 displacement+BOS | body_ratio>=0.50, ATR floor=1.0x, N=2 confirmation bars | 83/349 (23.8%) | 2,642/10,417 (25.4%) |
+| S5 BOS extreme lock | pullback depth>=0.30x ATR(1) | 66/349 (18.9%) | 2,112/10,417 (20.3%) |
+| S6 dealing range | derived geometry, k=2 | 66/349 (18.9%) | 2,112/10,417 (20.3%) |
+| S8 FVG/OB confluence | FVG gap>=0.15x MF_ATR(1), OB via `smc_engine.order_blocks()` | 66/349 (18.9%) | 2,112/10,417 (20.3%) |
 
-**Joint S4+S5+S6+S8 pass rate: 66/349 (18.9%).** S6 and S8 add no further
-filtering beyond S5 in this sample — once a BOS candidate clears
-displacement/confirmation and the extreme-lock depth check, a dealing range
-and an FVG/OB zone are almost always present too, at least over this
-5,000-bar window.
+**Joint S4+S5+S6+S8 pass rate: 2,112/10,417 (20.3%) on the full run** — close
+to the sampled estimate (18.9%), confirming the sample wasn't a fluke. S6
+and S8 add no further filtering beyond S5 in either run — once a BOS
+candidate clears displacement/confirmation and the extreme-lock depth
+check, a dealing range and an FVG/OB zone are almost always present too,
+across the full series, not just the sample.
 
 ## Why this is partial, not a full run
 
@@ -67,10 +82,11 @@ to `TRADE_PLAN_EMIT` — none of which have real detection code on the
 v1.0.5 line (see `R18_DETECTION_MODULE_REPORT.md` for why each is blocked).
 
 **Rough combined-rate sanity check** (not a rigorous joint probability,
-since the samples aren't from identical windows): S1 valid, S2 ~1.6%, and
-the S4-S8 chain ~18.9% multiply to roughly 0.3% of bars/candidates jointly
-clearing just these six stages — before the still-missing S3/S7/S9-S12
-gates would filter further. This is directionally consistent with the
+since the samples aren't from identical windows): S1 valid, S2 ~0.2-1.6%
+(window-sensitive, see above), and the S4-S8 chain ~20.3% (full run)
+multiply to roughly 0.04-0.3% of bars/candidates jointly clearing just
+these six stages — before the still-missing S3/S7/S9-S12 gates would
+filter further. This is directionally consistent with the
 separately-committed (not verified here) v1.0.6 existence-check's headline
 result of `signal_rate=0.0` over a real 7-week window: a strict funnel with
 these parameter values produces very few qualifying setups, which is a

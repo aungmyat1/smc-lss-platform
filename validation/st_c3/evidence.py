@@ -16,7 +16,7 @@ from typing import Any, Mapping
 
 import yaml
 
-SPEC_PATH = Path("specs/st-c3_v1.0.6.yaml")
+SPEC_PATH = Path("specs/st-c3_v1.0.7.yaml")   # v1.0.6 is quarantined -- see reports/governance/v1.0.6_RECONCILIATION_AUDIT.md
 
 _UNIVERSAL_FIELDS = frozenset({"valid", "reason"})
 

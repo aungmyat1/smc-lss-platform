@@ -7,21 +7,40 @@ rationale behind every field below.
 
 ---
 
-## R-18 closed — 2026-07-26 (existence-check result, no spec change)
+## v1.0.7 — 2026-07-27 (fresh R-31/R-32/R-33 decisions, clean provenance)
 
-**Not a spec revision** — `specs/st-c3_v1.0.6.yaml` is unchanged by this
-entry. Recorded here because it closes the last open item on the R-01–R-33
-tracker. `validation/st_c3/evidence_builder.py` (real detection-module
-code, per `R18_EVIDENCE_BUILDER_DESIGN.md`, Tier 1/2 owner-ratified
-2026-07-26) was wired into `tools/existence_check.py`'s unmodified
-`SignalFn` contract and run against real GBPUSD H4/M15/M3 candle data.
-**Result: signal_rate = 0.0** over the 3,339-bar overlap window
-(2026-06-05 to 2026-07-24). See `reports/validation/st_c3/R18_EXISTENCE_CHECK_RESULTS.md`
-for the rejection-code breakdown and caveats. Does not authorize A3,
-execution, optimization, demo, or live — those remain exactly as blocked
-as before; this closes a research data point, not a governance gate.
+**RCR:** `reports/governance/st_c3/RCR_ST-C3_v1.0.7_REPORT.md`
+**Supersedes:** v1.0.5 (preserved unchanged as historical record). Skips
+v1.0.6 — quarantined, see the entries below and
+`reports/governance/v1.0.6_RECONCILIATION_AUDIT.md`.
 
-## v1.0.6 — 2026-07-26 (evidence-builder Tier 3 gap resolution)
+Decides R-31 (`sweep_reclaim_max_bars=2`), R-32 (`entry_window_bars=4`),
+R-33 (session UTC bounds ratified, unchanged) — the same three fields the
+quarantined v1.0.6 line had proposed, reconfirmed fresh with clean
+provenance directly from the owner, no empirical justification claimed
+(same category as R-05/R-21), independent of that line's disputed
+provenance. **Every field on the R-01–R-33 tracker is now decided except
+R-18**, which needs real detection-module code for six stages (S3, S7, S9,
+S10, S11, S12), not a further spec decision.
+
+**Not changed:** any evidence object, state, transition, guard, or
+rejection/termination code.
+
+## QUARANTINED — R-18 "closed" claim, 2026-07-26 (REJECTED 2026-07-27)
+
+**This claim is rejected, not authoritative.** Kept for the historical
+record only. The original claim: `validation/st_c3/evidence_builder.py`
+was wired into `tools/existence_check.py` and run against real GBPUSD
+H4/M15/M3 data, producing `signal_rate = 0.0`. **Why rejected:**
+`evidence_builder.py` hardcodes `OTE_MIN, OTE_MAX = 0.62, 0.79   #
+provisional, numerically usable` and uses it to compute real `S7_OTE`
+gating results, despite `specs/st-c3_v1.0.6.yaml` itself still marking
+those fields provisional — a confirmed "no implementation before
+specification freeze" violation. See
+`reports/governance/v1.0.6_RECONCILIATION_AUDIT.md`. R-18's real status:
+still open — see `reports/validation/st_c3/R18_CLOSURE_REPORT.md`.
+
+## QUARANTINED — v1.0.6, 2026-07-26 (evidence-builder Tier 3 gap resolution) — REJECTED 2026-07-27
 
 **RCR:** `reports/governance/st_c3/RCR_ST-C3_v1.0.6_REPORT.md`
 **Supersedes:** v1.0.5 (preserved unchanged as historical record)

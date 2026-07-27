@@ -58,10 +58,13 @@ stages above.
 
 `reports/validation/st_c3/R18_PARTIAL_FUNNEL_SIGNAL_RATE_GBPUSD.md`:
 
-- S2 (raw sweep): 1.6% pass rate (sampled, R-04/R-05/R-06 thresholds)
-- S4-S8 joint chain (per BOS candidate, first 5,000 M15 bars): 18.9% pass rate
-- Rough combined estimate: ~0.3% of bars/candidates jointly clear these six
-  stages — before the six still-blocked stages would filter further
+- S2 (raw sweep): 0.2-1.6% pass rate, window-sensitive (R-04/R-05/R-06 thresholds)
+- S4-S8 joint chain (per BOS candidate): 20.3% pass rate on the full
+  30,000-bar M15 series (2,112/10,417), consistent with an initial 18.9%
+  bounded sample
+- Rough combined estimate: ~0.04-0.3% of bars/candidates jointly clear
+  these six stages — before the six still-blocked stages would filter
+  further
 
 This is directionally consistent with (but independent of, and not relying
 on) the quarantined v1.0.6 line's disputed `signal_rate=0.0` result: a

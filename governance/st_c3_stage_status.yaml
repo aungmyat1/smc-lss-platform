@@ -1,23 +1,65 @@
 strategy: ST-C3
-version: 1.0.6
+version: 1.0.7
 active_symbol: null  # not yet scoped to a single symbol at S1-G1C; instruments now decided (R-02: EURUSD/GBPUSD, revised 2026-07-26) but no single active symbol chosen
-spec: specs/st-c3_v1.0.6.yaml
-prior_spec: specs/st-c3_v1.0.5.yaml  # preserved unchanged as historical record
+spec: specs/st-c3_v1.0.7.yaml
+prior_spec: specs/st-c3_v1.0.5.yaml  # preserved unchanged as historical record. v1.0.6 is SKIPPED in this chain -- see quarantine_notice below.
 prior_prior_spec: specs/st-c3_v1.0.4.yaml  # preserved unchanged as historical record
 prior_prior_prior_spec: specs/st-c3_v1.0.3.yaml  # preserved unchanged as historical record
 prior_prior_prior_prior_spec: specs/st-c3_v1.0.2.yaml  # preserved unchanged as historical record
 prior_prior_prior_prior_prior_spec: specs/st-c3_v1.0.1.yaml  # preserved unchanged as historical record
 prior_prior_prior_prior_prior_prior_spec: specs/st-c3_v1.0.0.yaml  # preserved unchanged as historical record
 
+quarantine_notice: >
+  specs/st-c3_v1.0.6.yaml, validation/st_c3/evidence_builder.py,
+  validation/st_c3/a3_replay_engine.py, and the "A2/S1-G2 PASSED"/"A3
+  OPENED" decisions dated 2026-07-26 were produced by a separate line of
+  work whose provenance could not be verified as owner-authorized (no
+  conclusive evidence a human was present; circumstantial signs -- an
+  overnight commit gap, a configured scheduled-tasks mechanism -- suggest
+  possible unattended/autonomous execution, but this is not certain). On
+  2026-07-27 the owner reviewed the audit
+  (reports/governance/v1.0.6_RECONCILIATION_AUDIT.md) and explicitly
+  REJECTED both the A2-PASSED and A3-OPENED claims, regardless of
+  provenance -- both also have independent technical defects (A2: gate
+  conflation, S1-G2 vs the full S1-G3-S1-G6 substage per
+  PROJECT_STATUS.md's documented path; the R-18 "resolved" premise:
+  evidence_builder.py hardcodes the still-provisional OTE band
+  `OTE_MIN, OTE_MAX = 0.62, 0.79` as if frozen). The v1.0.6 line is
+  preserved on disk as a historical/forensic record, NOT deleted, NOT
+  merged, NOT treated as authoritative. R-31/R-32/R-33's field VALUES
+  (sweep_reclaim_max_bars=2, entry_window_bars=4, session windows
+  unchanged) were reconfirmed fresh by the owner on 2026-07-27, with clean
+  provenance, independent of the quarantined line -- see v1_0_7_revision
+  below. This is the only part of the v1.0.6 line's content that carries
+  forward into the authoritative chain.
+
 v1_0_6_revision:
+  status: QUARANTINED_REJECTED   # see quarantine_notice above
   type: evidence_builder_tier_3_gap_resolution
-  rcr_entry: reports/governance/st_c3/RCR_ST-C3_v1.0.6_REPORT.md
+  rcr_entry: reports/governance/st_c3/RCR_ST-C3_v1.0.6_REPORT.md   # quarantined document, not authoritative
   timestamp: "2026-07-26"
-  fields_resolved: [R-31, R-32, R-33]   # sweep_reclaim_max_bars=2, entry_window_bars=4, session UTC bounds ratified
-  fields_still_unresolved: [R-18]   # only remaining unresolved field on the entire tracker
-  source: reports/validation/st_c3/R18_EVIDENCE_BUILDER_DESIGN.md   # Tier 3 gap analysis that surfaced these three fields
-  no_structural_change: true   # no evidence object, state, transition, or rejection/termination code changed
-  no_new_logic_execution_optimization_or_a3: true   # values recorded in spec text only; build_evidence_bundle() remains an unimplemented design artifact
+  fields_resolved: [R-31, R-32, R-33]   # values later reconfirmed fresh with clean provenance -- see v1_0_7_revision
+  fields_still_unresolved: [R-18]   # this line's claim that R-18 was ALSO resolved is separately and independently rejected -- see reference_funnel.existence_check_r18 below
+  source: reports/validation/st_c3/R18_EVIDENCE_BUILDER_DESIGN.md   # Tier 3 gap analysis that surfaced R-31/32/33 (the gap-finding itself is not disputed, only the provenance of who answered it and the separate, rejected R-18/A2/A3 claims layered on top)
+  no_structural_change: true
+  no_new_logic_execution_optimization_or_a3: false   # FALSE -- this line's evidence_builder.py and a3_replay_engine.py are real code with real (non-compliant) logic; a3_replay_engine.py in particular is A3-scoped code built while A3-OPENED is now rejected
+
+v1_0_7_revision:
+  type: sweep_reclaim_entry_window_session_bounds_decisions
+  rcr_entry: reports/governance/st_c3/RCR_ST-C3_v1.0.7_REPORT.md
+  timestamp: "2026-07-27"
+  fields_resolved: [R-31, R-32, R-33]   # sweep_reclaim_max_bars=2, entry_window_bars=4, session UTC bounds ratified (values unchanged)
+  fields_still_unresolved: [R-18]   # no remaining spec-level blocker; needs detection-module code for S3/S7/S9/S10/S11/S12
+  provenance: >
+    Fresh owner decision given directly in an interactive session,
+    2026-07-27, no empirical justification claimed -- same category as
+    R-05/R-21. The three fields and their exact values were first proposed
+    by the quarantined v1.0.6 line; the owner was explicitly asked to
+    reconfirm them independent of that line's disputed provenance, and did
+    so. This is NOT an inheritance from v1.0.6 -- it is a fresh decision
+    that happens to match v1.0.6's proposed values.
+  no_structural_change: true
+  no_new_logic_execution_optimization_or_a3: true
 
 v1_0_2_revision:
   type: governance_decision_parameter_freeze
@@ -102,20 +144,17 @@ stage_a_strategy_validation:
     next_required_decision: null   # satisfied 2026-07-26, see a2_signal_conformance below
 
   a2_signal_conformance:
-    status: passed
+    status: in_progress   # REVERTED 2026-07-27 from a rejected "passed" claim -- see closure_decision below
     closure_decision:
-      decision: owner_directive
-      timestamp: "2026-07-26"
-      decided_by: Owner (Aung)
-      decision_log: reports/validation/st_c3/OWNER_DECISION_LOG.md, "A2/S1-G2 gate closure" entry
-      summary: >
-        A2/S1-G2 declared PASSED. All required conformance work complete:
-        spec v1.0.6 frozen (R-31/R-32/R-33 resolved), reference funnel
-        (all 15 evidence types) fully implemented and conformant, R-18
-        existence-check floor computed and published. Every field on the
-        R-01-R-33 tracker resolved. Does not authorize A3, execution,
-        optimization, demo, or live -- each remains a separate future
-        owner decision.
+      status: REJECTED
+      original_claim: "PASSED, owner decision 2026-07-26"
+      rejected: "2026-07-27, owner decision, after reconciliation audit"
+      rejection_reasons:
+        - provenance_unverifiable   # see reports/governance/v1.0.6_RECONCILIATION_AUDIT.md
+        - gate_conflation   # conflates S1-G2 (reference-implementation-authorization gate) with the full A2 substage (S1-G3 through S1-G6 per PROJECT_STATUS.md's documented path)
+        - depends_on_rejected_r18_resolution   # the "every field resolved" premise relied on evidence_builder.py's non-compliant OTE usage
+      audit_report: reports/governance/v1.0.6_RECONCILIATION_AUDIT.md
+      decision_log: "reports/validation/st_c3/OWNER_DECISION_LOG.md, 'A2/S1-G2 gate closure' entry (rejection noted inline)"
     current_gate: S1-G2
     current_gate_name: Reference Implementation Authorization
     authorization: scoped_reference_implementation_granted
@@ -135,98 +174,94 @@ stage_a_strategy_validation:
         - demo_trading
         - live_trading
         - production_promotion
-      spec_resolution_status: "24/26 of the original tracked fields decided (see v1_0_2/v1_0_3/v1_0_4_revision blocks above), 1 revised (R-02), 4 ruled out of v1.x scope. R-27 through R-30 (the structural-detection-algorithm gap found while attempting real R-18 work) are DECIDED as of v1_0_5_revision. R-31 through R-33 (the evidence-builder Tier 3 numeric-placeholder gap found while scoping build_evidence_bundle()) are DECIDED as of v1_0_6_revision. R-18 itself is now RESOLVED (signal_rate=0.0, real GBPUSD data) as of 2026-07-26 -- see reference_funnel.existence_check_r18 below. Every field on the entire R-01-R-33 tracker is resolved. This closes the R-18 research item only; it does not itself close the broader A2/S1-G2 gate or authorize A3/execution/demo/live."
+      spec_resolution_status: "24/26 of the original tracked fields decided (see v1_0_2/v1_0_3/v1_0_4_revision blocks above), 1 revised (R-02), 4 ruled out of v1.x scope. R-27 through R-30 DECIDED (v1_0_5_revision). R-31 through R-33 DECIDED with clean provenance (v1_0_7_revision, reconfirming values first proposed by the now-quarantined v1_0_6_revision). R-18 remains the only unresolved field on the entire tracker -- a quarantined claim that it was resolved is rejected; see reference_funnel.existence_check_r18 below."
     decision_log: reports/validation/st_c3/OWNER_DECISION_LOG.md
     resolution_matrix: reports/validation/st_c3/RESOLUTION_MATRIX.md
     reference_funnel:
-      status: kernel_built_price_detection_not_started
+      status: kernel_and_partial_detection_built_full_run_not_possible
       report: reports/validation/st_c3/S1-G2_REFERENCE_FUNNEL_REPORT.md
       built: [validation/st_c3/evidence.py, validation/st_c3/rejection_codes.py,
         validation/st_c3/kernel.py, validation/st_c3/trade_plan.py,
+        validation/st_c3/detection.py,
         validation/run_st_c3_existence_readiness.py]
-      tests: "tests/st_c3/ (20 passed: golden-case, negative-case, existence-check readiness)"
+      tests: "tests/st_c3/ (41 passed: golden-case, negative-case, existence-check readiness, detection, structural conformance)"
       scope_note: >
-        Implements the deterministic evidence-to-trade-plan validator kernel
-        (state_machine.transitions / evidence_bindings / trade_plan.schema),
-        which v1.0.1 fully specifies. Does NOT implement real price-bar SMC
-        detection (sweep/displacement/freshness/etc.) because those
-        thresholds remain UNRESOLVED/PROVISIONAL in the frozen spec even
-        though OWNER_DECISION_LOG.md records owner decisions for most of
-        them (R-04..R-26) -- those decisions are not yet folded into a
-        frozen spec revision, so using them would implement un-frozen
-        values. A v1.0.2+ spec cut is required before price-level detection
-        modules can be built.
+        Implements the deterministic evidence-to-trade-plan validator
+        kernel (state_machine.transitions / evidence_bindings /
+        trade_plan.schema), plus real price-level detection
+        (validation/st_c3/detection.py) for 6 of 12 gating stages (S1
+        HTF bias, S2 raw sweep, S4 displacement+BOS, S5 BOS extreme lock,
+        S6 dealing range, S8 FVG/OB), against real GBPUSD H4/M15 data,
+        using every filter/algorithm parameter frozen through
+        specs/st-c3_v1.0.7.yaml. Six stages (S3 sweep-reclaim, S7 OTE, S9
+        LTF confirmation, S10 session gatekeeper, S11 entry window, S12
+        risk/SL/TP) have no real detection code -- S3/S11/S10 now have
+        frozen numeric parameters (R-31/32/33) but no implementation yet;
+        S7/S9/S12 remain blocked on fields with no owner decision at all
+        (OTE band, LTF CHoCH parameters, R-08 guard direction). See
+        reports/validation/st_c3/R18_DETECTION_MODULE_REPORT.md and
+        R18_CLOSURE_REPORT.md.
       existence_check_r18:
-        status: resolved   # real detection-module code written and run against real candle data
+        status: open   # REVERTED 2026-07-27 from a rejected "resolved" claim
         reason: >
-          RESOLVED 2026-07-26. validation/st_c3/evidence_builder.py
-          implements build_evidence_bundle() per
-          R18_EVIDENCE_BUILDER_DESIGN.md's Tier 1 (direct smc_engine
-          primitive reuse) and Tier 2 (new glue logic, e.g. BOSExtreme
-          pullback tracking, LTF confirmation, target/RR computation),
-          using every v1.0.6-frozen parameter (R-04..R-33). Wired into
-          tools/existence_check.py's unmodified SignalFn contract via
-          validation/run_st_c3_existence_check.py. Run against real GBPUSD
-          H4/M15/M3 data (EURUSD excluded -- insufficient history, see
-          R27_R30_RESEARCH_REPORT.md). Result: signal_rate = 0.0 over the
-          3,339-bar H4/M15/M3 overlap window (2026-06-05 to 2026-07-24,
-          bounded by GBPUSD_M3.csv's start date). See
-          reports/validation/st_c3/R18_EXISTENCE_CHECK_RESULTS.md for the
-          full rejection-code breakdown and documented implementation
-          caveats. This result does not itself approve, reject, or
-          invalidate ST-C3 -- it satisfies R-18's mechanical requirement (a
-          real number in place of UNRESOLVED), nothing more. Does not
-          authorize A3, execution, optimization, demo, or live.
-        blocked_by: []
+          A 2026-07-26 claim that R-18 was RESOLVED (signal_rate=0.0, via
+          validation/st_c3/evidence_builder.py) is REJECTED 2026-07-27:
+          that module hardcodes `OTE_MIN, OTE_MAX = 0.62, 0.79   #
+          provisional, numerically usable` and uses it to compute real
+          S7_OTE gating results, despite specs/st-c3_v1.0.6.yaml itself
+          still marking those fields provisional -- a confirmed
+          "no implementation before specification freeze" violation. See
+          reports/governance/v1.0.6_RECONCILIATION_AUDIT.md section 5.
+          Real, non-quarantined status: validation/st_c3/detection.py
+          implements 6 of 12 gating stages against real GBPUSD data (no
+          OTE usage -- inside_ote is hardcoded False, S7 explicitly
+          NOT_YET_SUPPORTED). A partial-funnel diagnostic (not a full
+          existence check) found a joint S4-S8 pass rate of ~20.3% and an
+          S2 sweep pass rate of ~0.2-1.6%, directionally consistent with
+          (but independent of) the quarantined line's near-zero result.
+          No real S0-S13 run exists. R-31/R-32/R-33 (S3/S10/S11's numeric
+          parameters) are now frozen with clean provenance
+          (v1_0_7_revision) but S3/S10/S11 have no detection code yet;
+          S7/S9/S12 remain blocked on fields with no decision at all.
+        blocked_by: [detection_code_for_S3, detection_code_for_S7,
+          detection_code_for_S9, detection_code_for_S10, detection_code_for_S11,
+          detection_code_for_S12, S7_ote_band_never_ratified,
+          S9_ltf_choch_params_never_defined, S12_r08_guard_direction_unconfirmed]
         gap_report: reports/validation/st_c3/R18_DETECTION_GAP_REPORT.md
         research_plan: reports/validation/st_c3/R18_R27_R30_RESEARCH_PLAN.md
         research_report: reports/validation/st_c3/R27_R30_RESEARCH_REPORT.md
-        design_doc: reports/validation/st_c3/R18_EVIDENCE_BUILDER_DESIGN.md
-        results: reports/validation/st_c3/R18_EXISTENCE_CHECK_RESULTS.md
-        builder_module: validation/st_c3/evidence_builder.py
-        runner_script: validation/run_st_c3_existence_check.py
-        decision_status: >
-          All of R-27/R-28/R-29/R-30 (v1_0_5_revision) and R-31/R-32/R-33
-          (v1_0_6_revision) decided. R-18 itself is now RESOLVED -- see
-          `reason` above. Every field on the R-01-R-33 tracker is resolved.
+        detection_module_report: reports/validation/st_c3/R18_DETECTION_MODULE_REPORT.md
+        partial_funnel_study: reports/validation/st_c3/R18_PARTIAL_FUNNEL_SIGNAL_RATE_GBPUSD.md
+        closure_report: reports/validation/st_c3/R18_CLOSURE_REPORT.md
+        structural_conformance: reports/validation/st_c3/S1_G3_STRUCTURAL_CONFORMANCE.md
+        structural_consistency: reports/validation/st_c3/S1_G4_STRUCTURAL_CONSISTENCY.md
+        quarantined_claim: >
+          reports/validation/st_c3/R18_EXISTENCE_CHECK_RESULTS.md and
+          validation/st_c3/evidence_builder.py remain on disk as
+          historical/forensic record but are REJECTED, not authoritative.
 
   a3_statistical_validation:
-    status: open
+    status: blocked   # REVERTED 2026-07-27 from a rejected "open" claim -- see opened.status below
     opened:
-      decision: owner_directive
-      timestamp: "2026-07-26"
-      decided_by: Owner (Aung)
-      decision_log: reports/validation/st_c3/OWNER_DECISION_LOG.md, "A3 statistical validation -- OPENED" entry
-      authorized_scope: [historical_baseline, cost_adjusted_backtest, walk_forward]
-      explicitly_not_authorized: [broker_integration, demo_trading, live_trading, production_promotion, stage_b_execution]
+      status: REJECTED
+      original_claim: "OPENED, owner decision 2026-07-26"
+      rejected: "2026-07-27, owner decision, after reconciliation audit"
+      rejection_reasons:
+        - provenance_unverifiable
+        - downstream_of_rejected_a2_closure   # this decision's own stated precondition ("A2/S1-G2 was declared PASSED") never validly held
+      audit_report: reports/governance/v1.0.6_RECONCILIATION_AUDIT.md
+      decision_log: "reports/validation/st_c3/OWNER_DECISION_LOG.md, 'A3 statistical validation' entry (rejection noted inline)"
     replay_engine:
-      status: built_run_and_lifecycle_tested
-      builder_module: validation/st_c3/a3_replay_engine.py
+      status: QUARANTINED_REJECTED   # built and run while A3-OPENED is now rejected; A3-scoped code, not authorized
+      builder_module: validation/st_c3/a3_replay_engine.py   # preserved on disk, not deleted, not relied upon
       runner_script: validation/run_st_c3_a3_replay.py
-      results: reports/validation/st_c3/A3_REPLAY_RESULTS.md
-      raw_output: reports/a3/ST-C3_v1.0.6_GBPUSD_M15_a3_replay.json
-      run_date: "2026-07-27"
-      summary: >
-        Run against real GBPUSD H4/M15/M3 data (same 3,339-bar window as
-        R-18): 0 TradePlans emitted, rejection-code breakdown identical to
-        R-18. Confirms the replay engine's signal-detection path is
-        correct. No RR distribution, win rate, or session-behavior data
-        exists yet on real data. Further progress on real-data metrics
-        requires more historical data, not more code.
-      synthetic_lifecycle_tests:
-        status: done
-        test_file: tests/st_c3/test_a3_lifecycle.py
-        test_count: 5
-        results: reports/validation/st_c3/A3_SYNTHETIC_LIFECYCLE_RESULTS.md
-        run_date: "2026-07-27"
-        summary: >
-          `_simulate_lifecycle` tested directly against hand-built
-          TradePlan fixtures and scripted price paths (TP1-only partial
-          close, full TP1/TP2/TP3 closure, immediate SL, partial-TP1-then-SL,
-          BIAS_FLIP via a synthetic H4 swing zigzag). All 5 pass; full repo
-          suite remains green. Synthetic/code-level coverage only -- does
-          not substitute for real-data validation.
-    blocked_by: []   # A3 itself is open; producing a statistical qualification verdict is blocked on data volume, tracked in replay_engine.summary above, not on authorization
+      results: reports/validation/st_c3/A3_REPLAY_RESULTS.md   # quarantined, not authoritative
+      note: >
+        Not audited in depth -- moot regardless of internal code quality,
+        since its precondition (A3 open) is rejected. See
+        reports/governance/v1.0.6_RECONCILIATION_AUDIT.md.
+    blocked_by:
+      - a2_signal_conformance   # not passed -- see above
 
 stage_b_execution_qualification:
   status: blocked
@@ -235,11 +270,11 @@ stage_b_execution_qualification:
 
 freeze_state:
   strategy_frozen: true
-  engine_implements_spec: true   # reference funnel (all 15 evidence types, validation/st_c3/evidence_builder.py) built and conformant with specs/st-c3_v1.0.6.yaml; A2/S1-G2 declared PASSED 2026-07-26
+  engine_implements_spec: false   # REVERTED 2026-07-27 -- a rejected claim set this true; only 6 of 12 gating stages have real detection code, no full funnel exists
   implementation_authorization: scoped_reference_implementation_granted   # S1-G2 research/validation scope only; see a2_signal_conformance.opened above
 
 forbidden_until_authorized:
-  - historical_baseline   # A3/S1-G7 per PROJECT_STATUS.md's path — owner explicitly said "no A3 opening"
+  - historical_baseline   # A3/S1-G7 per PROJECT_STATUS.md's path — A3-OPENED claim rejected 2026-07-27, this remains forbidden
   - cost_adjusted_backtest
   - walk_forward
   - broker_integration
@@ -251,3 +286,6 @@ forbidden_until_authorized:
   # research is now authorized under scoped S1-G2. Everything else here
   # (including historical_baseline, which is A3/S1-G7 work) remains
   # forbidden per a2_signal_conformance.opened.explicitly_not_authorized.
+  # 2026-07-27: historical_baseline/cost_adjusted_backtest/walk_forward
+  # were briefly removed from this list by the now-rejected "A3 OPENED"
+  # decision; restored here since that decision is rejected.

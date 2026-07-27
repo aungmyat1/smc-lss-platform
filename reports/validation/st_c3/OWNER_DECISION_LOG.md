@@ -175,37 +175,32 @@ tracked as one of the 20 fields — see "Open Conflicts" below.
 | R-28 | BOS confirmation-bar rule (NEW — found 2026-07-26) | Not proposed | **APPROVED: N=2 bars** | Owner | 2026-07-26 | Chosen from the N=0..5 tradeoff curve in `R27_R30_RESEARCH_REPORT.md` (rejects ~25% of raw body-close breaks as whipsaws on the GBPUSD M15 sample). Folded into `specs/st-c3_v1.0.5.yaml`'s `displacement_bos_stage.bos_confirmation_bars`. |
 | R-29 | FVG minimum gap-size / OB candle-selection rule (NEW — found 2026-07-26) | Not proposed | **APPROVED (FVG half): 0.15x MF_ATR(1)** | Owner | 2026-07-26 | Chosen from the 0.1-0.3x candidate range in `R27_R30_RESEARCH_REPORT.md`. OB half needs no number — already a structural rule via `smc_engine.order_blocks()`. Folded into `specs/st-c3_v1.0.5.yaml`'s `fvg_ob_confluence_stage.fvg_min_gap_atr_multiplier`. |
 | R-30 | Pullback definition for `BOS_EXTREME_LOCK` (NEW — found 2026-07-26) | Not proposed | **APPROVED: 0.30x ATR(1) depth** | Owner | 2026-07-26 | Chosen from the depth-filtered 0.1-1.0x ATR(1) tradeoff curve in `R27_R30_RESEARCH_REPORT.md` (reaches within 40 bars for 86.3% of BOS candidates, median 2 bars). Folded into `specs/st-c3_v1.0.5.yaml`'s `displacement_bos_stage.pullback_depth_atr_multiplier`. |
-| R-31 | `liquidity_sweep_stage.sweep_reclaim_max_bars` (N_SWEEP) (NEW — found 2026-07-26 during `R18_EVIDENCE_BUILDER_DESIGN.md` Tier 3 gap analysis; spec carried the literal placeholder string `"PROVISIONAL_1_TO_3"`, not a number, and was untracked by any R-item) | Not proposed | **APPROVED: 2 bars (for the current A2/S1-G2 phase)** | Owner | 2026-07-26 | Owner gave phase-conditional guidance rather than a single fixed number: 2 bars for the current research/validation phase (A2/S1-G2), 1 bar if/when a future A3+/production-prep phase tightens the funnel, 3 bars for exploratory robustness testing. Since A2/S1-G2 is the active phase per `NEXT_ACTION.md`, **2 bars is the value folded into `specs/st-c3_v1.0.6.yaml`**. The 1-bar and 3-bar alternatives are recorded here, not implemented, in case the owner revisits this for a later phase — re-opening this field for a phase change is a new decision, not an automatic switch. |
-| R-32 | `entry_window_stage.entry_window_bars` (MAX_ENTRY_BARS) (NEW — found 2026-07-26, same Tier 3 gap analysis; spec carried literal `"PROVISIONAL_3_TO_5_M3_BARS"`) | Not proposed | **APPROVED: 4 M3 bars** | Owner | 2026-07-26 | Owner's stated rationale: 4 is the mid-range pick for A2/S1-G2, chosen to avoid biasing the signal-rate study toward either the tight (3-bar) or loose (5-bar) end of the spec's own provisional range. Folded into `specs/st-c3_v1.0.6.yaml`'s `entry_window_stage.entry_window_bars`. |
-| R-33 | `sessions.london_window_utc` / `sessions.ny_window_utc` (NEW — found 2026-07-26, same Tier 3 gap analysis; spec carried literal `"PROVISIONAL_07_00_TO_10_00"` / `"PROVISIONAL_13_00_TO_16_00"`) | Not proposed | **APPROVED: ratify existing provisional values as final — London 07:00-10:00 UTC, NY 13:00-16:00 UTC** | Owner | 2026-07-26 | Owner chose to keep the spec's own long-standing provisional session times rather than change them; this decision converts them from an unratified placeholder string to a decided, frozen value — the clock times themselves are unchanged. Folded into `specs/st-c3_v1.0.6.yaml`. |
+| R-31 | `liquidity_sweep_stage.sweep_reclaim_max_bars` (N_SWEEP) (NEW — found 2026-07-26 during `R18_EVIDENCE_BUILDER_DESIGN.md` Tier 3 gap analysis; spec carried the literal placeholder string `"PROVISIONAL_1_TO_3"`, not a number, and was untracked by any R-item) | Not proposed | **APPROVED: 2 bars** | Owner | 2026-07-27 (re-confirmed; original 2026-07-26 entry's provenance was unverifiable — see note below) | The original 2026-07-26 entry attributed this to the quarantined `v1.0.6` line (unverified whether a human was present when it was recorded — see `reports/governance/v1.0.6_RECONCILIATION_AUDIT.md`) and carried a "phase-conditional" 1/2/3-bar framing not repeated here. The owner was asked to reconfirm independent of that provenance, and did so directly: **2 bars, no empirical justification claimed.** Folded into `specs/st-c3_v1.0.7.yaml`'s `liquidity_sweep_stage.sweep_reclaim_max_bars` (NOT v1.0.6, which remains quarantined). |
+| R-32 | `entry_window_stage.entry_window_bars` (MAX_ENTRY_BARS) (NEW — found 2026-07-26, same Tier 3 gap analysis; spec carried literal `"PROVISIONAL_3_TO_5_M3_BARS"`) | Not proposed | **APPROVED: 4 M3 bars** | Owner | 2026-07-27 (re-confirmed; see R-31's note) | Original 2026-07-26 entry's provenance unverifiable (same as R-31). Owner reconfirmed directly 2026-07-27: 4 M3 bars, no empirical justification claimed. Folded into `specs/st-c3_v1.0.7.yaml`'s `entry_window_stage.entry_window_bars`. |
+| R-33 | `sessions.london_window_utc` / `sessions.ny_window_utc` (NEW — found 2026-07-26, same Tier 3 gap analysis; spec carried literal `"PROVISIONAL_07_00_TO_10_00"` / `"PROVISIONAL_13_00_TO_16_00"`) | Not proposed | **APPROVED: ratify existing values as final — London 07:00-10:00 UTC, NY 13:00-16:00 UTC** | Owner | 2026-07-27 (re-confirmed; see R-31's note) | Original 2026-07-26 entry's provenance unverifiable (same as R-31). Owner reconfirmed directly 2026-07-27: ratify the long-standing provisional clock times as final, unchanged. Folded into `specs/st-c3_v1.0.7.yaml`. |
 
-**2026-07-26 update (same day, later still): R-31/R-32/R-33 decided —
-Tier 3 of `R18_EVIDENCE_BUILDER_DESIGN.md` resolved.** These three fields
-were surfaced by that design document's gap analysis, not previously
-tracked anywhere. All three are now folded into `specs/st-c3_v1.0.6.yaml`
-via `reports/governance/st_c3/RCR_ST-C3_v1.0.6_REPORT.md`. **R-18 remains
-the only field on the entire R-01–R-33 tracker without a resolved value —
-and, as before, it needs no further spec decision, only the
-`build_evidence_bundle()` implementation and a real data run.**
-
-**2026-07-26 update (same day, final): R-18 CLOSED.** Owner ratified
-`R18_EVIDENCE_BUILDER_DESIGN.md`'s Tier 1/Tier 2 approach and a full
-S1-S13 run (Design Section 8, items 1 and 3). `validation/st_c3/evidence_builder.py`
-was implemented per that design, wired into `tools/existence_check.py`'s
-unmodified `SignalFn` contract via `validation/run_st_c3_existence_check.py`,
-and run against real GBPUSD H4/M15/M3 candle data (EURUSD excluded — its
-H4/M15 CSVs cover only a few hours, already flagged insufficient in
-`R27_R30_RESEARCH_REPORT.md`). Result: **signal_rate = 0.0** over the
-3,339-bar H4/M15/M3 overlap window (2026-06-05 to 2026-07-24, bounded by
-`data/GBPUSD_M3.csv`'s start date). See
-`reports/validation/st_c3/R18_EXISTENCE_CHECK_RESULTS.md` for the full
-rejection-code breakdown, the documented implementation simplifications,
-and why a 0.0 rate here does not itself approve, reject, or invalidate
-ST-C3 — R-18 only required a real number in place of `UNRESOLVED`, which
-this run supplies. **Every field on the R-01–R-33 tracker, including R-18,
-is now resolved.** Execution, optimization, A3 opening, demo, and live
-remain exactly as blocked as before — this closes a research/validation
-data point, not a governance gate.
+**2026-07-26 entries for R-31/R-32/R-33 and the "R-18 CLOSED"/"A2/S1-G2
+PASSED"/"A3 OPENED" claims below were produced by a separate line of work
+(`specs/st-c3_v1.0.6.yaml`, `validation/st_c3/evidence_builder.py`) whose
+provenance could not be verified — see
+`reports/governance/v1.0.6_RECONCILIATION_AUDIT.md` for the full audit.**
+**2026-07-27 owner decision: A2/S1-G2 PASSED and A3 OPENED are REJECTED —
+not treated as authorized, regardless of provenance. Both also have
+independent technical defects** (the "A2 PASSED" declaration conflates a
+single gate, S1-G2, with the full A2 substage spanning S1-G3 through
+S1-G6 per `PROJECT_STATUS.md`'s own documented path; `evidence_builder.py`
+hardcodes `OTE_MIN, OTE_MAX = 0.62, 0.79   # provisional, numerically
+usable` and uses it to compute real gating results, despite
+`specs/st-c3_v1.0.6.yaml` itself still marking those fields provisional).
+**R-18 is NOT resolved** — the `signal_rate = 0.0` result in
+`R18_EXISTENCE_CHECK_RESULTS.md` rests on that same non-compliant OTE
+usage and is not adopted. R-18's actual status per the v1.0.5/v1.0.7 line
+is documented in `reports/validation/st_c3/R18_CLOSURE_REPORT.md`: still
+open, six stages (S3, S7, S9, S10, S11, S12) have no real detection code.
+R-31/R-32/R-33 alone were reconfirmed fresh (rows above) since their
+provenance problem, unlike A2-PASSED/A3-OPENED, has no independent
+technical defect — the values themselves are sound, only their original
+sourcing was in question.
 
 ---
 
@@ -367,7 +362,20 @@ the submission's `d = |price - invalidation_level|` reuses the same
 non-directional formulation flagged in R-08's notes — if this rule is
 revisited for a v2.x cycle, that direction issue would need the same fix.
 
-### A2/S1-G2 gate closure — **PASSED, owner decision 2026-07-26**
+### A2/S1-G2 gate closure — **PASSED, owner decision 2026-07-26 — REJECTED 2026-07-27**
+
+**2026-07-27 REJECTION (supersedes everything below in this entry):** this
+entry's provenance could not be verified (see
+`reports/governance/v1.0.6_RECONCILIATION_AUDIT.md`) and, independent of
+provenance, it is technically wrong on two counts: (1) `PROJECT_STATUS.md`'s
+own documented path treats A2 as gates S1-G3 through S1-G6, of which S1-G2
+is only the reference-implementation-authorization gate — this entry
+conflates the two; (2) the "R-18 resolved" premise it depends on used
+`OTE_MIN, OTE_MAX = 0.62, 0.79` in `validation/st_c3/evidence_builder.py`
+despite `specs/st-c3_v1.0.6.yaml` itself still marking those fields
+provisional. **A2/S1-G2 is NOT passed. `a2_signal_conformance.status`
+remains `in_progress`.** Kept below only as the historical record of what
+was claimed.
 
 **Context:** R-18 (`existence_check_floor`) resolved earlier the same day —
 real detection-module code (`validation/st_c3/evidence_builder.py`) run
@@ -393,7 +401,18 @@ This decision does **not** authorize A3 — opening A3 remains a separate,
 future owner decision per `explicitly_not_authorized` in that same file.
 Execution, optimization, demo, and live trading remain explicitly blocked.
 
-### A3 statistical validation — **OPENED, owner decision 2026-07-26**
+### A3 statistical validation — **OPENED, owner decision 2026-07-26 — REJECTED 2026-07-27**
+
+**2026-07-27 REJECTION (supersedes everything below in this entry):** this
+entry is downstream of the A2/S1-G2 closure entry above, which is itself
+rejected — its precondition never validly held. Provenance also could not
+be verified (see `reports/governance/v1.0.6_RECONCILIATION_AUDIT.md`).
+**A3 is NOT open. `a3_statistical_validation.status` remains `blocked`.**
+`historical_baseline`/`cost_adjusted_backtest`/`walk_forward` remain in
+`forbidden_until_authorized`. `validation/st_c3/a3_replay_engine.py` and
+its results are quarantined along with the rest of the v1.0.6 line — not
+deleted, not relied upon. Kept below only as the historical record of what
+was claimed.
 
 **Context:** A2/S1-G2 was declared PASSED earlier the same day (entry
 above). That closure explicitly did not authorize opening A3 — a separate,
