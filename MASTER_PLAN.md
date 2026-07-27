@@ -1,8 +1,8 @@
 # SMC-LSS PLATFORM - MASTER GOVERNANCE PLAN
 
-**Version:** 4.1.2
+**Version:** 4.1.5
 **Status:** AUTHORITATIVE PROJECT OPERATING INSTRUCTIONS
-**Recorded:** 2026-07-24
+**Recorded:** 2026-07-27
 **Supersedes:** v3.0.0 and the legacy active M1-M5 roadmap
 
 > Highest-authority governance document (authority #1). When any document
@@ -59,19 +59,64 @@ Nothing is higher priority than reaching this state without breaking governance.
 
 | Candidate | Stage | Gate | Status | Active Work | Authority |
 |---|---|---|---|---|---|
-| ST-C3 v1.0.0 | Stage A / A1 | S1-G1 frozen; ready for S1-G1C logic-conformance | Frozen | ACTIVE VALIDATION SETUP | Validation/conformance preparation only; no implementation, backtest, execution, demo, live, or production authority |
+| ST-C3 v1.0.7 (GBPUSD/EURUSD) | Stage A / A2 | S1-G2 Reference Implementation Authorization — **ACCEPTED 2026-07-27** | Frozen; S1-G2 accepted, S1-G3-S1-G6 not started | ACTIVE — scoped research/validation | Reference-funnel assembly, golden/negative-case tests, existence-check research authorized. Execution, optimization, A3 opening, demo, live, production explicitly NOT authorized. |
 | ST-C2 v1.2.0 GBPUSD | Stage A / A2 | S1-G2 Reference Implementation Completion Review | Frozen; S1-G2 remains open | PAUSED BY OWNER DIRECTION | Scoped S1-G2 reference authority remains recorded, but no new ST-C2 work is the active milestone |
 
-ST-C3 v1.0.0 is the active owner-directed validation setup track after S1-G1
-freeze. Its current work is limited to S1-G1C logic-conformance and validation
-preparation. ST-C3 remains non-implemented with `engine_implements_spec: false`
-and `implementation_authorization: null`.
+**2026-07-27 sync correction:** this table and the ST-C3 paragraph below
+were last updated 2026-07-25 (v4.1.2) and had not been kept current with
+real owner-directed ST-C3 progress from 2026-07-26 onward. Corrected here;
+see `reports/validation/st_c3/OWNER_DECISION_LOG.md` for the full,
+verified decision trail this correction is based on.
+
+ST-C3 progressed past S1-G1C (PASSED, `specs/st-c3_v1.0.1.yaml`) and
+Specification Closure (owner decisions recorded in
+`reports/validation/st_c3/OWNER_DECISION_LOG.md`) to **A2/S1-G2, opened by
+owner directive 2026-07-26** with a scoped authorization: reference-funnel
+assembly, golden-case tests (Phase 3), negative-case tests (Phase 4),
+existence-check conformance runs, and research/validation tasks.
+Explicitly NOT authorized by this opening: execution, optimization, A3
+opening, demo trading, live trading, production promotion — each remains
+its own separate future owner decision, unchanged from S1-G1's original
+restriction. The frozen specification has since revised to
+`specs/st-c3_v1.0.7.yaml` (R-01 through R-33 tracked fields resolved
+except R-18; `specs/st-c3_v1.0.6.yaml` and its associated
+`evidence_builder.py`/A2-PASSED/A3-OPENED claims are QUARANTINED —
+unverified provenance and confirmed technical defects, see
+`reports/governance/v1.0.6_RECONCILIATION_AUDIT.md` — not part of this
+lineage). A reference funnel (`validation/st_c3/kernel.py`,
+`validation/st_c3/detection.py`) implements 9 of 12 gating stages against
+real GBPUSD candle data. The S1-G2 completion audit
+(`reports/validation/st_c3/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md`)
+found this 9-of-12 coverage and recommended S1-G2 remain open pending
+either owner decisions on S7 (OTE)/S9 (LTF confirmation)/S12 (risk/SL/TP
+guard direction), or an explicit freeze decision. **On 2026-07-27 the
+owner chose to freeze the v1.x reference-implementation scope at these 9
+stages** (governance labeling only — no change to
+`specs/st-c3_v1.0.7.yaml`'s state machine, evidence registry, or
+trade-plan schema; S7/S9/S12 remain specified exactly as before for a
+future v1.1/v2.x cycle). **R-18 (existence-check floor) is CLOSED at
+`signal_rate = 0.0`**, established by the frozen state machine's own
+sequential-guard rule (S7 permanently precedes and blocks S8-S12) rather
+than a literal, substantively-empty kernel run — see
+`reports/validation/st_c3/V1X_FUNNEL_FREEZE_AND_R18_CLOSURE.md`. **S1-G2
+is ACCEPTED on this basis.** `engine_implements_spec` remains `false` — no
+full 12-stage funnel exists or ever will under this frozen v1.x scope.
+Accepting S1-G2 removes S1-G3's blocking precondition (below) but does
+**not** itself start S1-G3, pass the broader A2 substage (S1-G3 through
+S1-G6), or authorize A3/execution/demo/live — each remains a distinct,
+separate, not-yet-made owner decision.
 
 ST-C2 v1.2.0 remains preserved as the frozen GBPUSD-scoped specification.
 Pausing the active ST-C2 task does not approve, reject, mutate, supersede, or
 execute ST-C2. ST-C2 is not approved, historically validated, statistically
 validated, execution-authorized, demo-authorized, live-authorized, or
 production-authorized.
+
+**Both candidates' S1-G2 authorizations are independent** — ST-C3 is a
+distinct lineage from ST-C2 (`docs/adr/ADR-0004-st-c3-candidate-intake.md`),
+with its own rejection-code namespace, evidence objects, and gate
+authorization; ST-C3's scoped S1-G2 opening neither depends on nor revises
+ST-C2's separately-recorded, paused S1-G2 status.
 
 ---
 
@@ -263,7 +308,7 @@ Forbidden:
 
 Output: Reference Strategy Engine.
 
-Current authorization: granted for ST-C2 v1.2.0 GBPUSD only, limited to
+Current authorization (ST-C2): granted for ST-C2 v1.2.0 GBPUSD only, limited to
 golden-case tests, conformance kernel, minimum GBPUSD detector slice, and the
 existence-check run. The minimum existence floor is satisfied by a first
 GBPUSD short signal at `2026-06-10 17:15` after extending M1-derived M3
@@ -271,6 +316,28 @@ coverage. No broker, execution-layer, demo, live, or production work is
 authorized. The S1-G2 completion audit in
 `reports/validation/st_c2/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md`
 keeps S1-G2 open pending gap closure.
+
+Current authorization (ST-C3, distinct lineage, ADR-0004): granted for
+ST-C3 v1.0.7 (revision chain from v1.0.0), scoped to reference-funnel
+assembly, golden-case tests, negative-case tests, and existence-check
+research (owner directive, 2026-07-26). No broker, execution-layer, demo,
+live, or production work is authorized. The S1-G2 completion audit in
+`reports/validation/st_c3/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md`
+(modeled on ST-C2's) evaluated the reference funnel — `validation/st_c3/kernel.py`
++ `validation/st_c3/detection.py` implement 9 of 12 gating stages (S1, S2,
+S3, S4, S5, S6, S8, S10, S11) against real GBPUSD data; S7 (OTE), S9 (LTF
+confirmation), and S12 (risk/SL/TP guard direction) remain unimplemented,
+each blocked on a field with no owner decision at all — and recommended
+S1-G2 **remain open** pending either (a) owner decisions closing S7/S9/S12,
+or (b) an explicit owner decision to freeze the v1.x reference scope at 9
+stages. **On 2026-07-27 the owner chose path (b)**: the v1.x
+reference-implementation scope is frozen at these 9 stages (governance
+labeling only, no change to `specs/st-c3_v1.0.7.yaml`), R-18 is closed at
+`signal_rate=0.0` by the state machine's own sequential-guard necessity
+(S7 permanently blocks S8-S12), and **S1-G2 is ACCEPTED** on that basis —
+see `reports/validation/st_c3/V1X_FUNNEL_FREEZE_AND_R18_CLOSURE.md`. This
+does not pass the broader A2 substage (S1-G3 through S1-G6 below, not yet
+started) or authorize A3/execution/demo/live.
 
 ### A2 / S1-G3 - Primitive and Indicator Conformance
 
@@ -283,7 +350,11 @@ Required evidence:
 - fixed expected values and causal cutoff checks
 - no broker, time, network, or mutable global dependency
 
-Current status: BLOCKED until S1-G2 completion review is accepted.
+Current status: for ST-C2 (paused), still BLOCKED — its own S1-G2
+completion audit keeps it open. For ST-C3, **UNBLOCKED as of 2026-07-27**
+— its S1-G2 was accepted (see the A2/S1-G2 section above) — but starting
+S1-G3 work is a distinct, not-yet-made owner decision, not automatic; see
+`reports/validation/st_c3/S1_G3_READINESS_CHECKLIST.md`.
 
 ### A2 / S1-G4 - Event and State Conformance
 
@@ -516,6 +587,44 @@ that only executes approved strategy packages.
 
 ## Changelog
 
+- **v4.1.5 - 2026-07-27** - Records the owner's decision to freeze ST-C3's
+  v1.x reference-implementation scope at 9 of 12 gating stages (S7 OTE, S9
+  LTF confirmation, S12 risk/SL/TP guard direction left permanently out of
+  v1.x scope; governance labeling only, no change to
+  `specs/st-c3_v1.0.7.yaml`'s state machine, evidence registry, or
+  trade-plan schema). R-18 (existence-check floor) is CLOSED at
+  `signal_rate = 0.0`, established by the frozen state machine's own
+  sequential-guard rule (S7 permanently blocks S8-S12) rather than a
+  literal kernel run. **S1-G2 (Reference Implementation Authorization and
+  Completion Review) is ACCEPTED** for ST-C3 on this basis. This does
+  **not** pass the broader A2 substage (S1-G3 through S1-G6, not started),
+  and does **not** authorize A3, execution, optimization, demo, or live
+  trading — each remains its own separate, not-yet-made owner decision.
+  See `reports/validation/st_c3/V1X_FUNNEL_FREEZE_AND_R18_CLOSURE.md`.
+- **v4.1.4 - 2026-07-27** - Records ST-C3's S1-G2 reference implementation
+  completion audit
+  (`reports/validation/st_c3/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md`,
+  modeled on ST-C2's): 9 of 12 gating stages implemented and tested;
+  recommends S1-G2 remain open pending owner decisions on S7 (OTE), S9
+  (LTF confirmation), and S12 (risk/SL/TP guard direction), or an explicit
+  decision to freeze the v1.x reference scope at 9 stages. Does not itself
+  accept S1-G2 or authorize S1-G3.
+- **v4.1.3 - 2026-07-27** - Sync correction: records ST-C3's real progress
+  from 2026-07-26 onward that v4.1.2 never captured — S1-G1C PASSED
+  (`specs/st-c3_v1.0.1.yaml`), Specification Closure, A2/S1-G2 opened by
+  owner directive (scoped: reference-funnel assembly, golden/negative-case
+  tests, existence-check research; execution/optimization/A3/demo/live
+  explicitly not authorized), spec revised through `specs/st-c3_v1.0.7.yaml`
+  (R-01-R-33 resolved except R-18, open). Also records that
+  `specs/st-c3_v1.0.6.yaml` and its evidence-builder/A2-PASSED/A3-OPENED
+  claims are QUARANTINED — a separate line of work with unverified
+  provenance and confirmed technical defects (gate conflation; use of a
+  still-provisional OTE band as if frozen), rejected by owner decision
+  2026-07-27 regardless of provenance. See
+  `reports/governance/v1.0.6_RECONCILIATION_AUDIT.md` for the full audit
+  and `reports/validation/st_c3/OWNER_DECISION_LOG.md` for the verified
+  decision trail this entry is based on. Does not itself authorize S1-G3
+  or any later gate — S1-G2's own completion review remains unaccepted.
 - **v4.1.2 - 2026-07-25** - Records owner-approved ST-C3 v1.0.0 S1-G1 freeze
   action. ST-C3 is frozen and ready for S1-G1C validation/conformance
   preparation. Implementation, backtest, broker, demo, live, and production

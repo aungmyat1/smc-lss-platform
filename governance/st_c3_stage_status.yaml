@@ -144,7 +144,7 @@ stage_a_strategy_validation:
     next_required_decision: null   # satisfied 2026-07-26, see a2_signal_conformance below
 
   a2_signal_conformance:
-    status: in_progress   # REVERTED 2026-07-27 from a rejected "passed" claim -- see closure_decision below
+    status: in_progress   # the FULL A2 substage (S1-G2 through S1-G6) -- NOT the same thing as S1-G2 alone accepted below. Conflating the two was exactly the quarantined line's error; not repeated here.
     closure_decision:
       status: REJECTED
       original_claim: "PASSED, owner decision 2026-07-26"
@@ -155,6 +155,37 @@ stage_a_strategy_validation:
         - depends_on_rejected_r18_resolution   # the "every field resolved" premise relied on evidence_builder.py's non-compliant OTE usage
       audit_report: reports/governance/v1.0.6_RECONCILIATION_AUDIT.md
       decision_log: "reports/validation/st_c3/OWNER_DECISION_LOG.md, 'A2/S1-G2 gate closure' entry (rejection noted inline)"
+    completion_audit:
+      report: reports/validation/st_c3/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md
+      date: "2026-07-27"
+      modeled_on: reports/validation/st_c2/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md
+      recommendation: remain_open   # the audit's own recommendation, at the time it was written -- superseded by the owner's freeze decision below, which is a distinct, later, explicit choice between the audit's own two identified paths
+    s1_g2_gate:
+      status: accepted   # 2026-07-27, owner decision -- SCOPED TO S1-G2 ONLY, not the full a2_signal_conformance.status above
+      basis: v1x_funnel_freeze_at_9_stages
+      decision_report: reports/validation/st_c3/V1X_FUNNEL_FREEZE_AND_R18_CLOSURE.md
+      decision_log: "reports/validation/st_c3/OWNER_DECISION_LOG.md, 'v1.x funnel freeze and R-18 closure' entry"
+      summary: >
+        Owner chose to freeze the v1.x reference-implementation scope at
+        the 9 currently-implemented stages (governance labeling only -- no
+        change to specs/st-c3_v1.0.7.yaml's frozen state machine, evidence
+        registry, or trade-plan schema; S7/S9/S12 remain specified exactly
+        as before for any future v1.1/v2.x revision). R-18 closed at 0.0 by
+        the state machine's own sequential-guard necessity (S7 permanently
+        blocks S8-S12), not a fabricated code run. This accepts S1-G2
+        specifically -- it does NOT mark the broader a2_signal_conformance
+        substage (S1-G3 through S1-G6) as passed, and does NOT authorize
+        A3, execution, optimization, demo, or live trading, each of which
+        remains its own separate future owner decision.
+      unblocks: [S1-G3]   # per MASTER_PLAN.md, S1-G3 is "BLOCKED until S1-G2 completion review is accepted" -- now unblocked as a POSSIBLE next gate, not opened by this decision alone
+      recommendation_basis: >
+        9 of 12 gating stages implemented and tested; S7/S9/S12 blocked on
+        fields with no owner decision at all (spec-level gap, not
+        implementation-level). Recommends S1-G2 remain open pending either
+        owner decisions closing S7/S9/S12, or an explicit owner decision
+        to freeze the v1.x reference scope at 9 stages. Audit itself does
+        not accept S1-G2 or authorize S1-G3 -- that remains a separate
+        owner decision.
     current_gate: S1-G2
     current_gate_name: Reference Implementation Authorization
     authorization: scoped_reference_implementation_granted
@@ -174,7 +205,7 @@ stage_a_strategy_validation:
         - demo_trading
         - live_trading
         - production_promotion
-      spec_resolution_status: "24/26 of the original tracked fields decided (see v1_0_2/v1_0_3/v1_0_4_revision blocks above), 1 revised (R-02), 4 ruled out of v1.x scope. R-27 through R-30 DECIDED (v1_0_5_revision). R-31 through R-33 DECIDED with clean provenance (v1_0_7_revision, reconfirming values first proposed by the now-quarantined v1_0_6_revision). R-18 remains the only unresolved field on the entire tracker -- a quarantined claim that it was resolved is rejected; see reference_funnel.existence_check_r18 below."
+      spec_resolution_status: "24/26 of the original tracked fields decided (see v1_0_2/v1_0_3/v1_0_4_revision blocks above), 1 revised (R-02), 4 ruled out of v1.x scope. R-27 through R-30 DECIDED (v1_0_5_revision). R-31 through R-33 DECIDED with clean provenance (v1_0_7_revision, reconfirming values first proposed by the now-quarantined v1_0_6_revision). R-18 CLOSED 2026-07-27 at signal_rate=0.0 via the v1.x funnel-freeze decision (governance labeling only, no spec/code change) -- see reference_funnel.existence_check_r18 below and a2_signal_conformance.s1_g2_gate above. Every field on the R-01-R-33 tracker is now resolved. This does not itself pass the full a2_signal_conformance substage (S1-G3-S1-G6 remain not started) or authorize A3/execution/demo/live."
     decision_log: reports/validation/st_c3/OWNER_DECISION_LOG.md
     resolution_matrix: reports/validation/st_c3/RESOLUTION_MATRIX.md
     reference_funnel:
@@ -204,29 +235,42 @@ stage_a_strategy_validation:
         reports/validation/st_c3/R18_DETECTION_MODULE_REPORT.md and
         R18_CLOSURE_REPORT.md.
       existence_check_r18:
-        status: open   # 3 of original 6 blocked stages now implemented (S3/S10/S11), 3 remain (S7/S9/S12)
+        status: closed   # 2026-07-27, owner decision -- signal_rate=0.0, see reason below
+        closure_value: 0.0
+        closure_basis: v1x_funnel_freeze_at_9_stages
         reason: >
-          A 2026-07-26 claim that R-18 was RESOLVED (signal_rate=0.0, via
-          validation/st_c3/evidence_builder.py) is REJECTED: that module
-          hardcodes `OTE_MIN, OTE_MAX = 0.62, 0.79   # provisional,
-          numerically usable` and uses it to compute real S7_OTE gating
+          CLOSED 2026-07-27 by owner decision to freeze the v1.x
+          reference-implementation scope at 9 of 12 stages. R-18 = 0.0,
+          established by specs/st-c3_v1.0.7.yaml's own sequential guard
+          rule (no_state_can_be_skipped_or_revisited): S7_OTE precedes
+          S8-S12, and with S7 permanently unsatisfiable under this freeze
+          (no owner-ratified OTE band, and none pursued), every candidate
+          rejects there before the real, implemented S8/S10/S11 detection
+          is ever reached -- so 0.0 is logically necessary, not a
+          fabricated stub result, and no literal EvidenceBundle/run_kernel()
+          pass was executed (it would be substantively empty, always
+          halting at S7). See
+          reports/validation/st_c3/V1X_FUNNEL_FREEZE_AND_R18_CLOSURE.md.
+          This is unrelated to and does not rely on a separate, earlier
+          2026-07-26 claim of the same signal_rate=0.0 value via
+          validation/st_c3/evidence_builder.py, which was REJECTED: that
+          module hardcoded `OTE_MIN, OTE_MAX = 0.62, 0.79   # provisional,
+          numerically usable` and used it to compute real S7_OTE gating
           results, despite specs/st-c3_v1.0.6.yaml itself still marking
           those fields provisional -- a confirmed "no implementation
           before specification freeze" violation. See
           reports/governance/v1.0.6_RECONCILIATION_AUDIT.md section 5.
-          Real, non-quarantined status (2026-07-27): validation/st_c3/
-          detection.py implements 9 of 12 gating stages against real
-          GBPUSD data (no OTE usage -- inside_ote is hardcoded False, S7
-          explicitly NOT_YET_SUPPORTED). A partial-funnel diagnostic (not
-          a full existence check, predates S3/S10/S11) found a joint
-          S4-S8 pass rate of ~20.3% and an S2 sweep pass rate of
-          ~0.2-1.6%, directionally consistent with (but independent of)
-          the quarantined line's near-zero result. No real S0-S13 run
-          exists -- S7/S9/S12 still have no detection code, each blocked
-          on a field with no owner decision at all.
-        blocked_by: [detection_code_for_S7, detection_code_for_S9,
-          detection_code_for_S12, S7_ote_band_never_ratified,
-          S9_ltf_choch_params_never_defined, S12_r08_guard_direction_unconfirmed]
+          validation/st_c3/detection.py implements 9 of 12 gating stages
+          against real GBPUSD data (no OTE usage -- inside_ote remains
+          hardcoded False, S7 explicitly NOT_YET_SUPPORTED). A
+          partial-funnel diagnostic (not a full existence check, predates
+          S3/S10/S11) found a joint S4-S8 pass rate of ~20.3% and an S2
+          sweep pass rate of ~0.2-1.6%, directionally consistent with (but
+          independent of) the quarantined line's earlier near-zero result.
+        closed_by: [S7_ote_band_permanently_out_of_v1x_scope,
+          S9_ltf_choch_params_permanently_out_of_v1x_scope,
+          S12_r08_guard_direction_permanently_out_of_v1x_scope]
+        freeze_report: reports/validation/st_c3/V1X_FUNNEL_FREEZE_AND_R18_CLOSURE.md
         gap_report: reports/validation/st_c3/R18_DETECTION_GAP_REPORT.md
         research_plan: reports/validation/st_c3/R18_R27_R30_RESEARCH_PLAN.md
         research_report: reports/validation/st_c3/R27_R30_RESEARCH_REPORT.md
@@ -270,7 +314,7 @@ stage_b_execution_qualification:
 
 freeze_state:
   strategy_frozen: true
-  engine_implements_spec: false   # REVERTED 2026-07-27 -- a rejected claim set this true; only 6 of 12 gating stages have real detection code, no full funnel exists
+  engine_implements_spec: false   # 9 of 12 gating stages have real detection code; S7/S9/S12 permanently out of v1.x scope per the 2026-07-27 funnel-freeze decision, so a full 12-stage funnel will never exist under v1.x. A rejected quarantined-line claim had set this to true; not repeated here.
   implementation_authorization: scoped_reference_implementation_granted   # S1-G2 research/validation scope only; see a2_signal_conformance.opened above
 
 forbidden_until_authorized:

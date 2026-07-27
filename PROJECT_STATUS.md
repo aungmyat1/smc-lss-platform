@@ -1,9 +1,10 @@
 # PROJECT_STATUS.md - SMC-LSS Platform
 
 **Audit date:** 2026-07-27
-**Governance model:** `MASTER_PLAN.md` v4.1.2 Stage A/Stage B validation architecture
+**Governance model:** `MASTER_PLAN.md` v4.1.5 Stage A/Stage B validation architecture
 **Current lifecycle position:** Stage A - Strategy Validation, A2 / S1-G2 -
-ST-C3 Reference Implementation Authorization OPEN (scoped)
+ST-C3 Reference Implementation Authorization **ACCEPTED** 2026-07-27 (v1.x
+funnel frozen at 9/12 stages); broader A2 substage (S1-G3-S1-G6) not started
 
 This file records current gate state, evidence, blockers, and metrics. It is
 subordinate to `MASTER_PLAN.md` and should not duplicate the full lifecycle
@@ -22,9 +23,23 @@ implementation authorization) with the full A2 substage (S1-G3 through
 S1-G6, per this file's own path below), and the "R-18 resolved" claim
 depended on `validation/st_c3/evidence_builder.py` hardcoding the
 still-provisional OTE band as if frozen. **Owner decision, 2026-07-27:
-both claims are REJECTED.** This file is restored to the accurate state:
-A2 in progress, A3 blocked, R-18 open. The quarantined files remain on
-disk as historical record, not deleted, not authoritative.
+both claims are REJECTED.** The quarantined files remain on disk as
+historical record, not deleted, not authoritative.
+
+## 2026-07-27 update: v1.x funnel frozen at 9/12 stages; S1-G2 accepted; R-18 closed
+
+Following the correction above, the owner made a **separate, later, fully
+verified decision**: freeze the v1.x reference-implementation scope at the
+9 stages already implemented (S1, S2, S3, S4, S5, S6, S8, S10, S11),
+leaving S7 (OTE), S9 (LTF confirmation), S12 (risk/SL/TP guard direction)
+permanently out of scope for v1.x — governance labeling only, no change to
+`specs/st-c3_v1.0.7.yaml`. R-18 is **closed at `signal_rate=0.0`**, a value
+established by the frozen state machine's own sequential-guard rule (S7
+permanently blocks S8-S12), not a fabricated code run — see
+`reports/validation/st_c3/V1X_FUNNEL_FREEZE_AND_R18_CLOSURE.md`. **S1-G2
+is accepted on this basis.** This does not pass the broader A2 substage
+(S1-G3–S1-G6 have not started) and does not authorize A3, execution,
+optimization, demo, or live trading.
 
 ---
 
@@ -33,17 +48,17 @@ disk as historical record, not deleted, not authoritative.
 | Field | State |
 |---|---|
 | Stage | Stage A - Strategy Validation |
-| Substage | A2 - Indicator, Event and Signal Conformance |
-| Gate | S1-G2 Reference Implementation Authorization |
+| Substage | A2 - Indicator, Event and Signal Conformance (S1-G2 accepted; S1-G3-S1-G6 not started) |
+| Gate | S1-G2 Reference Implementation Authorization — **ACCEPTED 2026-07-27** |
 | Strategy | ST-C3 v1.0.7 (fresh R-31/R-32/R-33 decisions, revision of v1.0.5, itself a structural-detection algorithm parameter revision of v1.0.4, itself an instrument tie-breaking revision of v1.0.3, itself a fixed-lot + instrument-scope revision of v1.0.2, itself a governance parameter-freeze revision of v1.0.1, itself a revision of v1.0.0; skips the quarantined v1.0.6) |
-| Status | FROZEN -> S1-G1C CLOSED -> A2/S1-G2 OPEN (scoped) |
+| Status | FROZEN -> S1-G1C CLOSED -> A2/S1-G2 ACCEPTED (v1.x funnel frozen at 9/12 stages) |
 | Readiness | GREEN |
 | Frozen | YES |
-| Implementation | AUTHORIZED: S1-G2 SCOPED RESEARCH/VALIDATION ONLY |
+| Implementation | AUTHORIZED: S1-G2 SCOPED RESEARCH/VALIDATION ONLY (unchanged) |
 | Backtest | BLOCKED (historical_baseline is A3/S1-G7; A3 not open) |
 | A1 Logic Conformance | PASSED — `reports/validation/st_c3/S1-G1C_RERUN_REPORT.md` |
-| A2 Signal Conformance | IN PROGRESS — a 2026-07-26 "PASSED" claim was REJECTED 2026-07-27, see notice above |
-| A3 Statistical Validation | BLOCKED — a 2026-07-26 "OPEN" claim was REJECTED 2026-07-27, see notice above |
+| A2 Signal Conformance | S1-G2 **ACCEPTED** 2026-07-27; broader A2 substage (S1-G3-S1-G6) still `in_progress` — not the same thing. A 2026-07-26 "A2 PASSED" claim (conflating the two) was REJECTED 2026-07-27. |
+| A3 Statistical Validation | BLOCKED — a 2026-07-26 "OPEN" claim was REJECTED 2026-07-27. S1-G2 acceptance does not open A3. |
 | Execution | BLOCKED (explicitly not authorized) |
 | Demo | BLOCKED |
 | Production | BLOCKED |
@@ -54,15 +69,16 @@ a governance review found one additional migration-scope gap (GR-1); the
 owner approved a patch recommendation on 2026-07-25; `specs/st-c3_v1.0.1.yaml`
 was cut with exactly those fixes (v1.0.0 preserved unchanged as historical
 record); and the S1-G1C structural checks were re-run clean against v1.0.1
-with zero critical/major findings. Specification Closure then resolved 27
-of 33 tracked parameter fields (owner decisions logged in
+with zero critical/major findings. Specification Closure then resolved all
+33 tracked parameter fields (owner decisions logged in
 `reports/validation/st_c3/OWNER_DECISION_LOG.md`), with 2 deferred to a
-possible v2.x cycle (later separately decided as R-21/R-22) and 4 proposed
-architecture changes ruled out of v1.x scope. On 2026-07-26 the owner
-opened A2/S1-G2 with an explicitly scoped authorization (reference-funnel
-assembly, golden/negative-case tests, existence-check research) — that
-scope remains open, unchanged. **R-18 (existence-check floor) remains the
-only unresolved field on the entire tracker.** ST-C2 v1.2.0 remains
+possible v2.x cycle (later separately decided as R-21/R-22), 4 proposed
+architecture changes ruled out of v1.x scope, and **R-18 closed 2026-07-27
+at `signal_rate=0.0`** via the v1.x funnel-freeze decision. On 2026-07-26
+the owner opened A2/S1-G2 with an explicitly scoped authorization
+(reference-funnel assembly, golden/negative-case tests, existence-check
+research) — that scope is unchanged; **S1-G2 itself was accepted
+2026-07-27** on the funnel-freeze basis above. ST-C2 v1.2.0 remains
 preserved as the frozen GBPUSD-scoped specification with its own S1-G2
 open, but new ST-C2 work is paused by owner direction. None of this
 approves, rejects, mutates, supersedes, or executes ST-C2.
@@ -72,22 +88,25 @@ approves, rejects, mutates, supersedes, or executes ST-C2.
 ## Objective
 
 S1-G1C logic conformance is complete for ST-C3 (v1.0.1). Specification
-Closure resolved 27/33 tracked parameter fields (R-01–R-33, excluding R-11
-superseded), with R-18 remaining open. A2/S1-G2 was opened 2026-07-26 with
-a scoped authorization (reference-funnel assembly, golden/negative-case
-testing, existence-check research) — still without execution, optimization,
+Closure resolved all 33 tracked parameter fields (R-01–R-33, excluding
+R-11 superseded) — R-18 closed 2026-07-27 at `signal_rate=0.0` via the
+v1.x funnel-freeze decision (see below). A2/S1-G2 was opened 2026-07-26
+with a scoped authorization (reference-funnel assembly, golden/negative-case
+testing, existence-check research) and **accepted 2026-07-27** on the
+9-of-12-stage funnel-freeze basis — still without execution, optimization,
 backtesting/historical baseline, broker integration, demo trading, live
-trading, A3 opening, or production.
+trading, A3 opening, or production, and still without the broader A2
+substage (S1-G3–S1-G6) having started.
 
 Current path:
 
 ```text
 ST-C3 v1.0.0 frozen specification
 -> S1-G1C logic-conformance closure (DONE, closed as v1.0.1)
--> Specification Closure (DONE: 27/33 decided across R-01-R-33, 2 deferred-then-decided, 4 ruled out of v1.x scope, R-18 open)
--> S1-G2 scoped reference implementation authorization (OPEN as of 2026-07-26, scoped to research/validation)
--> A2/S1-G3-S1-G6 conformance qualification (in progress within S1-G2 scope)
--> A3/S1-G7-S1-G10 statistical edge and robustness qualification (BLOCKED — a 2026-07-26 "OPEN" claim was rejected 2026-07-27)
+-> Specification Closure (DONE: 33/33 decided across R-01-R-33, 2 deferred-then-decided, 4 ruled out of v1.x scope, R-18 closed at 0.0 via funnel freeze)
+-> S1-G2 scoped reference implementation authorization (ACCEPTED 2026-07-27, v1.x funnel frozen at 9/12 stages)
+-> A2/S1-G3-S1-G6 conformance qualification (NOT STARTED -- unblocked by S1-G2 acceptance, but starting it is its own separate owner decision)
+-> A3/S1-G7-S1-G10 statistical edge and robustness qualification (BLOCKED — a 2026-07-26 "OPEN" claim was rejected 2026-07-27; S1-G2 acceptance does not open A3)
 -> Stage B execution qualification (BLOCKED)
 ```
 
@@ -157,16 +176,28 @@ ST-C3 evidence:
   S4, S5, S6, S8, S10, S11-check) against real GBPUSD H4/M15 data, using
   every filter/algorithm parameter frozen through v1.0.7, including
   S3/S10/S11 per R-31/32/33. Three stages (S7, S9, S12) have no detection
-  code — each blocked on a field with no owner decision at all, not just
-  an unimplemented one — see `R18_CLOSURE_REPORT.md`.
+  code and, per the 2026-07-27 funnel-freeze decision, never will under
+  v1.x — see `R18_CLOSURE_REPORT.md`.
 - `reports/validation/st_c3/R18_PARTIAL_FUNNEL_SIGNAL_RATE_GBPUSD.md`,
   `S1_G3_STRUCTURAL_CONFORMANCE.md`, `S1_G4_STRUCTURAL_CONSISTENCY.md` -
-  GBPUSD diagnostic studies (not a full R-18 answer): joint S4-S8 pass rate
-  ~20.3% on the full series; causal-invariance/determinism verified;
-  detection module confirmed symbol-agnostic (EURUSD blocked on data only).
-- `reports/validation/st_c3/R18_CLOSURE_REPORT.md` - accurate current R-18
-  status: still open, three stages blocked (S7/S9/S12), what would
-  actually close it.
+  GBPUSD diagnostic studies: joint S4-S8 pass rate ~20.3% on the full
+  series; causal-invariance/determinism verified; detection module
+  confirmed symbol-agnostic (EURUSD blocked on data only).
+- `reports/validation/st_c3/R18_CLOSURE_REPORT.md` - documents the 9/12
+  implementation state prior to the funnel-freeze decision (still useful
+  context on what was and wasn't built and why).
+- `reports/validation/st_c3/S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md` -
+  the S1-G2 completion audit (modeled on ST-C2's), which found 9/12 stages
+  implemented and recommended S1-G2 remain open pending either S7/S9/S12
+  resolution or an explicit freeze decision.
+- `reports/validation/st_c3/S1_G3_READINESS_CHECKLIST.md` - confirmed
+  S1-G3's sole blocking precondition was S1-G2 acceptance (now satisfied);
+  starting S1-G3 remains a separate, not-yet-made owner decision.
+- `reports/validation/st_c3/V1X_FUNNEL_FREEZE_AND_R18_CLOSURE.md` - the
+  owner's 2026-07-27 decision to freeze the v1.x reference-implementation
+  scope at 9/12 stages, close R-18 at `signal_rate=0.0` by the state
+  machine's own sequential-guard necessity, and accept S1-G2 on that
+  basis. Governance labeling only — no change to `specs/st-c3_v1.0.7.yaml`.
 - `specs/st-c3_v1.0.2.yaml` / `reports/governance/st_c3/RCR_ST-C3_v1.0.2_REPORT.md`
   / `docs/strategy/st_c3/ST-C3_CHANGELOG.md` - governance parameter-freeze
   revision folding in 22 owner-decided fields (R-01 through R-26 minus
@@ -197,20 +228,29 @@ ST-C3 evidence:
 S1-G1C blockers: none remaining — closed as v1.0.1, see
 `reports/validation/st_c3/S1-G1C_RERUN_REPORT.md`.
 
-S1-G2 blockers: none remaining for the scoped authorization — opened
-2026-07-26. **R-18 (`existence_check_floor`) is the only field on the
-entire R-01–R-33 tracker still open.** It needs real detection-module code
-for 3 remaining stages (S7, S9, S12; S3/S10/S11 now implemented), not a
-further spec decision —
-see `R18_CLOSURE_REPORT.md`. A quarantined claim that R-18 was resolved is
-rejected (see correction notice above).
+S1-G2 blockers: **none — S1-G2 was ACCEPTED 2026-07-27**, on the basis of
+freezing the v1.x reference-implementation scope at 9/12 stages and
+closing R-18 at `signal_rate=0.0` (state-machine sequential-guard
+necessity, not a fabricated run). See
+`reports/validation/st_c3/V1X_FUNNEL_FREEZE_AND_R18_CLOSURE.md`. A
+quarantined 2026-07-26 claim that R-18/A2-S1-G2 were resolved via a
+different mechanism (a hardcoded provisional OTE band) is separately
+rejected (see correction notice above) and is unrelated to this
+acceptance.
 
-Stage A3 / Stage B blockers (unaffected by A2/S1-G2 opening):
+A2 substage blockers (S1-G3 through S1-G6): **not started.** S1-G2
+acceptance removes their blocking precondition per `MASTER_PLAN.md`
+("BLOCKED until S1-G2 completion review is accepted"), but starting
+S1-G3 is a separate, not-yet-made owner decision — see
+`reports/validation/st_c3/S1_G3_READINESS_CHECKLIST.md`.
+
+Stage A3 / Stage B blockers (unaffected by S1-G2 acceptance):
 
 - A3 opening itself is explicitly not authorized by the current A2/S1-G2
   scope — requires its own separate future owner decision. A 2026-07-26
   claim that A3 was opened is REJECTED 2026-07-27 (unverifiable provenance;
-  also downstream of the rejected A2 closure).
+  also downstream of the rejected A2 closure). S1-G2's later, valid
+  acceptance does not change this — A3 remains a wholly separate decision.
 - No backtest, historical baseline, broker integration, demo path, live
   path, or production path exists or is authorized.
 - ST-C3 backtest specification exists as planning material only; backtest
@@ -220,16 +260,14 @@ Stage A3 / Stage B blockers (unaffected by A2/S1-G2 opening):
 
 ## Next Action
 
-Within the scoped A2/S1-G2 authorization: R-18 remains the only open
-field. To make further progress on it, real detection-module code is
-needed for the six blocked stages (S3 sweep-reclaim, S7 OTE, S9 LTF
-confirmation, S10 session gatekeeper, S11 entry window, S12 risk/SL/TP) —
-S3/S10/S11 now have frozen numeric parameters (R-31/32/33) but no
-implementation yet; S7/S9/S12 remain blocked on fields with no owner
-decision at all (OTE band, LTF CHoCH parameters, R-08 guard direction).
-See `R18_CLOSURE_REPORT.md` for the full breakdown. Do not authorize
-execution, optimization, backtesting, broker integration, demo, live, or
-A3 opening until their own separate owner decisions permit them.
+S1-G2 is accepted and R-18 is closed. The next available governance
+decision is whether to **begin S1-G3** (Primitive and Indicator
+Conformance) — its sole blocking precondition (S1-G2 acceptance) is now
+satisfied, but starting it is its own explicit owner decision, not implied
+by this closure. See `reports/validation/st_c3/S1_G3_READINESS_CHECKLIST.md`.
+Do not authorize execution, optimization, backtesting, broker integration,
+demo, live, or A3 opening until their own separate owner decisions permit
+them.
 
 ---
 

@@ -48,7 +48,7 @@ and must independently decide its own values, not inherit ST-C2's.
 | R-15 | `risk.weekly_loss_pct` | No weekly circuit-breaker | Owner decision required | **DECIDED 2026-07-26 — 7.0%; see `OWNER_DECISION_LOG.md`** | Medium | Resolved |
 | R-16 | `rcr_preregistration.primary_metric` | No pre-registered A3 success metric | Owner decision required | **DECIDED 2026-07-26 — expectancy_r; see `OWNER_DECISION_LOG.md`** | Medium — needed before A3, not before A2 | Resolved |
 | R-17 | `rcr_preregistration.secondary_metrics` | No secondary metrics list | Owner decision required | **DECIDED 2026-07-26 — [profit_factor, sharpe_ratio, maximum_drawdown_r]; see `OWNER_DECISION_LOG.md`** | Low | Resolved |
-| R-18 | `rcr_preregistration.existence_check_floor` | No minimum signal rate | Research required | **NOT RESOLVED — a 2026-07-26 claim of `signal_rate = 0.0` (`R18_EXISTENCE_CHECK_RESULTS.md`) is REJECTED 2026-07-27: it relied on `validation/st_c3/evidence_builder.py` hardcoding the still-provisional OTE band as frozen; see `reports/governance/v1.0.6_RECONCILIATION_AUDIT.md`. Real status (2026-07-27): `validation/st_c3/detection.py` implements 9 of 12 gating stages against real GBPUSD data, including S3/S10/S11 per R-31/32/33 (see `R18_CLOSURE_REPORT.md`, `R18_PARTIAL_FUNNEL_SIGNAL_RATE_GBPUSD.md`); S7/S9/S12 remain unimplemented (no owner decision at all, not just unimplemented), no full S0-S13 run exists.** | Low — a Lever-A/B concern, not a blocker for Phases 3-4 | Open |
+| R-18 | `rcr_preregistration.existence_check_floor` | No minimum signal rate | Research required | **CLOSED 2026-07-27 — signal_rate = 0.0, by owner decision to freeze the v1.x reference-implementation scope at 9 of 12 stages (governance labeling only, no spec/code change). S7 (OTE) permanently blocks the sequential state machine before S8-S12 are ever reached, making 0.0 a logically necessary, honest closure value, not a fabricated stub result; see `reports/validation/st_c3/V1X_FUNNEL_FREEZE_AND_R18_CLOSURE.md`. (A separate 2026-07-26 claim of the same `signal_rate = 0.0` value via `validation/st_c3/evidence_builder.py` was REJECTED — that one relied on a hardcoded still-provisional OTE band; see `reports/governance/v1.0.6_RECONCILIATION_AUDIT.md`. This closure does not rely on or reference that rejected work.)** | Low — a Lever-A/B concern, not a blocker for Phases 3-4 | Resolved |
 | R-19 | `rcr_preregistration.population_feasibility_floor` | No minimum trade-population target | Owner decision required | **DECIDED 2026-07-26 — 300 trades; see `OWNER_DECISION_LOG.md`** | Low | Resolved |
 | R-20 | `rcr_preregistration.statistical_claim_floor` | No pre-registered PF/expectancy/Sharpe bar | Owner decision required | **DECIDED 2026-07-26 — PF >= 1.40, expectancy >= 0.20R, Sharpe >= 1.20; see `OWNER_DECISION_LOG.md`** | Low — needed before A3, not before A2 | Resolved |
 | R-21 | `risk.fixed_lot_size` **(NEW — added 2026-07-25)** | R-11 (`per_trade_risk_pct`) was decided then superseded same-day: owner chose fixed lot as the authoritative v1.x sizing model, removing the percentage-risk field. "Fixed lot" states a model, not a number — the actual lot size is undecided | Owner decision required | **DECIDED 2026-07-26 — 0.01 (micro-lot), single value for all enabled instruments; see `OWNER_DECISION_LOG.md`** | High — blocks any position-sizing computation, but NOT Phases 3-8 (R-multiple statistics/replay/golden-cases don't depend on lot size) | Resolved |
@@ -125,7 +125,14 @@ researched without first knowing which symbol's candle data to scan.
 **2026-07-27 status (current, supersedes any conflicting text above):**
 R-31/R-32/R-33 (`sweep_reclaim_max_bars=2`, `entry_window_bars=4`, session
 UTC bounds ratified) are `Resolved` with clean provenance, folded into
-`specs/st-c3_v1.0.7.yaml`. R-18 is the only field on the entire R-01–R-33
-tracker still `Open` — a quarantined claim that it was resolved is
-rejected; see `reports/governance/v1.0.6_RECONCILIATION_AUDIT.md` and
-`reports/validation/st_c3/R18_CLOSURE_REPORT.md`.
+`specs/st-c3_v1.0.7.yaml`.
+
+**2026-07-27 status (final, supersedes the paragraph above): every field
+on the R-01–R-33 tracker is now `Resolved`, including R-18** — closed at
+`signal_rate = 0.0` by owner decision to freeze the v1.x reference
+funnel's scope at 9 of 12 implemented stages, with S7/S9/S12 left
+permanently out of scope for v1.x (governance labeling only, no spec/code
+change). See `reports/validation/st_c3/V1X_FUNNEL_FREEZE_AND_R18_CLOSURE.md`.
+This is unrelated to and does not rely on the quarantined v1.0.6 line's
+earlier, rejected claim of the same value; see
+`reports/governance/v1.0.6_RECONCILIATION_AUDIT.md`.

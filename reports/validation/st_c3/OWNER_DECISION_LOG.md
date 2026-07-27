@@ -473,6 +473,44 @@ file path). This is synthetic/code-level coverage only — it does not
 substitute for real-data validation, and does not authorize execution,
 optimization, demo, or live.
 
+### v1.x funnel freeze and R-18 closure — **owner decision, 2026-07-27**
+
+**Context:** the S1-G2 reference implementation completion audit
+(`S1_G2_REFERENCE_IMPLEMENTATION_COMPLETION_AUDIT.md`) found 9 of 12
+gating stages implemented, with S7 (OTE), S9 (LTF confirmation), and S12
+(risk/SL/TP guard direction) blocked on fields with no owner decision at
+all, and recommended S1-G2 remain open pending either those three fields'
+resolution or an explicit freeze decision. The owner was presented both
+paths without a push toward either, plus the consequence of the freeze
+path (S12 in particular gates stop-loss/target construction, so no
+`TRADE_PLAN` can ever emit without it) and asked to clarify the freeze's
+exact mechanics (governance-labeling-only vs. an actual state-machine
+restructure) before anything was executed.
+
+**Owner Decision:** freeze the v1.x reference-implementation scope at the
+9 currently-implemented stages, via **governance labeling only** — no
+change to `specs/st-c3_v1.0.7.yaml`'s frozen state machine, evidence
+registry, or trade-plan schema, and no code written to fabricate a
+stop-loss or any other S7/S9/S12 result. R-18 (`existence_check_floor`) is
+closed at **0.0**, established by the state machine's own sequential-guard
+rule (S7 precedes S8-S12; a permanently-unsatisfiable S7 makes every
+candidate reject there, before the real S8/S10/S11 implementations are
+ever reached) rather than by executing a literal, substantively-empty
+kernel run. See `reports/validation/st_c3/V1X_FUNNEL_FREEZE_AND_R18_CLOSURE.md`
+for the full reasoning and verification performed.
+
+**Decided by:** Owner (Aung), 2026-07-27.
+
+**Consequence:** A2/S1-G2 is accepted on this basis —
+`governance/st_c3_stage_status.yaml`'s `a2_signal_conformance.status`
+moves from `in_progress` to `passed`. This does **not** authorize A3,
+execution, optimization, demo, or live trading, each of which remains a
+separate, future owner decision — unaffected by this closure. S1-G3
+becomes a possible next gate to pursue, not automatically opened by this
+decision. `specs/st-c3_v1.0.7.yaml` is unmodified; S7/S9/S12 remain
+specified in the frozen spec exactly as before, available to a future
+v1.1/v2.x cycle should the owner choose to revisit them later.
+
 ---
 
 ## How to use this log

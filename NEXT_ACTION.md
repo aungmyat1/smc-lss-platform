@@ -2,34 +2,66 @@
 
 **One milestone at a time. This is the active milestone.**
 
-## ST-C3 A2/S1-G2 OPEN (Scoped Research/Validation) — Active Milestone
+## ST-C3 A2/S1-G2 ACCEPTED, A2/S1-G3 NOT YET STARTED — Active Milestone
 
 Current lifecycle position:
 
 | Field | State |
 |---|---|
 | Stage | Stage A - Strategy Validation |
-| Substage | A2 - Indicator, Event and Signal Conformance |
-| Gate | S1-G2 Reference Implementation Authorization |
+| Substage | A2 - Indicator, Event and Signal Conformance (S1-G2 accepted; S1-G3-S1-G6 not started) |
+| Gate | S1-G2 Reference Implementation Authorization — **ACCEPTED 2026-07-27** |
 | Strategy | ST-C3 v1.0.7 (fresh R-31/R-32/R-33 decisions, revision of v1.0.5, see `specs/st-c3_v1.0.7.yaml`) |
-| Status | FROZEN -> S1-G1C CLOSED -> A2/S1-G2 OPEN (scoped) |
+| Status | FROZEN -> S1-G1C CLOSED -> A2/S1-G2 ACCEPTED (v1.x funnel frozen at 9/12 stages) |
 | Readiness | GREEN |
 | Frozen | YES |
-| Implementation | AUTHORIZED: S1-G2 SCOPED RESEARCH/VALIDATION ONLY |
+| Implementation | AUTHORIZED: S1-G2 SCOPED RESEARCH/VALIDATION ONLY (unchanged — S1-G2 acceptance does not expand authorization) |
 | A1 Logic Conformance | PASSED — see `reports/validation/st_c3/S1-G1C_RERUN_REPORT.md` |
-| A2 Signal Conformance | IN PROGRESS — a 2026-07-26 "PASSED" claim was REJECTED 2026-07-27 (unverifiable provenance + gate conflation; see below) |
-| A3 Statistical Validation | BLOCKED — a 2026-07-26 "OPEN" claim was REJECTED 2026-07-27 (downstream of the rejected A2 closure; see below) |
+| A2 Signal Conformance | S1-G2 **ACCEPTED** 2026-07-27 (see below); the broader A2 substage (S1-G3 through S1-G6) is still `in_progress` — accepting S1-G2 alone is not the same as passing all of A2. A separate 2026-07-26 "A2 PASSED" claim (conflating the two) was REJECTED 2026-07-27. |
+| A3 Statistical Validation | BLOCKED — a 2026-07-26 "OPEN" claim was REJECTED 2026-07-27. S1-G2 acceptance does not open A3; unaffected. |
 | Execution | BLOCKED (explicitly not authorized) |
 | Demo | BLOCKED |
 | Production | BLOCKED |
 
-**A2/S1-G2 scope (owner directive, 2026-07-26, unaffected by the rejections
-below):** authorized — reference-funnel assembly, golden-case tests (Phase
+## 2026-07-27: v1.x funnel frozen at 9/12 stages; S1-G2 accepted; R-18 closed
+
+**Owner decision:** freeze the v1.x reference-implementation scope at the
+9 stages already implemented (S1, S2, S3, S4, S5, S6, S8, S10, S11),
+leaving S7 (OTE), S9 (LTF confirmation), and S12 (risk/SL/TP guard
+direction) permanently out of scope for v1.x. **Governance labeling only**
+— no change to `specs/st-c3_v1.0.7.yaml`'s frozen state machine, evidence
+registry, or trade-plan schema, and no code written to fabricate any
+result for the three excluded stages.
+
+**R-18 (`existence_check_floor`) is CLOSED at `signal_rate = 0.0`** — not
+by running a literal kernel pass (which would trivially always halt at
+S7, the earliest of the three excluded stages, without ever exercising
+the real S8/S10/S11 detection code), but by the state machine's own
+sequential-guard rule: S7 permanently precedes and blocks S8-S12, so 0.0
+is a logically necessary, honest closure value. See
+`reports/validation/st_c3/V1X_FUNNEL_FREEZE_AND_R18_CLOSURE.md` for the
+full reasoning, and `reports/validation/st_c3/OWNER_DECISION_LOG.md`'s
+"v1.x funnel freeze and R-18 closure" entry for the decision record.
+
+**S1-G2 (Reference Implementation Authorization and Completion Review) is
+ACCEPTED on this basis** — every field on the R-01–R-33 tracker is now
+resolved. This does **NOT**:
+- pass the broader A2 substage (S1-G3 through S1-G6 have not started);
+- authorize A3, execution, optimization, demo, or live trading — each
+  remains its own separate future owner decision;
+- open S1-G3 — S1-G2 acceptance only removes S1-G3's blocking
+  precondition per `MASTER_PLAN.md` ("BLOCKED until S1-G2 completion
+  review is accepted"); starting S1-G3 is its own separate decision.
+- change `specs/st-c3_v1.0.7.yaml` — S7/S9/S12 remain specified in the
+  frozen spec exactly as before, available to a future v1.1/v2.x cycle.
+
+**A2/S1-G2 scope (owner directive, 2026-07-26, unaffected by any of the
+above):** authorized — reference-funnel assembly, golden-case tests (Phase
 3), negative-case tests (Phase 4), existence-check conformance runs
-(resolves R-18), research/validation tasks. **Explicitly NOT authorized:**
-execution, optimization, opening A3, demo trading, live trading, production
-promotion. See `governance/st_c3_stage_status.yaml`
-`a2_signal_conformance.opened` for the authoritative record.
+(now closed, see above), research/validation tasks. **Explicitly NOT
+authorized:** execution, optimization, opening A3, demo trading, live
+trading, production promotion. See `governance/st_c3_stage_status.yaml`
+`a2_signal_conformance.opened`/`s1_g2_gate` for the authoritative record.
 
 ## 2026-07-27 correction: a quarantined line of work was rejected
 
