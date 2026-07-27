@@ -153,17 +153,20 @@ ST-C3 evidence:
   validator kernel (`validation/st_c3/`), golden/negative-case tests, and
   existence-check readiness.
 - `validation/st_c3/detection.py` / `reports/validation/st_c3/R18_DETECTION_MODULE_REPORT.md` -
-  real price-level detection for 6 of 12 gating stages (S1, S2-raw, S4, S5,
-  S6, S8) against real GBPUSD H4/M15 data, using every filter/algorithm
-  parameter frozen through v1.0.7. Six stages (S3, S7, S9, S10, S11, S12)
-  have no detection code — see `R18_CLOSURE_REPORT.md`.
+  real price-level detection for 9 of 12 gating stages (S1, S2-raw, S3,
+  S4, S5, S6, S8, S10, S11-check) against real GBPUSD H4/M15 data, using
+  every filter/algorithm parameter frozen through v1.0.7, including
+  S3/S10/S11 per R-31/32/33. Three stages (S7, S9, S12) have no detection
+  code — each blocked on a field with no owner decision at all, not just
+  an unimplemented one — see `R18_CLOSURE_REPORT.md`.
 - `reports/validation/st_c3/R18_PARTIAL_FUNNEL_SIGNAL_RATE_GBPUSD.md`,
   `S1_G3_STRUCTURAL_CONFORMANCE.md`, `S1_G4_STRUCTURAL_CONSISTENCY.md` -
   GBPUSD diagnostic studies (not a full R-18 answer): joint S4-S8 pass rate
   ~20.3% on the full series; causal-invariance/determinism verified;
   detection module confirmed symbol-agnostic (EURUSD blocked on data only).
 - `reports/validation/st_c3/R18_CLOSURE_REPORT.md` - accurate current R-18
-  status: still open, six stages blocked, what would actually close it.
+  status: still open, three stages blocked (S7/S9/S12), what would
+  actually close it.
 - `specs/st-c3_v1.0.2.yaml` / `reports/governance/st_c3/RCR_ST-C3_v1.0.2_REPORT.md`
   / `docs/strategy/st_c3/ST-C3_CHANGELOG.md` - governance parameter-freeze
   revision folding in 22 owner-decided fields (R-01 through R-26 minus
@@ -197,7 +200,8 @@ S1-G1C blockers: none remaining — closed as v1.0.1, see
 S1-G2 blockers: none remaining for the scoped authorization — opened
 2026-07-26. **R-18 (`existence_check_floor`) is the only field on the
 entire R-01–R-33 tracker still open.** It needs real detection-module code
-for 6 stages (S3, S7, S9, S10, S11, S12), not a further spec decision —
+for 3 remaining stages (S7, S9, S12; S3/S10/S11 now implemented), not a
+further spec decision —
 see `R18_CLOSURE_REPORT.md`. A quarantined claim that R-18 was resolved is
 rejected (see correction notice above).
 

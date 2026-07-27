@@ -2,11 +2,11 @@
 
 Produces spec-conformant `Evidence` objects (via `validation.st_c3.evidence.
 make_evidence`) from real candle data, for the funnel stages fully specified
-by the frozen parameters in `specs/st-c3_v1.0.5.yaml` (R-04, R-05, R-06,
-R-07, R-23, R-24, R-27, R-28, R-29, R-30). These Evidence objects are meant
-to be assembled into a `validation.st_c3.kernel.EvidenceBundle` and run
-through the existing, already-tested `run_kernel()` — this module does not
-duplicate or bypass the kernel.
+by the frozen parameters in `specs/st-c3_v1.0.7.yaml` (R-04, R-05, R-06,
+R-07, R-23, R-24, R-27, R-28, R-29, R-30, R-31, R-32, R-33). These Evidence
+objects are meant to be assembled into a `validation.st_c3.kernel.
+EvidenceBundle` and run through the existing, already-tested `run_kernel()`
+— this module does not duplicate or bypass the kernel.
 
 Reuses only existing generic `src.smc_engine` primitives (`swings`, `atr`,
 `fvgs`, `order_blocks`) — no ST-C3-specific detection algorithm is invented
@@ -14,21 +14,19 @@ beyond translating already-decided spec parameters into calls against those
 primitives, mirroring the discipline established in
 `scripts/research_r27_r30_gbpusd.py`.
 
-**Scope — what this module does NOT cover, and why:** several fields
-remain `PROVISIONAL`/never ratified in `specs/st-c3_v1.0.5.yaml`, blocking
+**Scope — what this module does NOT cover, and why:** three fields remain
+`PROVISIONAL`/never decided at all in `specs/st-c3_v1.0.7.yaml`, blocking
 real detection for the corresponding stages until an owner decides them:
 
-- `S3_SWEEP_RECLAIM` — `sweep_reclaim_max_bars` (`liquidity_sweep_stage`)
 - `S7_OTE` — `ote_band_min`/`ote_band_max`/`equilibrium_boundary` (`ote_stage`)
 - `S9_LTF_CONFIRMATION` — no owner-ratified M3/M1 CHoCH parameters exist
-- `S10_SESSION_GATEKEEPER` — `london_window_utc`/`ny_window_utc` (`sessions`)
-- `S11_ENTRY_WINDOW` — `entry_window_bars` (`entry_window_stage`)
 - `S12_RISK_SLTP` — `buffer_points_atr_multiplier`'s guard *direction*
   formulation is flagged unconfirmed in `OWNER_DECISION_LOG.md` (R-08)
 
-This module implements **S1 (HTF bias), S2 (raw sweep, not reclaim), S4
-(displacement+BOS), S5 (BOS extreme lock), S6 (dealing range), and S8
-(FVG/OB)** — the stages fully specified by what is frozen today.
+This module implements **S1 (HTF bias), S2 (raw sweep), S3 (sweep reclaim,
+R-31), S4 (displacement+BOS), S5 (BOS extreme lock), S6 (dealing range), S8
+(FVG/OB), S10 (session gatekeeper, R-33), and S11 (entry-window check,
+R-32)** — every stage whose numeric parameters are frozen.
 
 **S2 simplification, noted explicitly:** sweep detection here uses the
 single nearest prior confirmed swing level as the liquidity target, not a
@@ -37,6 +35,20 @@ applied (levels within tolerance are treated as the same pool for sweep-age
 purposes), but full pool selection/ranking (as `validation/st_c2/structure.
 py` does for ST-C2) is out of scope for this pass — a further scoping
 choice, not a spec gap.
+
+**S11 simplification, noted explicitly:** `entry_window_evidence_for()`
+evaluates the R-32 window-check mechanism (bars-since-LTF-CHoCH vs. the
+frozen `max_allowed_bars=4`), but it takes `bars_since_ltf_choch` as an
+input parameter rather than deriving it from raw candles — real LTF CHoCH
+detection is S9, which remains blocked (no owner-ratified parameters
+exist). This is real, tested logic for the comparison itself, not a stub,
+but it cannot run end-to-end without S9.
+
+**S10 timestamp assumption, noted explicitly:** candle `time` fields (e.g.
+`"2026-07-13 20:00"`) carry no explicit timezone marker in the source CSVs;
+treated as UTC throughout this project (matching how `R27_R30_RESEARCH_REPORT.md`
+and every prior script handled timestamps), consistent with the spec's own
+session windows being defined in UTC.
 """
 from __future__ import annotations
 
@@ -60,13 +72,23 @@ from validation.st_c3.evidence import Evidence, load_spec, make_evidence  # noqa
 Candle = dict[str, Any]
 
 NOT_YET_SUPPORTED = (
-    "S3_SWEEP_RECLAIM",
     "S7_OTE",
     "S9_LTF_CONFIRMATION",
-    "S10_SESSION_GATEKEEPER",
-    "S11_ENTRY_WINDOW",
     "S12_RISK_SLTP",
 )
+
+LONDON_WINDOW_UTC = (7, 10)   # R-33, decided 2026-07-27
+NY_WINDOW_UTC = (13, 16)      # R-33, decided 2026-07-27
+
+
+def sweep_reclaim_params(spec: dict) -> dict:
+    stage = spec["pipeline"]["liquidity_sweep_stage"]
+    return {"max_allowed_bars": int(stage["sweep_reclaim_max_bars"])}
+
+
+def entry_window_params(spec: dict) -> dict:
+    stage = spec["pipeline"]["entry_window_stage"]
+    return {"max_allowed_bars": int(stage["entry_window_bars"])}
 
 
 def _parse_atr_multiplier(expr: str) -> float:
@@ -423,4 +445,77 @@ def order_block_evidence_near(candles: Sequence[Candle], i: int, *, k: int, fres
         reason="fresh_ob_inside_ote" if fresh else "no_fresh_fvg_or_ob_inside_ote",
         timestamp=str(candles[i]["time"]), ob_high=ob["high"], ob_low=ob["low"], fresh=fresh, inside_ote=False,
         # inside_ote False -- OTE gate is NOT_YET_SUPPORTED, see module docstring
+    )
+
+
+# ---------------------------------------------------------------------
+# S3_SWEEP_RECLAIM
+# ---------------------------------------------------------------------
+def sweep_reclaim_evidence_for(
+    candles: Sequence[Candle], sweep_i: int, sweep_type: str, level: float, *,
+    max_allowed_bars: int, evidence_id: str,
+) -> Evidence:
+    """Did price reclaim (close back inside the range past) the swept level
+    within `max_allowed_bars` of the sweep bar (R-31)? SELL_SIDE sweeps
+    (a prior high swept) reclaim on a close back below `level`; BUY_SIDE
+    sweeps (a prior low swept) reclaim on a close back above `level`.
+    """
+    candles = list(candles)
+    for offset in range(1, max_allowed_bars + 1):
+        j = sweep_i + offset
+        if j >= len(candles):
+            break
+        close = candles[j]["close"]
+        reclaimed = (close < level) if sweep_type == "SELL_SIDE" else (close > level)
+        if reclaimed:
+            return make_evidence(
+                "SweepReclaimEvidence", id=evidence_id, tf=["H4", "M15"], valid=True,
+                reason="reclaimed_within_window", timestamp=str(candles[j]["time"]),
+                reclaim_within_bars=offset, max_allowed_bars=max_allowed_bars, reclaimed=True,
+            )
+    return make_evidence(
+        "SweepReclaimEvidence", id=evidence_id, tf=["H4", "M15"], valid=False,
+        reason="sweep_reclaim_exceeds_n_sweep", timestamp=str(candles[sweep_i]["time"]),
+        reclaim_within_bars=max_allowed_bars + 1, max_allowed_bars=max_allowed_bars, reclaimed=False,
+    )
+
+
+# ---------------------------------------------------------------------
+# S10_SESSION_GATEKEEPER
+# ---------------------------------------------------------------------
+def session_window_evidence_for(candle: Candle, *, evidence_id: str) -> Evidence:
+    """Which session (LONDON/NY/INVALID) does this candle's timestamp fall
+    in, per R-33's frozen UTC windows? Candle `time` values are treated as
+    UTC (see module docstring)."""
+    time_str = str(candle["time"])
+    hour = int(time_str.split(" ")[1].split(":")[0])
+    if LONDON_WINDOW_UTC[0] <= hour < LONDON_WINDOW_UTC[1]:
+        session = "LONDON"
+    elif NY_WINDOW_UTC[0] <= hour < NY_WINDOW_UTC[1]:
+        session = "NY"
+    else:
+        session = "INVALID"
+    valid = session in ("LONDON", "NY")
+    return make_evidence(
+        "SessionWindowEvidence", id=evidence_id, tf=["M3", "M1"], valid=valid,
+        reason="inside_allowed_session" if valid else "choch_outside_allowed_sessions",
+        timestamp=time_str, session=session,
+    )
+
+
+# ---------------------------------------------------------------------
+# S11_ENTRY_WINDOW (window-check mechanism only -- see module docstring's
+# S11 simplification note re: bars_since_ltf_choch as an input, not derived)
+# ---------------------------------------------------------------------
+def entry_window_evidence_for(
+    bars_since_ltf_choch: int, *, max_allowed_bars: int, timestamp: str, evidence_id: str,
+) -> Evidence:
+    """R-32's frozen window check: is `bars_since_ltf_choch` still within
+    `max_allowed_bars`?"""
+    inside_window = bars_since_ltf_choch <= max_allowed_bars
+    return make_evidence(
+        "EntryWindowEvidence", id=evidence_id, tf=["M3", "M1"], valid=inside_window,
+        reason="within_max_entry_bars" if inside_window else "max_entry_bars_exceeded",
+        timestamp=timestamp, bars_since_ltf_choch=bars_since_ltf_choch,
+        max_allowed_bars=max_allowed_bars, inside_window=inside_window,
     )

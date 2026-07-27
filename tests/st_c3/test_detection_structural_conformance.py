@@ -128,6 +128,47 @@ def test_fvg_and_orderblock_evidence_are_causal(m15, spec):
     assert ob_orig.get("ob_high") == ob_ext.get("ob_high")
 
 
+def test_sweep_reclaim_evidence_is_causal(m15, spec):
+    params = det.sweep_reclaim_params(spec)
+    sw_params = det.sweep_params(spec)
+    sweep_i = None
+    sweep_ev = None
+    for i in range(2500, 3000):
+        candidate = det.detect_sweep_at(m15, i, k=2, evidence_id="X", **sw_params)
+        if candidate.valid:
+            sweep_i, sweep_ev = i, candidate
+            break
+    assert sweep_ev is not None, "expected at least one valid sweep in this window"
+
+    window = m15[: sweep_i + params["max_allowed_bars"] + 5]
+    ev_original = det.sweep_reclaim_evidence_for(
+        window, sweep_i, sweep_ev.get("sweep_type"), sweep_ev.get("level"),
+        max_allowed_bars=params["max_allowed_bars"], evidence_id="X",
+    )
+    extended = list(window) + [_future_candle(window[-1]) for _ in range(50)]
+    ev_extended = det.sweep_reclaim_evidence_for(
+        extended, sweep_i, sweep_ev.get("sweep_type"), sweep_ev.get("level"),
+        max_allowed_bars=params["max_allowed_bars"], evidence_id="X",
+    )
+    assert ev_original.valid == ev_extended.valid
+    assert ev_original.get("reclaimed") == ev_extended.get("reclaimed")
+    assert ev_original.get("reclaim_within_bars") == ev_extended.get("reclaim_within_bars")
+
+
+def test_session_window_evidence_is_pure_function_of_timestamp():
+    a = det.session_window_evidence_for({"time": "2026-07-13 08:00"}, evidence_id="X")
+    b = det.session_window_evidence_for({"time": "2026-07-13 08:00"}, evidence_id="X")
+    assert a.valid == b.valid
+    assert a.get("session") == b.get("session")
+
+
+def test_entry_window_evidence_is_pure_function_of_inputs():
+    a = det.entry_window_evidence_for(3, max_allowed_bars=4, timestamp="t", evidence_id="X")
+    b = det.entry_window_evidence_for(3, max_allowed_bars=4, timestamp="t", evidence_id="X")
+    assert a.valid == b.valid
+    assert a.get("inside_window") == b.get("inside_window")
+
+
 def test_rerun_is_bitwise_deterministic(m15, spec):
     """Same input, called twice, must produce identical results -- no
     hidden state, no randomness, no wall-clock dependence."""

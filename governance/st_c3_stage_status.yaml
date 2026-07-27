@@ -184,47 +184,47 @@ stage_a_strategy_validation:
         validation/st_c3/kernel.py, validation/st_c3/trade_plan.py,
         validation/st_c3/detection.py,
         validation/run_st_c3_existence_readiness.py]
-      tests: "tests/st_c3/ (41 passed: golden-case, negative-case, existence-check readiness, detection, structural conformance)"
+      tests: "tests/st_c3/ (49 passed: golden-case, negative-case, existence-check readiness, detection, structural conformance)"
       scope_note: >
         Implements the deterministic evidence-to-trade-plan validator
         kernel (state_machine.transitions / evidence_bindings /
         trade_plan.schema), plus real price-level detection
-        (validation/st_c3/detection.py) for 6 of 12 gating stages (S1
-        HTF bias, S2 raw sweep, S4 displacement+BOS, S5 BOS extreme lock,
-        S6 dealing range, S8 FVG/OB), against real GBPUSD H4/M15 data,
-        using every filter/algorithm parameter frozen through
-        specs/st-c3_v1.0.7.yaml. Six stages (S3 sweep-reclaim, S7 OTE, S9
-        LTF confirmation, S10 session gatekeeper, S11 entry window, S12
-        risk/SL/TP) have no real detection code -- S3/S11/S10 now have
-        frozen numeric parameters (R-31/32/33) but no implementation yet;
-        S7/S9/S12 remain blocked on fields with no owner decision at all
-        (OTE band, LTF CHoCH parameters, R-08 guard direction). See
+        (validation/st_c3/detection.py) for 9 of 12 gating stages (S1 HTF
+        bias, S2 raw sweep, S3 sweep reclaim, S4 displacement+BOS, S5 BOS
+        extreme lock, S6 dealing range, S8 FVG/OB, S10 session gatekeeper,
+        S11 entry-window check mechanism), against real GBPUSD H4/M15
+        data, using every filter/algorithm parameter frozen through
+        specs/st-c3_v1.0.7.yaml (R-31/32/33 folded in 2026-07-27). Three
+        stages (S7 OTE, S9 LTF confirmation, S12 risk/SL/TP) have no real
+        detection code -- each blocked on a field with no owner decision
+        of any kind on record (OTE band, LTF CHoCH parameters, R-08 guard
+        direction), not just an unimplemented one. S11's check mechanism
+        is real/tested but takes bars_since_ltf_choch as an input rather
+        than deriving it, since that derivation is S9. See
         reports/validation/st_c3/R18_DETECTION_MODULE_REPORT.md and
         R18_CLOSURE_REPORT.md.
       existence_check_r18:
-        status: open   # REVERTED 2026-07-27 from a rejected "resolved" claim
+        status: open   # 3 of original 6 blocked stages now implemented (S3/S10/S11), 3 remain (S7/S9/S12)
         reason: >
           A 2026-07-26 claim that R-18 was RESOLVED (signal_rate=0.0, via
-          validation/st_c3/evidence_builder.py) is REJECTED 2026-07-27:
-          that module hardcodes `OTE_MIN, OTE_MAX = 0.62, 0.79   #
-          provisional, numerically usable` and uses it to compute real
-          S7_OTE gating results, despite specs/st-c3_v1.0.6.yaml itself
-          still marking those fields provisional -- a confirmed
-          "no implementation before specification freeze" violation. See
+          validation/st_c3/evidence_builder.py) is REJECTED: that module
+          hardcodes `OTE_MIN, OTE_MAX = 0.62, 0.79   # provisional,
+          numerically usable` and uses it to compute real S7_OTE gating
+          results, despite specs/st-c3_v1.0.6.yaml itself still marking
+          those fields provisional -- a confirmed "no implementation
+          before specification freeze" violation. See
           reports/governance/v1.0.6_RECONCILIATION_AUDIT.md section 5.
-          Real, non-quarantined status: validation/st_c3/detection.py
-          implements 6 of 12 gating stages against real GBPUSD data (no
-          OTE usage -- inside_ote is hardcoded False, S7 explicitly
-          NOT_YET_SUPPORTED). A partial-funnel diagnostic (not a full
-          existence check) found a joint S4-S8 pass rate of ~20.3% and an
-          S2 sweep pass rate of ~0.2-1.6%, directionally consistent with
-          (but independent of) the quarantined line's near-zero result.
-          No real S0-S13 run exists. R-31/R-32/R-33 (S3/S10/S11's numeric
-          parameters) are now frozen with clean provenance
-          (v1_0_7_revision) but S3/S10/S11 have no detection code yet;
-          S7/S9/S12 remain blocked on fields with no decision at all.
-        blocked_by: [detection_code_for_S3, detection_code_for_S7,
-          detection_code_for_S9, detection_code_for_S10, detection_code_for_S11,
+          Real, non-quarantined status (2026-07-27): validation/st_c3/
+          detection.py implements 9 of 12 gating stages against real
+          GBPUSD data (no OTE usage -- inside_ote is hardcoded False, S7
+          explicitly NOT_YET_SUPPORTED). A partial-funnel diagnostic (not
+          a full existence check, predates S3/S10/S11) found a joint
+          S4-S8 pass rate of ~20.3% and an S2 sweep pass rate of
+          ~0.2-1.6%, directionally consistent with (but independent of)
+          the quarantined line's near-zero result. No real S0-S13 run
+          exists -- S7/S9/S12 still have no detection code, each blocked
+          on a field with no owner decision at all.
+        blocked_by: [detection_code_for_S7, detection_code_for_S9,
           detection_code_for_S12, S7_ote_band_never_ratified,
           S9_ltf_choch_params_never_defined, S12_r08_guard_direction_unconfirmed]
         gap_report: reports/validation/st_c3/R18_DETECTION_GAP_REPORT.md

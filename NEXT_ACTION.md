@@ -102,7 +102,8 @@ future owner decisions.
   of the same three fields. See `specs/st-c3_v1.0.7.yaml`,
   `reports/governance/st_c3/RCR_ST-C3_v1.0.7_REPORT.md`. **R-18 is the
   only field on the entire R-01–R-33 tracker still open** — it needs real
-  detection-module code for 6 stages (S3, S7, S9, S10, S11, S12), not a
+  detection-module code for 3 remaining stages (S7, S9, S12; S3/S10/S11
+  now implemented per R-31/32/33), not a
   further spec decision.
 - **Real price-level detection module (`validation/st_c3/detection.py`,
   2026-07-26):** implements S1 (HTF bias), S2 (raw sweep), S4
@@ -110,7 +111,7 @@ future owner decisions.
   (FVG/OB) against real GBPUSD H4/M15 data, using every filter/algorithm
   parameter frozen through v1.0.7. `tests/st_c3/` (41 passing) includes
   detection tests and causal-invariance/determinism structural-conformance
-  tests. Six stages (S3, S7, S9, S10, S11, S12) have no detection code —
+  tests. Three stages (S7, S9, S12) still have no detection code —
   see `reports/validation/st_c3/R18_DETECTION_MODULE_REPORT.md`,
   `R18_CLOSURE_REPORT.md`.
 - **Diagnostic studies (GBPUSD only — EURUSD's H4/M15 CSVs have only
@@ -207,7 +208,7 @@ future owner decisions.
   PARTIALLY DONE — kernel, golden/negative-case tests, and real detection
   for 6 of 12 gating stages exist (`validation/st_c3/`, `tests/st_c3/`, 41
   passing). R-18's real existence-check number still requires the
-  remaining 6 stages' detection code — see `R18_CLOSURE_REPORT.md`.
+  remaining 3 stages' detection code — see `R18_CLOSURE_REPORT.md`.
 
 ## Guardrails
 

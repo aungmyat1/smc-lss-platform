@@ -184,7 +184,67 @@ def test_fvg_and_orderblock_evidence_are_spec_conformant(m15, spec):
 
 
 def test_not_yet_supported_stages_are_documented():
-    assert det.NOT_YET_SUPPORTED == (
-        "S3_SWEEP_RECLAIM", "S7_OTE", "S9_LTF_CONFIRMATION",
-        "S10_SESSION_GATEKEEPER", "S11_ENTRY_WINDOW", "S12_RISK_SLTP",
-    )
+    assert det.NOT_YET_SUPPORTED == ("S7_OTE", "S9_LTF_CONFIRMATION", "S12_RISK_SLTP")
+
+
+def test_sweep_reclaim_params_match_frozen_spec(spec):
+    assert det.sweep_reclaim_params(spec) == {"max_allowed_bars": 2}
+
+
+def test_entry_window_params_match_frozen_spec(spec):
+    assert det.entry_window_params(spec) == {"max_allowed_bars": 4}
+
+
+def test_sweep_reclaim_evidence_is_spec_conformant_and_finds_real_reclaims(m15, spec):
+    params = det.sweep_reclaim_params(spec)
+    sw_params = det.sweep_params(spec)
+    found_valid = 0
+    found_invalid = 0
+    for i in range(2500, 3500):
+        sweep = det.detect_sweep_at(m15, i, k=2, evidence_id=f"SWEEP-{i}", **sw_params)
+        if not sweep.valid:
+            continue
+        reclaim = det.sweep_reclaim_evidence_for(
+            m15, i, sweep.get("sweep_type"), sweep.get("level"),
+            max_allowed_bars=params["max_allowed_bars"], evidence_id=f"RECLAIM-{i}",
+        )
+        assert reclaim.kind == "SweepReclaimEvidence"
+        assert reclaim.get("max_allowed_bars") == 2
+        if reclaim.valid:
+            found_valid += 1
+            assert reclaim.get("reclaimed") is True
+            assert 1 <= reclaim.get("reclaim_within_bars") <= 2
+        else:
+            found_invalid += 1
+            assert reclaim.get("reclaimed") is False
+    assert found_valid + found_invalid > 0  # the sample actually exercised real sweeps
+
+
+def test_session_window_evidence_is_spec_conformant(m15):
+    inside = det.session_window_evidence_for({"time": "2026-07-13 08:00"}, evidence_id="S-1")
+    assert inside.valid is True
+    assert inside.get("session") == "LONDON"
+
+    ny = det.session_window_evidence_for({"time": "2026-07-13 14:30"}, evidence_id="S-2")
+    assert ny.valid is True
+    assert ny.get("session") == "NY"
+
+    outside = det.session_window_evidence_for({"time": "2026-07-13 02:00"}, evidence_id="S-3")
+    assert outside.valid is False
+    assert outside.get("session") == "INVALID"
+
+    boundary_open = det.session_window_evidence_for({"time": "2026-07-13 07:00"}, evidence_id="S-4")
+    assert boundary_open.valid is True
+    boundary_close = det.session_window_evidence_for({"time": "2026-07-13 10:00"}, evidence_id="S-5")
+    assert boundary_close.valid is False  # half-open interval, 10:00 is outside London
+
+
+def test_entry_window_evidence_respects_r32_threshold():
+    ok = det.entry_window_evidence_for(4, max_allowed_bars=4, timestamp="t", evidence_id="EW-1")
+    assert ok.valid is True
+    assert ok.get("inside_window") is True
+
+    expired = det.entry_window_evidence_for(5, max_allowed_bars=4, timestamp="t", evidence_id="EW-2")
+    assert expired.valid is False
+    assert expired.get("inside_window") is False
+    assert expired.reason == "max_entry_bars_exceeded"
