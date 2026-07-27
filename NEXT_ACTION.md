@@ -15,11 +15,11 @@ Current lifecycle position:
 | Status | FROZEN -> S1-G1C CLOSED -> A2/S1-G2 PASSED -> A3 OPEN (owner decisions, 2026-07-26) |
 | Readiness | GREEN |
 | Frozen | YES |
-| Implementation | S1-G2 scoped reference implementation complete; A3 replay engine built and run once |
+| Implementation | S1-G2 scoped reference implementation complete; A3 replay engine built, run once, lifecycle logic synthetically tested |
 | Backtest | A3 replay engine built and run (zero signals on available data) — full historical baseline still requires more data |
 | A1 Logic Conformance | PASSED — see `reports/validation/st_c3/S1-G1C_RERUN_REPORT.md` |
 | A2 Signal Conformance | PASSED: owner decision 2026-07-26 — see `reports/validation/st_c3/OWNER_DECISION_LOG.md`, "A2/S1-G2 gate closure" entry |
-| A3 Statistical Validation | OPEN: owner decision 2026-07-26. First replay run (2026-07-27) produced 0 TradePlans — data-blocked, not code-blocked. See `reports/validation/st_c3/A3_REPLAY_RESULTS.md`. |
+| A3 Statistical Validation | OPEN: owner decision 2026-07-26. First replay run (2026-07-27) produced 0 TradePlans — data-blocked, not code-blocked. Lifecycle-simulation logic since synthetically unit-tested (5/5 passing). See `reports/validation/st_c3/A3_REPLAY_RESULTS.md`, `reports/validation/st_c3/A3_SYNTHETIC_LIFECYCLE_RESULTS.md`. |
 | Execution | BLOCKED (explicitly not authorized) |
 | Demo | BLOCKED |
 | Production | BLOCKED |
@@ -38,7 +38,14 @@ built (reuses `evidence_builder`/`kernel` unchanged, adds TradePlan
 lifecycle simulation and metrics rollup) and run once against real GBPUSD
 data (2026-07-27): **0 TradePlans emitted**, same rejection breakdown as
 R-18 — confirms the engine's signal-detection path but never exercised its
-new lifecycle-simulation code. See `reports/validation/st_c3/A3_REPLAY_RESULTS.md`.
+new lifecycle-simulation code on real data. See
+`reports/validation/st_c3/A3_REPLAY_RESULTS.md`. Owner then directed
+closing that test gap: `tests/st_c3/test_a3_lifecycle.py` (5 tests, all
+passing) exercises `_simulate_lifecycle` directly against synthetic
+TradePlan fixtures (TP1-only partial close, full TP1-TP2-TP3 closure,
+immediate SL, partial-TP1-then-SL, BIAS_FLIP) — see
+`reports/validation/st_c3/A3_SYNTHETIC_LIFECYCLE_RESULTS.md`. Synthetic
+coverage only; does not substitute for real-data validation.
 **Still explicitly NOT authorized:** execution, optimization, demo
 trading, live trading, production promotion — each requires its own
 separate future owner decision. See `governance/st_c3_stage_status.yaml`

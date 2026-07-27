@@ -199,9 +199,19 @@ ST-C3 evidence:
   monitoring) and metrics rollup — and run against real GBPUSD H4/M15/M3
   data via `validation/run_st_c3_a3_replay.py`: **0 TradePlans emitted**,
   identical rejection-code breakdown to R-18. Confirms the replay engine's
-  detection path is correct; its new lifecycle code has not been exercised
-  by real or synthetic data. See `reports/validation/st_c3/A3_REPLAY_RESULTS.md`,
+  detection path is correct; its new lifecycle code had not yet been
+  exercised by real or synthetic data. See
+  `reports/validation/st_c3/A3_REPLAY_RESULTS.md`,
   `governance/st_c3_stage_status.yaml` `a3_statistical_validation`.
+- **A3 synthetic lifecycle tests (owner decision, 2026-07-27):**
+  `tests/st_c3/test_a3_lifecycle.py` (5 tests) exercises
+  `_simulate_lifecycle` directly against hand-built `TradePlan` fixtures
+  and scripted price paths — TP1-only partial close, full TP1-TP2-TP3
+  closure, immediate SL, partial-TP1-then-SL, and a BIAS_FLIP termination
+  via an engineered `smc_engine` swing zigzag. All 5 pass; full repo suite
+  remains green. Closes the test-coverage gap the replay run above
+  flagged, independent of real-data availability. See
+  `reports/validation/st_c3/A3_SYNTHETIC_LIFECYCLE_RESULTS.md`.
 
 ---
 
@@ -250,18 +260,22 @@ zero-signal result over the same 3,339-bar GBPUSD window — real data
 points, not a strategy-level verdict (see both results reports for
 caveats).
 
-**What's actually next, per `A3_REPLAY_RESULTS.md`:** A3 cannot produce a
-real RR/win-rate/session-behavior read until more historical data exists
-(the current GBPUSD window is ~7 weeks; EURUSD's CSVs are unusably short).
-The replay engine's TradePlan-lifecycle code (SL/TP tracking, RR
-realization, BIAS_FLIP monitoring) also has no test coverage yet, since no
-real TradePlan has ever been emitted to exercise it — synthetic
-fixture-based unit tests would close that gap independent of data
-availability. Neither of these is authorized by anything already granted;
-they are candidate next steps for the owner to choose from, not implied
-follow-on work. Do not authorize execution, optimization, backtesting
-against additional/different data, broker integration, demo, or live until
-their own separate owner decisions permit them.
+**Update, 2026-07-27:** the synthetic-test gap flagged above is now
+closed — `tests/st_c3/test_a3_lifecycle.py` (5 tests) exercises
+`_simulate_lifecycle` directly, covering TP1-only partial close, full
+TP1-TP2-TP3 closure, immediate SL, partial-TP1-then-SL, and BIAS_FLIP
+termination. All 5 pass; full repo suite remains green. See
+`reports/validation/st_c3/A3_SYNTHETIC_LIFECYCLE_RESULTS.md`.
+
+**What's actually next:** the one remaining gap is **data volume** — A3
+still cannot produce a real RR/win-rate/session-behavior read until more
+historical data exists (the current GBPUSD window is ~7 weeks; EURUSD's
+CSVs are unusably short). This is not authorized by anything already
+granted; sourcing more data is a candidate next step for the owner to
+choose, not implied follow-on work. Do not authorize execution,
+optimization, backtesting against additional/different data, broker
+integration, demo, or live until their own separate owner decisions permit
+them.
 
 ---
 

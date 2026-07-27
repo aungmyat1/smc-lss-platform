@@ -104,7 +104,6 @@ def _simulate_lifecycle(
     sl_hit = False
     sl_hit_index: Optional[int] = None
     bias_flip_index: Optional[int] = None
-    original_bias = trade_plan.context.get("htf_bias_id")
     last_j = entry_index
     n = len(mf_candles)
     end_j = min(entry_index + max_hold_bars, n - 1)

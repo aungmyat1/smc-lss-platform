@@ -71,12 +71,16 @@ A3 remains open but effectively blocked on **data volume**, not code:
    (currently EURUSD's H4/M15 CSVs have only ~20 rows — unusable, per
    `R27_R30_RESEARCH_REPORT.md`) — the only way to get the funnel to fire
    often enough to produce lifecycle/RR/session data.
-2. **Lifecycle-logic unit tests against synthetic TradePlans** (fixtures
-   with hand-built entry/SL/TP prices and a scripted price path), so
-   `_simulate_lifecycle`'s SL/TP/BIAS_FLIP branches are verified
-   independent of whether real data ever triggers them. Not done in this
-   pass — the owner directed publishing this result as-is rather than
-   pausing to build synthetic coverage first.
+2. ~~Lifecycle-logic unit tests against synthetic TradePlans~~ — **done,
+   2026-07-27**: `tests/st_c3/test_a3_lifecycle.py` (5 tests) exercises
+   `_simulate_lifecycle` directly against hand-built `TradePlan` fixtures
+   and scripted price paths — TP1-only partial close, full TP1-TP2-TP3
+   closure, immediate SL, partial-TP1-then-SL, and a BIAS_FLIP termination
+   (via an engineered `smc_engine.swings()`/`trend()` zigzag on synthetic
+   H4 data). All 5 pass; full suite remains green (280 passed). This
+   closes the test-coverage gap identified above, independent of data
+   availability — see `reports/validation/st_c3/A3_SYNTHETIC_LIFECYCLE_RESULTS.md`
+   for detail.
 
 ## Deliverables
 

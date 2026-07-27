@@ -437,6 +437,23 @@ weeks; EURUSD's CSVs are unusably short), not more code. No RR
 distribution, win rate, or session-behavior data exists yet. This does not
 authorize execution, optimization, demo, live, or production.
 
+**2026-07-27 update:** owner directed closing the lifecycle-logic test
+gap flagged above. `tests/st_c3/test_a3_lifecycle.py` (5 tests) built
+against `_simulate_lifecycle` directly, using hand-built `TradePlan`
+fixtures and scripted price paths: TP1-only partial close, full
+TP1-TP2-TP3 closure, immediate SL, partial-TP1-then-SL, and a BIAS_FLIP
+termination (engineered via a synthetic `smc_engine.swings()`/`trend()`
+zigzag). All 5 pass; full repo suite remains green. Also fixed one dead
+local variable (`original_bias`, never read) found while building the
+BIAS_FLIP test — no behavior change. See
+`reports/validation/st_c3/A3_SYNTHETIC_LIFECYCLE_RESULTS.md`, which also
+documents corrections made against the originally proposed test plan
+(wrong entrypoint, full-close vs. partial-exit RR math, out-of-scope
+entry-window fixture, not-yet-implemented chain-frequency metrics, wrong
+file path). This is synthetic/code-level coverage only — it does not
+substitute for real-data validation, and does not authorize execution,
+optimization, demo, or live.
+
 ---
 
 ## How to use this log
