@@ -2,22 +2,22 @@
 
 **One milestone at a time. This is the active milestone.**
 
-## ST-C3 A2/S1-G4 ACCEPTED, A2/S1-G5 NOT YET STARTED — Active Milestone
+## ST-C3 A2/S1-G5 EVIDENCE-GATHERING IN PROGRESS (NOT PASSED) — Active Milestone
 
 Current lifecycle position:
 
 | Field | State |
 |---|---|
 | Stage | Stage A - Strategy Validation |
-| Substage | A2 - Indicator, Event and Signal Conformance (S1-G2, S1-G3, S1-G4 accepted; S1-G5-S1-G6 not started) |
-| Gate | S1-G4 Event and State Conformance — **ACCEPTED 2026-07-27** (S1-G2/S1-G3 remain ACCEPTED 2026-07-27) |
+| Substage | A2 - Indicator, Event and Signal Conformance (S1-G2, S1-G3, S1-G4 accepted; S1-G5 evidence-gathering begun 2026-07-28, not passed; S1-G6 not started) |
+| Gate | S1-G5 Signal and Trade-Plan Conformance — **EVIDENCE GATHERED 2026-07-28, NOT YET ACCEPTED** (S1-G2/S1-G3/S1-G4 remain ACCEPTED 2026-07-27) |
 | Strategy | ST-C3 v1.0.7 (fresh R-31/R-32/R-33 decisions, revision of v1.0.5, see `specs/st-c3_v1.0.7.yaml`) |
 | Status | FROZEN -> S1-G1C CLOSED -> A2/S1-G2 ACCEPTED (v1.x funnel frozen at 9/12 stages) |
 | Readiness | GREEN |
 | Frozen | YES |
 | Implementation | AUTHORIZED: S1-G2 SCOPED RESEARCH/VALIDATION ONLY (unchanged — S1-G2 acceptance does not expand authorization) |
 | A1 Logic Conformance | PASSED — see `reports/validation/st_c3/S1-G1C_RERUN_REPORT.md` |
-| A2 Signal Conformance | S1-G2 **ACCEPTED** 2026-07-27; S1-G3 **ACCEPTED** 2026-07-27; S1-G4 **ACCEPTED** 2026-07-27 (see below). The broader A2 substage (S1-G5 through S1-G6) is still not started — none of this is the same as passing all of A2. A separate 2026-07-26 "A2 PASSED" claim (conflating a single gate with the full substage) was REJECTED 2026-07-27. |
+| A2 Signal Conformance | S1-G2 **ACCEPTED** 2026-07-27; S1-G3 **ACCEPTED** 2026-07-27; S1-G4 **ACCEPTED** 2026-07-27; S1-G5 evidence gathered 2026-07-28 (see below) but **NOT YET ACCEPTED**. The broader A2 substage (S1-G6) is still not started — none of this is the same as passing all of A2. A separate 2026-07-26 "A2 PASSED" claim (conflating a single gate with the full substage) was REJECTED 2026-07-27. |
 | A3 Statistical Validation | BLOCKED — a 2026-07-26 "OPEN" claim was REJECTED 2026-07-27. S1-G2 acceptance does not open A3; unaffected. |
 | Execution | BLOCKED (explicitly not authorized) |
 | Demo | BLOCKED |
@@ -162,6 +162,34 @@ owner decision, same pattern as prior gates. See
 `governance/st_c3_stage_status.yaml` `a2_signal_conformance.s1_g4_gate`
 for the authoritative record.
 
+## 2026-07-28: S1-G5 (Signal and Trade-Plan Conformance) evidence-gathering begun
+
+**Owner directive:** authorize S1-G5 evidence-gathering (explicit
+confirmation, 2026-07-28), after `S1_G5_READINESS_CHECKLIST.md` verified
+the gate's sole precondition (S1-G4 acceptance) was satisfied and
+rejected a pasted, fabricated 5-category (A-E) evidence structure not
+present in `MASTER_PLAN.md`. The real requirement is a single purpose
+line: "verify BUY/SELL, entry, stop, target, RR, expiration, source event
+IDs, and rejection reasons match the frozen strategy contract."
+
+**This is evidence-gathering only — S1-G5 is NOT declared passed or
+accepted.** Whether the evidence below is sufficient to accept S1-G5
+remains a separate, explicit owner decision, exactly like the prior gate
+acceptance pattern.
+
+Evidence built: `tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py`
+(23 new tests) covering exact-value checks for direction, entry
+price/zone, stop price/type (including the LONG case, which had no prior
+SL assertion), all three targets' price/rr/target_id, RR boundary and
+off-by-epsilon behavior, expiry rules/evidence-id wiring, evidence_chain
+and context ID-by-ID correctness, and rejection-reason text matching
+(previously untested — prior negative-case tests checked code/state but
+never the `reason` string itself). Full detail:
+`reports/validation/st_c3/S1_G5_SIGNAL_TRADE_PLAN_CONFORMANCE_REPORT.md`.
+
+No change to `specs/st-c3_v1.0.7.yaml`, `kernel.py`'s guard sequence, or
+any `EvidenceBundle`/`TradePlan` field — this work only adds tests.
+
 ## 2026-07-27 correction: a quarantined line of work was rejected
 
 A separate line of work (`specs/st-c3_v1.0.6.yaml`,
@@ -226,6 +254,11 @@ future owner decisions.
 
 ## Current Evidence
 
+- **S1-G5 signal/trade-plan conformance evidence (2026-07-28, NOT accepted):**
+  `reports/validation/st_c3/S1_G5_SIGNAL_TRADE_PLAN_CONFORMANCE_REPORT.md`,
+  `tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py` (23 new tests).
+  Evidence-gathering only — accepting S1-G5 remains a separate future
+  owner decision.
 - **S1-G4 event/state conformance evidence (2026-07-27, ACCEPTED):**
   `reports/validation/st_c3/S1_G4_EVENT_STATE_CONFORMANCE_REPORT.md`,
   `tests/st_c3/test_s1_g4_event_state_conformance.py` (23 new tests).

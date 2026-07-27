@@ -2,10 +2,11 @@
 
 **Audit date:** 2026-07-27
 **Governance model:** `MASTER_PLAN.md` v4.1.5 Stage A/Stage B validation architecture
-**Current lifecycle position:** Stage A - Strategy Validation, A2 / S1-G4 -
-ST-C3 Event and State Conformance **ACCEPTED** 2026-07-27 (S1-G2 and S1-G3
-also **ACCEPTED** 2026-07-27, v1.x funnel frozen at 9/12 stages); broader
-A2 substage (S1-G5-S1-G6) not started
+**Current lifecycle position:** Stage A - Strategy Validation, A2 / S1-G5 -
+ST-C3 Signal and Trade-Plan Conformance evidence-gathering **begun**
+2026-07-28, **not yet accepted** (S1-G2, S1-G3, S1-G4 all **ACCEPTED**
+2026-07-27, v1.x funnel frozen at 9/12 stages); broader A2 substage
+(S1-G6) not started
 
 This file records current gate state, evidence, blockers, and metrics. It is
 subordinate to `MASTER_PLAN.md` and should not duplicate the full lifecycle
@@ -49,8 +50,8 @@ optimization, demo, or live trading.
 | Field | State |
 |---|---|
 | Stage | Stage A - Strategy Validation |
-| Substage | A2 - Indicator, Event and Signal Conformance (S1-G2, S1-G3, S1-G4 **ACCEPTED**; S1-G5-S1-G6 not started) |
-| Gate | S1-G4 Event and State Conformance — **ACCEPTED 2026-07-27** (S1-G2/S1-G3 remain ACCEPTED 2026-07-27) |
+| Substage | A2 - Indicator, Event and Signal Conformance (S1-G2, S1-G3, S1-G4 **ACCEPTED**; S1-G5 evidence-gathering begun 2026-07-28, not accepted; S1-G6 not started) |
+| Gate | S1-G5 Signal and Trade-Plan Conformance — **EVIDENCE GATHERED 2026-07-28, NOT ACCEPTED** (S1-G2/S1-G3/S1-G4 remain ACCEPTED 2026-07-27) |
 | Strategy | ST-C3 v1.0.7 (fresh R-31/R-32/R-33 decisions, revision of v1.0.5, itself a structural-detection algorithm parameter revision of v1.0.4, itself an instrument tie-breaking revision of v1.0.3, itself a fixed-lot + instrument-scope revision of v1.0.2, itself a governance parameter-freeze revision of v1.0.1, itself a revision of v1.0.0; skips the quarantined v1.0.6) |
 | Status | FROZEN -> S1-G1C CLOSED -> A2/S1-G2 ACCEPTED (v1.x funnel frozen at 9/12 stages) |
 | Readiness | GREEN |
@@ -58,7 +59,7 @@ optimization, demo, or live trading.
 | Implementation | AUTHORIZED: S1-G2 SCOPED RESEARCH/VALIDATION ONLY (unchanged) |
 | Backtest | BLOCKED (historical_baseline is A3/S1-G7; A3 not open) |
 | A1 Logic Conformance | PASSED — `reports/validation/st_c3/S1-G1C_RERUN_REPORT.md` |
-| A2 Signal Conformance | S1-G2 **ACCEPTED** 2026-07-27; S1-G3 **ACCEPTED** 2026-07-27; S1-G4 **ACCEPTED** 2026-07-27; broader A2 substage (S1-G5-S1-G6) still not started — none of this is the same as passing all of A2. A 2026-07-26 "A2 PASSED" claim (conflating gate with substage) was REJECTED 2026-07-27. |
+| A2 Signal Conformance | S1-G2 **ACCEPTED** 2026-07-27; S1-G3 **ACCEPTED** 2026-07-27; S1-G4 **ACCEPTED** 2026-07-27; S1-G5 evidence gathered 2026-07-28 but **NOT ACCEPTED** (separate owner decision, same pattern as prior gates); broader A2 substage (S1-G6) still not started — none of this is the same as passing all of A2. A 2026-07-26 "A2 PASSED" claim (conflating gate with substage) was REJECTED 2026-07-27. |
 | A3 Statistical Validation | BLOCKED — a 2026-07-26 "OPEN" claim was REJECTED 2026-07-27. S1-G2 acceptance does not open A3. |
 | Execution | BLOCKED (explicitly not authorized) |
 | Demo | BLOCKED |
@@ -108,7 +109,8 @@ ST-C3 v1.0.0 frozen specification
 -> S1-G2 scoped reference implementation authorization (ACCEPTED 2026-07-27, v1.x funnel frozen at 9/12 stages)
 -> A2/S1-G3 primitive and indicator conformance (ACCEPTED 2026-07-27; see S1_G3_PRIMITIVE_CONFORMANCE_REPORT.md, S1_G3_PRIMITIVE_CONFORMANCE_COMPLETION_AUDIT.md)
 -> A2/S1-G4 event and state conformance (ACCEPTED 2026-07-27; see S1_G4_EVENT_STATE_CONFORMANCE_REPORT.md, S1_G4_EVENT_STATE_CONFORMANCE_COMPLETION_AUDIT.md)
--> A2/S1-G5-S1-G6 conformance qualification (NOT STARTED -- unblocked by S1-G4 acceptance, but starting it is its own separate owner decision)
+-> A2/S1-G5 signal and trade-plan conformance (EVIDENCE GATHERED 2026-07-28, NOT ACCEPTED -- accepting is a separate owner decision; see S1_G5_SIGNAL_TRADE_PLAN_CONFORMANCE_REPORT.md)
+-> A2/S1-G6 golden-case qualification (NOT STARTED)
 -> A3/S1-G7-S1-G10 statistical edge and robustness qualification (BLOCKED — a 2026-07-26 "OPEN" claim was rejected 2026-07-27; S1-G2 acceptance does not open A3)
 -> Stage B execution qualification (BLOCKED)
 ```
@@ -225,6 +227,19 @@ ST-C3 evidence:
   sufficient for acceptance. **S1-G4 was ACCEPTED on this basis (owner
   decision, 2026-07-27)** — see `governance/st_c3_stage_status.yaml`
   `a2_signal_conformance.s1_g4_gate`.
+- `reports/validation/st_c3/S1_G5_READINESS_CHECKLIST.md` - confirmed
+  S1-G5's sole blocking precondition was S1-G4 acceptance (satisfied);
+  rejected a pasted, fabricated 5-category (A-E) evidence structure not
+  present in `MASTER_PLAN.md`, whose real S1-G5 requirement is a single
+  purpose line.
+- `reports/validation/st_c3/S1_G5_SIGNAL_TRADE_PLAN_CONFORMANCE_REPORT.md` -
+  S1-G5 evidence-gathering (2026-07-28): exact-value checks for
+  direction, entry price/zone, stop price/type, all three targets'
+  price/rr/target_id, RR boundary/off-by-epsilon behavior, expiry
+  rules/evidence-id wiring, evidence_chain/context ID-by-ID correctness,
+  and rejection-reason text matching — 23 new tests in
+  `tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py`. Evidence
+  only — accepting S1-G5 is a separate, not-yet-made owner decision.
 - `reports/validation/st_c3/V1X_FUNNEL_FREEZE_AND_R18_CLOSURE.md` - the
   owner's 2026-07-27 decision to freeze the v1.x reference-implementation
   scope at 9/12 stages, close R-18 at `signal_rate=0.0` by the state
@@ -280,9 +295,14 @@ completion audit's finding that every MASTER_PLAN.md-required evidence
 category is covered. See
 `reports/validation/st_c3/S1_G4_EVENT_STATE_CONFORMANCE_COMPLETION_AUDIT.md`.
 
-A2 substage blockers (S1-G5 through S1-G6): **not started.** S1-G4
-acceptance removes S1-G5's blocking precondition, but starting S1-G5 is a
-separate, not-yet-made owner decision.
+S1-G5 blockers: **none remaining precondition-wise** — S1-G4 acceptance
+satisfied S1-G5's sole blocking precondition, and evidence-gathering
+began 2026-07-28 (`reports/validation/st_c3/S1_G5_SIGNAL_TRADE_PLAN_CONFORMANCE_REPORT.md`).
+**Accepting S1-G5 itself is still a separate, not-yet-made owner
+decision.**
+
+A2 substage blockers (S1-G6): **not started** — blocked behind S1-G5
+acceptance, which has not yet happened.
 
 Stage A3 / Stage B blockers (unaffected by S1-G2 acceptance):
 
@@ -301,12 +321,13 @@ Stage A3 / Stage B blockers (unaffected by S1-G2 acceptance):
 ## Next Action
 
 S1-G2, S1-G3, and S1-G4 are all accepted (2026-07-27) and R-18 is closed.
-The next available governance decision is whether to **begin S1-G5**
-(Signal and Trade-Plan Conformance) — its sole blocking precondition
-(S1-G4 acceptance) is now satisfied, but starting it is its own explicit
-owner decision, not implied by this acceptance. Do not authorize
-execution, optimization, backtesting, broker integration, demo, live, or
-A3 opening until their own separate owner decisions permit them.
+S1-G5 (Signal and Trade-Plan Conformance) evidence-gathering has begun
+(2026-07-28) — see `reports/validation/st_c3/S1_G5_SIGNAL_TRADE_PLAN_CONFORMANCE_REPORT.md`.
+The next available governance decision is whether to **accept S1-G5** on
+that evidence, which is its own explicit owner decision, not implied by
+gathering the evidence. Do not authorize execution, optimization,
+backtesting, broker integration, demo, live, or A3 opening until their own
+separate owner decisions permit them.
 
 ---
 
