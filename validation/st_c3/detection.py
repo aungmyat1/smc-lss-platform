@@ -519,3 +519,46 @@ def entry_window_evidence_for(
         timestamp=timestamp, bars_since_ltf_choch=bars_since_ltf_choch,
         max_allowed_bars=max_allowed_bars, inside_window=inside_window,
     )
+
+
+# ---------------------------------------------------------------------
+# S1-G3 primitives -- pure arithmetic, no owner decision or spec threshold
+# involved. Added for S1-G3 (Primitive and Indicator Conformance)
+# evidence, per MASTER_PLAN.md's required-evidence list.
+# ---------------------------------------------------------------------
+def compute_rr(entry: float, stop: float, target: float, direction: str) -> float:
+    """Reward-to-risk ratio for a LONG/SHORT setup: reward / risk, where
+    risk = |entry - stop| and reward = |target - entry|. Matches the
+    frozen trade_plan.schema.risk.computed_rr field's meaning -- this is
+    the arithmetic that field represents, not a new strategy rule.
+    """
+    risk = abs(entry - stop)
+    if risk == 0:
+        raise ValueError("compute_rr: entry and stop cannot be equal (zero risk)")
+    if direction == "LONG":
+        reward = target - entry
+    elif direction == "SHORT":
+        reward = entry - target
+    else:
+        raise ValueError(f"compute_rr: direction must be LONG or SHORT, got {direction!r}")
+    return reward / risk
+
+
+def premium_discount_zone(price: float, range_low: float, range_high: float) -> str:
+    """Bare midpoint classification of `price` within [range_low, range_high]
+    -- "premium" (upper half), "discount" (lower half), or "equilibrium"
+    (exactly the midpoint). This is arithmetic (the midpoint of an
+    interval), not the S7_OTE gate: it does not use, reference, or depend
+    on `ote_band_min`/`ote_band_max`/`equilibrium_boundary`, which remain
+    provisional and out of v1.x scope per the 2026-07-27 funnel-freeze
+    decision. Provided for S1-G3 primitive-conformance evidence only --
+    not wired into any funnel stage.
+    """
+    if range_high <= range_low:
+        raise ValueError("premium_discount_zone: range_high must exceed range_low")
+    midpoint = (range_low + range_high) / 2
+    if price > midpoint:
+        return "premium"
+    if price < midpoint:
+        return "discount"
+    return "equilibrium"

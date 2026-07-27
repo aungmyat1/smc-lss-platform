@@ -502,14 +502,82 @@ for the full reasoning and verification performed.
 **Decided by:** Owner (Aung), 2026-07-27.
 
 **Consequence:** A2/S1-G2 is accepted on this basis —
-`governance/st_c3_stage_status.yaml`'s `a2_signal_conformance.status`
-moves from `in_progress` to `passed`. This does **not** authorize A3,
-execution, optimization, demo, or live trading, each of which remains a
-separate, future owner decision — unaffected by this closure. S1-G3
-becomes a possible next gate to pursue, not automatically opened by this
-decision. `specs/st-c3_v1.0.7.yaml` is unmodified; S7/S9/S12 remain
-specified in the frozen spec exactly as before, available to a future
-v1.1/v2.x cycle should the owner choose to revisit them later.
+`governance/st_c3_stage_status.yaml`'s `a2_signal_conformance.s1_g2_gate`
+records `status: accepted` (the broader `a2_signal_conformance.status`
+itself stays `in_progress` — accepting one gate is not passing the full
+substage). This does **not** authorize A3, execution, optimization, demo,
+or live trading, each of which remains a separate, future owner decision —
+unaffected by this closure. S1-G3 becomes a possible next gate to pursue,
+not automatically opened by this decision. `specs/st-c3_v1.0.7.yaml` is
+unmodified; S7/S9/S12 remain specified in the frozen spec exactly as
+before, available to a future v1.1/v2.x cycle should the owner choose to
+revisit them later.
+
+---
+
+### A2/S1-G3 gate acceptance — **owner decision, 2026-07-27**
+
+**Context:** with S1-G2's acceptance removing S1-G3's blocking
+precondition, the owner directed beginning S1-G3 (Primitive and Indicator
+Conformance) structural validation. Evidence was gathered: two new pure
+primitives (`compute_rr()` for risk/reward distance, `premium_discount_zone()`
+for bare interval-midpoint premium/discount classification — not the
+S7_OTE gate, and not wired into the kernel or any funnel stage) added to
+`validation/st_c3/detection.py`, plus 13 new fixed-expected-value tests
+in `tests/st_c3/test_s1_g3_primitives.py` covering every evidence category
+`MASTER_PLAN.md`'s A2/S1-G3 section requires (candle body/wick/range,
+sessions, swings, premium/discount, risk/reward, fixed expected values and
+causal cutoff checks, no broker/time/network/mutable-global dependency;
+point normalization confirmed N/A — no such threshold exists in the
+frozen ST-C3 spec). A completion audit
+(`S1_G3_PRIMITIVE_CONFORMANCE_COMPLETION_AUDIT.md`) found no
+specification-level gap (unlike S1-G2's audit) and recommended the
+evidence sufficient for acceptance.
+
+**Owner Decision:** accept S1-G3 on the completion audit's findings.
+
+**Decided by:** Owner (Aung), 2026-07-27.
+
+**Consequence:** `governance/st_c3_stage_status.yaml`'s
+`a2_signal_conformance.s1_g3_gate` records `status: accepted` (the
+broader `a2_signal_conformance.status` stays `in_progress` — S1-G4
+through S1-G6 have not started). This does **not** authorize A3,
+execution, optimization, demo, or live trading. S1-G4 (Event and State
+Conformance) becomes a possible next gate to pursue, not automatically
+opened by this decision. `specs/st-c3_v1.0.7.yaml` is unmodified.
+
+---
+
+### A2/S1-G4 gate acceptance — **owner decision, 2026-07-27**
+
+**Context:** with S1-G3's acceptance removing S1-G4's blocking
+precondition, the owner directed beginning S1-G4 (Event and State
+Conformance), explicitly using `MASTER_PLAN.md`'s real required-evidence
+list after a pasted checklist misstated the categories. Evidence was
+gathered: 23 new tests in `tests/st_c3/test_s1_g4_event_state_conformance.py`
+covering structured-evidence-to-spec-field mapping (BOS, CHoCH, liquidity
+pools, sweeps, reclaim, FVG, POI interaction, displacement, DOL),
+legal/illegal transition monotonicity, expiry/invalidation coverage for
+`evaluate_expiry()` (previously untested), and duplicate-prevention
+coverage scoped honestly to the frozen spec's only such mechanism
+(`SUPERSEDED` -> `ERR_SUPERSEDED_SETUP` — no cross-candidate ranking
+algorithm was invented, since none exists in the frozen spec). A
+completion audit (`S1_G4_EVENT_STATE_CONFORMANCE_COMPLETION_AUDIT.md`)
+found every required category traceable to a real, spec-registered
+mechanism and recommended the evidence sufficient for acceptance.
+
+**Owner Decision:** accept S1-G4 on the completion audit's findings.
+
+**Decided by:** Owner (Aung), 2026-07-27.
+
+**Consequence:** `governance/st_c3_stage_status.yaml`'s
+`a2_signal_conformance.s1_g4_gate` records `status: accepted` (the
+broader `a2_signal_conformance.status` stays `in_progress` — S1-G5
+through S1-G6 have not started). This does **not** authorize A3,
+execution, optimization, demo, or live trading. S1-G5 (Signal and
+Trade-Plan Conformance) becomes a possible next gate to pursue, not
+automatically opened by this decision. `specs/st-c3_v1.0.7.yaml` is
+unmodified.
 
 ---
 

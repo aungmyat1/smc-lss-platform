@@ -59,7 +59,7 @@ Nothing is higher priority than reaching this state without breaking governance.
 
 | Candidate | Stage | Gate | Status | Active Work | Authority |
 |---|---|---|---|---|---|
-| ST-C3 v1.0.7 (GBPUSD/EURUSD) | Stage A / A2 | S1-G2 Reference Implementation Authorization — **ACCEPTED 2026-07-27** | Frozen; S1-G2 accepted, S1-G3-S1-G6 not started | ACTIVE — scoped research/validation | Reference-funnel assembly, golden/negative-case tests, existence-check research authorized. Execution, optimization, A3 opening, demo, live, production explicitly NOT authorized. |
+| ST-C3 v1.0.7 (GBPUSD/EURUSD) | Stage A / A2 | S1-G4 Event and State Conformance — **ACCEPTED 2026-07-27** | Frozen; S1-G2, S1-G3, S1-G4 accepted, S1-G5-S1-G6 not started | ACTIVE — scoped research/validation | Reference-funnel assembly, golden/negative-case tests, existence-check research authorized. Execution, optimization, A3 opening, demo, live, production explicitly NOT authorized. |
 | ST-C2 v1.2.0 GBPUSD | Stage A / A2 | S1-G2 Reference Implementation Completion Review | Frozen; S1-G2 remains open | PAUSED BY OWNER DIRECTION | Scoped S1-G2 reference authority remains recorded, but no new ST-C2 work is the active milestone |
 
 **2026-07-27 sync correction:** this table and the ST-C3 paragraph below
@@ -351,10 +351,11 @@ Required evidence:
 - no broker, time, network, or mutable global dependency
 
 Current status: for ST-C2 (paused), still BLOCKED — its own S1-G2
-completion audit keeps it open. For ST-C3, **UNBLOCKED as of 2026-07-27**
-— its S1-G2 was accepted (see the A2/S1-G2 section above) — but starting
-S1-G3 work is a distinct, not-yet-made owner decision, not automatic; see
-`reports/validation/st_c3/S1_G3_READINESS_CHECKLIST.md`.
+completion audit keeps it open. For ST-C3, **ACCEPTED 2026-07-27** — see
+`reports/validation/st_c3/S1_G3_PRIMITIVE_CONFORMANCE_REPORT.md` and
+`S1_G3_PRIMITIVE_CONFORMANCE_COMPLETION_AUDIT.md`. This accepts S1-G3
+specifically; it does not pass the broader A2 substage (S1-G4 through
+S1-G6, still not started) or authorize A3/execution/demo/live.
 
 ### A2 / S1-G4 - Event and State Conformance
 
@@ -367,14 +368,21 @@ Required evidence:
 - legal transition tests, illegal transition tests, expiry/invalidation tests,
   duplicate prevention, and rejection-code evidence
 
-Current status: BLOCKED until S1-G3 passes.
+Current status: for ST-C2 (paused), still BLOCKED. For ST-C3, **ACCEPTED
+2026-07-27** — see `reports/validation/st_c3/S1_G4_EVENT_STATE_CONFORMANCE_REPORT.md`
+and `S1_G4_EVENT_STATE_CONFORMANCE_COMPLETION_AUDIT.md`. This accepts
+S1-G4 specifically; it does not pass the broader A2 substage (S1-G5
+through S1-G6, still not started) or authorize A3/execution/demo/live.
 
 ### A2 / S1-G5 - Signal and Trade-Plan Conformance
 
 **Purpose:** verify BUY/SELL, entry, stop, target, RR, expiration, source event
 IDs, and rejection reasons match the frozen strategy contract.
 
-Current status: BLOCKED until S1-G4 passes.
+Current status: for ST-C2 (paused), still BLOCKED. For ST-C3,
+**UNBLOCKED as of 2026-07-27** — its S1-G4 was accepted (see the A2/S1-G4
+section above) — but starting S1-G5 work is a distinct, not-yet-made
+owner decision, not automatic.
 
 ### A2 / S1-G6 - Golden-Case Qualification
 
@@ -587,6 +595,34 @@ that only executes approved strategy packages.
 
 ## Changelog
 
+- **v4.1.7 - 2026-07-27** - Records the owner's acceptance of ST-C3's
+  A2/S1-G4 (Event and State Conformance) gate, on the completion audit's
+  finding that every required evidence category (structured evidence for
+  BOS, CHoCH, liquidity pools, sweeps, reclaim, FVG, POI interaction,
+  displacement, DOL; legal transition tests; illegal transition tests;
+  expiry/invalidation tests; duplicate prevention; rejection-code
+  evidence) is covered by a test traceable to a real, spec-registered
+  mechanism. See `reports/validation/st_c3/S1_G4_EVENT_STATE_CONFORMANCE_REPORT.md`,
+  `S1_G4_EVENT_STATE_CONFORMANCE_COMPLETION_AUDIT.md`,
+  `governance/st_c3_stage_status.yaml`'s `a2_signal_conformance.s1_g4_gate`.
+  This accepts S1-G4 specifically — it does not pass the broader A2
+  substage (S1-G5 through S1-G6 not started) and does not authorize A3,
+  execution, optimization, demo, or live trading. `specs/st-c3_v1.0.7.yaml`
+  is unmodified.
+- **v4.1.6 - 2026-07-27** - Records the owner's acceptance of ST-C3's
+  A2/S1-G3 (Primitive and Indicator Conformance) gate, on the completion
+  audit's finding that every required evidence category (candle
+  body/wick/range, sessions, swings, premium/discount, risk/reward
+  distance, fixed expected values and causal cutoff checks, no
+  broker/time/network/mutable-global dependency) is covered or correctly
+  N/A (point normalization — no such threshold exists in the frozen
+  ST-C3 spec). See `reports/validation/st_c3/S1_G3_PRIMITIVE_CONFORMANCE_REPORT.md`,
+  `S1_G3_PRIMITIVE_CONFORMANCE_COMPLETION_AUDIT.md`,
+  `governance/st_c3_stage_status.yaml`'s `a2_signal_conformance.s1_g3_gate`.
+  This accepts S1-G3 specifically — it does not pass the broader A2
+  substage (S1-G4 through S1-G6 not started) and does not authorize A3,
+  execution, optimization, demo, or live trading. `specs/st-c3_v1.0.7.yaml`
+  is unmodified.
 - **v4.1.5 - 2026-07-27** - Records the owner's decision to freeze ST-C3's
   v1.x reference-implementation scope at 9 of 12 gating stages (S7 OTE, S9
   LTF confirmation, S12 risk/SL/TP guard direction left permanently out of

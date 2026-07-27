@@ -186,8 +186,71 @@ stage_a_strategy_validation:
         to freeze the v1.x reference scope at 9 stages. Audit itself does
         not accept S1-G2 or authorize S1-G3 -- that remains a separate
         owner decision.
-    current_gate: S1-G2
-    current_gate_name: Reference Implementation Authorization
+    s1_g3_gate:
+      status: accepted   # 2026-07-27, owner decision -- SCOPED TO S1-G3 ONLY, not the full a2_signal_conformance status above
+      basis: primitive_conformance_evidence_complete
+      evidence_report: reports/validation/st_c3/S1_G3_PRIMITIVE_CONFORMANCE_REPORT.md
+      completion_audit: reports/validation/st_c3/S1_G3_PRIMITIVE_CONFORMANCE_COMPLETION_AUDIT.md
+      decision_log: "reports/validation/st_c3/OWNER_DECISION_LOG.md, 'A2/S1-G3 gate acceptance' entry"
+      summary: >
+        Owner accepted S1-G3 (Primitive and Indicator Conformance) on the
+        completion audit's finding that every MASTER_PLAN.md-required
+        evidence category (candle body/wick/range, sessions, swings,
+        premium/discount, risk/reward distance, fixed expected values and
+        causal cutoff checks, no broker/time/network/mutable-global
+        dependency) is covered or correctly N/A (point normalization --
+        no such threshold exists in the frozen ST-C3 spec). Two new pure
+        primitives (compute_rr(), premium_discount_zone()) were added to
+        validation/st_c3/detection.py, neither wired into kernel.py's
+        guard sequence or any EvidenceBundle field, and neither touching
+        specs/st-c3_v1.0.7.yaml. This accepts S1-G3 specifically -- it
+        does NOT mark the broader a2_signal_conformance substage (S1-G4
+        through S1-G6) as passed, and does NOT authorize A3, execution,
+        optimization, demo, or live trading.
+      unblocks: [S1-G4]   # per MASTER_PLAN.md, S1-G4 is "BLOCKED until S1-G3 passes" -- now unblocked as a POSSIBLE next gate, not opened by this decision alone
+      recommendation_basis: >
+        Unlike S1-G2 (which found a genuine specification-level gap), the
+        completion audit found no gap in S1-G3's required-evidence list:
+        every category is covered by a fixed-expected-value test or is a
+        correctly-justified N/A. Recommends acceptance. Audit itself does
+        not accept S1-G3 or authorize S1-G4 -- that remained a separate
+        owner decision, now made here.
+    s1_g4_gate:
+      status: accepted   # 2026-07-27, owner decision -- SCOPED TO S1-G4 ONLY, not the full a2_signal_conformance status above
+      basis: event_state_conformance_evidence_complete
+      evidence_report: reports/validation/st_c3/S1_G4_EVENT_STATE_CONFORMANCE_REPORT.md
+      completion_audit: reports/validation/st_c3/S1_G4_EVENT_STATE_CONFORMANCE_COMPLETION_AUDIT.md
+      decision_log: "reports/validation/st_c3/OWNER_DECISION_LOG.md, 'A2/S1-G4 gate acceptance' entry"
+      summary: >
+        Owner accepted S1-G4 (Event and State Conformance) on the
+        completion audit's finding that every MASTER_PLAN.md-required
+        evidence category (structured evidence for BOS, CHoCH, liquidity
+        pools, sweeps, reclaim, FVG, POI interaction, displacement, DOL;
+        legal transition tests; illegal transition tests;
+        expiry/invalidation tests; duplicate prevention;
+        rejection-code evidence) is covered by a test traceable to a real,
+        spec-registered mechanism. 23 new tests added in
+        tests/st_c3/test_s1_g4_event_state_conformance.py, none of which
+        changed specs/st-c3_v1.0.7.yaml, kernel.py's guard sequence, or
+        any EvidenceBundle field. Duplicate-prevention coverage was
+        deliberately scoped to only the frozen spec's actual mechanism
+        (SUPERSEDED -> ERR_SUPERSEDED_SETUP) -- no cross-candidate
+        ranking/arbitration algorithm was invented, since none exists in
+        the frozen v1.x spec (that remains Stage B / execution-layer
+        scope). This accepts S1-G4 specifically -- it does NOT mark the
+        broader a2_signal_conformance substage (S1-G5 through S1-G6) as
+        passed, and does NOT authorize A3, execution, optimization, demo,
+        or live trading.
+      unblocks: [S1-G5]   # per MASTER_PLAN.md's S1-G3->S1-G4 pattern, S1-G5 becomes a POSSIBLE next gate, not opened by this decision alone
+      recommendation_basis: >
+        The completion audit found every required-evidence category
+        traceable to a real, spec-registered mechanism, with new test
+        coverage added for the two categories (expiry/invalidation,
+        duplicate prevention) that had no prior tests. Recommends
+        acceptance. Audit itself does not accept S1-G4 or authorize
+        S1-G5 -- that remained a separate owner decision, now made here.
+    current_gate: S1-G4
+    current_gate_name: Event and State Conformance
     authorization: scoped_reference_implementation_granted
     opened:
       decision: owner_directive
