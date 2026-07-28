@@ -240,6 +240,11 @@ ST-C3 evidence:
   and rejection-reason text matching — 23 new tests in
   `tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py`. Evidence
   only — accepting S1-G5 is a separate, not-yet-made owner decision.
+- `reports/validation/st_c3/S1_G5_SIGNAL_TRADE_PLAN_CONFORMANCE_COMPLETION_AUDIT.md` -
+  completion audit (2026-07-28) finding every concept in S1-G5's purpose
+  statement covered by an exact-value test, recommending the evidence is
+  sufficient for acceptance. A recommendation only — does not itself
+  accept S1-G5.
 - `reports/validation/st_c3/V1X_FUNNEL_FREEZE_AND_R18_CLOSURE.md` - the
   owner's 2026-07-27 decision to freeze the v1.x reference-implementation
   scope at 9/12 stages, close R-18 at `signal_rate=0.0` by the state

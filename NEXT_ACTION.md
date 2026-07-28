@@ -190,6 +190,13 @@ never the `reason` string itself). Full detail:
 No change to `specs/st-c3_v1.0.7.yaml`, `kernel.py`'s guard sequence, or
 any `EvidenceBundle`/`TradePlan` field — this work only adds tests.
 
+**Completion audit filed:** `reports/validation/st_c3/S1_G5_SIGNAL_TRADE_PLAN_CONFORMANCE_COMPLETION_AUDIT.md`
+finds every concept in S1-G5's one-line purpose statement covered by an
+exact-value test tracing to the frozen spec, and recommends the evidence
+is **sufficient for acceptance**. This is a recommendation, not an
+acceptance — accepting S1-G5 remains a separate, explicit owner decision
+not yet made.
+
 ## 2026-07-27 correction: a quarantined line of work was rejected
 
 A separate line of work (`specs/st-c3_v1.0.6.yaml`,
