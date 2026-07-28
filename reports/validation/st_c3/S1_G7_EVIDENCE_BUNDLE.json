@@ -1,0 +1,65 @@
+{
+  "s1_g7_evidence_bundle": {
+    "spec_basis": {
+      "authoritative": "v1.0.7",
+      "analytical_extension": "v1.0.8"
+    },
+    "validated_signal_evidence": {
+      "bias": {
+        "htf_bias": "string",
+        "mtf_bias": "string",
+        "ltf_bias": "string",
+        "notes": "string"
+      },
+      "poi": {
+        "htf_poi_type": "string",
+        "poi_arrival_context": "string",
+        "notes": "string"
+      },
+      "liquidity": {
+        "draw_on_liquidity": "string",
+        "sweep_targets": ["string"],
+        "notes": "string"
+      },
+      "confirmation_chain": {
+        "sweep": "string",
+        "choch": "string",
+        "mss": "string",
+        "notes": "string"
+      },
+      "ob_fvg_validation": {
+        "ob_present": "boolean",
+        "fvg_present": "boolean",
+        "interaction_notes": "string"
+      },
+      "qualification_gates": {
+        "session": "string",
+        "news": "string",
+        "spread": "string",
+        "daily_risk": "string",
+        "notes": "string"
+      },
+      "analytical_ote": {
+        "ote_zone": "string",
+        "notes": "string"
+      }
+    },
+    "sop_a_context": {
+      "htf_bias": "string",
+      "htf_poi": "string",
+      "draw_on_liquidity": "string",
+      "qualification_gates": ["string"],
+      "confirmation_filters": ["string"],
+      "analytical_ote": "string"
+    },
+    "execution_agent_requirements": {
+      "signal_structure": "string",
+      "confirmation_structure": "string",
+      "poi_interaction": "string",
+      "liquidity_behavior": "string",
+      "bias_alignment": "string",
+      "environmental_constraints": "string"
+    },
+    "notes": "Analytical-only evidence bundle template. No execution logic."
+  }
+}

@@ -1,0 +1,15 @@
+s1_g7_audit_verdict:
+  status: template_only
+  evidence_complete: false
+  alignment_consistent: false
+  gaps:
+    - real_signal_evidence_missing
+    - real_poi_evidence_missing
+    - real_liquidity_evidence_missing
+    - real_confirmation_evidence_missing
+  notes: >
+    Structural audit completed against template-only artifacts. No
+    authoritative validation verdict can be derived until the evidence
+    bundle is populated with real repository evidence.
+  execution_binding: false
+  lifecycle_binding: false

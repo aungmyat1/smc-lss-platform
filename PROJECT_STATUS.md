@@ -140,6 +140,16 @@ ST-C3 evidence:
   `reports/validation/st_c3/S1_G7_READINESS_CHECKLIST.md` - documentation-only
   SOP-A analytical draft, tied to the new governance RCR and evidence schema;
   no kernel, lifecycle, or execution change.
+- `docs/strategy/st_c3/ST-C3_S1-G7_INDEX.md` / `reports/validation/st_c3/S1_G7_READINESS_CHECKLIST.md`
+  / `reports/validation/st_c3/S1_G7_ALIGNMENT_TEMPLATE.md` /
+  `reports/validation/st_c3/S1_G7_EVIDENCE_GATHERING_PLAN.md` /
+  `reports/validation/st_c3/S1_G7_AUDIT_TEMPLATE.md` /
+  `reports/validation/st_c3/S1_G7_AUDIT_COMPLETION_REPORT.md` /
+  `reports/validation/st_c3/S1_G7_OWNER_DECISION.md` /
+  `reports/validation/st_c3/S1_G7_OWNER_DECISION_COMPLETION_REPORT.md` -
+  consolidated S1-G7 analytical draft trail index and companion artifacts;
+  documentation-only, non-executable, non-lifecycle, and top-level visible
+  for audit clarity.
 - `reports/validation/st_c3/ST-C3_S1-G1C_LOGIC_CONFORMANCE_REPORT.md` - S1-G1C
   audit against v1.0.0.
 - `reports/validation/st_c3/ST-C3_v1.0.1_PATCH_RECOMMENDATION.md` - patch
