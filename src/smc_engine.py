@@ -19,6 +19,26 @@ def load_candles(path):
     rows.sort(key=lambda x: x["time"])
     return rows
 
+def _is_swing_high(highs, i, k):
+    h = highs[i]
+    for j in range(i - k, i):
+        if not (h > highs[j]):
+            return False
+    for j in range(i + 1, i + k + 1):
+        if not (h >= highs[j]):
+            return False
+    return True
+
+def _is_swing_low(lows, i, k):
+    l = lows[i]
+    for j in range(i - k, i):
+        if not (l < lows[j]):
+            return False
+    for j in range(i + 1, i + k + 1):
+        if not (l <= lows[j]):
+            return False
+    return True
+
 def swings(c, k=2):
     """Fractal swing points. Returns (highs, lows) as lists of (index, price).
     A swing at center index i is only *confirmed* after k following bars.
@@ -31,31 +51,10 @@ def swings(c, k=2):
     highs = [x["high"] for x in c]
     lows = [x["low"] for x in c]
     for i in range(k, len(c) - k):
-        h, l = highs[i], lows[i]
-        is_hi = True
-        for j in range(i - k, i):
-            if not (h > highs[j]):
-                is_hi = False
-                break
-        if is_hi:
-            for j in range(i + 1, i + k + 1):
-                if not (h >= highs[j]):
-                    is_hi = False
-                    break
-        if is_hi:
-            hi.append((i, h))
-        is_lo = True
-        for j in range(i - k, i):
-            if not (l < lows[j]):
-                is_lo = False
-                break
-        if is_lo:
-            for j in range(i + 1, i + k + 1):
-                if not (l <= lows[j]):
-                    is_lo = False
-                    break
-        if is_lo:
-            lo.append((i, l))
+        if _is_swing_high(highs, i, k):
+            hi.append((i, highs[i]))
+        if _is_swing_low(lows, i, k):
+            lo.append((i, lows[i]))
     return hi, lo
 
 def confirmed_before(swing_list, idx, k=2):
@@ -187,6 +186,11 @@ def liquidity_pools(c, k=2, tol=0.0002):
     return pools
 
 
+def _advance_swing_ptr(swing_list, ptr, n, idx, k):
+    while ptr < n and swing_list[ptr][0] + k <= idx:
+        ptr += 1
+    return ptr
+
 def liquidity_sweeps(c, k=2, min_wick_ratio=0.5):
     """Sweep + reclaim events (adapted from Signal-Execution-Labs liquidity-sweep spec).
 
@@ -204,10 +208,8 @@ def liquidity_sweeps(c, k=2, min_wick_ratio=0.5):
             continue
         body_lo = min(c[i]["open"], c[i]["close"])
         body_hi = max(c[i]["open"], c[i]["close"])
-        while lo_ptr < n_lo and lo_all[lo_ptr][0] + k <= i:
-            lo_ptr += 1
-        while hi_ptr < n_hi and hi_all[hi_ptr][0] + k <= i:
-            hi_ptr += 1
+        lo_ptr = _advance_swing_ptr(lo_all, lo_ptr, n_lo, i, k)
+        hi_ptr = _advance_swing_ptr(hi_all, hi_ptr, n_hi, i, k)
         if lo_ptr:
             lvl = lo_all[lo_ptr - 1][1]
             lower_wick = body_lo - c[i]["low"]

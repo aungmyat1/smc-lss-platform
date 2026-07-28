@@ -268,6 +268,35 @@ stage_a_strategy_validation:
         S1-G5 -- that remained a separate owner decision, now made here.
     current_gate: S1-G4
     current_gate_name: Event and State Conformance
+    fast_track_validation_plan:
+      status: planning_material_not_acceptance
+      plan: reports/validation/st_c3/ST_C3_ULTRA_FAST_VALIDATION_FUNNEL.md
+      adopted: "2026-07-28"
+      s1_g5_s1_g6_review:
+        mode: consolidated_packet_single_review_session
+        decision_window_hours: 48
+        outcomes_recorded_separately: true
+        gate_outcomes: [accept, reject, defer]
+      replay_standard:
+        single_source_of_truth: true
+        required_fields: [entry, exit, R, MAE, MFE, session, news_flag,
+          rationale, win_loss]
+        hash_algorithm: SHA-256
+        hash_storage:
+          packet_header: true
+          standalone_path: evidence/st_c3/replay_hash.txt
+        downstream_outputs_must_reference_hash: [statistics, robustness,
+          walk_forward_oos]
+      robustness_threshold_table: validation/st_c3/robustness_thresholds.yaml
+      walk_forward_default:
+        window_method: fixed_year_slices
+        run_only_after: [baseline_statistics_pass, robustness_pass]
+        pass_criteria: "non-negative expectancy across windows and PF > 1.2 in the majority of windows"
+      engine_versioning_required: [statistics_engine, robustness_engine]
+      guardrail: >
+        Planning material only. Does not accept S1-G5 or S1-G6, does not
+        pass A2, does not open A3, and does not authorize execution,
+        optimization, broker integration, demo, live trading, or production.
     authorization: scoped_reference_implementation_granted
     opened:
       decision: owner_directive

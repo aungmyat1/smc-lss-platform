@@ -236,6 +236,19 @@ any `EvidenceBundle`/`TradePlan` field.
 (or both) remains a separate, explicit owner decision, same pattern as
 S1-G2 through S1-G4.
 
+**Fast-track validation plan adopted (planning material, not acceptance):**
+`reports/validation/st_c3/ST_C3_ULTRA_FAST_VALIDATION_FUNNEL.md` defines
+the audit-ready continuation once the S1-G5/S1-G6 evidence packet is
+reviewed. The plan uses one consolidated 48-hour review window for S1-G5
+and S1-G6 while preserving two independent owner outcomes. If both gates
+are accepted and A3 is later explicitly opened, A3 validation should run
+from one deterministic replay ledger with a SHA-256 ledger hash, direct
+statistics, parallel robustness, conditional walk-forward/OOS, robustness
+thresholds at `validation/st_c3/robustness_thresholds.yaml`, fixed-year
+walk-forward slices by default, and stats/robustness engine versioning in
+all evidence outputs. This does not authorize A3, execution, optimization,
+broker integration, demo, live trading, or production.
+
 ## 2026-07-27 correction: a quarantined line of work was rejected
 
 A separate line of work (`specs/st-c3_v1.0.6.yaml`,

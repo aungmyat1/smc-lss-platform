@@ -29,6 +29,21 @@ does not pass A2, does not open A3, and does not authorize execution.
 - S1-G6 mechanical status: PASS
 - S1-G6 governance eligible: NO
 
+## 4. Fast-Track Review Standard
+
+The S1-G5 and S1-G6 evidence should be reviewed in one consolidated
+48-hour owner decision window, with separate accept/reject/defer outcomes
+for each gate. The audit-ready continuation plan is recorded in
+`reports/validation/st_c3/ST_C3_ULTRA_FAST_VALIDATION_FUNNEL.md`.
+
+That plan is not an acceptance decision and does not open A3. It defines
+the future A3 evidence standard if A3 is later explicitly opened:
+deterministic replay ledger, SHA-256 replay hash, direct statistics,
+parallel robustness, conditional walk-forward/OOS, robustness thresholds
+at `validation/st_c3/robustness_thresholds.yaml`, fixed-year walk-forward
+slices by default, and stats/robustness engine versioning in evidence
+outputs.
+
 Why S1-G6 is not governance-eligible:
 
 - `MASTER_PLAN.md` still sequences S1-G6 behind S1-G5 acceptance.

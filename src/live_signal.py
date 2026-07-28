@@ -33,17 +33,18 @@ def latest_signal(c, k, window):
 def size(sig, equity, risk_pct, rr, pip, pip_value, lot_step, min_rr):
     dist = abs(sig["entry"] - sig["stop"])
     stop_pips = dist / pip
-    risk_usd = equity * risk_pct / 100
-    lots = math.floor((risk_usd / (stop_pips * pip_value)) / lot_step) * lot_step if stop_pips else 0
+    risk_usd = equity * risk_pct / 100 if equity > 0 else 0
+    lots = math.floor((risk_usd / (stop_pips * pip_value)) / lot_step) * lot_step if (stop_pips and equity > 0) else 0
     tgt = sig["entry"] + rr * dist if sig["dir"] == "long" else sig["entry"] - rr * dist
     reasons = []
     if rr < min_rr:
         reasons.append("R:R < " + str(min_rr))
     if lots <= 0:
         reasons.append("rounded lots = 0")
+    pct_eq = round(lots * stop_pips * pip_value / equity * 100, 2) if equity > 0 else 0.0
     return {"lots": round(lots, 2), "stop_pips": round(stop_pips, 1), "target": round(tgt, 5),
             "risk_usd": round(lots * stop_pips * pip_value, 2),
-            "pct_equity": round(lots * stop_pips * pip_value / equity * 100, 2),
+            "pct_equity": pct_eq,
             "rr": rr, "decision": "GO" if not reasons else "NO-GO", "reasons": reasons}
 
 

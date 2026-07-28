@@ -103,6 +103,52 @@
       }
     }
   },
+  "fast_track_validation_plan": {
+    "status": "planning_material_not_acceptance",
+    "plan": "reports/validation/st_c3/ST_C3_ULTRA_FAST_VALIDATION_FUNNEL.md",
+    "review": {
+      "mode": "consolidated_s1_g5_s1_g6_packet",
+      "decision_window_hours": 48,
+      "separate_gate_outcomes": true,
+      "allowed_outcomes": [
+        "accept",
+        "reject",
+        "defer"
+      ]
+    },
+    "future_a3_standard": {
+      "replay_ledger_single_source_of_truth": true,
+      "required_replay_fields": [
+        "entry",
+        "exit",
+        "R",
+        "MAE",
+        "MFE",
+        "session",
+        "news_flag",
+        "rationale",
+        "win_loss"
+      ],
+      "hash_algorithm": "SHA-256",
+      "hash_storage": {
+        "packet_header": true,
+        "standalone_path": "evidence/st_c3/replay_hash.txt"
+      },
+      "downstream_outputs_must_reference_hash": [
+        "statistics",
+        "robustness",
+        "walk_forward_oos"
+      ],
+      "robustness_threshold_table": "validation/st_c3/robustness_thresholds.yaml",
+      "walk_forward_window_method_default": "fixed_year_slices",
+      "walk_forward_pass_criteria": "non-negative expectancy across windows and PF > 1.2 in the majority of windows",
+      "engine_versioning_required": [
+        "statistics_engine",
+        "robustness_engine"
+      ]
+    },
+    "guardrail": "Does not accept S1-G5 or S1-G6, pass A2, open A3, or authorize execution, optimization, broker integration, demo, live trading, or production."
+  },
   "recommendation": "ready_for_owner_review_only",
   "note": "This package summarizes mechanical A2 evidence only. It does not accept S1-G5, S1-G6, A2, or open A3."
 }

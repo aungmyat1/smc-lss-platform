@@ -357,9 +357,19 @@ The next available governance decision is whether to **accept S1-G5**
 and/or **S1-G6** on that evidence, each its own explicit owner decision,
 not implied by gathering the evidence — and S1-G6's own audit recommends
 reviewing both together rather than S1-G6 alone, since it is not
-governance-eligible while S1-G5 is unaccepted. Do not authorize
-execution, optimization, backtesting, broker integration, demo, live, or
-A3 opening until their own separate owner decisions permit them.
+governance-eligible while S1-G5 is unaccepted.
+
+Fast-track validation plan adopted as planning material:
+`reports/validation/st_c3/ST_C3_ULTRA_FAST_VALIDATION_FUNNEL.md`.
+That plan consolidates S1-G5/S1-G6 review into one 48-hour owner decision
+window, records separate outcomes for each gate, and defines the future A3
+continuous pipeline standard: deterministic replay ledger, SHA-256 replay
+hash, direct statistics, parallel robustness, conditional walk-forward/OOS,
+robustness threshold table at `validation/st_c3/robustness_thresholds.yaml`,
+fixed-year walk-forward slices by default, and stats/robustness engine
+versioning in evidence outputs. This is not an A3 opening decision. Do not
+authorize execution, optimization, backtesting, broker integration, demo,
+live, or A3 opening until their own separate owner decisions permit them.
 
 ---
 

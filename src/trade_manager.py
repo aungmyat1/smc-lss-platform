@@ -6,7 +6,18 @@ actions to apply via metatrader modify_position. Stops only ever tighten.
 """
 
 
-def manage(entry, stop, target, price, direction, be_at_r):
+from __future__ import annotations
+from typing import Any
+
+
+def manage(
+    entry: float,
+    stop: float,
+    target: float,
+    price: float,
+    direction: str,
+    be_at_r: float,
+) -> dict[str, Any]:
     risk = abs(entry - stop)
     if risk <= 0:
         return {"r_multiple": 0, "actions": [{"action": "invalid_stop"}]}
