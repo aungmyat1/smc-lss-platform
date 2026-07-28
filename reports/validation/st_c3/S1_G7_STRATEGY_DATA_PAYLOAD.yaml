@@ -1,0 +1,106 @@
+strategy_data_payload:
+  strategy_id: ST-C3
+  stage: A
+  gate: S1-G7
+  spec_basis:
+    authoritative: specs/st-c3_v1.0.7.yaml
+    analytical_extension: specs/st-c3_v1.0.8.yaml
+  market_and_instrument_context:
+    instrument: GBPUSD
+    timeframe_set:
+      htf: H4
+      mtf: M15
+      ltf: [M3, M1]
+    session_context:
+      allowed_windows_utc:
+        - "07:00-10:00"
+        - "13:00-16:00"
+      excluded_low_liquidity_windows_utc:
+        - "00:00-02:00"
+        - "20:00-22:00"
+    liquidity_environment_notes: >
+      Repo-backed GBPUSD spot series are available for H4, M15, and M3.
+      The frozen spec treats London and New York windows as the valid
+      analytical session context and excludes the low-liquidity windows
+      listed above.
+  price_series:
+    source_type: repo_dataset
+    files:
+      htf_h4:
+        path: data/GBPUSD_H4.csv
+        rows: 5000
+        first_timestamp: "2023-05-08 08:00"
+        last_timestamp: "2026-07-24 08:00"
+      mtf_m15:
+        path: data/GBPUSD_M15.csv
+        rows: 30000
+        first_timestamp: "2025-05-09 23:45"
+        last_timestamp: "2026-07-24 11:30"
+      ltf_m3:
+        path: data/GBPUSD_M3.csv
+        rows: 16642
+        first_timestamp: "2026-06-05 16:51"
+        last_timestamp: "2026-07-24 11:48"
+    note: >
+      No GBPUSD M1 dataset is present in the repo data directory. If M1 is
+      required for a downstream confirmation check, it will need to be
+      supplied separately.
+  strategy_logic_contract:
+    bias:
+      model: htf_structure_locked_until_valid_htf_choch
+      evidence: HTFBiasEvidence
+    poi:
+      model: htf_poi_classification_and_arrival_context
+      evidence: [FVGEvidence, OrderBlockEvidence]
+    liquidity:
+      model: draw_on_liquidity_and_sweep_reclaim
+      evidence: [SweepEvidence, SweepReclaimEvidence]
+    sweep_choch_mss:
+      model: structural_confirmation_chain
+      evidence: [SweepEvidence, LTFConfirmationEvidence]
+    ob_fvg:
+      model: confluence_inside_ote
+      evidence: [FVGEvidence, OrderBlockEvidence]
+    qualification:
+      gates: [session, news, spread, daily_risk]
+      evidence: [SessionWindowEvidence, QualificationGateEvidence]
+    ote:
+      model: analytical_only_ote_zone
+      evidence: OTEEvidence
+    entry_exit_logic:
+      scope: analytical_only
+      notes: >
+        No execution or broker behavior is authorized by this payload.
+  strategy_parameters:
+    wick_ratio_min: 0.50
+    equal_highs_lows_tolerance: "0.10 * MF_ATR(1)"
+    max_sweep_age_bars: 15
+    sweep_reclaim_max_bars: 2
+    displacement_body_ratio_min: 0.50
+    displacement_atr_floor_multiplier: 1.0
+    bos_confirmation_bars: 2
+    pullback_depth_atr_multiplier: 0.30
+    ob_freshness_max_mf_swings: 3
+    fvg_freshness_max_mf_swings: 1
+    ote_band_min: 0.62
+    ote_band_max: 0.79
+    entry_window_bars: 4
+    fixed_lot_size: 0.01
+    min_rr: 3.0
+    max_positions: 2
+    portfolio_heat_pct: 3.0
+    daily_loss_pct: 3.0
+    weekly_loss_pct: 7.0
+    max_positions_per_instrument: 1
+    daily_max_trades: 4
+  additional_context:
+    source_of_truth_notes:
+      - "v1.0.7 is authoritative."
+      - "v1.0.8 is draft analytical-only."
+      - "S7/S8/S9 remain frozen."
+    repository_constraints:
+      - "No execution logic."
+      - "No broker commands."
+      - "No trading signals."
+      - "No lifecycle mutations."
+      - "No kernel or evidence-engine changes."

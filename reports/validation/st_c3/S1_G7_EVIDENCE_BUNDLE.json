@@ -4,62 +4,80 @@
       "authoritative": "v1.0.7",
       "analytical_extension": "v1.0.8"
     },
+    "intake_snapshot": {
+      "instrument": "GBPUSD",
+      "time": "2026-07-24 08:30",
+      "m15_index": 29987,
+      "dataset_paths": {
+        "htf_h4": "data/GBPUSD_H4.csv",
+        "mtf_m15": "data/GBPUSD_M15.csv",
+        "ltf_m3": "data/GBPUSD_M3.csv"
+      },
+      "m1_dataset_present": false
+    },
     "validated_signal_evidence": {
       "bias": {
-        "htf_bias": "string",
-        "mtf_bias": "string",
-        "ltf_bias": "string",
-        "notes": "string"
+        "htf_bias": "BEARISH",
+        "mtf_bias": "bearish",
+        "ltf_bias": "bearish_partial_m3_only",
+        "notes": "H4 structure resolved to LHLL at the intake bar; M1 is unavailable, so LTF confirmation remains partial."
       },
       "poi": {
-        "htf_poi_type": "string",
-        "poi_arrival_context": "string",
-        "notes": "string"
+        "htf_poi_type": "order_block_or_fvg_confluence",
+        "poi_arrival_context": "fvg_present_outside_ote_and_ob_present_outside_ote",
+        "notes": "Real H4/M15 POI evidence is present, but the confluence sits outside OTE at the intake bar."
       },
       "liquidity": {
-        "draw_on_liquidity": "string",
-        "sweep_targets": ["string"],
-        "notes": "string"
+        "draw_on_liquidity": "sell_side",
+        "sweep_targets": ["1.33152"],
+        "notes": "Buy-side liquidity was swept at the intake bar and reclaimed within the allowed sweep window."
       },
       "confirmation_chain": {
-        "sweep": "string",
-        "choch": "string",
-        "mss": "string",
-        "notes": "string"
+        "sweep": "valid",
+        "choch": "m3_choch_with_local_sweep",
+        "mss": "partial_m3_only",
+        "notes": "LTF confirmation is satisfied on M3, but the absent M1 dataset prevents full microstructure confirmation."
       },
       "ob_fvg_validation": {
-        "ob_present": "boolean",
-        "fvg_present": "boolean",
-        "interaction_notes": "string"
+        "ob_present": true,
+        "fvg_present": true,
+        "interaction_notes": "Both OB and FVG are present and fresh, but both are outside OTE at the selected bar."
       },
       "qualification_gates": {
-        "session": "string",
-        "news": "string",
-        "spread": "string",
-        "daily_risk": "string",
-        "notes": "string"
+        "session": "LONDON",
+        "news": "not_evaluated_in_repo_snapshot",
+        "spread": "not_evaluated_in_repo_snapshot",
+        "daily_risk": "not_evaluated_in_repo_snapshot",
+        "notes": "Session gate passes; other qualification dimensions are not materialized in the current data snapshot."
       },
       "analytical_ote": {
-        "ote_zone": "string",
-        "notes": "string"
+        "ote_zone": "not_detected",
+        "notes": "OTE is invalid at the intake bar because the dealing range did not form."
       }
     },
     "sop_a_context": {
-      "htf_bias": "string",
-      "htf_poi": "string",
-      "draw_on_liquidity": "string",
-      "qualification_gates": ["string"],
-      "confirmation_filters": ["string"],
-      "analytical_ote": "string"
+      "htf_bias": "BEARISH",
+      "htf_poi": "order_block_or_fvg_confluence",
+      "draw_on_liquidity": "sell_side",
+      "qualification_gates": ["session=LONDON", "news=not_evaluated", "spread=not_evaluated", "daily_risk=not_evaluated"],
+      "confirmation_filters": ["sweep=valid", "choch=m3_choch_with_local_sweep", "mss=partial_m3_only"],
+      "analytical_ote": "not_detected"
     },
     "execution_agent_requirements": {
-      "signal_structure": "string",
-      "confirmation_structure": "string",
-      "poi_interaction": "string",
-      "liquidity_behavior": "string",
-      "bias_alignment": "string",
-      "environmental_constraints": "string"
+      "signal_structure": "directional_alignment_with_h4_bias",
+      "confirmation_structure": "sweep_choch_mss_chain",
+      "poi_interaction": "htf_poi_and_confluence_inside_ote",
+      "liquidity_behavior": "draw_on_liquidity_and_reclaim",
+      "bias_alignment": "bearish",
+      "environmental_constraints": "london_session_only_for_this_snapshot"
     },
-    "notes": "Analytical-only evidence bundle template. No execution logic."
+    "kernel_result": {
+      "outcome": "REJECTED",
+      "state": "S4_DISPLACEMENT_BOS",
+      "code": "R3_NO_DISPLACEMENT_BOS",
+      "reason": "no_impulsive_move_after_sweep",
+      "states_reached": ["S0_INIT", "S1_HTF_BIAS", "S2_SWEEP", "S3_SWEEP_RECLAIM"]
+    },
+    "notes": "Analytical-only real evidence bundle. No execution logic."
   }
 }

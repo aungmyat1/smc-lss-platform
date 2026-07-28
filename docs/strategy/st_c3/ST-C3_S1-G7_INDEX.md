@@ -73,7 +73,11 @@ Template-only alignment matrix.
 
 - `reports/validation/st_c3/S1_G7_VALIDATION_SUMMARY.md`
 
-Template-only validation summary.
+Real evidence validation summary for the GBPUSD intake snapshot.
+
+- `reports/validation/st_c3/ORCHESTRATION_CYCLE_06_REAL_EVIDENCE_INTAKE.md`
+
+Records the real evidence intake cycle.
 
 ### 3.4 Audit Layer
 
@@ -106,6 +110,26 @@ Captures final analytical audit findings.
 - `reports/validation/st_c3/S1_G7_OWNER_DECISION.md`
 
 Owner decision template.
+
+- `reports/validation/st_c3/ORCHESTRATION_CYCLE_04_OWNER_DECISION.md`
+
+Records the template-only owner-decision cycle.
+
+- `reports/validation/st_c3/S1_G7_OWNER_DECISION_TEMPLATE_FILLED.md`
+
+Template-only owner-decision worksheet.
+
+- `reports/validation/st_c3/S1_G7_OWNER_DECISION_PENDING.md`
+
+Pending-state owner-decision record.
+
+- `reports/validation/st_c3/S1_G7_OWNER_DECISION_VERDICT_TEMPLATE.yaml`
+
+Template-only verdict record.
+
+- `reports/validation/st_c3/ORCHESTRATION_CYCLE_05_PENDING_FREEZE.md`
+
+Records the pending-freeze cycle for S1-G7.
 
 - `reports/validation/st_c3/S1_G7_OWNER_DECISION_COMPLETION_REPORT.md`
 

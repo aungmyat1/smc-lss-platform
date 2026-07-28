@@ -1,0 +1,17 @@
+s1_g7_owner_decision_verdict:
+  status: pending
+  accepted: false
+  requires_revision: false
+  deferred: true
+  decision_finalized: false
+  rationale:
+    - template_only_evidence_trail
+    - no_authoritative_verdict_available
+  conditions:
+    - populate_real_validation_evidence
+    - rerun_audit_after_evidence_completion
+  execution_binding: false
+  lifecycle_binding: false
+  notes: >
+    This is a pending-state verdict template only. It does not represent a
+    final owner decision and does not authorize Stage-B progression.
