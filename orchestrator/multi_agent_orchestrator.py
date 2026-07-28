@@ -35,6 +35,7 @@ from agents.research import (
     StatValidationAgent,
 )
 from validation.st_c3.golden_runner import run_golden_suite
+from validation.st_c3.negative_runner import run_negative_suite
 
 
 DEFAULT_WORKFLOW = ROOT / "config" / "st_c3_operating_workflow.yaml"
@@ -171,6 +172,9 @@ class MultiAgentSMCOrchestrator:
         conformance = self.conformance_kernel.run_a2_conformance()
         gate = self.conformance_governance.evaluate_a2_gate(conformance)
         failure = self.failure_analysis.summarize(conformance)
+        negative_summary = run_negative_suite()
+        negative_path = ROOT / "evidence" / "conformance" / "st_c3_s1_g5_negative_summary.json"
+        self.evidence_builder.write(negative_summary, negative_path)
         golden_summary = run_golden_suite()
         golden_path = ROOT / "evidence" / "conformance" / "st_c3_s1_g6_golden_summary.json"
         self.evidence_builder.write(golden_summary, golden_path)
@@ -192,8 +196,21 @@ class MultiAgentSMCOrchestrator:
             "conformance_report": conformance,
             "gate_evaluation": gate,
             "failure_analysis": failure,
+            "s1_g5_negative_summary": negative_summary,
             "s1_g6_golden_summary": golden_summary,
             "gate_checks": [
+                {
+                    "stage": "A2",
+                    "gate": "S1-G5",
+                    "status": "PASS" if negative_summary["failed_cases"] == 0 else "FAIL",
+                    "governance_accepted": s1_g5_accepted,
+                    "reason": (
+                        "Mechanical negative-case suite passed; owner acceptance of S1-G5 remains a separate governance act."
+                        if negative_summary["failed_cases"] == 0
+                        else "Negative-case suite contains failing deterministic rejection paths."
+                    ),
+                    "evidence_path": str(negative_path),
+                },
                 {
                     "stage": "A2",
                     "gate": "S1-G6",

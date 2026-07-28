@@ -1,0 +1,61 @@
+{
+  "root": "golden/st_c3/negative",
+  "scenario_filter": null,
+  "total_cases": 4,
+  "passed_cases": 4,
+  "failed_cases": 0,
+  "status": "PASS",
+  "results": [
+    {
+      "case_id": "STC3-NEG-R1-001",
+      "scenario_type": "htf_bias",
+      "path": "golden/st_c3/negative/htf_bias/case_001.json",
+      "status": "PASS",
+      "outcome": "REJECTED"
+    },
+    {
+      "case_id": "STC3-NEG-R4-001",
+      "scenario_type": "ote",
+      "path": "golden/st_c3/negative/ote/case_001.json",
+      "status": "PASS",
+      "outcome": "REJECTED"
+    },
+    {
+      "case_id": "STC3-NEG-R8-001",
+      "scenario_type": "risk",
+      "path": "golden/st_c3/negative/risk/case_001.json",
+      "status": "PASS",
+      "outcome": "REJECTED"
+    },
+    {
+      "case_id": "STC3-NEG-R6-001",
+      "scenario_type": "session",
+      "path": "golden/st_c3/negative/session/case_001.json",
+      "status": "PASS",
+      "outcome": "REJECTED"
+    }
+  ],
+  "failures": [],
+  "scenario_breakdown": {
+    "htf_bias": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "ote": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "risk": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "session": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    }
+  }
+}

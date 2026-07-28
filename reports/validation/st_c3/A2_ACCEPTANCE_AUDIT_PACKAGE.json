@@ -1,0 +1,108 @@
+{
+  "generated_from": {
+    "a2_cycle": "D:\\ddev\\smc-lss-platform\\evidence\\conformance\\st_c3_a2_orchestration_cycle.json",
+    "s1_g5_negative": "D:\\ddev\\smc-lss-platform\\evidence\\conformance\\st_c3_s1_g5_negative_summary.json",
+    "s1_g6_golden": "D:\\ddev\\smc-lss-platform\\evidence\\conformance\\st_c3_s1_g6_golden_summary.json"
+  },
+  "strategy": "ST-C3",
+  "spec": "specs/st-c3_v1.0.7.yaml",
+  "audit_date": "2026-07-28",
+  "stage": "A2",
+  "focus_gate": "S1-G5",
+  "current_gate": "S1-G4",
+  "authorized_scope": [
+    "reference_funnel_assembly",
+    "golden_case_tests",
+    "negative_case_tests",
+    "existence_check_conformance_run",
+    "research_and_validation_tasks"
+  ],
+  "accepted_upstream_gates": [
+    "S1-G2",
+    "S1-G3",
+    "S1-G4"
+  ],
+  "forbidden_until_authorized": [
+    "historical_baseline",
+    "cost_adjusted_backtest",
+    "walk_forward",
+    "broker_integration",
+    "demo_trading",
+    "live_trading",
+    "production_promotion"
+  ],
+  "s1_g5": {
+    "mechanical_status": "PASS",
+    "governance_accepted": false,
+    "negative_cases": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "scenario_breakdown": {
+        "htf_bias": {
+          "total": 1,
+          "passed": 1,
+          "failed": 0
+        },
+        "ote": {
+          "total": 1,
+          "passed": 1,
+          "failed": 0
+        },
+        "risk": {
+          "total": 1,
+          "passed": 1,
+          "failed": 0
+        },
+        "session": {
+          "total": 1,
+          "passed": 1,
+          "failed": 0
+        }
+      }
+    }
+  },
+  "s1_g6": {
+    "mechanical_status": "PASS",
+    "governance_eligible": false,
+    "golden_cases": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "scenario_breakdown": {
+        "bos": {
+          "total": 1,
+          "passed": 1,
+          "failed": 0
+        },
+        "choch": {
+          "total": 1,
+          "passed": 1,
+          "failed": 0
+        },
+        "displacement": {
+          "total": 1,
+          "passed": 1,
+          "failed": 0
+        },
+        "fvg": {
+          "total": 1,
+          "passed": 1,
+          "failed": 0
+        },
+        "invalidations": {
+          "total": 1,
+          "passed": 1,
+          "failed": 0
+        },
+        "liquidity": {
+          "total": 1,
+          "passed": 1,
+          "failed": 0
+        }
+      }
+    }
+  },
+  "recommendation": "ready_for_owner_review_only",
+  "note": "This package summarizes mechanical A2 evidence only. It does not accept S1-G5, S1-G6, A2, or open A3."
+}

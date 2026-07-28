@@ -20,7 +20,7 @@ def test_workflow_report_targets_s1_g5_and_finds_scaffold():
     assert report["focus_gate"]["unblocked"] is True
     required_paths = {row["path"]: row["exists"] for row in report["focus_gate"]["required_paths"]}
     assert required_paths["strategy/st-c3/rejections.yaml"] is True
-    assert required_paths["golden/bos"] is True
+    assert required_paths["golden/st_c3/negative/htf_bias"] is True
     assert required_paths["tests/funnel"] is True
 
 

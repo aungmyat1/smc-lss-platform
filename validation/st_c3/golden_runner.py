@@ -66,7 +66,10 @@ def bundle_from_case(case: dict[str, Any]) -> EvidenceBundle:
 
 def iter_case_paths(root: Path = GOLDEN_ROOT, scenario: str | None = None) -> list[Path]:
     base = root / scenario if scenario else root
-    return sorted(base.rglob("case_*.json"))
+    paths = sorted(base.rglob("case_*.json"))
+    if scenario is None and root == GOLDEN_ROOT:
+        return [path for path in paths if "negative" not in path.parts]
+    return paths
 
 
 def _assert_subset(actual: Any, expected: Any, path: str = "root") -> None:
@@ -109,7 +112,7 @@ def evaluate_case(case_path: Path) -> dict[str, Any]:
     }
 
 
-def run_golden_suite(root: Path = GOLDEN_ROOT, scenario: str | None = None) -> dict[str, Any]:
+def run_case_suite(root: Path, scenario: str | None = None) -> dict[str, Any]:
     case_paths = iter_case_paths(root=root, scenario=scenario)
     results = []
     failures = []
@@ -148,3 +151,7 @@ def run_golden_suite(root: Path = GOLDEN_ROOT, scenario: str | None = None) -> d
         "failures": failures,
         "scenario_breakdown": {name: dict(counter) for name, counter in sorted(by_scenario.items())},
     }
+
+
+def run_golden_suite(root: Path = GOLDEN_ROOT, scenario: str | None = None) -> dict[str, Any]:
+    return run_case_suite(root=root, scenario=scenario)

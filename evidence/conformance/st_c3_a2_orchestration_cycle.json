@@ -61,7 +61,8 @@
         "artifacts": [
           "strategy/st-c3/rejections.yaml",
           "validation/st_c3/rejection_codes.py",
-          "tests/st_c3/test_negative_cases.py"
+          "tests/st_c3/test_negative_cases.py",
+          "golden/st_c3/negative"
         ]
       },
       {
@@ -78,7 +79,7 @@
     ]
   },
   "conformance_report": {
-    "generated_utc": "2026-07-28T04:11:06Z",
+    "generated_utc": "2026-07-28T04:32:18Z",
     "strategy": "ST-C3",
     "spec": "specs/st-c3_v1.0.7.yaml",
     "focus_gate": {
@@ -118,7 +119,8 @@
           "artifacts": [
             "strategy/st-c3/rejections.yaml",
             "validation/st_c3/rejection_codes.py",
-            "tests/st_c3/test_negative_cases.py"
+            "tests/st_c3/test_negative_cases.py",
+            "golden/st_c3/negative"
           ]
         },
         {
@@ -135,6 +137,8 @@
       ],
       "commands": [
         "python -m pytest -q tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py",
+        "python -m pytest -q tests/funnel/test_st_c3_negative_cases.py",
+        "python -c \"from validation.st_c3.negative_runner import run_negative_suite; import json; print(json.dumps(run_negative_suite(), indent=2))\"",
         "python tools/st_c3_workflow.py"
       ],
       "required_paths": [
@@ -144,37 +148,27 @@
           "kind": "file"
         },
         {
-          "path": "golden",
+          "path": "golden/st_c3/negative",
           "exists": true,
           "kind": "directory"
         },
         {
-          "path": "golden/bos",
+          "path": "golden/st_c3/negative/htf_bias",
           "exists": true,
           "kind": "directory"
         },
         {
-          "path": "golden/choch",
+          "path": "golden/st_c3/negative/ote",
           "exists": true,
           "kind": "directory"
         },
         {
-          "path": "golden/fvg",
+          "path": "golden/st_c3/negative/session",
           "exists": true,
           "kind": "directory"
         },
         {
-          "path": "golden/sweep",
-          "exists": true,
-          "kind": "directory"
-        },
-        {
-          "path": "golden/displacement",
-          "exists": true,
-          "kind": "directory"
-        },
-        {
-          "path": "golden/poi",
+          "path": "golden/st_c3/negative/risk",
           "exists": true,
           "kind": "directory"
         },
@@ -318,6 +312,67 @@
       "Keep Deterministic Funnel Tests Green"
     ]
   },
+  "s1_g5_negative_summary": {
+    "root": "golden/st_c3/negative",
+    "scenario_filter": null,
+    "total_cases": 4,
+    "passed_cases": 4,
+    "failed_cases": 0,
+    "status": "PASS",
+    "results": [
+      {
+        "case_id": "STC3-NEG-R1-001",
+        "scenario_type": "htf_bias",
+        "path": "golden/st_c3/negative/htf_bias/case_001.json",
+        "status": "PASS",
+        "outcome": "REJECTED"
+      },
+      {
+        "case_id": "STC3-NEG-R4-001",
+        "scenario_type": "ote",
+        "path": "golden/st_c3/negative/ote/case_001.json",
+        "status": "PASS",
+        "outcome": "REJECTED"
+      },
+      {
+        "case_id": "STC3-NEG-R8-001",
+        "scenario_type": "risk",
+        "path": "golden/st_c3/negative/risk/case_001.json",
+        "status": "PASS",
+        "outcome": "REJECTED"
+      },
+      {
+        "case_id": "STC3-NEG-R6-001",
+        "scenario_type": "session",
+        "path": "golden/st_c3/negative/session/case_001.json",
+        "status": "PASS",
+        "outcome": "REJECTED"
+      }
+    ],
+    "failures": [],
+    "scenario_breakdown": {
+      "htf_bias": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0
+      },
+      "ote": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0
+      },
+      "risk": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0
+      },
+      "session": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0
+      }
+    }
+  },
   "s1_g6_golden_summary": {
     "root": "golden/st_c3",
     "scenario_filter": null,
@@ -404,6 +459,14 @@
     }
   },
   "gate_checks": [
+    {
+      "stage": "A2",
+      "gate": "S1-G5",
+      "status": "PASS",
+      "governance_accepted": false,
+      "reason": "Mechanical negative-case suite passed; owner acceptance of S1-G5 remains a separate governance act.",
+      "evidence_path": "D:\\ddev\\smc-lss-platform\\evidence\\conformance\\st_c3_s1_g5_negative_summary.json"
+    },
     {
       "stage": "A2",
       "gate": "S1-G6",

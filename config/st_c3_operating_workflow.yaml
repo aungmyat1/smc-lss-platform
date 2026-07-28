@@ -11,18 +11,18 @@ gates:
     blocked_by: []
     required_paths:
       - strategy/st-c3/rejections.yaml
-      - golden
-      - golden/bos
-      - golden/choch
-      - golden/fvg
-      - golden/sweep
-      - golden/displacement
-      - golden/poi
+      - golden/st_c3/negative
+      - golden/st_c3/negative/htf_bias
+      - golden/st_c3/negative/ote
+      - golden/st_c3/negative/session
+      - golden/st_c3/negative/risk
       - tests/funnel
       - validation/st_c3/trade_plan.py
       - tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py
     commands:
       - python -m pytest -q tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py
+      - python -m pytest -q tests/funnel/test_st_c3_negative_cases.py
+      - python -c "from validation.st_c3.negative_runner import run_negative_suite; import json; print(json.dumps(run_negative_suite(), indent=2))"
       - python tools/st_c3_workflow.py
     tasks:
       - id: finalize_trade_plan_object
@@ -50,6 +50,7 @@ gates:
           - strategy/st-c3/rejections.yaml
           - validation/st_c3/rejection_codes.py
           - tests/st_c3/test_negative_cases.py
+          - golden/st_c3/negative
       - id: maintain_funnel_tests
         title: Keep Deterministic Funnel Tests Green
         summary: Validate positive, negative, malformed, precision-drift, timestamp-drift, and multi-symbol invariants before advancing.
