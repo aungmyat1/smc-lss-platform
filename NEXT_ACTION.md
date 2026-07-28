@@ -9,15 +9,15 @@ Current lifecycle position:
 | Field | State |
 |---|---|
 | Stage | Stage A - Strategy Validation |
-| Substage | A2 - Indicator, Event and Signal Conformance (S1-G2, S1-G3, S1-G4 accepted; S1-G5 evidence-gathering begun 2026-07-28, not passed; S1-G6 not started) |
-| Gate | S1-G5 Signal and Trade-Plan Conformance — **EVIDENCE GATHERED 2026-07-28, NOT YET ACCEPTED** (S1-G2/S1-G3/S1-G4 remain ACCEPTED 2026-07-27) |
+| Substage | A2 - Indicator, Event and Signal Conformance (S1-G2, S1-G3, S1-G4 accepted; S1-G5 evidence-gathering begun 2026-07-28, not accepted; S1-G6 evidence-gathering begun 2026-07-28, not accepted) |
+| Gate | S1-G5 Signal and Trade-Plan Conformance and S1-G6 Golden-Case Qualification — **EVIDENCE GATHERED 2026-07-28 FOR BOTH, NEITHER YET ACCEPTED** (S1-G2/S1-G3/S1-G4 remain ACCEPTED 2026-07-27) |
 | Strategy | ST-C3 v1.0.7 (fresh R-31/R-32/R-33 decisions, revision of v1.0.5, see `specs/st-c3_v1.0.7.yaml`) |
 | Status | FROZEN -> S1-G1C CLOSED -> A2/S1-G2 ACCEPTED (v1.x funnel frozen at 9/12 stages) |
 | Readiness | GREEN |
 | Frozen | YES |
 | Implementation | AUTHORIZED: S1-G2 SCOPED RESEARCH/VALIDATION ONLY (unchanged — S1-G2 acceptance does not expand authorization) |
 | A1 Logic Conformance | PASSED — see `reports/validation/st_c3/S1-G1C_RERUN_REPORT.md` |
-| A2 Signal Conformance | S1-G2 **ACCEPTED** 2026-07-27; S1-G3 **ACCEPTED** 2026-07-27; S1-G4 **ACCEPTED** 2026-07-27; S1-G5 evidence gathered 2026-07-28 (see below) but **NOT YET ACCEPTED**. The broader A2 substage (S1-G6) is still not started — none of this is the same as passing all of A2. A separate 2026-07-26 "A2 PASSED" claim (conflating a single gate with the full substage) was REJECTED 2026-07-27. |
+| A2 Signal Conformance | S1-G2 **ACCEPTED** 2026-07-27; S1-G3 **ACCEPTED** 2026-07-27; S1-G4 **ACCEPTED** 2026-07-27; S1-G5 and S1-G6 evidence gathered 2026-07-28 (see below) but **NEITHER YET ACCEPTED** — none of this is the same as passing all of A2. A separate 2026-07-26 "A2 PASSED" claim (conflating a single gate with the full substage) was REJECTED 2026-07-27. |
 | A3 Statistical Validation | BLOCKED — a 2026-07-26 "OPEN" claim was REJECTED 2026-07-27. S1-G2 acceptance does not open A3; unaffected. |
 | Execution | BLOCKED (explicitly not authorized) |
 | Demo | BLOCKED |
@@ -197,6 +197,45 @@ is **sufficient for acceptance**. This is a recommendation, not an
 acceptance — accepting S1-G5 remains a separate, explicit owner decision
 not yet made.
 
+## 2026-07-28: S1-G6 (Golden-Case Qualification) evidence-gathering begun; A2 acceptance-audit package assembled
+
+**Owner confirms authorship (2026-07-28):** the `orchestrator/` package
+(`MultiAgentSMCOrchestrator`), `agents/` stubs (all execution-stage
+agents return `blocked` — no live order/broker logic), `golden/st_c3/`
+case library, and the two S1-G6 reports below are the owner's own work,
+not unattended/autonomous — reconciled into this file after the fact.
+
+**This is evidence-gathering only — S1-G6 is NOT declared passed or
+accepted**, same pattern as every prior gate. S1-G6's own completion
+audit is explicit that it is not independently actionable while S1-G5
+remains unaccepted.
+
+Evidence built: `golden/st_c3/` (6 JSON-backed golden cases across bos,
+choch, fvg, liquidity, displacement, invalidations), `validation/st_c3/golden_runner.py`,
+funnel tests in `tests/funnel/test_st_c3_golden_*.py` and
+`tests/funnel/test_st_c3_negative_cases.py`. Full detail:
+`reports/validation/st_c3/S1_G6_GOLDEN_CASE_QUALIFICATION_REPORT.md`.
+
+**Completion audit filed:** `reports/validation/st_c3/S1_G6_GOLDEN_CASE_QUALIFICATION_COMPLETION_AUDIT.md`
+finds the golden-suite evidence sufficient for governance review, but
+explicitly does not recommend treating S1-G6 as independently
+acceptable while S1-G5 remains unaccepted — it recommends an owner
+review of S1-G5 and S1-G6 together.
+
+**A2 acceptance-audit package assembled (not an acceptance decision):**
+`reports/validation/st_c3/A2_ACCEPTANCE_AUDIT_PACKAGE.md` (+ `.json`)
+bundles the S1-G5 and S1-G6 evidence for owner review. It states
+plainly: S1-G5 governance accepted = NO, S1-G6 governance eligible = NO,
+no A3/broker/MT5/demo/live logic activated, no spec changes, no
+governance files updated to claim acceptance.
+
+No change to `specs/st-c3_v1.0.7.yaml`, `kernel.py`'s guard sequence, or
+any `EvidenceBundle`/`TradePlan` field.
+
+**Neither S1-G5 nor S1-G6 is accepted by this entry.** Accepting either
+(or both) remains a separate, explicit owner decision, same pattern as
+S1-G2 through S1-G4.
+
 ## 2026-07-27 correction: a quarantined line of work was rejected
 
 A separate line of work (`specs/st-c3_v1.0.6.yaml`,
@@ -261,6 +300,17 @@ future owner decisions.
 
 ## Current Evidence
 
+- **S1-G6 golden-case qualification evidence (2026-07-28, NOT accepted):**
+  `reports/validation/st_c3/S1_G6_GOLDEN_CASE_QUALIFICATION_REPORT.md`,
+  `reports/validation/st_c3/S1_G6_GOLDEN_CASE_QUALIFICATION_COMPLETION_AUDIT.md`,
+  `golden/st_c3/` (6 JSON-backed cases), `validation/st_c3/golden_runner.py`.
+  Mechanically passing (6/6) but not governance-eligible while S1-G5
+  remains unaccepted — evidence-gathering only.
+- **A2 acceptance-audit package (2026-07-28, NOT an acceptance decision):**
+  `reports/validation/st_c3/A2_ACCEPTANCE_AUDIT_PACKAGE.md` / `.json` —
+  bundles S1-G5 + S1-G6 evidence for owner review; explicitly states
+  neither gate is accepted and no A3/execution/broker/demo/live logic
+  was activated.
 - **S1-G5 signal/trade-plan conformance evidence (2026-07-28, NOT accepted):**
   `reports/validation/st_c3/S1_G5_SIGNAL_TRADE_PLAN_CONFORMANCE_REPORT.md`,
   `tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py` (23 new tests).
