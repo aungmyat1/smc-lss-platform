@@ -1,0 +1,127 @@
+strategy: ST-C3
+spec: specs/st-c3_v1.0.7.yaml
+codes:
+  R1_HTF_BIAS_UNCLEAR:
+    definition: Reject when higher-timeframe structure cannot produce a deterministic bullish or bearish bias.
+    trigger_condition:
+      - S1_HTF_BIAS evidence is invalid.
+      - HTFBiasEvidence reports ambiguous or missing structure.
+    evidence_requirement:
+      - HTFBiasEvidence.valid = false
+      - HTFBiasEvidence.reason populated by the detector or test fixture
+      - HTFBiasEvidence.id retained in the rejection payload
+    test_coverage:
+      - tests/st_c3/test_negative_cases.py::test_invalid_htf_bias_rejects_r1
+      - tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py::test_rejection_reason_text_matches_the_invalidated_evidences_own_reason
+    negative_case_examples:
+      - h4_structure_ambiguous
+
+  R2_NO_SWEEP:
+    definition: Reject when the external liquidity sweep is absent or the sweep was not reclaimed in time.
+    trigger_condition:
+      - S2_SWEEP evidence is invalid.
+      - S3_SWEEP_RECLAIM evidence is invalid or reclaimed = false.
+    evidence_requirement:
+      - SweepEvidence.valid = false or SweepReclaimEvidence.valid = false
+      - Invalid evidence carries the reason string and evidence id
+    test_coverage:
+      - tests/st_c3/test_negative_cases.py::test_invalid_sweep_rejects_r2
+      - tests/st_c3/test_negative_cases.py::test_sweep_not_reclaimed_rejects_r2
+      - tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py::test_rejection_reason_text_matches_the_invalidated_evidences_own_reason
+    negative_case_examples:
+      - sweep_wick_does_not_penetrate_level
+      - sweep_reclaim_exceeds_n_sweep
+
+  R3_NO_DISPLACEMENT_BOS:
+    definition: Reject when post-sweep displacement, BOS, or BOS-extreme lock fails.
+    trigger_condition:
+      - S4_DISPLACEMENT_BOS evidence is invalid.
+      - S5_BOS_EXTREME_LOCK evidence is invalid or pullback_detected = false.
+    evidence_requirement:
+      - DisplacementEvidence, BOSEvidence, or BOSExtremeEvidence invalid
+      - Failing evidence object preserves reason and id
+    test_coverage:
+      - tests/st_c3/test_negative_cases.py::test_invalid_displacement_rejects_r3
+      - tests/st_c3/test_negative_cases.py::test_invalid_bos_rejects_r3
+      - tests/st_c3/test_negative_cases.py::test_no_bos_extreme_pullback_rejects_r3
+      - tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py::test_rejection_reason_text_matches_the_invalidated_evidences_own_reason
+    negative_case_examples:
+      - no_impulsive_move_after_sweep
+      - bos_no_body_close_break
+      - bos_extreme_pullback_not_detected
+
+  R4_NO_OTE_PULLBACK:
+    definition: Reject when the dealing range or OTE pullback cannot be validated.
+    trigger_condition:
+      - S6_DEALING_RANGE evidence is invalid.
+      - S7_OTE evidence is invalid or price_in_ote = false.
+    evidence_requirement:
+      - DealingRangeEvidence.valid = false or OTEEvidence.valid = false
+      - Failing evidence includes the specific rejection reason and id
+    test_coverage:
+      - tests/st_c3/test_negative_cases.py::test_invalid_dealing_range_rejects_r4
+      - tests/st_c3/test_negative_cases.py::test_invalid_ote_rejects_r4
+      - tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py::test_rejection_reason_text_matches_the_invalidated_evidences_own_reason
+    negative_case_examples:
+      - dealing_range_invalid_or_undefined
+      - retrace_outside_ote
+
+  R5_NO_FVG_OB_CONFLUENCE:
+    definition: Reject when no valid FVG or order block confluence exists inside the pullback zone.
+    trigger_condition:
+      - S8_FVG_OB_CONFLUENCE has neither a valid FVG nor a valid order block inside the confluence zone.
+    evidence_requirement:
+      - FVGEvidence.valid = false and OrderBlockEvidence.valid = false, or neither is inside_ote
+      - Rejection payload records the failing evidence id and reason
+    test_coverage:
+      - tests/st_c3/test_negative_cases.py::test_invalid_fvg_and_orderblock_rejects_r5
+      - tests/st_c3/test_golden_cases.py::test_golden_cases_use_order_block_fallback_when_no_fvg
+    negative_case_examples:
+      - no_fresh_fvg_or_ob_inside_ote
+
+  R6_NO_LTF_CONFIRMATION:
+    definition: Reject when lower-timeframe confirmation or allowed-session gating fails.
+    trigger_condition:
+      - S9_LTF_CONFIRMATION evidence is invalid or sweep_local_liquidity = false.
+      - S10_SESSION_GATEKEEPER evidence is invalid or the session is outside LONDON or NY.
+    evidence_requirement:
+      - LTFConfirmationEvidence.valid = false or SessionWindowEvidence.valid = false
+      - Failing evidence carries reason and id
+    test_coverage:
+      - tests/st_c3/test_negative_cases.py::test_invalid_ltf_confirmation_rejects_r6
+      - tests/st_c3/test_negative_cases.py::test_invalid_session_rejects_r6
+      - tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py::test_rejection_reason_text_matches_the_invalidated_evidences_own_reason
+    negative_case_examples:
+      - no_m3_m1_choch_or_bos_inside_confluence
+      - choch_outside_allowed_sessions
+
+  R7_ENTRY_WINDOW_EXPIRED:
+    definition: Reject when entry is attempted after the allowed post-confirmation bar window.
+    trigger_condition:
+      - S11_ENTRY_WINDOW evidence is invalid or inside_window = false.
+    evidence_requirement:
+      - EntryWindowEvidence.valid = false
+      - bars_since_ltf_choch and max_allowed_bars preserved for audit
+      - Rejection payload contains the evidence id and reason
+    test_coverage:
+      - tests/st_c3/test_negative_cases.py::test_entry_window_expired_rejects_r7
+      - tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py::test_rejection_reason_text_matches_the_invalidated_evidences_own_reason
+    negative_case_examples:
+      - max_entry_bars_exceeded
+
+  R8_INVALID_RISK_OR_TARGET:
+    definition: Reject when structural invalidation, targets, or minimum reward-to-risk cannot be validated.
+    trigger_condition:
+      - S12_RISK_SLTP invalidation swing is invalid.
+      - Any target is invalid.
+      - computed_rr is lower than min_rr.
+    evidence_requirement:
+      - InvalidationSwingEvidence.valid = false, or invalid target evidence, or computed_rr < min_rr
+      - Failing evidence id retained when the failure comes from evidence
+    test_coverage:
+      - tests/st_c3/test_negative_cases.py::test_invalid_structural_invalidation_swing_rejects_r8
+      - tests/st_c3/test_negative_cases.py::test_rr_below_minimum_rejects_r8
+      - tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py::test_rr_fractionally_below_minimum_rejects_r8
+    negative_case_examples:
+      - invalidation_swing_undefined_or_ambiguous
+      - computed_rr_below_min_rr

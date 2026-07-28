@@ -1,0 +1,222 @@
+{
+  "generated_utc": "2026-07-28T03:48:04Z",
+  "strategy": "ST-C3",
+  "spec": "specs/st-c3_v1.0.7.yaml",
+  "focus_gate": {
+    "gate": "S1-G5",
+    "stage": "A2",
+    "title": "Signal and Trade-Plan Conformance",
+    "status": "in_progress",
+    "blocked_by": [],
+    "unblocked": true,
+    "tasks": [
+      {
+        "id": "finalize_trade_plan_object",
+        "title": "Finalize Trade-Plan Object",
+        "summary": "Keep the S13 trade-plan contract deterministic, pure, stateless, and reproducible.",
+        "artifacts": [
+          "validation/st_c3/trade_plan.py",
+          "docs/strategy/st_c3/ST-C3_TRADE_PLAN_SCHEMA.md",
+          "tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py"
+        ],
+        "checklist": [
+          "direction",
+          "entry",
+          "stop",
+          "target",
+          "expiry",
+          "source-event IDs",
+          "evidence bundle",
+          "rejection codes",
+          "confidence flags",
+          "precision rules"
+        ]
+      },
+      {
+        "id": "close_rejection_codes",
+        "title": "Close Rejection Codes R1-R8",
+        "summary": "Maintain one machine-readable registry of deterministic rejection semantics.",
+        "artifacts": [
+          "strategy/st-c3/rejections.yaml",
+          "validation/st_c3/rejection_codes.py",
+          "tests/st_c3/test_negative_cases.py"
+        ]
+      },
+      {
+        "id": "maintain_funnel_tests",
+        "title": "Keep Deterministic Funnel Tests Green",
+        "summary": "Validate positive, negative, malformed, precision-drift, timestamp-drift, and multi-symbol invariants before advancing.",
+        "artifacts": [
+          "tests/funnel",
+          "tests/st_c3/test_golden_cases.py",
+          "tests/st_c3/test_negative_cases.py",
+          "tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py"
+        ]
+      }
+    ],
+    "commands": [
+      "python -m pytest -q tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py",
+      "python tools/st_c3_workflow.py"
+    ],
+    "required_paths": [
+      {
+        "path": "strategy/st-c3/rejections.yaml",
+        "exists": true,
+        "kind": "file"
+      },
+      {
+        "path": "golden",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "golden/bos",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "golden/choch",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "golden/fvg",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "golden/sweep",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "golden/displacement",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "golden/poi",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "tests/funnel",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "validation/st_c3/trade_plan.py",
+        "exists": true,
+        "kind": "file"
+      },
+      {
+        "path": "tests/st_c3/test_s1_g5_signal_trade_plan_conformance.py",
+        "exists": true,
+        "kind": "file"
+      }
+    ]
+  },
+  "accepted_gates": [
+    "S1-G2",
+    "S1-G3",
+    "S1-G4"
+  ],
+  "authorized_scope": [
+    "reference_funnel_assembly",
+    "golden_case_tests",
+    "negative_case_tests",
+    "existence_check_conformance_run",
+    "research_and_validation_tasks"
+  ],
+  "forbidden_until_authorized": [
+    "historical_baseline",
+    "cost_adjusted_backtest",
+    "walk_forward",
+    "broker_integration",
+    "demo_trading",
+    "live_trading",
+    "production_promotion"
+  ],
+  "downstream_gates": [
+    {
+      "gate": "S1-G6",
+      "stage": "A2",
+      "title": "Golden-Case Qualification",
+      "status": "blocked",
+      "blocked_by": [
+        "S1-G5"
+      ],
+      "unblocked": false
+    },
+    {
+      "gate": "S1-G7",
+      "stage": "A3",
+      "title": "Historical Baseline",
+      "status": "blocked",
+      "blocked_by": [
+        "S1-G6"
+      ],
+      "unblocked": false
+    },
+    {
+      "gate": "S1-G8",
+      "stage": "A3",
+      "title": "Cost-Adjusted Validation",
+      "status": "blocked",
+      "blocked_by": [
+        "S1-G7"
+      ],
+      "unblocked": false
+    },
+    {
+      "gate": "S1-G9",
+      "stage": "A3",
+      "title": "Walk-Forward and Out-of-Sample Validation",
+      "status": "blocked",
+      "blocked_by": [
+        "S1-G8"
+      ],
+      "unblocked": false
+    },
+    {
+      "gate": "S1-G10",
+      "stage": "A3",
+      "title": "Robustness Qualification",
+      "status": "blocked",
+      "blocked_by": [
+        "S1-G9"
+      ],
+      "unblocked": false
+    },
+    {
+      "gate": "S2-G1",
+      "stage": "B",
+      "title": "Execution Development",
+      "status": "blocked",
+      "blocked_by": [
+        "S1-G10"
+      ],
+      "unblocked": false
+    },
+    {
+      "gate": "S2-G2",
+      "stage": "B",
+      "title": "Demo Validation",
+      "status": "blocked",
+      "blocked_by": [
+        "S2-G1"
+      ],
+      "unblocked": false
+    },
+    {
+      "gate": "S2-G3",
+      "stage": "B",
+      "title": "Production Promotion",
+      "status": "blocked",
+      "blocked_by": [
+        "S2-G2"
+      ],
+      "unblocked": false
+    }
+  ]
+}

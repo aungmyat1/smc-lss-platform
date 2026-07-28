@@ -1,0 +1,15 @@
+{
+  "stage": "B",
+  "status": "blocked",
+  "reason": "execution/demo/production stages remain forbidden until Stage A passes and Stage B is authorized",
+  "active_stage": "A2",
+  "allowed_agents": [
+    "ConformanceGovernanceAgent",
+    "ConformanceKernelAgent",
+    "EvidenceBuilderAgent",
+    "FailureAnalysisAgent",
+    "JournalEngineAgent",
+    "MasterGovernanceAgent",
+    "StrategyGovernanceAgent"
+  ]
+}
