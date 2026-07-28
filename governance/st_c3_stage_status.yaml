@@ -61,6 +61,23 @@ v1_0_7_revision:
   no_structural_change: true
   no_new_logic_execution_optimization_or_a3: true
 
+v1_0_8_revision:
+  type: sop_a_analytical_extension_draft
+  status: DRAFT
+  rcr_entry: docs/RESEARCH-CHARTER/SOP_A_RCR.md
+  evidence_schema_entry: docs/strategy/st_c3/ST-C3_SOP-A_EVIDENCE_SCHEMA.md
+  timestamp: "2026-07-28"
+  fields_resolved: []
+  fields_revised: []
+  fields_still_unresolved: [R-18]
+  provenance: >
+    Documentation-only draft extension built from the owner-provided SOP-A
+    RCR and evidence schema. This entry indexes a future analytical-only
+    revision of ST-C3 but does not change the frozen v1.0.7 chain, the
+    stage gate status, or any execution/lifecycle semantics.
+  no_structural_change: true
+  no_new_logic_execution_optimization_or_a3: true
+
 v1_0_2_revision:
   type: governance_decision_parameter_freeze
   rcr_entry: reports/governance/st_c3/RCR_ST-C3_v1.0.2_REPORT.md

@@ -7,6 +7,36 @@ rationale behind every field below.
 
 ---
 
+## v1.0.8 — 2026-07-28 (SOP-A analytical draft)
+
+**RCR:** `docs/RESEARCH-CHARTER/SOP_A_RCR.md`
+**Supersedes:** none. Draft analytical extension layered on top of the
+frozen v1.0.7 chain for documentation and governance indexing only.
+
+Introduces the SOP-A analytical layer into the ST-C3 strategy contract as
+a future-facing extension tied directly to the SOP_A_RCR.md research
+proposal and the ST-C3_SOP-A_EVIDENCE_SCHEMA.md evidence model. No kernel,
+lifecycle, or execution behavior changes.
+
+**Changes**
+
+- Added SOP-A analytical context (HTF bias, HTF POI, draw-on-liquidity).
+- Added analytical qualification gates (session, news, spread, daily risk).
+- Extended setup validation evidence (POI arrival, OB/FVG/liquidity).
+- Added analytical confirmation filters (sweep, CHoCH, MSS, OTE zone).
+- Registered SOP-A analytical rejection codes as evidence annotations only.
+- Preserved all lifecycle and execution semantics from v1.0.7.
+- Marked v1.0.8 as draft-only until owner ratification.
+
+**Governance Notes**
+
+- Documentation-only fork of v1.0.7.
+- No executable logic introduced.
+- S7/S8/S9 remain frozen per the 2026-07-27 owner decision.
+- Implementation requires future owner approval and gate progression.
+
+---
+
 ## v1.0.7 — 2026-07-27 (fresh R-31/R-32/R-33 decisions, clean provenance)
 
 **RCR:** `reports/governance/st_c3/RCR_ST-C3_v1.0.7_REPORT.md`

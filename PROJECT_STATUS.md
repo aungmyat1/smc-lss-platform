@@ -135,6 +135,11 @@ ST-C3 evidence:
 - `specs/st-c3_v1.0.7.yaml` - **active frozen spec.** Fresh R-31/R-32/R-33
   decisions (`sweep_reclaim_max_bars=2`, `entry_window_bars=4`, session UTC
   bounds ratified) built directly from v1.0.5, skipping v1.0.6.
+- `specs/st-c3_v1.0.8.yaml` / `docs/RESEARCH-CHARTER/SOP_A_RCR.md` /
+  `docs/strategy/st_c3/ST-C3_SOP-A_EVIDENCE_SCHEMA.md` /
+  `reports/validation/st_c3/S1_G7_READINESS_CHECKLIST.md` - documentation-only
+  SOP-A analytical draft, tied to the new governance RCR and evidence schema;
+  no kernel, lifecycle, or execution change.
 - `reports/validation/st_c3/ST-C3_S1-G1C_LOGIC_CONFORMANCE_REPORT.md` - S1-G1C
   audit against v1.0.0.
 - `reports/validation/st_c3/ST-C3_v1.0.1_PATCH_RECOMMENDATION.md` - patch
