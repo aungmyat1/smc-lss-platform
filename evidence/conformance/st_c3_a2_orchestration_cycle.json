@@ -78,7 +78,7 @@
     ]
   },
   "conformance_report": {
-    "generated_utc": "2026-07-28T03:54:21Z",
+    "generated_utc": "2026-07-28T04:11:06Z",
     "strategy": "ST-C3",
     "spec": "specs/st-c3_v1.0.7.yaml",
     "focus_gate": {
@@ -317,5 +317,100 @@
       "Close Rejection Codes R1-R8",
       "Keep Deterministic Funnel Tests Green"
     ]
-  }
+  },
+  "s1_g6_golden_summary": {
+    "root": "golden/st_c3",
+    "scenario_filter": null,
+    "total_cases": 6,
+    "passed_cases": 6,
+    "failed_cases": 0,
+    "status": "PASS",
+    "results": [
+      {
+        "case_id": "STC3-BOS-001",
+        "scenario_type": "bos",
+        "path": "golden/st_c3/bos/case_001.json",
+        "status": "PASS",
+        "outcome": "VALID"
+      },
+      {
+        "case_id": "STC3-CHOCH-001",
+        "scenario_type": "choch",
+        "path": "golden/st_c3/choch/case_001.json",
+        "status": "PASS",
+        "outcome": "VALID"
+      },
+      {
+        "case_id": "STC3-DISP-001",
+        "scenario_type": "displacement",
+        "path": "golden/st_c3/displacement/case_001.json",
+        "status": "PASS",
+        "outcome": "REJECTED"
+      },
+      {
+        "case_id": "STC3-FVG-001",
+        "scenario_type": "fvg",
+        "path": "golden/st_c3/fvg/case_001.json",
+        "status": "PASS",
+        "outcome": "VALID"
+      },
+      {
+        "case_id": "STC3-INV-001",
+        "scenario_type": "invalidations",
+        "path": "golden/st_c3/invalidations/case_001.json",
+        "status": "PASS",
+        "outcome": "REJECTED"
+      },
+      {
+        "case_id": "STC3-LIQ-001",
+        "scenario_type": "liquidity",
+        "path": "golden/st_c3/liquidity/case_001.json",
+        "status": "PASS",
+        "outcome": "REJECTED"
+      }
+    ],
+    "failures": [],
+    "scenario_breakdown": {
+      "bos": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0
+      },
+      "choch": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0
+      },
+      "displacement": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0
+      },
+      "fvg": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0
+      },
+      "invalidations": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0
+      },
+      "liquidity": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0
+      }
+    }
+  },
+  "gate_checks": [
+    {
+      "stage": "A2",
+      "gate": "S1-G6",
+      "status": "PASS",
+      "governance_eligible": false,
+      "reason": "Mechanical golden-case suite passed, but S1-G6 is not governance-eligible until S1-G5 is accepted.",
+      "evidence_path": "D:\\ddev\\smc-lss-platform\\evidence\\conformance\\st_c3_s1_g6_golden_summary.json"
+    }
+  ]
 }

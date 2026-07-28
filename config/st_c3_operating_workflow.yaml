@@ -66,28 +66,29 @@ gates:
     blocked_by:
       - S1-G5
     required_paths:
-      - golden
-      - golden/bos
-      - golden/choch
-      - golden/fvg
-      - golden/sweep
-      - golden/displacement
-      - golden/poi
+      - golden/st_c3
+      - golden/st_c3/bos
+      - golden/st_c3/choch
+      - golden/st_c3/fvg
+      - golden/st_c3/liquidity
+      - golden/st_c3/displacement
+      - golden/st_c3/invalidations
       - tests/funnel
     commands:
-      - python -m pytest -q tests/st_c3/test_golden_cases.py tests/st_c3/test_negative_cases.py
+      - python -m pytest -q tests/funnel/test_st_c3_golden_bos.py tests/funnel/test_st_c3_golden_choch.py tests/funnel/test_st_c3_golden_fvg.py tests/funnel/test_st_c3_golden_liquidity.py
+      - python -c "from validation.st_c3.golden_runner import run_golden_suite; import json; print(json.dumps(run_golden_suite(), indent=2))"
     tasks:
       - id: curate_golden_library
         title: Build the Golden-Case Library
         summary: Curate deterministic examples with evidence JSON, expected state transitions, and expected trade-plan outputs.
         artifacts:
-          - golden/README.md
-          - golden/bos/README.md
-          - golden/choch/README.md
-          - golden/fvg/README.md
-          - golden/sweep/README.md
-          - golden/displacement/README.md
-          - golden/poi/README.md
+          - golden/st_c3/README.md
+          - golden/st_c3/bos
+          - golden/st_c3/choch
+          - golden/st_c3/fvg
+          - golden/st_c3/liquidity
+          - golden/st_c3/displacement
+          - golden/st_c3/invalidations
       - id: expand_funnel_qualification
         title: Expand Funnel Qualification Tests
         summary: Cover duplicate, boundary, sequencing, malformed-data, precision-drift, timestamp-drift, and multi-symbol consistency scenarios.

@@ -34,6 +34,7 @@ from agents.research import (
     ScenarioClassifierAgent,
     StatValidationAgent,
 )
+from validation.st_c3.golden_runner import run_golden_suite
 
 
 DEFAULT_WORKFLOW = ROOT / "config" / "st_c3_operating_workflow.yaml"
@@ -170,6 +171,11 @@ class MultiAgentSMCOrchestrator:
         conformance = self.conformance_kernel.run_a2_conformance()
         gate = self.conformance_governance.evaluate_a2_gate(conformance)
         failure = self.failure_analysis.summarize(conformance)
+        golden_summary = run_golden_suite()
+        golden_path = ROOT / "evidence" / "conformance" / "st_c3_s1_g6_golden_summary.json"
+        self.evidence_builder.write(golden_summary, golden_path)
+        s1_g6_status = "PASS" if golden_summary["failed_cases"] == 0 else "FAIL"
+        s1_g5_accepted = "S1-G5" in conformance.get("accepted_gates", [])
         result = {
             "stage": "A2",
             "status": "ok",
@@ -186,6 +192,23 @@ class MultiAgentSMCOrchestrator:
             "conformance_report": conformance,
             "gate_evaluation": gate,
             "failure_analysis": failure,
+            "s1_g6_golden_summary": golden_summary,
+            "gate_checks": [
+                {
+                    "stage": "A2",
+                    "gate": "S1-G6",
+                    "status": s1_g6_status,
+                    "governance_eligible": s1_g5_accepted,
+                    "reason": (
+                        "Mechanical golden-case suite passed, but S1-G6 is not governance-eligible until S1-G5 is accepted."
+                        if not s1_g5_accepted and s1_g6_status == "PASS"
+                        else "Golden-case suite contains failing cases."
+                        if s1_g6_status == "FAIL"
+                        else "Mechanical golden-case suite passed and prior gate acceptance is recorded."
+                    ),
+                    "evidence_path": str(golden_path),
+                }
+            ],
         }
         out_path = ROOT / "evidence" / "conformance" / "st_c3_a2_orchestration_cycle.json"
         result["evidence_path"] = self.evidence_builder.write(result, out_path)

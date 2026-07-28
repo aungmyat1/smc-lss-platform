@@ -1,0 +1,85 @@
+{
+  "root": "golden/st_c3",
+  "scenario_filter": null,
+  "total_cases": 6,
+  "passed_cases": 6,
+  "failed_cases": 0,
+  "status": "PASS",
+  "results": [
+    {
+      "case_id": "STC3-BOS-001",
+      "scenario_type": "bos",
+      "path": "golden/st_c3/bos/case_001.json",
+      "status": "PASS",
+      "outcome": "VALID"
+    },
+    {
+      "case_id": "STC3-CHOCH-001",
+      "scenario_type": "choch",
+      "path": "golden/st_c3/choch/case_001.json",
+      "status": "PASS",
+      "outcome": "VALID"
+    },
+    {
+      "case_id": "STC3-DISP-001",
+      "scenario_type": "displacement",
+      "path": "golden/st_c3/displacement/case_001.json",
+      "status": "PASS",
+      "outcome": "REJECTED"
+    },
+    {
+      "case_id": "STC3-FVG-001",
+      "scenario_type": "fvg",
+      "path": "golden/st_c3/fvg/case_001.json",
+      "status": "PASS",
+      "outcome": "VALID"
+    },
+    {
+      "case_id": "STC3-INV-001",
+      "scenario_type": "invalidations",
+      "path": "golden/st_c3/invalidations/case_001.json",
+      "status": "PASS",
+      "outcome": "REJECTED"
+    },
+    {
+      "case_id": "STC3-LIQ-001",
+      "scenario_type": "liquidity",
+      "path": "golden/st_c3/liquidity/case_001.json",
+      "status": "PASS",
+      "outcome": "REJECTED"
+    }
+  ],
+  "failures": [],
+  "scenario_breakdown": {
+    "bos": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "choch": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "displacement": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "fvg": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "invalidations": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "liquidity": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    }
+  }
+}

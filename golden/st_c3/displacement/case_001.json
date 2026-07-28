@@ -1,0 +1,38 @@
+{
+  "case_id": "STC3-DISP-001",
+  "scenario_type": "displacement",
+  "description": "Missing displacement deterministically rejects at S4 with R3.",
+  "bundle": {
+    "computed_rr": 3.2,
+    "min_rr": 3.0,
+    "entry_price": 1.1022,
+    "risk_per_trade_pct": 0.5,
+    "session_open": true,
+    "instrument_enabled": true,
+    "evidence": {
+      "htf_bias": {"kind": "HTFBiasEvidence", "id": "HTF_BIAS-L1", "tf": "H4", "valid": true, "reason": "valid_bullish_structure", "timestamp": "2026-07-20 00:00", "fields": {"structure": "HHHL", "bias": "BULLISH"}},
+      "sweep": {"kind": "SweepEvidence", "id": "SWEEP-L1", "tf": ["H4", "M15"], "valid": true, "reason": "sell_side_liquidity_swept", "timestamp": "2026-07-20 04:00", "fields": {"sweep_type": "SELL_SIDE", "wick_penetration": true, "level": 1.1}},
+      "sweep_reclaim": {"kind": "SweepReclaimEvidence", "id": "SWEEP_RECLAIM-L1", "tf": ["H4", "M15"], "valid": true, "reason": "reclaimed_within_window", "timestamp": "2026-07-20 04:15", "fields": {"reclaim_within_bars": 2, "max_allowed_bars": 3, "reclaimed": true}},
+      "displacement": {"kind": "DisplacementEvidence", "id": "DISPLACEMENT-BAD", "tf": "M15", "valid": false, "reason": "no_impulsive_move_after_sweep", "timestamp": "2026-07-20 05:00", "fields": {"impulse_strength": 0.1, "threshold": 0.6}},
+      "bos": {"kind": "BOSEvidence", "id": "BOS-L1", "tf": "M15", "valid": true, "reason": "body_close_break_up", "timestamp": "2026-07-20 05:15", "fields": {"bos_direction": "UP", "body_close_break": true, "level": 1.105}},
+      "bos_extreme": {"kind": "BOSExtremeEvidence", "id": "BOS_EXTREME-L1", "tf": "M15", "valid": true, "reason": "extreme_locked_after_pullback", "timestamp": "2026-07-20 06:00", "fields": {"provisional_extreme": 1.108, "locked_extreme": 1.108, "pullback_detected": true}},
+      "dealing_range": {"kind": "DealingRangeEvidence", "id": "DEALING_RANGE-L1", "tf": "M15", "valid": true, "reason": "range_defined_origin_to_extreme", "timestamp": "2026-07-20 06:00", "fields": {"origin": 1.1, "bos_extreme": 1.108, "range_size": 0.008}},
+      "ote": {"kind": "OTEEvidence", "id": "OTE-L1", "tf": "M15", "valid": true, "reason": "price_retraced_into_ote", "timestamp": "2026-07-20 07:00", "fields": {"ote_min": 1.1017, "ote_max": 1.103, "price_in_ote": true}},
+      "fvg": {"kind": "FVGEvidence", "id": "FVG-L1", "tf": ["H4", "M15"], "valid": true, "reason": "fresh_fvg_inside_ote", "timestamp": "2026-07-20 07:05", "fields": {"gap_top": 1.1028, "gap_bottom": 1.102, "fresh": true, "inside_ote": true}},
+      "order_block": {"kind": "OrderBlockEvidence", "id": "OB-L1", "tf": ["H4", "M15"], "valid": false, "reason": "no_order_block_present", "timestamp": "2026-07-20 07:05", "fields": {"ob_high": 0.0, "ob_low": 0.0, "fresh": false, "inside_ote": false}},
+      "ltf_confirmation": {"kind": "LTFConfirmationEvidence", "id": "LTF_CONF-L1", "tf": ["M3", "M1"], "valid": true, "reason": "m3_choch_up_with_local_sweep", "timestamp": "2026-07-20 07:10", "fields": {"choch_direction": "UP", "sweep_local_liquidity": true}},
+      "session_window": {"kind": "SessionWindowEvidence", "id": "SESSION-L1", "tf": ["M3", "M1"], "valid": true, "reason": "inside_london_window", "timestamp": "2026-07-20 07:10", "fields": {"session": "LONDON"}},
+      "entry_window": {"kind": "EntryWindowEvidence", "id": "ENTRY_WINDOW-L1", "tf": ["M3", "M1"], "valid": true, "reason": "within_max_entry_bars", "timestamp": "2026-07-20 07:12", "fields": {"bars_since_ltf_choch": 2, "max_allowed_bars": 5, "inside_window": true}},
+      "invalidation_swing": {"kind": "InvalidationSwingEvidence", "id": "INVALIDATION-L1", "tf": ["M3", "M1"], "valid": true, "reason": "m3_swing_defines_structural_stop", "timestamp": "2026-07-20 07:10", "fields": {"swing_level": 1.1015, "direction": "LONG"}},
+      "target_tp1": {"kind": "TargetEvidence", "id": "TARGET_TP1-L1", "tf": ["H4", "M15"], "valid": true, "reason": "internal_liquidity_target", "timestamp": "2026-07-20 07:12", "fields": {"target_type": "TP1_INTERNAL", "level": 1.108, "rr": 3.2}},
+      "target_tp2": {"kind": "TargetEvidence", "id": "TARGET_TP2-L1", "tf": ["H4", "M15"], "valid": true, "reason": "external_liquidity_target", "timestamp": "2026-07-20 07:12", "fields": {"target_type": "TP2_EXTERNAL", "level": 1.112, "rr": 4.5}},
+      "target_tp3": {"kind": "TargetEvidence", "id": "TARGET_TP3-L1", "tf": ["H4", "M15"], "valid": true, "reason": "htf_liquidity_target", "timestamp": "2026-07-20 07:12", "fields": {"target_type": "TP3_HTF", "level": 1.12, "rr": 6.0}}
+    }
+  },
+  "expected": {
+    "outcome": "REJECTED",
+    "states_reached": ["S0_INIT", "S1_HTF_BIAS", "S2_SWEEP", "S3_SWEEP_RECLAIM"],
+    "rejection": {"state": "S4_DISPLACEMENT_BOS", "code": "R3_NO_DISPLACEMENT_BOS", "reason": "no_impulsive_move_after_sweep", "evidence_id": "DISPLACEMENT-BAD"},
+    "trade_plan": null
+  }
+}
