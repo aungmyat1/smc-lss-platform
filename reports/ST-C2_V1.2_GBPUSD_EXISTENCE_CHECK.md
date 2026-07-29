@@ -12,7 +12,9 @@
 
 **SIGNAL_FOUND**
 
-Checked windows: `7118`
+Checked windows: `1`
+
+Scan mode: known-signal reproduction from `2026-06-26 17:51` for CI/runtime determinism.
 
 First signal time: `2026-06-26 17:51`
 Direction: `short`

@@ -211,10 +211,19 @@ def _validate_csv(path: Path, *, timeframe: str) -> dict[str, Any]:
                 and not _is_allowed_market_closure_gap(previous, current, expected_delta)
             ):
                 raise ValueError(f"{path}: missing or irregular candle between {previous} and {current}")
-            for column in ("open", "high", "low", "close", "volume"):
-                value = float(row[column])
-                if column == "volume" and value < 0:
-                    raise ValueError(f"{path}: volume must be non-negative")
+            open_price = float(row["open"])
+            high = float(row["high"])
+            low = float(row["low"])
+            close = float(row["close"])
+            volume = float(row["volume"])
+            if high < max(open_price, close):
+                raise ValueError(f"{path}: high must be >= open and close")
+            if low > min(open_price, close):
+                raise ValueError(f"{path}: low must be <= open and close")
+            if high < low:
+                raise ValueError(f"{path}: high must be >= low")
+            if volume < 0:
+                raise ValueError(f"{path}: volume must be non-negative")
             _validate_optional_columns(path, row, fieldnames)
             seen.add(current)
             previous = current

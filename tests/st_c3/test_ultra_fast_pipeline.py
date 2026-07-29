@@ -3,11 +3,15 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+from types import SimpleNamespace
 from datetime import datetime, timedelta
 
 import pytest
 import yaml
 
+from tools import st_c3_data_integrity
+from tools.st_c3_data_integrity import inspect_csv, run_integrity_check
+from tools.st_c3_download_mt5_dataset import Candle
 from validation.st_c3.owner_packet_generator import build_owner_packet
 from tools.st_c3_diff_owner_packet import diff_owner_packets
 from tools.st_c3_prepare_dataset_manifest import prepare_dataset_manifest
@@ -367,6 +371,55 @@ def test_prepare_dataset_manifest_blocks_when_csv_missing(tmp_path):
 
     assert result["status"] == "BLOCKED"
     assert "dataset file missing" in result["reason"]
+
+
+def test_data_integrity_reports_missing_candle_without_repairing(tmp_path):
+    data_dir = _write_dataset_dir(tmp_path, approved=True, missing_candle=True)
+    result = run_integrity_check(data_dir)
+
+    assert result["status"] == "BLOCKED"
+    assert result["reason"] == "EURUSD_M15.csv missing candle 2024-01-02T00:15:00Z"
+    assert result["recovery_attempted"] is False
+
+
+def test_data_integrity_detects_duplicates_and_invalid_ohlc(tmp_path):
+    path = tmp_path / "EURUSD_M15.csv"
+    path.write_text(
+        "time,open,high,low,close,volume\n"
+        "2024-01-02T00:00:00Z,1.1000,1.1010,1.0990,1.1005,100\n"
+        "2024-01-02T00:00:00Z,1.1000,1.0990,1.0995,1.1005,100\n",
+        encoding="utf-8",
+    )
+
+    summary = inspect_csv(path, symbol="EURUSD", timeframe="M15")
+
+    assert summary.status == "BLOCKED"
+    assert summary.duplicate_timestamps == ("2024-01-02T00:00:00Z",)
+    assert any(issue.code == "INVALID_OHLC" for issue in summary.issues)
+
+
+def test_data_integrity_recovery_merges_only_exact_source_candle(tmp_path, monkeypatch):
+    data_dir = _write_dataset_dir(tmp_path, approved=True, missing_candle=True)
+    recovered = Candle(
+        timestamp=datetime(2024, 1, 2, 0, 15),
+        open=1.1001,
+        high=1.1011,
+        low=1.0991,
+        close=1.1006,
+        volume=111,
+    )
+    fake_mt5 = SimpleNamespace(
+        initialize=lambda: True,
+        shutdown=lambda: None,
+        last_error=lambda: (1, "Success"),
+    )
+    monkeypatch.setitem(sys.modules, "MetaTrader5", fake_mt5)
+    monkeypatch.setattr(st_c3_data_integrity, "_copy_candles", lambda *_args: [recovered])
+
+    result = run_integrity_check(data_dir, recover=True, max_recovery_gaps=1)
+
+    assert result["recovery_log"][0]["status"] == "RECOVERED"
+    assert result["after"][1]["missing_count"] == 0
 
 
 def test_ultra_fast_pipeline_cli_sample_mode_writes_linked_outputs(tmp_path):

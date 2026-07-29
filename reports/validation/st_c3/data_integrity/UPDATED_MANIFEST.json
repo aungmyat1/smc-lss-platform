@@ -1,0 +1,5 @@
+{
+  "status": "BLOCKED",
+  "reason": "dataset integrity issues remain; manifest was not rebuilt",
+  "guardrail": "Data recovery does not open A3, run replay, or imply acceptance."
+}

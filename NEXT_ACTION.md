@@ -10,7 +10,7 @@ Current runtime status:
 {
   "stage": "dataset_approval",
   "status": "BLOCKED",
-  "reason": "EURUSD_M15.csv is missing the expected 2023-08-31T17:15:00Z M15 candle between 2023-08-31T17:00:00Z and 2023-08-31T17:30:00Z.",
+  "reason": "EURUSD_H4.csv missing candle 2018-12-26T00:00:00Z (7 market-open gaps across H4; M15/M3 files also fail coverage — M15 begins 2022 instead of 2018, M3 holds one 2025 candle instead of the 2018-2024 window).",
   "next_action": "Owner must provide a complete approved dataset and rerun manifest hash preparation.",
   "details": {
     "a3_open": false,
@@ -21,6 +21,18 @@ Current runtime status:
   }
 }
 ```
+
+**Verified recovery attempt (2026-07-29):** `tools/st_c3_data_integrity.py --recover`
+was run against the approved-data directory. Recovery was attempted for the
+first 10 detected gaps, but MT5 did not return exact matching candles for
+any of them (136 further gaps were not attempted, capped at 10). No CSV
+rows were fabricated, interpolated, or manually edited — recovery only
+merges candles the approved MT5 source returns for the exact missing
+timestamp. Full detail: `reports/validation/st_c3/data_integrity/RECOVERY_LOG.md`,
+`DATA_INTEGRITY_REPORT.md`, `VALIDATION_SUMMARY.md`, `UPDATED_MANIFEST.json`.
+The dataset remains BLOCKED; the owner must supply a complete, correctly
+ranged dataset from an authoritative source — recovery cannot substitute
+for that.
 
 Guardrail: do not fabricate, interpolate, or auto-fill the missing candle.
 Do not open A3, run replay/backtest, or activate demo/live until the dataset
