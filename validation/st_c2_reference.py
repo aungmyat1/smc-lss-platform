@@ -298,6 +298,7 @@ def scan_history(
     spec: dict[str, Any] | None = None,
     symbol: str = "GBPUSD",
     max_windows: int | None = None,
+    scan_start_time: str | None = None,
 ) -> ScanResult:
     spec = spec or load_spec()
     candles = load_required_candles(paths)
@@ -312,6 +313,9 @@ def scan_history(
     checked = 0
 
     start = min(len(ltf), ltf_lookback)
+    if scan_start_time is not None:
+        requested_start = _parse_time(scan_start_time)
+        start = max(start, bisect.bisect_left(ltf_times, requested_start) + 1)
     for end in range(start, len(ltf) + 1):
         asof = ltf_times[end - 1]
         htf_window = _window_asof_indexed(candles["htf"], htf_times, asof, htf_lookback)

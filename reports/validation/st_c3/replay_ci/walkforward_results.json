@@ -1,0 +1,79 @@
+{
+  "criteria": {
+    "min_pf_majority": 1.2,
+    "require_non_negative_expectancy": true
+  },
+  "ledger_sha256": "eebfe0e9037fa5ec9acf8c32fe7a31dfc38c6a0c2c5a781550723e5cc936d6e7",
+  "stats_engine_version": "st_c3_stats_engine.v1",
+  "status": "PASS",
+  "summary": {
+    "expectancy_pass_windows": 2,
+    "pf_majority_needed": 2,
+    "pf_pass_windows": 2,
+    "windows": 2
+  },
+  "walkforward_engine_version": "st_c3_walkforward_engine.v1",
+  "window_method": "fixed_year_slices",
+  "windows": [
+    {
+      "expectancy_pass": true,
+      "metrics": {
+        "average_r": 0.75,
+        "cost_drag_r": null,
+        "drawdown_duration_trades": 1,
+        "expectancy_r": 0.75,
+        "gross_loss_r": 0.5,
+        "gross_profit_r": 2.0,
+        "longest_loss_streak": 1,
+        "longest_win_streak": 1,
+        "losses": 1,
+        "mae_distribution": null,
+        "maximum_drawdown_r": -0.5,
+        "mfe_distribution": null,
+        "net_profit_r": 1.5,
+        "payoff_ratio": 4.0,
+        "profit_factor": 4.0,
+        "recovery_factor": 3.0,
+        "sharpe_ratio": 0.6,
+        "sortino_ratio": null,
+        "total_R": 1.5,
+        "total_trades": 2,
+        "trade_count_adequacy_warning": true,
+        "win_rate_pct": 50.0,
+        "wins": 1
+      },
+      "profit_factor_pass": true,
+      "window": "2024"
+    },
+    {
+      "expectancy_pass": true,
+      "metrics": {
+        "average_r": 1.0,
+        "cost_drag_r": null,
+        "drawdown_duration_trades": 1,
+        "expectancy_r": 1.0,
+        "gross_loss_r": 0.4,
+        "gross_profit_r": 2.4,
+        "longest_loss_streak": 1,
+        "longest_win_streak": 1,
+        "losses": 1,
+        "mae_distribution": null,
+        "maximum_drawdown_r": -0.4,
+        "mfe_distribution": null,
+        "net_profit_r": 2.0,
+        "payoff_ratio": 6.0,
+        "profit_factor": 6.0,
+        "recovery_factor": 5.0,
+        "sharpe_ratio": 0.7143,
+        "sortino_ratio": null,
+        "total_R": 2.0,
+        "total_trades": 2,
+        "trade_count_adequacy_warning": true,
+        "win_rate_pct": 50.0,
+        "wins": 1
+      },
+      "profit_factor_pass": true,
+      "window": "2025"
+    }
+  ]
+}

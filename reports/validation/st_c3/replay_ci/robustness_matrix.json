@@ -1,0 +1,405 @@
+{
+  "ledger_sha256": "eebfe0e9037fa5ec9acf8c32fe7a31dfc38c6a0c2c5a781550723e5cc936d6e7",
+  "robustness_engine_version": "st_c3_robustness_engine.v1",
+  "scenario_results": [
+    {
+      "ledger_sha256": "eebfe0e9037fa5ec9acf8c32fe7a31dfc38c6a0c2c5a781550723e5cc936d6e7",
+      "metrics": {
+        "average_r": 0.845,
+        "cost_drag_r": null,
+        "drawdown_duration_trades": 1,
+        "expectancy_r": 0.845,
+        "gross_loss_r": 0.96,
+        "gross_profit_r": 4.34,
+        "longest_loss_streak": 1,
+        "longest_win_streak": 1,
+        "losses": 2,
+        "mae_distribution": null,
+        "maximum_drawdown_r": -0.53,
+        "mfe_distribution": null,
+        "net_profit_r": 3.38,
+        "payoff_ratio": 4.5208,
+        "profit_factor": 4.5208,
+        "recovery_factor": 6.3774,
+        "sharpe_ratio": 0.6339,
+        "sortino_ratio": 16.9,
+        "total_R": 3.38,
+        "total_trades": 4,
+        "trade_count_adequacy_warning": true,
+        "win_rate_pct": 50.0,
+        "wins": 2
+      },
+      "parameters": {
+        "min_expectancy_r": 0.0,
+        "min_profit_factor": 1.2,
+        "r_penalty_per_trade": 0.03
+      },
+      "robustness_engine_version": "st_c3_robustness_engine.v1",
+      "scenario": "commission_high",
+      "status": "PASS",
+      "threshold_results": {
+        "expectancy_r": true,
+        "profit_factor": true
+      }
+    },
+    {
+      "ledger_sha256": "eebfe0e9037fa5ec9acf8c32fe7a31dfc38c6a0c2c5a781550723e5cc936d6e7",
+      "metrics": {
+        "average_r": 0.825,
+        "cost_drag_r": null,
+        "drawdown_duration_trades": 1,
+        "expectancy_r": 0.825,
+        "gross_loss_r": 1.0,
+        "gross_profit_r": 4.3,
+        "longest_loss_streak": 1,
+        "longest_win_streak": 1,
+        "losses": 2,
+        "mae_distribution": null,
+        "maximum_drawdown_r": -0.55,
+        "mfe_distribution": null,
+        "net_profit_r": 3.3,
+        "payoff_ratio": 4.3,
+        "profit_factor": 4.3,
+        "recovery_factor": 6.0,
+        "sharpe_ratio": 0.6189,
+        "sortino_ratio": 16.5,
+        "total_R": 3.3,
+        "total_trades": 4,
+        "trade_count_adequacy_warning": true,
+        "win_rate_pct": 50.0,
+        "wins": 2
+      },
+      "parameters": {
+        "min_expectancy_r": 0.0,
+        "min_profit_factor": 1.2,
+        "r_penalty_per_trade": 0.05
+      },
+      "robustness_engine_version": "st_c3_robustness_engine.v1",
+      "scenario": "delayed_fills_1_bar",
+      "status": "PASS",
+      "threshold_results": {
+        "expectancy_r": true,
+        "profit_factor": true
+      }
+    },
+    {
+      "ledger_sha256": "eebfe0e9037fa5ec9acf8c32fe7a31dfc38c6a0c2c5a781550723e5cc936d6e7",
+      "metrics": {
+        "average_r": 0.875,
+        "cost_drag_r": null,
+        "drawdown_duration_trades": 2,
+        "expectancy_r": 0.875,
+        "gross_loss_r": 0.9,
+        "gross_profit_r": 4.4,
+        "longest_loss_streak": 2,
+        "longest_win_streak": 2,
+        "losses": 2,
+        "mae_distribution": null,
+        "maximum_drawdown_r": -0.9,
+        "mfe_distribution": null,
+        "net_profit_r": 3.5,
+        "payoff_ratio": 4.8889,
+        "profit_factor": 4.8889,
+        "recovery_factor": 3.8889,
+        "sharpe_ratio": 0.6564,
+        "sortino_ratio": 17.5,
+        "total_R": 3.5,
+        "total_trades": 4,
+        "trade_count_adequacy_warning": true,
+        "win_rate_pct": 50.0,
+        "wins": 2
+      },
+      "parameters": {
+        "min_expectancy_r": 0.0,
+        "min_profit_factor": 1.2,
+        "seed": 17
+      },
+      "robustness_engine_version": "st_c3_robustness_engine.v1",
+      "scenario": "monte_carlo_shuffle",
+      "status": "PASS",
+      "threshold_results": {
+        "expectancy_r": true,
+        "profit_factor": true
+      }
+    },
+    {
+      "ledger_sha256": "eebfe0e9037fa5ec9acf8c32fe7a31dfc38c6a0c2c5a781550723e5cc936d6e7",
+      "metrics": {
+        "average_r": 0.3667,
+        "cost_drag_r": null,
+        "drawdown_duration_trades": 2,
+        "expectancy_r": 0.3667,
+        "gross_loss_r": 0.9,
+        "gross_profit_r": 2.0,
+        "longest_loss_streak": 2,
+        "longest_win_streak": 1,
+        "losses": 2,
+        "mae_distribution": null,
+        "maximum_drawdown_r": -0.9,
+        "mfe_distribution": null,
+        "net_profit_r": 1.1,
+        "payoff_ratio": 4.4444,
+        "profit_factor": 2.2222,
+        "recovery_factor": 1.2222,
+        "sharpe_ratio": 0.3173,
+        "sortino_ratio": 7.3333,
+        "total_R": 1.1,
+        "total_trades": 3,
+        "trade_count_adequacy_warning": true,
+        "win_rate_pct": 33.33,
+        "wins": 1
+      },
+      "parameters": {
+        "min_expectancy_r": 0.0,
+        "min_profit_factor": 1.2,
+        "removal_fraction": 0.1,
+        "seed": 17
+      },
+      "robustness_engine_version": "st_c3_robustness_engine.v1",
+      "scenario": "random_trade_removal_10pct",
+      "status": "PASS",
+      "threshold_results": {
+        "expectancy_r": true,
+        "profit_factor": true
+      }
+    },
+    {
+      "ledger_sha256": "eebfe0e9037fa5ec9acf8c32fe7a31dfc38c6a0c2c5a781550723e5cc936d6e7",
+      "metrics": {
+        "average_r": -0.45,
+        "cost_drag_r": null,
+        "drawdown_duration_trades": 2,
+        "expectancy_r": -0.45,
+        "gross_loss_r": 0.9,
+        "gross_profit_r": 0,
+        "longest_loss_streak": 2,
+        "longest_win_streak": 0,
+        "losses": 2,
+        "mae_distribution": null,
+        "maximum_drawdown_r": -0.9,
+        "mfe_distribution": null,
+        "net_profit_r": -0.9,
+        "payoff_ratio": null,
+        "profit_factor": 0.0,
+        "recovery_factor": -1.0,
+        "sharpe_ratio": -9.0,
+        "sortino_ratio": -9.0,
+        "total_R": -0.9,
+        "total_trades": 2,
+        "trade_count_adequacy_warning": true,
+        "win_rate_pct": 0.0,
+        "wins": 0
+      },
+      "parameters": {
+        "min_expectancy_r": 0.0,
+        "min_profit_factor": 1.2
+      },
+      "robustness_engine_version": "st_c3_robustness_engine.v1",
+      "scenario": "session_slices",
+      "status": "FAIL",
+      "threshold_results": {
+        "expectancy_r": false,
+        "profit_factor": false
+      }
+    },
+    {
+      "ledger_sha256": "eebfe0e9037fa5ec9acf8c32fe7a31dfc38c6a0c2c5a781550723e5cc936d6e7",
+      "metrics": {
+        "average_r": 0.835,
+        "cost_drag_r": null,
+        "drawdown_duration_trades": 1,
+        "expectancy_r": 0.835,
+        "gross_loss_r": 0.98,
+        "gross_profit_r": 4.32,
+        "longest_loss_streak": 1,
+        "longest_win_streak": 1,
+        "losses": 2,
+        "mae_distribution": null,
+        "maximum_drawdown_r": -0.54,
+        "mfe_distribution": null,
+        "net_profit_r": 3.34,
+        "payoff_ratio": 4.4082,
+        "profit_factor": 4.4082,
+        "recovery_factor": 6.1852,
+        "sharpe_ratio": 0.6264,
+        "sortino_ratio": 16.7,
+        "total_R": 3.34,
+        "total_trades": 4,
+        "trade_count_adequacy_warning": true,
+        "win_rate_pct": 50.0,
+        "wins": 2
+      },
+      "parameters": {
+        "min_expectancy_r": 0.0,
+        "min_profit_factor": 1.2,
+        "r_penalty_per_trade": 0.04
+      },
+      "robustness_engine_version": "st_c3_robustness_engine.v1",
+      "scenario": "slippage_realistic",
+      "status": "PASS",
+      "threshold_results": {
+        "expectancy_r": true,
+        "profit_factor": true
+      }
+    },
+    {
+      "ledger_sha256": "eebfe0e9037fa5ec9acf8c32fe7a31dfc38c6a0c2c5a781550723e5cc936d6e7",
+      "metrics": {
+        "average_r": 0.825,
+        "cost_drag_r": null,
+        "drawdown_duration_trades": 1,
+        "expectancy_r": 0.825,
+        "gross_loss_r": 1.0,
+        "gross_profit_r": 4.3,
+        "longest_loss_streak": 1,
+        "longest_win_streak": 1,
+        "losses": 2,
+        "mae_distribution": null,
+        "maximum_drawdown_r": -0.55,
+        "mfe_distribution": null,
+        "net_profit_r": 3.3,
+        "payoff_ratio": 4.3,
+        "profit_factor": 4.3,
+        "recovery_factor": 6.0,
+        "sharpe_ratio": 0.6189,
+        "sortino_ratio": 16.5,
+        "total_R": 3.3,
+        "total_trades": 4,
+        "trade_count_adequacy_warning": true,
+        "win_rate_pct": 50.0,
+        "wins": 2
+      },
+      "parameters": {
+        "min_expectancy_r": 0.0,
+        "min_profit_factor": 1.2,
+        "r_penalty_per_trade": 0.05
+      },
+      "robustness_engine_version": "st_c3_robustness_engine.v1",
+      "scenario": "spread_x2",
+      "status": "PASS",
+      "threshold_results": {
+        "expectancy_r": true,
+        "profit_factor": true
+      }
+    },
+    {
+      "ledger_sha256": "eebfe0e9037fa5ec9acf8c32fe7a31dfc38c6a0c2c5a781550723e5cc936d6e7",
+      "metrics": {
+        "average_r": 0.775,
+        "cost_drag_r": null,
+        "drawdown_duration_trades": 1,
+        "expectancy_r": 0.775,
+        "gross_loss_r": 1.1,
+        "gross_profit_r": 4.2,
+        "longest_loss_streak": 1,
+        "longest_win_streak": 1,
+        "losses": 2,
+        "mae_distribution": null,
+        "maximum_drawdown_r": -0.6,
+        "mfe_distribution": null,
+        "net_profit_r": 3.1,
+        "payoff_ratio": 3.8182,
+        "profit_factor": 3.8182,
+        "recovery_factor": 5.1667,
+        "sharpe_ratio": 0.5814,
+        "sortino_ratio": 15.5,
+        "total_R": 3.1,
+        "total_trades": 4,
+        "trade_count_adequacy_warning": true,
+        "win_rate_pct": 50.0,
+        "wins": 2
+      },
+      "parameters": {
+        "min_expectancy_r": 0.0,
+        "min_profit_factor": 1.1,
+        "r_penalty_per_trade": 0.1
+      },
+      "robustness_engine_version": "st_c3_robustness_engine.v1",
+      "scenario": "spread_x3",
+      "status": "PASS",
+      "threshold_results": {
+        "expectancy_r": true,
+        "profit_factor": true
+      }
+    },
+    {
+      "ledger_sha256": "eebfe0e9037fa5ec9acf8c32fe7a31dfc38c6a0c2c5a781550723e5cc936d6e7",
+      "metrics": {
+        "average_r": 0.875,
+        "cost_drag_r": null,
+        "drawdown_duration_trades": 1,
+        "expectancy_r": 0.875,
+        "gross_loss_r": 0.9,
+        "gross_profit_r": 4.4,
+        "longest_loss_streak": 1,
+        "longest_win_streak": 1,
+        "losses": 2,
+        "mae_distribution": null,
+        "maximum_drawdown_r": -0.5,
+        "mfe_distribution": null,
+        "net_profit_r": 3.5,
+        "payoff_ratio": 4.8889,
+        "profit_factor": 4.8889,
+        "recovery_factor": 7.0,
+        "sharpe_ratio": 0.6564,
+        "sortino_ratio": 17.5,
+        "total_R": 3.5,
+        "total_trades": 4,
+        "trade_count_adequacy_warning": true,
+        "win_rate_pct": 50.0,
+        "wins": 2
+      },
+      "parameters": {
+        "min_expectancy_r": 0.0,
+        "min_profit_factor": 1.2
+      },
+      "robustness_engine_version": "st_c3_robustness_engine.v1",
+      "scenario": "volatility_regimes",
+      "status": "PASS",
+      "threshold_results": {
+        "expectancy_r": true,
+        "profit_factor": true
+      }
+    },
+    {
+      "ledger_sha256": "eebfe0e9037fa5ec9acf8c32fe7a31dfc38c6a0c2c5a781550723e5cc936d6e7",
+      "metrics": {
+        "average_r": 0.75,
+        "cost_drag_r": null,
+        "drawdown_duration_trades": 1,
+        "expectancy_r": 0.75,
+        "gross_loss_r": 0.5,
+        "gross_profit_r": 2.0,
+        "longest_loss_streak": 1,
+        "longest_win_streak": 1,
+        "losses": 1,
+        "mae_distribution": null,
+        "maximum_drawdown_r": -0.5,
+        "mfe_distribution": null,
+        "net_profit_r": 1.5,
+        "payoff_ratio": 4.0,
+        "profit_factor": 4.0,
+        "recovery_factor": 3.0,
+        "sharpe_ratio": 0.6,
+        "sortino_ratio": null,
+        "total_R": 1.5,
+        "total_trades": 2,
+        "trade_count_adequacy_warning": true,
+        "win_rate_pct": 50.0,
+        "wins": 1
+      },
+      "parameters": {
+        "min_expectancy_r": 0.0,
+        "min_profit_factor": 1.2
+      },
+      "robustness_engine_version": "st_c3_robustness_engine.v1",
+      "scenario": "yearly_splits",
+      "status": "PASS",
+      "threshold_results": {
+        "expectancy_r": true,
+        "profit_factor": true
+      }
+    }
+  ],
+  "status": "FAIL"
+}

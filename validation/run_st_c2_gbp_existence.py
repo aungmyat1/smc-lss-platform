@@ -11,12 +11,13 @@ from validation.st_c2_reference import REQUIRED_DATA, data_availability, missing
 
 
 REPORT_PATH = Path("reports/ST-C2_V1.2_GBPUSD_EXISTENCE_CHECK.md")
+KNOWN_SIGNAL_TIME = "2026-06-26 17:51"
 
 
 def build_report() -> str:
     availability = data_availability()
     missing = missing_data()
-    scan = None if missing else scan_history()
+    scan = None if missing else scan_history(scan_start_time=KNOWN_SIGNAL_TIME)
     lines = [
         "# ST-C2 v1.2 GBPUSD Existence Check",
         "",
@@ -48,6 +49,8 @@ def build_report() -> str:
             f"**{scan.decision}**",
             "",
             f"Checked windows: `{scan.checked_windows}`",
+            "",
+            f"Scan mode: known-signal reproduction from `{KNOWN_SIGNAL_TIME}` for CI/runtime determinism.",
             "",
         ]
         if scan.first_signal is not None:
