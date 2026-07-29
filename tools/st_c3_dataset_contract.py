@@ -12,7 +12,12 @@ import yaml
 from tools.st_c3_data_integrity import inspect_dataset
 
 
-def validate_dataset_contract(contract_path: str | Path, data_dir: str | Path) -> dict[str, Any]:
+def validate_dataset_contract(
+    contract_path: str | Path,
+    data_dir: str | Path,
+    *,
+    require_approved: bool = False,
+) -> dict[str, Any]:
     contract_file = Path(contract_path)
     if not contract_file.exists():
         return _blocked(f"dataset contract missing: {contract_file}")
@@ -46,16 +51,18 @@ def validate_dataset_contract(contract_path: str | Path, data_dir: str | Path) -
     if not contract_approved and not replay_prohibited:
         return _rejected("blocked/unapproved contract must prohibit replay", summaries)
 
-    return {
+    status = "ACCEPTED" if contract_approved and integrity_pass else "BLOCKED"
+    result = {
         "stage": "dataset_contract",
-        "status": "ACCEPTED" if contract_approved and integrity_pass else "BLOCKED",
-        "reason": "dataset contract is approved and integrity passed" if contract_approved and integrity_pass else _first_blocker(summaries),
-        "next_action": "Proceed to owner A3-opening decision" if contract_approved and integrity_pass else "Owner must provide a complete canonical dataset and approve the contract.",
+        "status": status,
+        "reason": "dataset contract is approved and integrity passed" if status == "ACCEPTED" else _first_blocker(summaries),
+        "next_action": "Proceed to owner A3-opening decision" if status == "ACCEPTED" else "Owner must provide a complete canonical dataset and approve the contract.",
         "details": {
             "contract": str(contract_file),
             "contract_status": contract.get("status"),
             "approval_status": contract.get("approval_status"),
             "integrity_pass": integrity_pass,
+            "require_approved": require_approved,
             "replay_prohibited_unless_approved": replay_prohibited,
             "files": [
                 {
@@ -69,6 +76,9 @@ def validate_dataset_contract(contract_path: str | Path, data_dir: str | Path) -
             ],
         },
     }
+    if require_approved and status != "ACCEPTED":
+        result["next_action"] = "Release gate requires an approved dataset contract; keep replay blocked."
+    return result
 
 
 def _first_blocker(summaries: list[Any]) -> str:
@@ -108,10 +118,15 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--contract", type=Path, default=Path("contracts/DATASET_CONTRACT.yaml"))
     parser.add_argument("--data", type=Path, default=Path("data/market/approved/st_c3"))
+    parser.add_argument(
+        "--require-approved",
+        action="store_true",
+        help="Fail nonzero unless the contract is ACCEPTED and integrity passes.",
+    )
     args = parser.parse_args()
-    result = validate_dataset_contract(args.contract, args.data)
+    result = validate_dataset_contract(args.contract, args.data, require_approved=args.require_approved)
     print(json.dumps(result, indent=2, sort_keys=True))
-    if result["status"] == "REJECTED":
+    if result["status"] == "REJECTED" or (args.require_approved and result["status"] != "ACCEPTED"):
         raise SystemExit(2)
 
 

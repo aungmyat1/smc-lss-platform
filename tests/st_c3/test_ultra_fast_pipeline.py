@@ -447,6 +447,34 @@ def test_dataset_contract_accepts_honest_blocked_state(tmp_path):
 
     assert result["status"] == "BLOCKED"
     assert "missing candle" in result["reason"]
+    assert result["details"]["require_approved"] is False
+
+
+def test_dataset_contract_require_approved_marks_release_gate(tmp_path):
+    data_dir = _write_dataset_dir(tmp_path, approved=True, missing_candle=True)
+    contract_path = tmp_path / "DATASET_CONTRACT.yaml"
+    contract_path.write_text(
+        yaml.safe_dump(
+            {
+                "contract_id": "ST-C3-DATASET-CONTRACT",
+                "contract_version": "test",
+                "strategy": "ST-C3",
+                "spec_version": "1.0.7",
+                "status": "BLOCKED",
+                "approval_status": "NOT_APPROVED",
+                "approved_scope": {"symbols": ["EURUSD", "GBPUSD"], "timeframes": ["H4", "M15", "M3"]},
+                "expected_files": {},
+                "approval_gate": {"replay_prohibited_unless_approved": True},
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = validate_dataset_contract(contract_path, data_dir, require_approved=True)
+
+    assert result["status"] == "BLOCKED"
+    assert result["details"]["require_approved"] is True
+    assert "Release gate requires" in result["next_action"]
 
 
 def test_dataset_contract_rejects_false_approval_claim(tmp_path):

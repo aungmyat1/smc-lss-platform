@@ -18,4 +18,7 @@
   canonical dataset sprint.
 - Added `tools.st_c3_dataset_contract` to verify the contract is honest about
   blocked/approved state and to keep replay prohibited while integrity fails.
+- Added strict `--require-approved` mode for dataset release gates.
+- Added `DATASET_APPROVAL_SPRINT_REPORT.md` for the current blocked sprint
+  handoff.
 - Wired the dataset-contract guardrail into CI.
