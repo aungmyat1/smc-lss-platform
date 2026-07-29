@@ -111,7 +111,7 @@ def load_approved_dataset(
             entry = by_key.get((symbol, timeframe))
             if entry is None:
                 raise ValueError(f"manifest missing file entry for {symbol} {timeframe}")
-            selected.append(_validate_dataset_entry(root, entry))
+            selected.append(_validate_dataset_entry(root, entry, date_from=date_from, date_to=date_to))
     return ApprovedDataset(
         data_dir=str(root),
         manifest_path=str(manifest_path),
@@ -128,7 +128,7 @@ def sha256_file(path: str | Path) -> str:
     return digest.hexdigest()
 
 
-def _validate_dataset_entry(root: Path, entry: Mapping[str, Any]) -> DatasetFileSummary:
+def _validate_dataset_entry(root: Path, entry: Mapping[str, Any], *, date_from: str, date_to: str) -> DatasetFileSummary:
     raw_path = entry.get("path")
     if not raw_path:
         raise ValueError("dataset entry missing path")
@@ -140,6 +140,13 @@ def _validate_dataset_entry(root: Path, entry: Mapping[str, Any]) -> DatasetFile
     if expected and str(expected).lower() != digest:
         raise ValueError(f"sha256 mismatch for {path}")
     summary = _validate_csv(path, timeframe=str(entry["timeframe"]))
+    _validate_csv_covers_requested_range(
+        path,
+        summary,
+        timeframe=str(entry["timeframe"]),
+        date_from=date_from,
+        date_to=date_to,
+    )
     return DatasetFileSummary(
         symbol=str(entry["symbol"]),
         timeframe=str(entry["timeframe"]),
@@ -198,7 +205,11 @@ def _validate_csv(path: Path, *, timeframe: str) -> dict[str, Any]:
                 raise ValueError(f"{path}: duplicate timestamp {row['time']}")
             if previous is not None and current <= previous:
                 raise ValueError(f"{path}: timestamps must be strictly increasing")
-            if previous is not None and current - previous != expected_delta:
+            if (
+                previous is not None
+                and current - previous != expected_delta
+                and not _is_allowed_market_closure_gap(previous, current, expected_delta)
+            ):
                 raise ValueError(f"{path}: missing or irregular candle between {previous} and {current}")
             for column in ("open", "high", "low", "close", "volume"):
                 value = float(row[column])
@@ -226,6 +237,77 @@ def _parse_timestamp(value: str) -> datetime:
     except ValueError:
         parsed = datetime.strptime(value.strip()[:16], "%Y-%m-%d %H:%M")
     return parsed.replace(tzinfo=None)
+
+
+def _validate_csv_covers_requested_range(
+    path: Path,
+    summary: Mapping[str, Any],
+    *,
+    timeframe: str,
+    date_from: str,
+    date_to: str,
+) -> None:
+    first = _parse_timestamp(str(summary["first_timestamp"]))
+    last = _parse_timestamp(str(summary["last_timestamp"]))
+    delta = TIMEFRAME_DELTAS.get(timeframe)
+    if delta is None:
+        raise ValueError(f"{path}: unsupported timeframe {timeframe}")
+    requested_from = _parse_date(date_from, "requested date_from")
+    requested_to = _parse_date(date_to, "requested date_to") + timedelta(days=1) - timedelta(seconds=1)
+    covered_until = last + delta - timedelta(seconds=1)
+    if (
+        first > requested_from
+        and not _is_missing_span_allowed(requested_from, first, delta)
+    ) or covered_until < requested_to:
+        raise ValueError(
+            f"{path}: CSV coverage {first.isoformat()}Z..{covered_until.isoformat()}Z "
+            f"does not cover requested {date_from}..{date_to}"
+        )
+
+
+def _is_allowed_market_closure_gap(previous: datetime, current: datetime, expected_delta: timedelta) -> bool:
+    if current <= previous + expected_delta:
+        return False
+    if _spans_fx_holiday_closure(previous, current, expected_delta):
+        return True
+    return _is_missing_span_allowed(previous + expected_delta, current, expected_delta)
+
+
+def _is_missing_span_allowed(start: datetime, end: datetime, expected_delta: timedelta) -> bool:
+    if start >= end:
+        return False
+    probe = start
+    saw_missing = False
+    while probe < end:
+        saw_missing = True
+        if _is_fx_market_open(probe) and not _is_fx_holiday(probe):
+            return False
+        probe += expected_delta
+    return saw_missing
+
+
+def _spans_fx_holiday_closure(previous: datetime, current: datetime, expected_delta: timedelta) -> bool:
+    probe = previous + expected_delta
+    while probe < current:
+        if _is_fx_holiday(probe):
+            return True
+        probe += expected_delta
+    return False
+
+
+def _is_fx_holiday(value: datetime) -> bool:
+    return (value.month, value.day) in {(1, 1), (12, 25)}
+
+
+def _is_fx_market_open(value: datetime) -> bool:
+    # ST-C3 EURUSD/GBPUSD datasets may legitimately omit weekend closure bars.
+    if value.weekday() == 5:
+        return False
+    if value.weekday() == 6:
+        return False
+    if value.weekday() == 4 and value.hour >= 22:
+        return False
+    return True
 
 
 def _validate_required_manifest_fields(manifest: Mapping[str, Any]) -> None:

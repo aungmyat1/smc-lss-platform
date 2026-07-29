@@ -15,6 +15,7 @@ from validation.st_c3.dataset_loader import (
     MANIFEST_NAME,
     _normalize_files,
     _validate_csv,
+    _validate_csv_covers_requested_range,
     sha256_file,
 )
 
@@ -29,7 +30,13 @@ def prepare_dataset_manifest(data_dir: str | Path, *, write: bool = False) -> di
         return _blocked("dataset manifest must be a mapping")
     try:
         files = _normalize_files(manifest.get("files"))
-        file_updates = _validate_and_hash_files(root, files)
+        coverage = manifest.get("coverage") or {}
+        file_updates = _validate_and_hash_files(
+            root,
+            files,
+            date_from=str(coverage.get("from", "")),
+            date_to=str(coverage.get("to", "")),
+        )
     except (FileNotFoundError, ValueError) as exc:
         return _blocked(str(exc))
     if write:
@@ -47,7 +54,13 @@ def prepare_dataset_manifest(data_dir: str | Path, *, write: bool = False) -> di
     }
 
 
-def _validate_and_hash_files(root: Path, files: list[Mapping[str, Any]]) -> list[dict[str, str]]:
+def _validate_and_hash_files(
+    root: Path,
+    files: list[Mapping[str, Any]],
+    *,
+    date_from: str,
+    date_to: str,
+) -> list[dict[str, str]]:
     by_key = {(item.get("symbol"), item.get("timeframe")): item for item in files}
     updates: list[dict[str, str]] = []
     for symbol in sorted(EXPECTED_SYMBOLS):
@@ -58,7 +71,14 @@ def _validate_and_hash_files(root: Path, files: list[Mapping[str, Any]]) -> list
             path = root / str(entry["path"])
             if not path.exists():
                 raise FileNotFoundError(f"dataset file missing: {path}")
-            _validate_csv(path, timeframe=timeframe)
+            summary = _validate_csv(path, timeframe=timeframe)
+            _validate_csv_covers_requested_range(
+                path,
+                summary,
+                timeframe=timeframe,
+                date_from=date_from,
+                date_to=date_to,
+            )
             updates.append(
                 {
                     "symbol": symbol,

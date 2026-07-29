@@ -2,6 +2,36 @@
 
 **One milestone at a time. This is the active milestone.**
 
+## ST-C3 DATASET APPROVAL BLOCKER — Active Runtime Boundary
+
+Current runtime status:
+
+```json
+{
+  "stage": "dataset_approval",
+  "status": "BLOCKED",
+  "reason": "EURUSD_M15.csv is missing the expected 2023-08-31T17:15:00Z M15 candle between 2023-08-31T17:00:00Z and 2023-08-31T17:30:00Z.",
+  "next_action": "Owner must provide a complete approved dataset and rerun manifest hash preparation.",
+  "details": {
+    "a3_open": false,
+    "replay_allowed": false,
+    "backtest_allowed": false,
+    "demo_allowed": false,
+    "live_allowed": false
+  }
+}
+```
+
+Guardrail: do not fabricate, interpolate, or auto-fill the missing candle.
+Do not open A3, run replay/backtest, or activate demo/live until the dataset
+is complete and all required owner decisions are recorded.
+
+Companion governance-agent prompts:
+
+- `agents/governance/ST_C3_VALIDATION_EXECUTION_ORCHESTRATOR_PROMPT.md`
+- `agents/governance/ST_C3_DATASET_APPROVAL_MANIFEST_VALIDATOR_PROMPT.md`
+- `agents/governance/ST_C3_REPLAY_ENGINE_PROMPT.md`
+
 ## ST-C3 A2/S1-G5 EVIDENCE-GATHERING IN PROGRESS (NOT PASSED) — Active Milestone
 
 Current lifecycle position:

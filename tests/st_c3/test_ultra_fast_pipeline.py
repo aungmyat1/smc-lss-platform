@@ -172,8 +172,8 @@ def test_run_replay_refuses_non_frozen_spec():
         run_replay(
             spec_version="1.0.6",
             symbols=["GBPUSD"],
-            date_from="2024-01-01",
-            date_to="2024-01-31",
+            date_from="2024-01-02",
+            date_to="2024-01-02",
             tf_set=["H4", "M15", "M3"],
             sample=True,
         )
@@ -186,8 +186,8 @@ def test_run_replay_with_unapproved_data_manifest_refuses_to_run(tmp_path):
         run_replay(
             spec_version="1.0.7",
             symbols=["EURUSD", "GBPUSD"],
-            date_from="2024-01-01",
-            date_to="2024-01-31",
+            date_from="2024-01-02",
+            date_to="2024-01-02",
             tf_set=["H4", "M15", "M3"],
             data_dir=data_dir,
         )
@@ -198,8 +198,8 @@ def test_run_replay_with_approved_data_validates_dataset_without_simulating_trad
     ledger = run_replay(
         spec_version="1.0.7",
         symbols=["EURUSD", "GBPUSD"],
-        date_from="2024-01-01",
-        date_to="2024-01-31",
+        date_from="2024-01-02",
+        date_to="2024-01-02",
         tf_set=["H4", "M15", "M3"],
         data_dir=data_dir,
     )
@@ -222,8 +222,8 @@ def test_run_replay_with_hash_mismatch_blocks(tmp_path):
         run_replay(
             spec_version="1.0.7",
             symbols=["EURUSD", "GBPUSD"],
-            date_from="2024-01-01",
-            date_to="2024-01-31",
+            date_from="2024-01-02",
+            date_to="2024-01-02",
             tf_set=["H4", "M15", "M3"],
             data_dir=data_dir,
         )
@@ -236,11 +236,25 @@ def test_run_replay_with_missing_candle_blocks(tmp_path):
         run_replay(
             spec_version="1.0.7",
             symbols=["EURUSD", "GBPUSD"],
-            date_from="2024-01-01",
-            date_to="2024-01-31",
+            date_from="2024-01-02",
+            date_to="2024-01-02",
             tf_set=["H4", "M15", "M3"],
             data_dir=data_dir,
         )
+
+
+def test_dataset_loader_allows_weekend_market_closure_gap(tmp_path):
+    data_dir = _write_dataset_dir(tmp_path, approved=True, weekend_gap=True)
+    ledger = run_replay(
+        spec_version="1.0.7",
+        symbols=["EURUSD", "GBPUSD"],
+        date_from="2024-01-05",
+        date_to="2024-01-05",
+        tf_set=["H4", "M15", "M3"],
+        data_dir=data_dir,
+    )
+
+    assert ledger.to_dict()["meta"]["dataset_approved"] is True
 
 
 def test_run_replay_with_wrong_symbol_set_blocks(tmp_path):
@@ -250,8 +264,8 @@ def test_run_replay_with_wrong_symbol_set_blocks(tmp_path):
         run_replay(
             spec_version="1.0.7",
             symbols=["EURUSD", "GBPUSD"],
-            date_from="2024-01-01",
-            date_to="2024-01-31",
+            date_from="2024-01-02",
+            date_to="2024-01-02",
             tf_set=["H4", "M15", "M3"],
             data_dir=data_dir,
         )
@@ -264,8 +278,8 @@ def test_run_replay_with_missing_sessions_blocks(tmp_path):
         run_replay(
             spec_version="1.0.7",
             symbols=["EURUSD", "GBPUSD"],
-            date_from="2024-01-01",
-            date_to="2024-01-31",
+            date_from="2024-01-02",
+            date_to="2024-01-02",
             tf_set=["H4", "M15", "M3"],
             data_dir=data_dir,
         )
@@ -278,8 +292,8 @@ def test_run_replay_with_missing_symbol_metadata_blocks(tmp_path):
         run_replay(
             spec_version="1.0.7",
             symbols=["EURUSD", "GBPUSD"],
-            date_from="2024-01-01",
-            date_to="2024-01-31",
+            date_from="2024-01-02",
+            date_to="2024-01-02",
             tf_set=["H4", "M15", "M3"],
             data_dir=data_dir,
         )
@@ -292,8 +306,8 @@ def test_run_replay_with_invalid_session_window_blocks(tmp_path):
         run_replay(
             spec_version="1.0.7",
             symbols=["EURUSD", "GBPUSD"],
-            date_from="2024-01-01",
-            date_to="2024-01-31",
+            date_from="2024-01-02",
+            date_to="2024-01-02",
             tf_set=["H4", "M15", "M3"],
             data_dir=data_dir,
         )
@@ -306,8 +320,8 @@ def test_run_replay_with_invalid_symbol_metadata_blocks(tmp_path):
         run_replay(
             spec_version="1.0.7",
             symbols=["EURUSD", "GBPUSD"],
-            date_from="2024-01-01",
-            date_to="2024-01-31",
+            date_from="2024-01-02",
+            date_to="2024-01-02",
             tf_set=["H4", "M15", "M3"],
             data_dir=data_dir,
         )
@@ -318,8 +332,8 @@ def test_run_replay_accepts_filename_keyed_files_manifest(tmp_path):
     ledger = run_replay(
         spec_version="1.0.7",
         symbols=["EURUSD", "GBPUSD"],
-        date_from="2024-01-01",
-        date_to="2024-01-31",
+        date_from="2024-01-02",
+        date_to="2024-01-02",
         tf_set=["H4", "M15", "M3"],
         data_dir=data_dir,
     )
@@ -424,6 +438,7 @@ def _write_dataset_dir(
     approved: bool,
     symbols=("EURUSD", "GBPUSD"),
     missing_candle: bool = False,
+    weekend_gap: bool = False,
     files_as_mapping: bool = False,
     omit_sessions: bool = False,
     omit_symbol_metadata: bool = False,
@@ -437,12 +452,12 @@ def _write_dataset_dir(
     for symbol in symbols:
         for timeframe, delta in deltas.items():
             path = data_dir / f"{symbol}_{timeframe}.csv"
-            start = datetime(2024, 1, 1, 0, 0)
-            second = start + (delta * 2 if missing_candle and symbol == "EURUSD" and timeframe == "M15" else delta)
             path.write_text(
-                "time,open,high,low,close,volume,session,news_flag\n"
-                f"{start.isoformat()}Z,1.1000,1.1010,1.0990,1.1005,100,LONDON,false\n"
-                f"{second.isoformat()}Z,1.1005,1.1020,1.1000,1.1015,120,NY,true\n",
+                _dataset_csv_rows(
+                    delta,
+                    missing_candle=missing_candle and symbol == "EURUSD" and timeframe == "M15",
+                    weekend_gap=weekend_gap,
+                ),
                 encoding="utf-8",
             )
             files.append(
@@ -476,7 +491,7 @@ def _write_dataset_dir(
         "approved_by": "TEST_OWNER",
         "symbols": list(symbols),
         "timeframes": ["H4", "M15", "M3"],
-        "coverage": {"from": "2024-01-01", "to": "2024-01-31"},
+        "coverage": {"from": "2024-01-05" if weekend_gap else "2024-01-02", "to": "2024-01-05" if weekend_gap else "2024-01-02"},
         "files": {
             item["path"]: {"sha256": item["sha256"]}
             for item in files
@@ -488,3 +503,40 @@ def _write_dataset_dir(
         manifest["symbol_metadata"] = symbol_metadata
     (data_dir / "DATASET_MANIFEST_ST_C3.yaml").write_text(yaml.safe_dump(manifest), encoding="utf-8")
     return data_dir
+
+
+def _dataset_csv_rows(delta: timedelta, *, missing_candle: bool, weekend_gap: bool) -> str:
+    rows = ["time,open,high,low,close,volume,session,news_flag"]
+    if weekend_gap:
+        current = datetime(2024, 1, 5, 0, 0)
+        close = datetime(2024, 1, 5, 22, 0)
+        times = []
+        while current < close:
+            times.append(current)
+            current += delta
+        times.append(datetime(2024, 1, 8, 0, 0))
+    else:
+        start = datetime(2024, 1, 2, 0, 0)
+        end = datetime(2024, 1, 3, 0, 0)
+        times = []
+        current = start
+        skipped = False
+        while current < end:
+            if missing_candle and not skipped and current == start + delta:
+                skipped = True
+                current += delta
+                continue
+            times.append(current)
+            current += delta
+    for index, timestamp in enumerate(times):
+        rows.append(
+            f"{timestamp.isoformat()}Z,"
+            f"{1.1000 + index * 0.0001:.4f},"
+            f"{1.1010 + index * 0.0001:.4f},"
+            f"{1.0990 + index * 0.0001:.4f},"
+            f"{1.1005 + index * 0.0001:.4f},"
+            f"{100 + index},"
+            f"{'LONDON' if index % 2 == 0 else 'NY'},"
+            f"{'false' if index % 2 == 0 else 'true'}"
+        )
+    return "\n".join(rows) + "\n"
