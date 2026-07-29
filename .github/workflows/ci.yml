@@ -23,5 +23,7 @@ jobs:
         run: python -m pip install -r requirements.txt
       - name: Run tests
         run: python -m pytest -q
+      - name: ST-C3 dataset contract guardrail
+        run: python -m tools.st_c3_dataset_contract --contract contracts/DATASET_CONTRACT.yaml --data data/market/approved/st_c3
       - name: ST-C3 ultra-fast pipeline dry run
         run: python -m validation.st_c3.run_ultra_fast_pipeline --sample --out-dir reports/validation/st_c3/replay_ci

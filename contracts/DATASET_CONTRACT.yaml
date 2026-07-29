@@ -1,0 +1,114 @@
+contract_id: ST-C3-DATASET-CONTRACT
+contract_version: "0.1.0-blocked"
+strategy: ST-C3
+spec_version: "1.0.7"
+dataset_version: "Dataset_v0.1_blocked_candidate"
+status: BLOCKED
+approval_status: NOT_APPROVED
+integrity_status: BLOCKED
+replay_status: BLOCKED
+timezone: UTC
+
+approved_scope:
+  symbols:
+    - EURUSD
+    - GBPUSD
+  timeframes:
+    - H4
+    - M15
+    - M3
+  coverage:
+    from: "2018-01-01"
+    to: "2024-12-31"
+  rationale: >
+    Active scope mirrors frozen ST-C3 v1.0.7 governance. XAUUSD/H1/M5 are
+    not added here because that would change the current approved dataset
+    scope and downstream validation contract.
+
+provider:
+  current_candidate: local MetaTrader 5 terminal export
+  status: REJECTED_FOR_CANONICAL_APPROVAL
+  reason: >
+    Current MT5 candidate is fragmented: M15 coverage begins in 2022
+    instead of 2018, M3 contains one 2025 candle, and automatic recovery
+    did not return exact candles for attempted gaps.
+
+manifest:
+  path: data/market/approved/st_c3/DATASET_MANIFEST_ST_C3.yaml
+  status: BLOCKED
+  hash_status: BLOCKED
+  updated_manifest_report: reports/validation/st_c3/data_integrity/UPDATED_MANIFEST.json
+
+expected_files:
+  EURUSD_H4.csv:
+    symbol: EURUSD
+    timeframe: H4
+    expected_status: complete_2018_2024_required
+    current_status: BLOCKED
+  EURUSD_M15.csv:
+    symbol: EURUSD
+    timeframe: M15
+    expected_status: complete_2018_2024_required
+    current_status: BLOCKED
+  EURUSD_M3.csv:
+    symbol: EURUSD
+    timeframe: M3
+    expected_status: complete_2018_2024_required
+    current_status: BLOCKED
+  GBPUSD_H4.csv:
+    symbol: GBPUSD
+    timeframe: H4
+    expected_status: complete_2018_2024_required
+    current_status: BLOCKED
+  GBPUSD_M15.csv:
+    symbol: GBPUSD
+    timeframe: M15
+    expected_status: complete_2018_2024_required
+    current_status: BLOCKED
+  GBPUSD_M3.csv:
+    symbol: GBPUSD
+    timeframe: M3
+    expected_status: complete_2018_2024_required
+    current_status: BLOCKED
+
+known_blockers:
+  - file: EURUSD_H4.csv
+    issue: missing_market_open_candle
+    timestamp: "2018-12-26T00:00:00Z"
+  - file: EURUSD_M15.csv
+    issue: incomplete_coverage
+    detail: starts at 2022-07-22T01:45:00Z, not 2018-01-01
+  - file: EURUSD_M3.csv
+    issue: wrong_range_partial_file
+    detail: one 2025 candle, not 2018-2024 coverage
+  - file: GBPUSD_M15.csv
+    issue: incomplete_coverage
+    detail: starts at 2022-07-22T02:15:00Z, not 2018-01-01
+  - file: GBPUSD_M3.csv
+    issue: wrong_range_partial_file
+    detail: one 2025 candle, not 2018-2024 coverage
+
+checks:
+  missing_timestamps: required
+  duplicate_timestamps: required
+  chronological_order: required
+  fixed_timeframe_spacing: required
+  ohlc_geometry: required
+  volume_non_negative: required
+  session_column_validation: required_when_present
+  news_flag_validation: required_when_present
+  sha256_hashes: required
+  manifest_consistency: required
+
+approval_gate:
+  dataset_contract_approved: false
+  replay_prohibited_unless_approved: true
+  a3_opening_authorized: false
+  demo_live_authorized: false
+
+evidence:
+  data_source_audit: reports/validation/st_c3/data_integrity/DATA_SOURCE_AUDIT.md
+  integrity_report: reports/validation/st_c3/data_integrity/DATA_INTEGRITY_REPORT.md
+  validation_summary: reports/validation/st_c3/data_integrity/VALIDATION_SUMMARY.md
+  recovery_log: reports/validation/st_c3/data_integrity/RECOVERY_LOG.md
+  release_notes: reports/validation/st_c3/data_integrity/DATASET_RELEASE_NOTES.md

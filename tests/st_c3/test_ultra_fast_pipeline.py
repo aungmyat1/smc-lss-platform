@@ -11,6 +11,7 @@ import yaml
 
 from tools import st_c3_data_integrity
 from tools.st_c3_data_integrity import inspect_csv, run_integrity_check
+from tools.st_c3_dataset_contract import validate_dataset_contract
 from tools.st_c3_download_mt5_dataset import Candle
 from validation.st_c3.owner_packet_generator import build_owner_packet
 from tools.st_c3_diff_owner_packet import diff_owner_packets
@@ -420,6 +421,58 @@ def test_data_integrity_recovery_merges_only_exact_source_candle(tmp_path, monke
 
     assert result["recovery_log"][0]["status"] == "RECOVERED"
     assert result["after"][1]["missing_count"] == 0
+
+
+def test_dataset_contract_accepts_honest_blocked_state(tmp_path):
+    data_dir = _write_dataset_dir(tmp_path, approved=True, missing_candle=True)
+    contract_path = tmp_path / "DATASET_CONTRACT.yaml"
+    contract_path.write_text(
+        yaml.safe_dump(
+            {
+                "contract_id": "ST-C3-DATASET-CONTRACT",
+                "contract_version": "test",
+                "strategy": "ST-C3",
+                "spec_version": "1.0.7",
+                "status": "BLOCKED",
+                "approval_status": "NOT_APPROVED",
+                "approved_scope": {"symbols": ["EURUSD", "GBPUSD"], "timeframes": ["H4", "M15", "M3"]},
+                "expected_files": {},
+                "approval_gate": {"replay_prohibited_unless_approved": True},
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = validate_dataset_contract(contract_path, data_dir)
+
+    assert result["status"] == "BLOCKED"
+    assert "missing candle" in result["reason"]
+
+
+def test_dataset_contract_rejects_false_approval_claim(tmp_path):
+    data_dir = _write_dataset_dir(tmp_path, approved=True, missing_candle=True)
+    contract_path = tmp_path / "DATASET_CONTRACT.yaml"
+    contract_path.write_text(
+        yaml.safe_dump(
+            {
+                "contract_id": "ST-C3-DATASET-CONTRACT",
+                "contract_version": "test",
+                "strategy": "ST-C3",
+                "spec_version": "1.0.7",
+                "status": "APPROVED",
+                "approval_status": "APPROVED",
+                "approved_scope": {"symbols": ["EURUSD", "GBPUSD"], "timeframes": ["H4", "M15", "M3"]},
+                "expected_files": {},
+                "approval_gate": {"replay_prohibited_unless_approved": False},
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = validate_dataset_contract(contract_path, data_dir)
+
+    assert result["status"] == "REJECTED"
+    assert "claims approval" in result["reason"]
 
 
 def test_ultra_fast_pipeline_cli_sample_mode_writes_linked_outputs(tmp_path):
