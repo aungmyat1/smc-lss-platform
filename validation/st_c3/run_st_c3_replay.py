@@ -22,20 +22,35 @@ def main() -> None:
     parser.add_argument("--date-from", default="2018-01-01")
     parser.add_argument("--date-to", default="2024-12-31")
     parser.add_argument("--tf-set", default="H4,M15,M3")
+    parser.add_argument("--data", type=Path, help="Approved ST-C3 market data directory")
     parser.add_argument("--source-ledger", type=Path)
     parser.add_argument("--sample", action="store_true", help="Use a tiny synthetic dry-run ledger")
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUT_DIR)
     args = parser.parse_args()
 
-    ledger = run_replay(
-        spec_version=args.spec_version,
-        symbols=[item.strip() for item in args.symbols.split(",") if item.strip()],
-        date_from=args.date_from,
-        date_to=args.date_to,
-        tf_set=[item.strip() for item in args.tf_set.split(",") if item.strip()],
-        source_ledger=args.source_ledger,
-        sample=args.sample,
-    )
+    try:
+        ledger = run_replay(
+            spec_version=args.spec_version,
+            symbols=[item.strip() for item in args.symbols.split(",") if item.strip()],
+            date_from=args.date_from,
+            date_to=args.date_to,
+            tf_set=[item.strip() for item in args.tf_set.split(",") if item.strip()],
+            source_ledger=args.source_ledger,
+            data_dir=args.data,
+            sample=args.sample,
+        )
+    except (FileNotFoundError, ValueError) as exc:
+        print(
+            json.dumps(
+                {
+                    "status": "BLOCKED",
+                    "reason": str(exc),
+                    "guardrail": "Replay run does not open A3 or imply acceptance.",
+                },
+                indent=2,
+            )
+        )
+        raise SystemExit(2)
     ledger_path = write_ledger(ledger, args.out_dir / "ledger.json")
     digest = write_ledger_hash(ledger_path, args.out_dir / "ledger.hash")
     print(

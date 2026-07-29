@@ -3,18 +3,24 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+from datetime import datetime, timedelta
 
 import pytest
+import yaml
 
 from validation.st_c3.owner_packet_generator import build_owner_packet
+from tools.st_c3_diff_owner_packet import diff_owner_packets
 from validation.st_c3.replay_engine import (
     build_ledger,
     read_ledger_hash,
+    run_replay,
     verify_ledger_hash,
     write_ledger,
     write_ledger_hash,
     TradeRecord,
 )
+from validation.st_c3.dataset_loader import sha256_file
+from validation.st_c3.replay_repro_auditor import audit_replay_reproducibility, run_and_audit_replay
 from validation.st_c3.robustness_engine import run_robustness_matrix
 from validation.st_c3.stats_engine import compute_stats_from_ledger
 from validation.st_c3.walkforward_engine import run_fixed_year_walkforward
@@ -117,9 +123,50 @@ def test_owner_packet_preserves_guardrail(tmp_path):
     assert "Does not accept S1-G5 or S1-G6" in packet["guardrail"]
 
 
-def test_run_replay_refuses_non_frozen_spec():
-    from validation.st_c3.replay_engine import run_replay
+def test_owner_packet_diff_reports_high_signal_changes(tmp_path):
+    old_path = tmp_path / "old.json"
+    new_path = tmp_path / "new.json"
+    old_path.write_text(json.dumps({"ledger_sha256": "a", "recommendation": "defer"}), encoding="utf-8")
+    new_path.write_text(json.dumps({"ledger_sha256": "b", "recommendation": "reject"}), encoding="utf-8")
 
+    diff = diff_owner_packets(old_path, new_path)
+
+    assert diff["changed"] is True
+    assert {item["field"] for item in diff["changes"]} == {"ledger_sha256", "recommendation"}
+    assert "Does not accept gates" in diff["guardrail"]
+
+
+def test_replay_reproducibility_auditor_compares_hash_and_trade_ids(tmp_path):
+    first = tmp_path / "first"
+    second = tmp_path / "second"
+    first.mkdir()
+    second.mkdir()
+    ledger = build_ledger([_trade("same", 2024, 1.0)], {"strategy_id": "ST-C3", "version": "1.0.7"})
+    first_ledger = write_ledger(ledger, first / "ledger.json")
+    second_ledger = write_ledger(ledger, second / "ledger.json")
+    write_ledger_hash(first_ledger, first / "ledger.hash")
+    write_ledger_hash(second_ledger, second / "ledger.hash")
+
+    audit = audit_replay_reproducibility(first, second)
+
+    assert audit["status"] == "PASS"
+    assert audit["hash_match"] is True
+    assert audit["trade_ids_match"] is True
+
+
+def test_replay_reproducibility_auditor_can_run_sample_replay_twice(tmp_path):
+    audit = run_and_audit_replay(
+        first_dir=tmp_path / "first",
+        second_dir=tmp_path / "second",
+        sample=True,
+    )
+
+    assert audit["status"] == "PASS"
+    assert audit["hash_match"] is True
+    assert audit["trade_count_match"] is True
+
+
+def test_run_replay_refuses_non_frozen_spec():
     with pytest.raises(ValueError, match="locked to frozen spec version 1.0.7"):
         run_replay(
             spec_version="1.0.6",
@@ -129,6 +176,98 @@ def test_run_replay_refuses_non_frozen_spec():
             tf_set=["H4", "M15", "M3"],
             sample=True,
         )
+
+
+def test_run_replay_with_unapproved_data_manifest_refuses_to_run(tmp_path):
+    data_dir = _write_dataset_dir(tmp_path, approved=False)
+
+    with pytest.raises(ValueError, match="not approved"):
+        run_replay(
+            spec_version="1.0.7",
+            symbols=["EURUSD", "GBPUSD"],
+            date_from="2024-01-01",
+            date_to="2024-01-31",
+            tf_set=["H4", "M15", "M3"],
+            data_dir=data_dir,
+        )
+
+
+def test_run_replay_with_approved_data_validates_dataset_without_simulating_trades(tmp_path):
+    data_dir = _write_dataset_dir(tmp_path, approved=True)
+    ledger = run_replay(
+        spec_version="1.0.7",
+        symbols=["EURUSD", "GBPUSD"],
+        date_from="2024-01-01",
+        date_to="2024-01-31",
+        tf_set=["H4", "M15", "M3"],
+        data_dir=data_dir,
+    )
+    data = ledger.to_dict()
+
+    assert data["meta"]["dataset_approved"] is True
+    assert data["meta"]["trade_generation_status"] == "blocked_until_owner_authorizes_A3_replay"
+    assert len(data["meta"]["dataset_files"]) == 6
+    assert data["trades"] == []
+
+
+def test_run_replay_with_hash_mismatch_blocks(tmp_path):
+    data_dir = _write_dataset_dir(tmp_path, approved=True)
+    manifest_path = data_dir / "DATASET_MANIFEST_ST_C3.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+    manifest["files"][0]["sha256"] = "0" * 64
+    manifest_path.write_text(yaml.safe_dump(manifest), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="sha256 mismatch"):
+        run_replay(
+            spec_version="1.0.7",
+            symbols=["EURUSD", "GBPUSD"],
+            date_from="2024-01-01",
+            date_to="2024-01-31",
+            tf_set=["H4", "M15", "M3"],
+            data_dir=data_dir,
+        )
+
+
+def test_run_replay_with_missing_candle_blocks(tmp_path):
+    data_dir = _write_dataset_dir(tmp_path, approved=True, missing_candle=True)
+
+    with pytest.raises(ValueError, match="missing or irregular candle"):
+        run_replay(
+            spec_version="1.0.7",
+            symbols=["EURUSD", "GBPUSD"],
+            date_from="2024-01-01",
+            date_to="2024-01-31",
+            tf_set=["H4", "M15", "M3"],
+            data_dir=data_dir,
+        )
+
+
+def test_run_replay_with_wrong_symbol_set_blocks(tmp_path):
+    data_dir = _write_dataset_dir(tmp_path, approved=True, symbols=("GBPUSD",))
+
+    with pytest.raises(ValueError, match="manifest symbols must be exactly"):
+        run_replay(
+            spec_version="1.0.7",
+            symbols=["EURUSD", "GBPUSD"],
+            date_from="2024-01-01",
+            date_to="2024-01-31",
+            tf_set=["H4", "M15", "M3"],
+            data_dir=data_dir,
+        )
+
+
+def test_run_replay_accepts_filename_keyed_files_manifest(tmp_path):
+    data_dir = _write_dataset_dir(tmp_path, approved=True, files_as_mapping=True)
+    ledger = run_replay(
+        spec_version="1.0.7",
+        symbols=["EURUSD", "GBPUSD"],
+        date_from="2024-01-01",
+        date_to="2024-01-31",
+        tf_set=["H4", "M15", "M3"],
+        data_dir=data_dir,
+    )
+
+    assert len(ledger.to_dict()["meta"]["dataset_files"]) == 6
 
 
 def test_ultra_fast_pipeline_cli_sample_mode_writes_linked_outputs(tmp_path):
@@ -159,6 +298,25 @@ def test_ultra_fast_pipeline_cli_sample_mode_writes_linked_outputs(tmp_path):
     assert "Does not accept S1-G5 or S1-G6" in packet["guardrail"]
 
 
+def test_replay_cli_reports_blocked_when_approved_manifest_missing(tmp_path):
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "validation.st_c3.run_st_c3_replay",
+            "--data",
+            str(tmp_path),
+        ],
+        capture_output=True,
+        text=True,
+    )
+
+    payload = json.loads(completed.stdout)
+    assert completed.returncode == 2
+    assert payload["status"] == "BLOCKED"
+    assert "missing ST-C3 dataset manifest" in payload["reason"]
+
+
 def _write_profitable_ledger(tmp_path):
     trades = [
         _trade("2024-a", 2024, 2.0),
@@ -173,3 +331,58 @@ def _write_profitable_ledger(tmp_path):
     hash_path = tmp_path / "ledger.hash"
     write_ledger_hash(ledger_path, hash_path)
     return ledger_path, hash_path
+
+
+def _write_dataset_dir(
+    tmp_path,
+    *,
+    approved: bool,
+    symbols=("EURUSD", "GBPUSD"),
+    missing_candle: bool = False,
+    files_as_mapping: bool = False,
+):
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    files = []
+    deltas = {"H4": timedelta(hours=4), "M15": timedelta(minutes=15), "M3": timedelta(minutes=3)}
+    for symbol in symbols:
+        for timeframe, delta in deltas.items():
+            path = data_dir / f"{symbol}_{timeframe}.csv"
+            start = datetime(2024, 1, 1, 0, 0)
+            second = start + (delta * 2 if missing_candle and symbol == "EURUSD" and timeframe == "M15" else delta)
+            path.write_text(
+                "time,open,high,low,close,volume,session,news_flag\n"
+                f"{start.isoformat()}Z,1.1000,1.1010,1.0990,1.1005,100,LONDON,false\n"
+                f"{second.isoformat()}Z,1.1005,1.1020,1.1000,1.1015,120,NY,true\n",
+                encoding="utf-8",
+            )
+            files.append(
+                {
+                    "symbol": symbol,
+                    "timeframe": timeframe,
+                    "path": path.name,
+                    "sha256": sha256_file(path),
+                }
+            )
+    manifest = {
+        "strategy": "ST-C3",
+        "spec_version": "1.0.7",
+        "approved": approved,
+        "approval_status": "APPROVED" if approved else "PENDING",
+        "approval_date": "2026-07-29",
+        "approved_by": "TEST_OWNER",
+        "symbols": list(symbols),
+        "timeframes": ["H4", "M15", "M3"],
+        "coverage": {"from": "2024-01-01", "to": "2024-01-31"},
+        "sessions": {"london_window_utc": "07:00-10:00 UTC", "ny_window_utc": "13:00-16:00 UTC"},
+        "symbol_metadata": {
+            symbol: {"point_size": 0.0001, "quote_currency": "USD"}
+            for symbol in symbols
+        },
+        "files": {
+            item["path"]: {"sha256": item["sha256"]}
+            for item in files
+        } if files_as_mapping else files,
+    }
+    (data_dir / "DATASET_MANIFEST_ST_C3.yaml").write_text(yaml.safe_dump(manifest), encoding="utf-8")
+    return data_dir

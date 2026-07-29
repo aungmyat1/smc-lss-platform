@@ -3,6 +3,7 @@ __pycache__/
 .venv/
 env/
 data/*.csv
+data/**/*.csv
 !data/.gitkeep
 reports/_scratch/
 reports/audit/phase_a_gate/

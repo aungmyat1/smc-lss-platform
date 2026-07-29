@@ -249,6 +249,21 @@ walk-forward slices by default, and stats/robustness engine versioning in
 all evidence outputs. This does not authorize A3, execution, optimization,
 broker integration, demo, live trading, or production.
 
+**2026-07-29 implementation continuation:** the governance-safe pipeline
+runner exists, including sample-mode dry-run coverage and a manifest-gated
+approved-data path. The next action is dataset approval, not gate acceptance:
+populate `data/market/approved/st_c3/`, copy
+`DATASET_MANIFEST_ST_C3.example.yaml` to `DATASET_MANIFEST_ST_C3.yaml`,
+fill file hashes, record owner approval in `DATA_APPROVAL_ST_C3.md`, and
+only then set `governance/st_c3_stage_status.yaml` `data.approved = true`.
+Until that happens, full-data replay remains blocked and only `--sample` or
+approved `--source-ledger` dry-runs are valid.
+
+Companion templates for the next owner-facing steps are present but inactive:
+`reports/validation/st_c3/OWNER_REVIEW_WINDOW_ACTIVATION_BLOCK.md`,
+`reports/validation/st_c3/A3_OPENING_DECISION_TEMPLATE.md`, and
+`reports/validation/st_c3/FULL_REPLAY_DATASET_VALIDATION_CHECKLIST.md`.
+
 ## 2026-07-27 correction: a quarantined line of work was rejected
 
 A separate line of work (`specs/st-c3_v1.0.6.yaml`,

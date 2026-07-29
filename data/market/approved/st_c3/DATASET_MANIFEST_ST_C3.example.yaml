@@ -1,0 +1,55 @@
+strategy: ST-C3
+spec_version: "1.0.7"
+approved: false
+approval_status: TEMPLATE_NOT_APPROVED
+approval_date: null
+approved_by: null
+symbols: [GBPUSD, EURUSD]
+timeframes: [H4, M15, M3]
+coverage:
+  from: "2018-01-01"
+  to: "2024-12-31"
+timezone: UTC
+sessions:
+  london_window_utc: "07:00-10:00 UTC"
+  ny_window_utc: "13:00-16:00 UTC"
+bar_schema:
+  required_columns: [time, open, high, low, close, volume]
+  optional_columns: [news_flag, session]
+symbol_metadata:
+  EURUSD:
+    point_size: 0.0001
+    quote_currency: USD
+  GBPUSD:
+    point_size: 0.0001
+    quote_currency: USD
+files:
+  - symbol: GBPUSD
+    timeframe: H4
+    path: GBPUSD_H4.csv
+    sha256: null
+  - symbol: GBPUSD
+    timeframe: M15
+    path: GBPUSD_M15.csv
+    sha256: null
+  - symbol: GBPUSD
+    timeframe: M3
+    path: GBPUSD_M3.csv
+    sha256: null
+  - symbol: EURUSD
+    timeframe: H4
+    path: EURUSD_H4.csv
+    sha256: null
+  - symbol: EURUSD
+    timeframe: M15
+    path: EURUSD_M15.csv
+    sha256: null
+  - symbol: EURUSD
+    timeframe: M3
+    path: EURUSD_M3.csv
+    sha256: null
+notes: >
+  Copy to DATASET_MANIFEST_ST_C3.yaml, fill hashes, set approved=true only
+  after owner approval. CSV files are intentionally gitignored. ST-C3 v1.0.7
+  instrument scope is EURUSD/GBPUSD; XAUUSD is out of v1.x scope unless a
+  future owner decision revises the frozen spec.

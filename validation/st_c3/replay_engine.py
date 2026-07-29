@@ -12,6 +12,8 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
+from validation.st_c3.dataset_loader import load_approved_dataset
+
 LEDGER_HASH_PREFIX = "st_c3_ledger_sha256="
 REPLAY_ENGINE_VERSION = "st_c3_replay_engine.v1"
 
@@ -76,6 +78,7 @@ def run_replay(
     date_to: str,
     tf_set: Iterable[str],
     source_ledger: str | Path | None = None,
+    data_dir: str | Path | None = None,
     sample: bool = False,
 ) -> ReplayLedger:
     """Create a deterministic replay ledger without opening A3.
@@ -85,8 +88,9 @@ def run_replay(
     """
     if spec_version != "1.0.7":
         raise ValueError("ST-C3 replay runner is locked to frozen spec version 1.0.7")
-    if source_ledger and sample:
-        raise ValueError("choose either source_ledger or sample, not both")
+    selected_modes = sum(1 for value in (source_ledger, data_dir, sample) if value)
+    if selected_modes > 1:
+        raise ValueError("choose exactly one of source_ledger, data_dir, or sample")
     meta = {
         "strategy_id": "ST-C3",
         "version": spec_version,
@@ -103,6 +107,19 @@ def run_replay(
             meta=source_meta,
             trades=tuple(_trade_record_from_dict(trade) for trade in data["trades"]),
         )
+    if data_dir:
+        approved = load_approved_dataset(
+            data_dir,
+            symbols=meta["symbols"],
+            timeframes=meta["tf_set"],
+            date_from=date_from,
+            date_to=date_to,
+            spec_version=spec_version,
+        )
+        meta.update(approved.to_meta())
+        meta["trade_generation_status"] = "blocked_until_owner_authorizes_A3_replay"
+        meta["data_replay_note"] = "Approved data validated; no trade simulation executed."
+        return build_ledger((), meta)
     if sample:
         meta["sample_mode"] = True
         meta["sample_note"] = "Synthetic dry-run fixture; not A3 evidence."

@@ -371,6 +371,14 @@ versioning in evidence outputs. This is not an A3 opening decision. Do not
 authorize execution, optimization, backtesting, broker integration, demo,
 live, or A3 opening until their own separate owner decisions permit them.
 
+Implementation continuation (2026-07-29): the replay/hash/stats/robustness/
+walk-forward/owner-packet plumbing exists with sample-mode CI coverage, and
+`validation/st_c3/dataset_loader.py` now enforces a manifest-based approved
+dataset gate for `data/market/approved/st_c3/`. The next real project step is
+owner approval of a dataset via `DATA_APPROVAL_ST_C3.md` and
+`DATASET_MANIFEST_ST_C3.yaml`; `governance/st_c3_stage_status.yaml`
+intentionally keeps `data.approved = false` until that decision exists.
+
 ---
 
 ## Levers Track Progress (separate from ST-C3, opened 2026-07-25)

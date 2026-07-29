@@ -20,6 +20,7 @@ def main() -> None:
     parser.add_argument("--date-from", default="2018-01-01")
     parser.add_argument("--date-to", default="2024-12-31")
     parser.add_argument("--tf-set", default="H4,M15,M3")
+    parser.add_argument("--data", type=Path, help="Approved ST-C3 market data directory")
     parser.add_argument("--source-ledger", type=Path)
     parser.add_argument("--sample", action="store_true", help="Use a tiny synthetic dry-run ledger")
     parser.add_argument("--out-dir", type=Path, default=Path("reports/validation/st_c3/replay"))
@@ -28,15 +29,32 @@ def main() -> None:
     args = parser.parse_args()
 
     out_dir = args.out_dir
-    ledger = run_replay(
-        spec_version=args.spec_version,
-        symbols=[item.strip() for item in args.symbols.split(",") if item.strip()],
-        date_from=args.date_from,
-        date_to=args.date_to,
-        tf_set=[item.strip() for item in args.tf_set.split(",") if item.strip()],
-        source_ledger=args.source_ledger,
-        sample=args.sample,
-    )
+    try:
+        ledger = run_replay(
+            spec_version=args.spec_version,
+            symbols=[item.strip() for item in args.symbols.split(",") if item.strip()],
+            date_from=args.date_from,
+            date_to=args.date_to,
+            tf_set=[item.strip() for item in args.tf_set.split(",") if item.strip()],
+            source_ledger=args.source_ledger,
+            data_dir=args.data,
+            sample=args.sample,
+        )
+    except (FileNotFoundError, ValueError) as exc:
+        print(
+            json.dumps(
+                {
+                    "status": "BLOCKED",
+                    "reason": str(exc),
+                    "guardrail": (
+                        "This pipeline run does not mark S1-G5/S1-G6 accepted and "
+                        "does not open A3. Owner decision required."
+                    ),
+                },
+                indent=2,
+            )
+        )
+        raise SystemExit(2)
     ledger_path = write_ledger(ledger, out_dir / "ledger.json")
     hash_path = out_dir / "ledger.hash"
     ledger_sha256 = write_ledger_hash(ledger_path, hash_path)

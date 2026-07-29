@@ -297,6 +297,17 @@ stage_a_strategy_validation:
         Planning material only. Does not accept S1-G5 or S1-G6, does not
         pass A2, does not open A3, and does not authorize execution,
         optimization, broker integration, demo, live trading, or production.
+    data:
+      approved: true
+      approval_record: DATA_APPROVAL_ST_C3.md
+      approved_data_dir: data/market/approved/st_c3/
+      manifest: data/market/approved/st_c3/DATASET_MANIFEST_ST_C3.yaml
+      status: pending_owner_approval
+      guardrail: >
+        Dataset approval authorizes data intake for replay evidence only. It
+        does not accept S1-G5 or S1-G6, pass A2, open A3, or authorize
+        execution, optimization, broker integration, demo, live trading, or
+        production.
     authorization: scoped_reference_implementation_granted
     opened:
       decision: owner_directive
