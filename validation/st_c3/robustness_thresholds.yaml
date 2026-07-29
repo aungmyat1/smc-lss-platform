@@ -1,0 +1,47 @@
+version: st_c3_robustness_thresholds.v1
+notes: >
+  Planning thresholds for future A3 robustness validation. These thresholds
+  do not open A3 and are not pass/fail authoritative until an owner decision
+  authorizes A3 validation.
+defaults:
+  min_profit_factor: 1.20
+  min_expectancy_r: 0.00
+scenarios:
+  spread_x2:
+    r_penalty_per_trade: 0.05
+    min_profit_factor: 1.20
+    min_expectancy_r: 0.00
+  spread_x3:
+    r_penalty_per_trade: 0.10
+    min_profit_factor: 1.10
+    min_expectancy_r: 0.00
+  commission_high:
+    r_penalty_per_trade: 0.03
+    min_profit_factor: 1.20
+    min_expectancy_r: 0.00
+  slippage_realistic:
+    r_penalty_per_trade: 0.04
+    min_profit_factor: 1.20
+    min_expectancy_r: 0.00
+  delayed_fills_1_bar:
+    r_penalty_per_trade: 0.05
+    min_profit_factor: 1.20
+    min_expectancy_r: 0.00
+  random_trade_removal_10pct:
+    removal_fraction: 0.10
+    seed: 17
+    min_profit_factor: 1.20
+    min_expectancy_r: 0.00
+  monte_carlo_shuffle:
+    seed: 17
+    min_profit_factor: 1.20
+    min_expectancy_r: 0.00
+  yearly_splits:
+    min_profit_factor: 1.20
+    min_expectancy_r: 0.00
+  volatility_regimes:
+    min_profit_factor: 1.20
+    min_expectancy_r: 0.00
+  session_slices:
+    min_profit_factor: 1.20
+    min_expectancy_r: 0.00
