@@ -10,6 +10,7 @@ import yaml
 
 from validation.st_c3.owner_packet_generator import build_owner_packet
 from tools.st_c3_diff_owner_packet import diff_owner_packets
+from tools.st_c3_prepare_dataset_manifest import prepare_dataset_manifest
 from validation.st_c3.replay_engine import (
     build_ledger,
     read_ledger_hash,
@@ -256,6 +257,62 @@ def test_run_replay_with_wrong_symbol_set_blocks(tmp_path):
         )
 
 
+def test_run_replay_with_missing_sessions_blocks(tmp_path):
+    data_dir = _write_dataset_dir(tmp_path, approved=True, omit_sessions=True)
+
+    with pytest.raises(ValueError, match="missing required fields: \\['sessions'\\]"):
+        run_replay(
+            spec_version="1.0.7",
+            symbols=["EURUSD", "GBPUSD"],
+            date_from="2024-01-01",
+            date_to="2024-01-31",
+            tf_set=["H4", "M15", "M3"],
+            data_dir=data_dir,
+        )
+
+
+def test_run_replay_with_missing_symbol_metadata_blocks(tmp_path):
+    data_dir = _write_dataset_dir(tmp_path, approved=True, omit_symbol_metadata=True)
+
+    with pytest.raises(ValueError, match="missing required fields: \\['symbol_metadata'\\]"):
+        run_replay(
+            spec_version="1.0.7",
+            symbols=["EURUSD", "GBPUSD"],
+            date_from="2024-01-01",
+            date_to="2024-01-31",
+            tf_set=["H4", "M15", "M3"],
+            data_dir=data_dir,
+        )
+
+
+def test_run_replay_with_invalid_session_window_blocks(tmp_path):
+    data_dir = _write_dataset_dir(tmp_path, approved=True, session_override={"london": {"start": "08:00"}})
+
+    with pytest.raises(ValueError, match="sessions.london.start must be 07:00"):
+        run_replay(
+            spec_version="1.0.7",
+            symbols=["EURUSD", "GBPUSD"],
+            date_from="2024-01-01",
+            date_to="2024-01-31",
+            tf_set=["H4", "M15", "M3"],
+            data_dir=data_dir,
+        )
+
+
+def test_run_replay_with_invalid_symbol_metadata_blocks(tmp_path):
+    data_dir = _write_dataset_dir(tmp_path, approved=True, metadata_override={"GBPUSD": {"lot_size": 1000}})
+
+    with pytest.raises(ValueError, match="symbol metadata for GBPUSD.lot_size must be 100000"):
+        run_replay(
+            spec_version="1.0.7",
+            symbols=["EURUSD", "GBPUSD"],
+            date_from="2024-01-01",
+            date_to="2024-01-31",
+            tf_set=["H4", "M15", "M3"],
+            data_dir=data_dir,
+        )
+
+
 def test_run_replay_accepts_filename_keyed_files_manifest(tmp_path):
     data_dir = _write_dataset_dir(tmp_path, approved=True, files_as_mapping=True)
     ledger = run_replay(
@@ -268,6 +325,34 @@ def test_run_replay_accepts_filename_keyed_files_manifest(tmp_path):
     )
 
     assert len(ledger.to_dict()["meta"]["dataset_files"]) == 6
+
+
+def test_prepare_dataset_manifest_computes_and_writes_hashes(tmp_path):
+    data_dir = _write_dataset_dir(tmp_path, approved=True)
+    manifest_path = data_dir / "DATASET_MANIFEST_ST_C3.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+    manifest["files"] = {
+        item["path"]: {"sha256": "<hash>"}
+        for item in manifest["files"]
+    }
+    manifest_path.write_text(yaml.safe_dump(manifest), encoding="utf-8")
+
+    result = prepare_dataset_manifest(data_dir, write=True)
+    updated = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+
+    assert result["status"] == "PASS"
+    assert all(item["sha256"] != "<hash>" for item in result["files"])
+    assert all(value["sha256"] != "<hash>" for value in updated["files"].values())
+
+
+def test_prepare_dataset_manifest_blocks_when_csv_missing(tmp_path):
+    data_dir = _write_dataset_dir(tmp_path, approved=True)
+    (data_dir / "EURUSD_H4.csv").unlink()
+
+    result = prepare_dataset_manifest(data_dir, write=True)
+
+    assert result["status"] == "BLOCKED"
+    assert "dataset file missing" in result["reason"]
 
 
 def test_ultra_fast_pipeline_cli_sample_mode_writes_linked_outputs(tmp_path):
@@ -340,6 +425,10 @@ def _write_dataset_dir(
     symbols=("EURUSD", "GBPUSD"),
     missing_candle: bool = False,
     files_as_mapping: bool = False,
+    omit_sessions: bool = False,
+    omit_symbol_metadata: bool = False,
+    session_override: dict | None = None,
+    metadata_override: dict | None = None,
 ):
     data_dir = tmp_path / "data"
     data_dir.mkdir()
@@ -364,6 +453,20 @@ def _write_dataset_dir(
                     "sha256": sha256_file(path),
                 }
             )
+    sessions = {
+        "london": {"start": "07:00", "end": "10:00"},
+        "new_york": {"start": "13:00", "end": "16:00"},
+    }
+    if session_override:
+        for key, value in session_override.items():
+            sessions.setdefault(key, {}).update(value)
+    symbol_metadata = {
+        symbol: {"pip_size": 0.0001, "min_tick": 0.00001, "lot_size": 100000}
+        for symbol in symbols
+    }
+    if metadata_override:
+        for symbol, fields in metadata_override.items():
+            symbol_metadata.setdefault(symbol, {}).update(fields)
     manifest = {
         "strategy": "ST-C3",
         "spec_version": "1.0.7",
@@ -374,15 +477,14 @@ def _write_dataset_dir(
         "symbols": list(symbols),
         "timeframes": ["H4", "M15", "M3"],
         "coverage": {"from": "2024-01-01", "to": "2024-01-31"},
-        "sessions": {"london_window_utc": "07:00-10:00 UTC", "ny_window_utc": "13:00-16:00 UTC"},
-        "symbol_metadata": {
-            symbol: {"point_size": 0.0001, "quote_currency": "USD"}
-            for symbol in symbols
-        },
         "files": {
             item["path"]: {"sha256": item["sha256"]}
             for item in files
         } if files_as_mapping else files,
     }
+    if not omit_sessions:
+        manifest["sessions"] = sessions
+    if not omit_symbol_metadata:
+        manifest["symbol_metadata"] = symbol_metadata
     (data_dir / "DATASET_MANIFEST_ST_C3.yaml").write_text(yaml.safe_dump(manifest), encoding="utf-8")
     return data_dir

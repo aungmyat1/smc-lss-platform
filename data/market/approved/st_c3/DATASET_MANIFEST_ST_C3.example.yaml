@@ -11,18 +11,24 @@ coverage:
   to: "2024-12-31"
 timezone: UTC
 sessions:
-  london_window_utc: "07:00-10:00 UTC"
-  ny_window_utc: "13:00-16:00 UTC"
+  london:
+    start: "07:00"
+    end: "10:00"
+  new_york:
+    start: "13:00"
+    end: "16:00"
 bar_schema:
   required_columns: [time, open, high, low, close, volume]
   optional_columns: [news_flag, session]
 symbol_metadata:
   EURUSD:
-    point_size: 0.0001
-    quote_currency: USD
+    pip_size: 0.0001
+    min_tick: 0.00001
+    lot_size: 100000
   GBPUSD:
-    point_size: 0.0001
-    quote_currency: USD
+    pip_size: 0.0001
+    min_tick: 0.00001
+    lot_size: 100000
 files:
   - symbol: GBPUSD
     timeframe: H4

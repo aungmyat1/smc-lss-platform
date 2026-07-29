@@ -19,10 +19,10 @@
 - Optional `news_flag` values are boolean-like.
 - Optional `session` values are `LONDON`, `NY`, or `OTHER`.
 - Session windows match ST-C3 v1.0.7.
-- Symbol metadata exists for every symbol.
+- Symbol metadata exists for every symbol with exact `pip_size`, `min_tick`,
+  and `lot_size` values.
 
 ## Guardrail
 
 Dataset validation authorizes data intake only. It does not accept S1-G5 or
 S1-G6, pass A2, open A3, or authorize execution.
-

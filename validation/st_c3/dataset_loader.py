@@ -17,12 +17,12 @@ OPTIONAL_ENUM_COLUMNS = {"session": {"LONDON", "NY", "OTHER", ""}}
 EXPECTED_SYMBOLS = frozenset({"EURUSD", "GBPUSD"})
 EXPECTED_TIMEFRAMES = frozenset({"H4", "M15", "M3"})
 EXPECTED_SYMBOL_METADATA = {
-    "EURUSD": {"point_size": 0.0001, "quote_currency": "USD"},
-    "GBPUSD": {"point_size": 0.0001, "quote_currency": "USD"},
+    "EURUSD": {"pip_size": 0.0001, "min_tick": 0.00001, "lot_size": 100000},
+    "GBPUSD": {"pip_size": 0.0001, "min_tick": 0.00001, "lot_size": 100000},
 }
 EXPECTED_SESSIONS = {
-    "london_window_utc": "07:00-10:00 UTC",
-    "ny_window_utc": "13:00-16:00 UTC",
+    "london": {"start": "07:00", "end": "10:00"},
+    "new_york": {"start": "13:00", "end": "16:00"},
 }
 TIMEFRAME_DELTAS = {
     "M1": timedelta(minutes=1),
@@ -268,9 +268,13 @@ def _validate_coverage(coverage: Mapping[str, Any], requested_from: str, request
 
 
 def _validate_sessions(sessions: Mapping[str, Any]) -> None:
-    for key, expected in EXPECTED_SESSIONS.items():
-        if sessions.get(key) != expected:
-            raise ValueError(f"manifest sessions.{key} must be {expected}")
+    for session_name, expected in EXPECTED_SESSIONS.items():
+        entry = sessions.get(session_name)
+        if not isinstance(entry, Mapping):
+            raise ValueError(f"manifest sessions.{session_name} must define start/end")
+        for key, expected_value in expected.items():
+            if entry.get(key) != expected_value:
+                raise ValueError(f"manifest sessions.{session_name}.{key} must be {expected_value}")
 
 
 def _validate_symbol_metadata(metadata: Mapping[str, Any], symbols: set[str]) -> None:

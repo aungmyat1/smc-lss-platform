@@ -4,7 +4,6 @@ approved: true
 approval_status: "owner-approved"
 approval_date: "2026-07-29"
 approved_by: "Aung"
-spec_version: "1.0.7"
 
 symbols:
   - EURUSD
@@ -18,6 +17,24 @@ timeframes:
 coverage:
   from: "2018-01-01"
   to: "2024-12-31"
+
+sessions:
+  london:
+    start: "07:00"
+    end: "10:00"
+  new_york:
+    start: "13:00"
+    end: "16:00"
+
+symbol_metadata:
+  EURUSD:
+    pip_size: 0.0001
+    min_tick: 0.00001
+    lot_size: 100000
+  GBPUSD:
+    pip_size: 0.0001
+    min_tick: 0.00001
+    lot_size: 100000
 
 files:
   EURUSD_H4.csv:

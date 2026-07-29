@@ -31,12 +31,13 @@ execution, broker integration, demo trading, live trading, or production.
 - Every CSV has the required candle columns, including non-negative `volume`.
 - Timestamps are parseable, monotonic, and duplicate-free per file.
 - Requested symbols, timeframes, and date range are covered by the manifest.
-- Manifest session windows match ST-C3 v1.0.7: London `07:00-10:00 UTC`,
-  NY `13:00-16:00 UTC`.
+- Manifest session windows match ST-C3 v1.0.7: London `07:00`-`10:00`
+  UTC, New York `13:00`-`16:00` UTC.
 - If a `session` column is present, each value is one of `LONDON`, `NY`, or
   `OTHER`.
 - If a `news_flag` column is present, each value is boolean-like.
-- Symbol metadata exists for every approved symbol.
+- Symbol metadata exists for every approved symbol with exact `pip_size`,
+  `min_tick`, and `lot_size` values.
 
 ## Owner Decision
 
