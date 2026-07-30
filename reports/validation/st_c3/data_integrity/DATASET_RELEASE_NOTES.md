@@ -76,7 +76,28 @@ current contract.
 
 Recommendation:
 
-`OPEN_GOVERNANCE_CHANGE_REQUEST`
+`CONTINUE_EVIDENCE_COLLECTION`
+
+The governance change path remains available only after the statistical
+evidence gate is sufficiently sampled.
+
+## Statistical Source Integrity Evidence
+
+Status: **BLOCKED / INSUFFICIENT SAMPLE**
+
+The first statistical evidence gate audited the currently cached pilot days:
+
+- Target sample: 100 deterministic trading days
+- Deterministic sample days cached complete: 1 of 100
+- Audited cached pilot days: 4
+- Missing pilot M1 minutes: 23 of 11,280
+- Distribution: mostly rollover, with two observed GBPUSD pilot gaps outside
+  rollover on the first deterministic sample day
+
+The pilot supports further evidence collection, not an immediate governance
+change. Current recommendation:
+
+`CONTINUE_EVIDENCE_COLLECTION`
 
 ## Dukascopy Approval Status
 

@@ -1,0 +1,27 @@
+{
+  "details": {
+    "attempted_hours": 44,
+    "completed_sample_days_after": 1,
+    "completed_sample_days_before": 0,
+    "coverage": {
+      "from": "2021-01-01",
+      "to": "2025-12-31"
+    },
+    "downloaded_or_cached_hours": 44,
+    "failed_hours": [],
+    "first_remaining_day": "2021-02-10",
+    "remaining_sample_days": 99,
+    "sample_seed": 107,
+    "selected_days": [
+      "2021-01-22"
+    ],
+    "stopped_by_limit": false,
+    "target_sample_days": 100
+  },
+  "guardrail": "Evidence-sample acquisition downloads raw source files only; it does not approve data, change governance, or open replay.",
+  "next_action": "Continue deterministic evidence-sample acquisition in bounded batches.",
+  "reason": "evidence-sample acquisition in progress; 1/100 target days cached",
+  "recommendation": "CONTINUE_EVIDENCE_COLLECTION",
+  "stage": "source_integrity_sample_acquisition",
+  "status": "IN_PROGRESS"
+}

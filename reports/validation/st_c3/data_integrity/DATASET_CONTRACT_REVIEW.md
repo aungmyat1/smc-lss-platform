@@ -4,7 +4,7 @@ Status: **BLOCKED**
 
 Reason: current contract requires missing timestamps to block approval, but source evidence shows market-open zero-tick minutes
 
-Recommendation: **OPEN_GOVERNANCE_CHANGE_REQUEST**
+Recommendation: **CONTINUE_EVIDENCE_COLLECTION**
 
 Guardrail: Dataset Contract Review does not change the contract, approve data, fill candles, or open replay.
 
@@ -20,6 +20,9 @@ Guardrail: Dataset Contract Review does not change the contract, approve data, f
 
 - Zero-tick probe count: `3`
 - Aggregation mismatch count: `0`
+- Statistical evidence sufficient: `False`
+- Statistical audited cached days: `4`
+- Statistical target cached days: `1` of `100`
 
 | Symbol | Timestamp | Verdict | Fresh Dukascopy | HistData Present |
 |---|---|---|---|---|
@@ -35,5 +38,5 @@ Guardrail: Dataset Contract Review does not change the contract, approve data, f
 
 ## Required Decision
 
-Owner/governance must choose a contract policy before five-year production acquisition continues.
+Owner/governance must not change policy until the statistical source-integrity evidence gate is sufficient.
 No candles were fabricated, interpolated, or manually inserted.

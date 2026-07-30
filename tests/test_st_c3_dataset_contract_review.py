@@ -62,25 +62,68 @@ def _aggregation_report(path: Path, *, mismatches: int = 0) -> None:
     )
 
 
+def _statistical_report(path: Path, *, sufficient: bool) -> None:
+    path.write_text(
+        json.dumps(
+            {
+                "details": {
+                    "statistically_sufficient": sufficient,
+                    "target_sample_days": 100,
+                    "sample_days_cached_complete": 100 if sufficient else 0,
+                    "audited_cached_day_count": 100 if sufficient else 3,
+                    "total_missing_minutes": 20,
+                    "recommendation": "PROVIDER_REVIEW_REQUIRED" if sufficient else "CONTINUE_EVIDENCE_COLLECTION",
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+
+
 def test_dataset_contract_review_blocks_strict_contract_with_zero_tick_evidence(tmp_path: Path):
     contract = tmp_path / "contract.yaml"
     source = tmp_path / "source.json"
     aggregation = tmp_path / "aggregation.json"
+    statistical = tmp_path / "statistical.json"
     _contract(contract)
     _source_report(source)
     _aggregation_report(aggregation)
+    _statistical_report(statistical, sufficient=False)
 
     result = review_dataset_contract(
         contract_path=contract,
         source_report_path=source,
         aggregation_report_path=aggregation,
+        statistical_report_path=statistical,
         write_report=False,
     )
 
     assert result["status"] == "BLOCKED"
-    assert result["recommendation"] == "OPEN_GOVERNANCE_CHANGE_REQUEST"
+    assert result["recommendation"] == "CONTINUE_EVIDENCE_COLLECTION"
     assert result["details"]["missing_timestamps_check"] == "required"
     assert result["details"]["zero_tick_probe_count"] == 1
+
+
+def test_dataset_contract_review_allows_governance_request_after_sufficient_statistics(tmp_path: Path):
+    contract = tmp_path / "contract.yaml"
+    source = tmp_path / "source.json"
+    aggregation = tmp_path / "aggregation.json"
+    statistical = tmp_path / "statistical.json"
+    _contract(contract)
+    _source_report(source)
+    _aggregation_report(aggregation)
+    _statistical_report(statistical, sufficient=True)
+
+    result = review_dataset_contract(
+        contract_path=contract,
+        source_report_path=source,
+        aggregation_report_path=aggregation,
+        statistical_report_path=statistical,
+        write_report=False,
+    )
+
+    assert result["recommendation"] == "OPEN_GOVERNANCE_CHANGE_REQUEST"
+    assert result["details"]["statistical_evidence"]["statistically_sufficient"] is True
 
 
 def test_dataset_contract_review_prioritizes_aggregation_mismatches(tmp_path: Path):

@@ -114,13 +114,37 @@ the current contract.
 
 Review recommendation:
 
-`OPEN_GOVERNANCE_CHANGE_REQUEST`
+`CONTINUE_EVIDENCE_COLLECTION`
+
+The governance-change path is deferred until the statistical evidence gate is
+sufficiently sampled.
 
 Available choices:
 
 - retain strict continuity and select a source that emits complete bars
 - govern a deterministic zero-tick candle policy
 - qualify a different authoritative M1/bar provider
+
+## Statistical Evidence Gate
+
+Statistical source integrity result: `BLOCKED`
+
+The first statistical audit was run in cache-only mode against the current
+pilot cache.
+
+Evidence:
+
+- Target sample: 100 deterministic trading days across 2021-2025
+- Deterministic target sample days cached complete: 1 of 100
+- Audited cached pilot days: 4
+- Total expected pilot M1 minutes: 11,280
+- Total missing pilot M1 minutes: 23
+- Distribution: mostly rollover, with two observed GBPUSD pilot gaps outside
+  rollover on the first deterministic sample day
+
+The pilot evidence shows a pattern worth investigating, but it is not
+statistically sufficient to reject the provider or open a governance change.
+The active recommendation is evidence collection.
 
 ## Dataset Approval
 
@@ -148,6 +172,9 @@ passed. Statistical validation remains locked.
   more complete source is selected.
 - Dataset Contract Review is required before any policy change, provider
   change, or continuation to full five-year production acquisition.
+- Statistical evidence remains insufficient. The deterministic 100-day sample
+  must be acquired and audited before rejecting the provider or opening a
+  governance change request.
 - Full five-year construction may require substantial runtime and storage.
 
 ## Files Changed
@@ -171,6 +198,12 @@ passed. Statistical validation remains locked.
 - `reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_INVESTIGATION.md`
 - `reports/validation/st_c3/data_integrity/DATASET_CONTRACT_REVIEW.json`
 - `reports/validation/st_c3/data_integrity/DATASET_CONTRACT_REVIEW.md`
+- `reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_STATISTICAL_REPORT.json`
+- `reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_STATISTICAL_REPORT.md`
+- `reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_SAMPLE_ACQUISITION.json`
+- `reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_SAMPLE_ACQUISITION.md`
+- `tools/st_c3_acquire_source_integrity_sample.py`
+- `tests/test_st_c3_source_integrity_sample_acquisition.py`
 - `reports/validation/st_c3/data_integrity/DATA_INTEGRITY_REPORT.md`
 - `reports/validation/st_c3/data_integrity/VALIDATION_SUMMARY.md`
 - `reports/validation/st_c3/data_integrity/RECOVERY_LOG.md`
@@ -184,4 +217,4 @@ Full repository tests pass: `416 passed, 2 warnings`.
 
 ## Recommendation
 
-OPEN_GOVERNANCE_CHANGE_REQUEST
+CONTINUE_EVIDENCE_COLLECTION

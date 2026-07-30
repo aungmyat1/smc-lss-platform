@@ -11,6 +11,7 @@ import yaml
 
 SOURCE_INTEGRITY_REPORT = Path("reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_INVESTIGATION.json")
 AGGREGATION_REPORT = Path("reports/validation/st_c3/data_integrity/AGGREGATION_VALIDATION_REPORT.json")
+STATISTICAL_REPORT = Path("reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_STATISTICAL_REPORT.json")
 OUTPUT_JSON = Path("reports/validation/st_c3/data_integrity/DATASET_CONTRACT_REVIEW.json")
 OUTPUT_MD = Path("reports/validation/st_c3/data_integrity/DATASET_CONTRACT_REVIEW.md")
 GUARDRAIL = "Dataset Contract Review does not change the contract, approve data, fill candles, or open replay."
@@ -21,11 +22,13 @@ def review_dataset_contract(
     contract_path: str | Path = Path("contracts/DATASET_CONTRACT.yaml"),
     source_report_path: str | Path = SOURCE_INTEGRITY_REPORT,
     aggregation_report_path: str | Path = AGGREGATION_REPORT,
+    statistical_report_path: str | Path = STATISTICAL_REPORT,
     write_report: bool = True,
 ) -> dict[str, Any]:
     contract = _load_yaml(Path(contract_path))
     source_report = _load_json(Path(source_report_path))
     aggregation_report = _load_json(Path(aggregation_report_path))
+    statistical_report = _load_json_if_exists(Path(statistical_report_path))
     zero_tick_probes = [
         item
         for item in (source_report.get("details") or {}).get("probes", [])
@@ -39,7 +42,8 @@ def review_dataset_contract(
         else "ambiguous_or_not_strict"
     )
     status = "BLOCKED"
-    recommendation = "OPEN_GOVERNANCE_CHANGE_REQUEST"
+    statistical_sufficient = bool((statistical_report.get("details") or {}).get("statistically_sufficient"))
+    recommendation = "OPEN_GOVERNANCE_CHANGE_REQUEST" if statistical_sufficient else "CONTINUE_EVIDENCE_COLLECTION"
     result = {
         "stage": "dataset_contract_review",
         "status": status,
@@ -65,8 +69,9 @@ def review_dataset_contract(
                 for item in zero_tick_probes
             ],
             "aggregation_mismatch_count": aggregation_mismatches,
+            "statistical_evidence": _statistical_summary(statistical_report),
             "options": _options(),
-            "recommended_option": "contract_governance_review_before_acquisition",
+            "recommended_option": "collect_statistical_evidence_before_governance" if not statistical_sufficient else "contract_governance_review_before_acquisition",
         },
         "guardrail": GUARDRAIL,
         "recommendation": recommendation,
@@ -130,6 +135,25 @@ def _load_json(path: Path) -> dict[str, Any]:
     return loaded
 
 
+def _load_json_if_exists(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    return _load_json(path)
+
+
+def _statistical_summary(report: dict[str, Any]) -> dict[str, Any]:
+    details = report.get("details") or {}
+    return {
+        "present": bool(report),
+        "statistically_sufficient": bool(details.get("statistically_sufficient")),
+        "target_sample_days": details.get("target_sample_days"),
+        "sample_days_cached_complete": details.get("sample_days_cached_complete"),
+        "audited_cached_day_count": details.get("audited_cached_day_count"),
+        "total_missing_minutes": details.get("total_missing_minutes"),
+        "recommendation": details.get("recommendation"),
+    }
+
+
 def _markdown(result: dict[str, Any]) -> str:
     details = result["details"]
     lines = [
@@ -155,6 +179,9 @@ def _markdown(result: dict[str, Any]) -> str:
         "",
         f"- Zero-tick probe count: `{details['zero_tick_probe_count']}`",
         f"- Aggregation mismatch count: `{details['aggregation_mismatch_count']}`",
+        f"- Statistical evidence sufficient: `{details['statistical_evidence']['statistically_sufficient']}`",
+        f"- Statistical audited cached days: `{details['statistical_evidence']['audited_cached_day_count']}`",
+        f"- Statistical target cached days: `{details['statistical_evidence']['sample_days_cached_complete']}` of `{details['statistical_evidence']['target_sample_days']}`",
         "",
         "| Symbol | Timestamp | Verdict | Fresh Dukascopy | HistData Present |",
         "|---|---|---|---|---|",
@@ -171,7 +198,7 @@ def _markdown(result: dict[str, Any]) -> str:
         "",
         "## Required Decision",
         "",
-        "Owner/governance must choose a contract policy before five-year production acquisition continues.",
+        "Owner/governance must not change policy until the statistical source-integrity evidence gate is sufficient.",
         "No candles were fabricated, interpolated, or manually inserted.",
     ]
     return "\n".join(lines) + "\n"
@@ -182,12 +209,14 @@ def main() -> None:
     parser.add_argument("--contract", type=Path, default=Path("contracts/DATASET_CONTRACT.yaml"))
     parser.add_argument("--source-report", type=Path, default=SOURCE_INTEGRITY_REPORT)
     parser.add_argument("--aggregation-report", type=Path, default=AGGREGATION_REPORT)
+    parser.add_argument("--statistical-report", type=Path, default=STATISTICAL_REPORT)
     parser.add_argument("--no-report", action="store_true")
     args = parser.parse_args()
     result = review_dataset_contract(
         contract_path=args.contract,
         source_report_path=args.source_report,
         aggregation_report_path=args.aggregation_report,
+        statistical_report_path=args.statistical_report,
         write_report=not args.no_report,
     )
     print(json.dumps(result, indent=2, sort_keys=True))

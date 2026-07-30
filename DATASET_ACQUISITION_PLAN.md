@@ -163,13 +163,40 @@ Latest result:
 - Missing timestamp check: `required`
 - Zero-tick probe count: 3
 - Aggregation mismatch count: 0
-- Recommendation: `OPEN_GOVERNANCE_CHANGE_REQUEST`
+- Recommendation: `CONTINUE_EVIDENCE_COLLECTION`
 
-Five-year production acquisition remains paused until the owner chooses one of:
+Five-year production acquisition remains paused. After the 100-day evidence
+gate is complete, owner/governance can choose one of:
 
 - retain strict continuity and select a provider that emits complete bars
 - govern a deterministic zero-tick candle policy
 - qualify a different authoritative M1/bar source
+
+## Statistical Source Integrity Evidence Gate
+
+Status: **BLOCKED_INSUFFICIENT_SAMPLE**
+
+Run:
+
+```powershell
+python -m tools.st_c3_statistical_source_integrity
+```
+
+Latest result:
+
+- Target sample: 100 deterministic trading days across 2021-2025
+- Deterministic sample days cached complete: 1 of 100
+- Audited cached pilot days: 4 (`2021-01-04` through `2021-01-06`, plus
+  deterministic sample day `2021-01-22`)
+- Pilot missing minutes: 23 of 11,280 expected M1 minutes
+- Most pilot missing minutes occurred during rollover, but the first
+  deterministic sample day also found GBPUSD sparse minutes at `18:24 UTC`
+  and `20:26 UTC`
+- Recommendation: `CONTINUE_EVIDENCE_COLLECTION`
+
+Governance change is not authorized from the current pilot evidence. The next
+step is to acquire the deterministic 100-day evidence sample and rerun the
+statistical report.
 
 ## Integrity Validation Sequence
 

@@ -206,7 +206,10 @@ Findings:
 
 Recommendation:
 
-`OPEN_GOVERNANCE_CHANGE_REQUEST`
+`CONTINUE_EVIDENCE_COLLECTION`
+
+The earlier governance-change option is deferred until the statistical source
+integrity gate is sufficiently sampled.
 
 Available governance options:
 
@@ -215,6 +218,41 @@ Available governance options:
   and validator change.
 - Select an authoritative M1/bar provider with documented zero-volume or
   carry-forward bar methodology.
+
+## Statistical Source Integrity Evidence Gate
+
+Status: **BLOCKED**
+
+Command:
+
+```powershell
+python -m tools.st_c3_statistical_source_integrity
+```
+
+Findings:
+
+- Target sample: 100 deterministic trading days across `2021-01-01` through
+  `2025-12-31`
+- Deterministic sample days cached complete: 1 of 100
+- Audited cached pilot days: 4
+- Total expected pilot M1 minutes: 11,280
+- Total missing pilot M1 minutes: 23
+- Missing minute distribution: mostly rollover, with first deterministic
+  sample day also showing GBPUSD sparse minutes at `18:24 UTC` and
+  `20:26 UTC`
+
+Recommendation:
+
+`CONTINUE_EVIDENCE_COLLECTION`
+
+Conclusion:
+
+The current evidence is enough to identify a rollover-hour pattern in the
+cached pilot sample, but not enough to reject Dukascopy or justify a governance
+change. The first deterministic sample day shows why the full evidence gate is
+needed before deciding whether this is rollover-only behavior or broader source
+sparsity. The next action is to continue acquiring the deterministic 100-day
+evidence sample and rerun the statistical report.
 
 ## Approval Status
 
@@ -230,10 +268,9 @@ A3/statistics/demo/live: **BLOCKED**
 
 ## Next Action
 
-Pause large-scale acquisition and open Dataset Contract Review for zero-tick
-market-open minutes. Continue full five-year acquisition only after governance
-decides whether the contract requires candles for zero-tick minutes or only
-minutes with at least one underlying tick.
+Pause large-scale production acquisition. Acquire only the deterministic
+100-day evidence sample, then rerun source-integrity statistics before any
+provider rejection or governance change request.
 
 Recommended next command:
 

@@ -24,8 +24,17 @@
         "id": "select_bar_provider"
       }
     ],
-    "recommended_option": "contract_governance_review_before_acquisition",
+    "recommended_option": "collect_statistical_evidence_before_governance",
     "replay_status": "BLOCKED",
+    "statistical_evidence": {
+      "audited_cached_day_count": 4,
+      "present": true,
+      "recommendation": "CONTINUE_EVIDENCE_COLLECTION",
+      "sample_days_cached_complete": 1,
+      "statistically_sufficient": false,
+      "target_sample_days": 100,
+      "total_missing_minutes": 23
+    },
     "zero_tick_probe_count": 3,
     "zero_tick_probes": [
       {
@@ -54,7 +63,7 @@
   "guardrail": "Dataset Contract Review does not change the contract, approve data, fill candles, or open replay.",
   "next_action": "Owner must decide contract policy for market-open zero-tick minutes before full dataset production.",
   "reason": "current contract requires missing timestamps to block approval, but source evidence shows market-open zero-tick minutes",
-  "recommendation": "OPEN_GOVERNANCE_CHANGE_REQUEST",
+  "recommendation": "CONTINUE_EVIDENCE_COLLECTION",
   "stage": "dataset_contract_review",
   "status": "BLOCKED"
 }
