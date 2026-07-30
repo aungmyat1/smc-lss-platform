@@ -10,6 +10,7 @@ import argparse
 import json
 import math
 import random
+import zipfile
 from collections import Counter
 from dataclasses import dataclass
 from datetime import UTC, date, datetime, timedelta
@@ -22,6 +23,7 @@ from validation.st_c3.dataset_loader import EXPECTED_SYMBOLS
 
 REPORT_JSON = Path("reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_STATISTICAL_REPORT.json")
 REPORT_MD = Path("reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_STATISTICAL_REPORT.md")
+HISTDATA_CACHE = Path("data/market/raw/histdata/st_c3")
 GUARDRAIL = "Statistical source integrity investigation does not change contracts, validators, approval, replay, or market data."
 
 
@@ -36,6 +38,7 @@ class MissingMinute:
 def run_statistical_source_integrity(
     *,
     cache_dir: str | Path = RAW_CACHE,
+    reference_cache_dir: str | Path = HISTDATA_CACHE,
     start_date: date = date(2021, 1, 1),
     end_date: date = date(2025, 12, 31),
     target_sample_days: int = 100,
@@ -45,6 +48,7 @@ def run_statistical_source_integrity(
     write_report: bool = True,
 ) -> dict[str, Any]:
     cache = Path(cache_dir)
+    reference_cache = Path(reference_cache_dir)
     population = _trading_days(start_date, end_date)
     sample_days = _deterministic_sample(population, target_sample_days, seed)
     cached_complete_days = [day for day in sample_days if _day_cache_complete(cache, day, EXPECTED_SYMBOLS)]
@@ -60,6 +64,7 @@ def run_statistical_source_integrity(
     missing_rate = (total_missing / total_expected) if total_expected else None
     decision = _decision(statistically_sufficient, missing_rate, contract_review_missing_rate_threshold)
     status = "PASS" if statistically_sufficient and total_missing == 0 else "BLOCKED"
+    missing_observations = _missing_observations(symbol_results, reference_cache)
     result = {
         "stage": "source_integrity_statistical_investigation",
         "status": status,
@@ -82,10 +87,18 @@ def run_statistical_source_integrity(
                     "distribution by symbol",
                     "root-cause categories",
                     "contextual missing-minute observations",
+                    "stratification coverage",
+                    "cross-source comparison for missing observations where reference data is cached",
                 ],
+                "stratification_requirements": {
+                    "weekdays": "all weekdays represented in deterministic sample",
+                    "months": "all calendar months represented in deterministic sample",
+                    "boundary_periods": "month boundary, quarter boundary, DST transition, and quiet-period tags reported",
+                },
             },
             "trading_day_population": len(population),
             "deterministic_sample_days": [day.isoformat() for day in sample_days],
+            "sample_stratification": _sample_stratification(sample_days),
             "sample_days_cached_complete": len(cached_complete_days),
             "audited_cached_days": [day.isoformat() for day in audited_days],
             "audited_cached_day_count": len(audited_days),
@@ -94,7 +107,8 @@ def run_statistical_source_integrity(
             "total_missing_minutes": total_missing,
             "missing_minute_rate": missing_rate,
             "missing_minute_rate_confidence_interval_95": _wilson_interval(total_missing, total_expected),
-            "missing_observations": _missing_observations(symbol_results),
+            "missing_observations": missing_observations,
+            "cross_source_comparison": _cross_source_summary(missing_observations),
             "root_cause_categories": _root_cause_categories(symbol_results),
             "statistically_sufficient": statistically_sufficient,
             "decision_framework": decision,
@@ -237,7 +251,8 @@ def _root_cause_category(value: datetime) -> str:
     return "OFF_SESSION_ZERO_TICK"
 
 
-def _observation_payload(item: MissingMinute) -> dict[str, Any]:
+def _observation_payload(item: MissingMinute, reference_cache: Path | None = None) -> dict[str, Any]:
+    reference = _histdata_reference(item, reference_cache) if reference_cache is not None else {"checked": False}
     return {
         "symbol": item.symbol,
         "date": item.timestamp.date().isoformat(),
@@ -251,14 +266,100 @@ def _observation_payload(item: MissingMinute) -> dict[str, Any]:
         "market_open": _market_open_minute(item.timestamp.replace(tzinfo=UTC)),
         "around_daily_rollover": _around_rollover(item.timestamp),
         "root_cause_category": _root_cause_category(item.timestamp),
+        "cross_source_reference": reference,
     }
 
 
-def _missing_observations(symbol_results: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def _missing_observations(symbol_results: list[dict[str, Any]], reference_cache: Path | None = None) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
+    reference_index: dict[tuple[str, int], set[datetime] | None] = {}
     for symbol in symbol_results:
-        rows.extend(symbol["missing_observations"])
+        for item in symbol["missing_observations"]:
+            reference = item.get("cross_source_reference", {})
+            if reference_cache is None or reference.get("checked") is True:
+                rows.append(item)
+            else:
+                rows.append(
+                    {
+                        **item,
+                        "cross_source_reference": _histdata_reference(
+                            MissingMinute(
+                                symbol=item["symbol"],
+                                timestamp=datetime.fromisoformat(item["timestamp_utc"].replace("Z", "")),
+                                previous_minute_tick_count=item["previous_minute_tick_count"],
+                                next_minute_tick_count=item["next_minute_tick_count"],
+                            ),
+                            reference_cache,
+                            reference_index,
+                        ),
+                    }
+                )
     return sorted(rows, key=lambda item: (item["timestamp_utc"], item["symbol"]))[:250]
+
+
+def _histdata_reference(
+    item: MissingMinute,
+    cache: Path | None,
+    reference_index: dict[tuple[str, int], set[datetime] | None] | None = None,
+) -> dict[str, Any]:
+    if cache is None:
+        return {"checked": False, "provider": "HistData.com Generic ASCII M1"}
+    path = cache / item.symbol / f"DAT_ASCII_{item.symbol}_M1_{item.timestamp.year}.zip"
+    if not path.exists():
+        return {"checked": False, "provider": "HistData.com Generic ASCII M1", "present": False, "reason": "zip missing"}
+    key = (item.symbol, item.timestamp.year)
+    if reference_index is not None:
+        if key not in reference_index:
+            reference_index[key] = _histdata_year_minutes(path)
+        minutes = reference_index[key]
+        if minutes is None:
+            return {"checked": False, "provider": "HistData.com Generic ASCII M1", "present": False, "reason": "csv missing from zip"}
+        return {"checked": True, "provider": "HistData.com Generic ASCII M1", "present": item.timestamp in minutes}
+
+    with zipfile.ZipFile(path) as archive:
+        names = [name for name in archive.namelist() if name.lower().endswith(".csv")]
+        if not names:
+            return {"checked": False, "provider": "HistData.com Generic ASCII M1", "present": False, "reason": "csv missing from zip"}
+        with archive.open(names[0]) as fh:
+            for raw in fh:
+                line = raw.decode("ascii", errors="strict").strip()
+                if not line:
+                    continue
+                parts = line.split(";")
+                timestamp = datetime.strptime(parts[0], "%Y%m%d %H%M%S") + timedelta(hours=5)
+                if timestamp == item.timestamp:
+                    return {"checked": True, "provider": "HistData.com Generic ASCII M1", "present": True}
+                if timestamp > item.timestamp + timedelta(minutes=5):
+                    break
+    return {"checked": True, "provider": "HistData.com Generic ASCII M1", "present": False}
+
+
+def _histdata_year_minutes(path: Path) -> set[datetime] | None:
+    minutes: set[datetime] = set()
+    with zipfile.ZipFile(path) as archive:
+        names = [name for name in archive.namelist() if name.lower().endswith(".csv")]
+        if not names:
+            return None
+        with archive.open(names[0]) as fh:
+            for raw in fh:
+                line = raw.decode("ascii", errors="strict").strip()
+                if not line:
+                    continue
+                parts = line.split(";")
+                minutes.add(datetime.strptime(parts[0], "%Y%m%d %H%M%S") + timedelta(hours=5))
+    return minutes
+
+
+def _cross_source_summary(observations: list[dict[str, Any]]) -> dict[str, int]:
+    checked = [item for item in observations if item.get("cross_source_reference", {}).get("checked")]
+    present = [item for item in checked if item.get("cross_source_reference", {}).get("present")]
+    absent = [item for item in checked if item.get("cross_source_reference", {}).get("present") is False]
+    return {
+        "observations": len(observations),
+        "checked": len(checked),
+        "reference_present": len(present),
+        "reference_absent": len(absent),
+    }
 
 
 def _root_cause_categories(symbol_results: list[dict[str, Any]]) -> dict[str, int]:
@@ -266,6 +367,62 @@ def _root_cause_categories(symbol_results: list[dict[str, Any]]) -> dict[str, in
     for symbol in symbol_results:
         counter.update(symbol["distribution_by_root_cause_category"])
     return {key: counter[key] for key in sorted(counter)}
+
+
+def _sample_stratification(days: list[date]) -> dict[str, Any]:
+    return {
+        "by_weekday": _counter_payload(day.strftime("%A") for day in days),
+        "by_month": _counter_payload(f"{day.month:02d}" for day in days),
+        "condition_tags": _counter_payload(tag for day in days for tag in _condition_tags(day)),
+        "all_weekdays_present": len({day.weekday() for day in days}) == 5,
+        "all_months_present": len({day.month for day in days}) == 12,
+    }
+
+
+def _condition_tags(day: date) -> list[str]:
+    tags: list[str] = []
+    if day.day <= 3 or (_next_trading_day(day).month != day.month):
+        tags.append("MONTH_BOUNDARY")
+    if day.month in {1, 3, 4, 6, 7, 9, 10, 12} and (day.day <= 3 or (_next_trading_day(day).month != day.month)):
+        tags.append("QUARTER_BOUNDARY")
+    if _near_dst_transition(day):
+        tags.append("DST_TRANSITION_WINDOW")
+    if not tags and day.weekday() in {1, 2} and 10 <= day.day <= 20:
+        tags.append("QUIET_PERIOD_PROXY")
+    if not tags:
+        tags.append("ORDINARY_TRADING_DAY")
+    return tags
+
+
+def _next_trading_day(day: date) -> date:
+    cursor = day + timedelta(days=1)
+    while not _open_hours(cursor):
+        cursor += timedelta(days=1)
+    return cursor
+
+
+def _near_dst_transition(day: date) -> bool:
+    transitions = [
+        _nth_weekday(day.year, 3, 6, 2),
+        _nth_weekday(day.year, 11, 6, 1),
+        _last_weekday(day.year, 3, 6),
+        _last_weekday(day.year, 10, 6),
+    ]
+    return any(abs((day - transition).days) <= 5 for transition in transitions)
+
+
+def _nth_weekday(year: int, month: int, weekday: int, n: int) -> date:
+    cursor = date(year, month, 1)
+    while cursor.weekday() != weekday:
+        cursor += timedelta(days=1)
+    return cursor + timedelta(days=7 * (n - 1))
+
+
+def _last_weekday(year: int, month: int, weekday: int) -> date:
+    cursor = date(year + (month // 12), (month % 12) + 1, 1) - timedelta(days=1)
+    while cursor.weekday() != weekday:
+        cursor -= timedelta(days=1)
+    return cursor
 
 
 def _counter_payload(values: Iterable[Any]) -> dict[str, int]:
@@ -349,6 +506,9 @@ def _markdown(result: dict[str, Any]) -> str:
         f"- Statistically sufficient: `{details['statistically_sufficient']}`",
         f"- Missing-rate 95% confidence interval: `{details['missing_minute_rate_confidence_interval_95']}`",
         f"- Decision status: `{details['decision_framework']['status']}`",
+        f"- Sample weekday stratification: `{details['sample_stratification']['by_weekday']}`",
+        f"- Sample month stratification: `{details['sample_stratification']['by_month']}`",
+        f"- Sample condition tags: `{details['sample_stratification']['condition_tags']}`",
         "",
         "## Results",
         "",
@@ -376,6 +536,15 @@ def _markdown(result: dict[str, Any]) -> str:
             f"- Samples: `{symbol['missing_samples']}`",
             "",
         ]
+    lines += [
+        "## Cross-Source Comparison",
+        "",
+        f"- Observations: `{details['cross_source_comparison']['observations']}`",
+        f"- Checked: `{details['cross_source_comparison']['checked']}`",
+        f"- Reference present: `{details['cross_source_comparison']['reference_present']}`",
+        f"- Reference absent: `{details['cross_source_comparison']['reference_absent']}`",
+        "",
+    ]
     lines += [
         "## Missing Observation Samples",
         "",
@@ -413,6 +582,7 @@ def _parse_date(value: str) -> date:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cache", type=Path, default=RAW_CACHE)
+    parser.add_argument("--reference-cache", type=Path, default=HISTDATA_CACHE)
     parser.add_argument("--start-date", type=_parse_date, default=date(2021, 1, 1))
     parser.add_argument("--end-date", type=_parse_date, default=date(2025, 12, 31))
     parser.add_argument("--target-sample-days", type=int, default=100)
@@ -423,6 +593,7 @@ def main() -> None:
     args = parser.parse_args()
     result = run_statistical_source_integrity(
         cache_dir=args.cache,
+        reference_cache_dir=args.reference_cache,
         start_date=args.start_date,
         end_date=args.end_date,
         target_sample_days=args.target_sample_days,

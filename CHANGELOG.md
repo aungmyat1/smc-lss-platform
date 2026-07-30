@@ -47,3 +47,9 @@
   contract audit, timeframe report, qualification matrix, canonical provider
   decision, acquisition plan, and risk review for the provider qualification
   sprint.
+- Added source-integrity evidence sample progress reporting, statistical
+  observation enrichment, cached HistData anomalous-timestamp comparison, and
+  `CROSS_PROVIDER_VERIFICATION_REPORT.md` for the Dukascopy evidence sprint.
+- Advanced deterministic source-integrity evidence from 1 to 8 completed
+  sample days; kept recommendation at `CONTINUE_EVIDENCE_COLLECTION` after
+  repeated Friday `21:00 UTC` empty Dukascopy payloads blocked larger batches.

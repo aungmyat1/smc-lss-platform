@@ -85,12 +85,35 @@ evidence gate is sufficiently sampled.
 
 Status: **BLOCKED / INSUFFICIENT SAMPLE**
 
-The first statistical evidence gate audited the currently cached pilot days:
+The statistical evidence gate now audits the currently cached deterministic
+sample days plus cached pilot evidence:
 
 - Target sample: 100 deterministic trading days
-- Deterministic sample days cached complete: 1 of 100
-- Audited cached pilot days: 4
-- Missing pilot M1 minutes: 23 of 11,280
+- Deterministic sample days cached complete: 8 of 100
+- Audited cached days: 11
+- Missing audited M1 minutes: 216 of 31,440
+- Missing minute rate: `0.006870229007633588`
+- 95% confidence interval:
+  `0.006015492553545249..0.007845455683058679`
+- Root-cause categories: 115 `ROLLOVER_ZERO_TICK`,
+  99 `OFF_SESSION_ZERO_TICK`, 2 `PRIMARY_SESSION_ZERO_TICK`
+- Cross-provider anomalous-timestamp checks: 188 checked, 146 present in
+  HistData M1, 42 absent in HistData M1
+- Evidence-sample acquisition is blocked by repeated empty Dukascopy payloads
+  for Friday `21:00 UTC` hours on `2021-04-16`, `2021-05-14`, and
+  `2021-07-02`
+
+Generated reports:
+
+- `SOURCE_INTEGRITY_STATISTICAL_REPORT.md`
+- `SOURCE_INTEGRITY_SAMPLE_ACQUISITION.md`
+- `CROSS_PROVIDER_VERIFICATION_REPORT.md`
+
+Recommendation remains:
+
+`CONTINUE_EVIDENCE_COLLECTION`
+
+The release is not approved, and replay remains blocked.
 - Distribution: mostly rollover, with two observed GBPUSD pilot gaps outside
   rollover on the first deterministic sample day
 - Root-cause categories: 21 `ROLLOVER_ZERO_TICK`, 2 `OFF_SESSION_ZERO_TICK`

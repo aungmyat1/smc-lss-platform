@@ -1,27 +1,252 @@
 {
   "details": {
-    "attempted_hours": 44,
-    "completed_sample_days_after": 1,
-    "completed_sample_days_before": 0,
+    "attempted_hours": 468,
+    "completed_sample_days_after": 8,
+    "completed_sample_days_before": 1,
     "coverage": {
       "from": "2021-01-01",
       "to": "2025-12-31"
     },
-    "downloaded_or_cached_hours": 44,
-    "failed_hours": [],
-    "first_remaining_day": "2021-02-10",
-    "remaining_sample_days": 99,
+    "day_progress": [
+      {
+        "attempted_source_hours": 48,
+        "cached_verified_source_hours": 0,
+        "completed_sample_days_after_day": 2,
+        "downloaded_source_hours": 48,
+        "failed_source_hours": [],
+        "sample_day": "2021-02-10",
+        "status": "COMPLETE"
+      },
+      {
+        "attempted_source_hours": 48,
+        "cached_verified_source_hours": 0,
+        "completed_sample_days_after_day": 3,
+        "downloaded_source_hours": 48,
+        "failed_source_hours": [],
+        "sample_day": "2021-04-13",
+        "status": "COMPLETE"
+      },
+      {
+        "attempted_source_hours": 44,
+        "cached_verified_source_hours": 0,
+        "completed_sample_days_after_day": 3,
+        "downloaded_source_hours": 42,
+        "failed_source_hours": [
+          {
+            "bytes": null,
+            "hour_utc": "2021-04-16T21:00:00Z",
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\04\\16\\21h_ticks.bi5",
+            "reason": "empty payload",
+            "sha256": null,
+            "status": "FAILED",
+            "symbol": "EURUSD",
+            "url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/03/16/21h_ticks.bi5"
+          },
+          {
+            "bytes": null,
+            "hour_utc": "2021-04-16T21:00:00Z",
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\04\\16\\21h_ticks.bi5",
+            "reason": "empty payload",
+            "sha256": null,
+            "status": "FAILED",
+            "symbol": "GBPUSD",
+            "url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/03/16/21h_ticks.bi5"
+          }
+        ],
+        "sample_day": "2021-04-16",
+        "status": "BLOCKED"
+      },
+      {
+        "attempted_source_hours": 44,
+        "cached_verified_source_hours": 0,
+        "completed_sample_days_after_day": 3,
+        "downloaded_source_hours": 42,
+        "failed_source_hours": [
+          {
+            "bytes": null,
+            "hour_utc": "2021-05-14T21:00:00Z",
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\05\\14\\21h_ticks.bi5",
+            "reason": "empty payload",
+            "sha256": null,
+            "status": "FAILED",
+            "symbol": "EURUSD",
+            "url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/04/14/21h_ticks.bi5"
+          },
+          {
+            "bytes": null,
+            "hour_utc": "2021-05-14T21:00:00Z",
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\05\\14\\21h_ticks.bi5",
+            "reason": "empty payload",
+            "sha256": null,
+            "status": "FAILED",
+            "symbol": "GBPUSD",
+            "url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/04/14/21h_ticks.bi5"
+          }
+        ],
+        "sample_day": "2021-05-14",
+        "status": "BLOCKED"
+      },
+      {
+        "attempted_source_hours": 44,
+        "cached_verified_source_hours": 0,
+        "completed_sample_days_after_day": 3,
+        "downloaded_source_hours": 42,
+        "failed_source_hours": [
+          {
+            "bytes": null,
+            "hour_utc": "2021-07-02T21:00:00Z",
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\07\\02\\21h_ticks.bi5",
+            "reason": "empty payload",
+            "sha256": null,
+            "status": "FAILED",
+            "symbol": "EURUSD",
+            "url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/06/02/21h_ticks.bi5"
+          },
+          {
+            "bytes": null,
+            "hour_utc": "2021-07-02T21:00:00Z",
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\07\\02\\21h_ticks.bi5",
+            "reason": "empty payload",
+            "sha256": null,
+            "status": "FAILED",
+            "symbol": "GBPUSD",
+            "url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/06/02/21h_ticks.bi5"
+          }
+        ],
+        "sample_day": "2021-07-02",
+        "status": "BLOCKED"
+      },
+      {
+        "attempted_source_hours": 48,
+        "cached_verified_source_hours": 0,
+        "completed_sample_days_after_day": 4,
+        "downloaded_source_hours": 48,
+        "failed_source_hours": [],
+        "sample_day": "2021-07-27",
+        "status": "COMPLETE"
+      },
+      {
+        "attempted_source_hours": 48,
+        "cached_verified_source_hours": 0,
+        "completed_sample_days_after_day": 5,
+        "downloaded_source_hours": 48,
+        "failed_source_hours": [],
+        "sample_day": "2021-08-10",
+        "status": "COMPLETE"
+      },
+      {
+        "attempted_source_hours": 48,
+        "cached_verified_source_hours": 0,
+        "completed_sample_days_after_day": 6,
+        "downloaded_source_hours": 48,
+        "failed_source_hours": [],
+        "sample_day": "2021-08-25",
+        "status": "COMPLETE"
+      },
+      {
+        "attempted_source_hours": 48,
+        "cached_verified_source_hours": 0,
+        "completed_sample_days_after_day": 7,
+        "downloaded_source_hours": 48,
+        "failed_source_hours": [],
+        "sample_day": "2021-09-14",
+        "status": "COMPLETE"
+      },
+      {
+        "attempted_source_hours": 48,
+        "cached_verified_source_hours": 0,
+        "completed_sample_days_after_day": 8,
+        "downloaded_source_hours": 48,
+        "failed_source_hours": [],
+        "sample_day": "2021-09-30",
+        "status": "COMPLETE"
+      }
+    ],
+    "downloaded_or_cached_hours": 462,
+    "failed_hours": [
+      {
+        "bytes": null,
+        "hour_utc": "2021-04-16T21:00:00Z",
+        "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\04\\16\\21h_ticks.bi5",
+        "reason": "empty payload",
+        "sha256": null,
+        "status": "FAILED",
+        "symbol": "EURUSD",
+        "url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/03/16/21h_ticks.bi5"
+      },
+      {
+        "bytes": null,
+        "hour_utc": "2021-04-16T21:00:00Z",
+        "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\04\\16\\21h_ticks.bi5",
+        "reason": "empty payload",
+        "sha256": null,
+        "status": "FAILED",
+        "symbol": "GBPUSD",
+        "url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/03/16/21h_ticks.bi5"
+      },
+      {
+        "bytes": null,
+        "hour_utc": "2021-05-14T21:00:00Z",
+        "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\05\\14\\21h_ticks.bi5",
+        "reason": "empty payload",
+        "sha256": null,
+        "status": "FAILED",
+        "symbol": "EURUSD",
+        "url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/04/14/21h_ticks.bi5"
+      },
+      {
+        "bytes": null,
+        "hour_utc": "2021-05-14T21:00:00Z",
+        "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\05\\14\\21h_ticks.bi5",
+        "reason": "empty payload",
+        "sha256": null,
+        "status": "FAILED",
+        "symbol": "GBPUSD",
+        "url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/04/14/21h_ticks.bi5"
+      },
+      {
+        "bytes": null,
+        "hour_utc": "2021-07-02T21:00:00Z",
+        "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\07\\02\\21h_ticks.bi5",
+        "reason": "empty payload",
+        "sha256": null,
+        "status": "FAILED",
+        "symbol": "EURUSD",
+        "url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/06/02/21h_ticks.bi5"
+      },
+      {
+        "bytes": null,
+        "hour_utc": "2021-07-02T21:00:00Z",
+        "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\07\\02\\21h_ticks.bi5",
+        "reason": "empty payload",
+        "sha256": null,
+        "status": "FAILED",
+        "symbol": "GBPUSD",
+        "url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/06/02/21h_ticks.bi5"
+      }
+    ],
+    "first_remaining_day": "2021-04-16",
+    "remaining_sample_days": 92,
     "sample_seed": 107,
     "selected_days": [
-      "2021-01-22"
+      "2021-02-10",
+      "2021-04-13",
+      "2021-04-16",
+      "2021-05-14",
+      "2021-07-02",
+      "2021-07-27",
+      "2021-08-10",
+      "2021-08-25",
+      "2021-09-14",
+      "2021-09-30"
     ],
     "stopped_by_limit": false,
     "target_sample_days": 100
   },
   "guardrail": "Evidence-sample acquisition downloads raw source files only; it does not approve data, change governance, or open replay.",
-  "next_action": "Continue deterministic evidence-sample acquisition in bounded batches.",
-  "reason": "evidence-sample acquisition in progress; 1/100 target days cached",
+  "next_action": "Retry failed evidence-sample hours; do not alter dataset policy.",
+  "reason": "EURUSD 2021-04-16T21:00:00Z evidence-sample download failed: empty payload",
   "recommendation": "CONTINUE_EVIDENCE_COLLECTION",
   "stage": "source_integrity_sample_acquisition",
-  "status": "IN_PROGRESS"
+  "status": "BLOCKED"
 }

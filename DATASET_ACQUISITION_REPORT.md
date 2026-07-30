@@ -233,19 +233,25 @@ Findings:
 
 - Target sample: 100 deterministic trading days across `2021-01-01` through
   `2025-12-31`
-- Deterministic sample days cached complete: 1 of 100
-- Audited cached pilot days: 4
-- Total expected pilot M1 minutes: 11,280
-- Total missing pilot M1 minutes: 23
-- Missing minute distribution: mostly rollover, with first deterministic
-  sample day also showing GBPUSD sparse minutes at `18:24 UTC` and
-  `20:26 UTC`
-- Root-cause categories: 21 `ROLLOVER_ZERO_TICK`, 2 `OFF_SESSION_ZERO_TICK`
+- Deterministic sample days cached complete: 8 of 100
+- Audited cached days: 11
+- Total expected audited M1 minutes: 31,440
+- Total missing audited M1 minutes: 216
+- Missing minute rate: `0.006870229007633588`
 - Missing-minute-rate 95% confidence interval:
-  `0.0013591321291721624..0.003057932662333974`
+  `0.006015492553545249..0.007845455683058679`
+- Root-cause categories: 115 `ROLLOVER_ZERO_TICK`,
+  99 `OFF_SESSION_ZERO_TICK`, 2 `PRIMARY_SESSION_ZERO_TICK`
+- Cross-provider comparison for anomalous timestamps:
+  188 checked against cached HistData M1 reference rows, with 146 reference
+  timestamps present and 42 reference timestamps absent
+- Evidence-sample acquisition is blocked on repeated empty Dukascopy payloads
+  for Friday `21:00 UTC` hours on `2021-04-16`, `2021-05-14`, and
+  `2021-07-02` for both symbols
 - Exit criteria are now pre-registered: at least 95% sample completion,
   missing-minute rate, confidence interval, distributions by session/weekday/
-  symbol, root-cause categories, and contextual missing-minute observations
+  symbol, hour-of-day, root-cause categories, contextual missing-minute
+  observations, and cross-provider verification for anomalous timestamps
 
 Recommendation:
 
@@ -253,12 +259,35 @@ Recommendation:
 
 Conclusion:
 
-The current evidence is enough to identify a rollover-hour pattern in the
-cached pilot sample, but not enough to reject Dukascopy or justify a governance
-change. The first deterministic sample day shows why the full evidence gate is
-needed before deciding whether this is rollover-only behavior or broader source
-sparsity. The next action is to continue acquiring the deterministic 100-day
-evidence sample and rerun the statistical report.
+The evidence remains insufficient for provider acceptance or rejection. The
+expanded sample shows both confirmed zero-tick minutes across Dukascopy and
+HistData and timestamps where HistData has an M1 row while Dukascopy has zero
+ticks. The immediate blocker is now the repeated Friday `21:00 UTC` empty
+payload behavior in the deterministic sample. Treat that as source/calendar
+evidence and resolve it before continuing large evidence batches.
+
+## Cross-Provider Verification
+
+Status: **BLOCKED / INTERIM**
+
+Command:
+
+```powershell
+python -m tools.st_c3_cross_provider_verification
+```
+
+Output:
+
+- `reports/validation/st_c3/data_integrity/CROSS_PROVIDER_VERIFICATION_REPORT.md`
+- `reports/validation/st_c3/data_integrity/CROSS_PROVIDER_VERIFICATION_REPORT.json`
+
+Current interim conclusions:
+
+- `DUKASCOPY_AND_REFERENCE_ABSENT`: 42
+- `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT`: 146
+
+The cross-provider report is evidence only. It does not replace Dukascopy data
+with HistData rows and does not alter governance.
 
 ## Approval Status
 
@@ -281,8 +310,9 @@ provider rejection or governance change request.
 Recommended next command:
 
 ```powershell
-python -m tools.st_c3_acquire_dukascopy_dataset --download --max-hours 1000 --retries 3
+python -m tools.st_c3_acquire_source_integrity_sample --max-days 1 --retries 3
 ```
 
-If any market-open source hour fails repeatedly, stop and document the missing
-coverage. Do not synthesize candles or weaken validation.
+Before running larger batches, resolve or explicitly document the repeated
+Friday `21:00 UTC` empty-payload source-hour behavior. Do not synthesize
+candles, weaken validation, approve data, or unlock replay.

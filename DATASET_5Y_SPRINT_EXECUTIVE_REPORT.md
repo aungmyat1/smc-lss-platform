@@ -135,22 +135,47 @@ pilot cache.
 Evidence:
 
 - Target sample: 100 deterministic trading days across 2021-2025
-- Deterministic target sample days cached complete: 1 of 100
-- Audited cached pilot days: 4
-- Total expected pilot M1 minutes: 11,280
-- Total missing pilot M1 minutes: 23
-- Distribution: mostly rollover, with two observed GBPUSD pilot gaps outside
-  rollover on the first deterministic sample day
-- Root-cause categories: 21 `ROLLOVER_ZERO_TICK`, 2 `OFF_SESSION_ZERO_TICK`
+- Deterministic target sample days cached complete: 8 of 100
+- Audited cached days: 11
+- Total expected audited M1 minutes: 31,440
+- Total missing audited M1 minutes: 216
+- Missing minute rate: `0.006870229007633588`
 - Missing-minute-rate 95% confidence interval:
-  `0.0013591321291721624..0.003057932662333974`
+  `0.006015492553545249..0.007845455683058679`
+- Root-cause categories: 115 `ROLLOVER_ZERO_TICK`,
+  99 `OFF_SESSION_ZERO_TICK`, 2 `PRIMARY_SESSION_ZERO_TICK`
+- Cross-provider anomalous-timestamp verification: 188 observations checked,
+  146 present in HistData M1 and 42 absent in HistData M1
+- Evidence acquisition blocked on repeated empty Dukascopy payloads for Friday
+  `21:00 UTC` hours on `2021-04-16`, `2021-05-14`, and `2021-07-02`
 - Pre-registered exit criteria: at least 95 of 100 deterministic sample days,
   missing-minute rate, confidence interval, distributions by session/weekday/
-  symbol, root-cause categories, and contextual missing-minute observations
+  symbol/hour, root-cause categories, contextual missing-minute observations,
+  and cross-provider verification for anomalous timestamps
 
-The pilot evidence shows a pattern worth investigating, but it is not
-statistically sufficient to reject the provider or open a governance change.
-The active recommendation is evidence collection.
+The evidence remains statistically insufficient because only 8 of 100
+deterministic sample days are complete. The active recommendation is evidence
+collection, with the next engineering question narrowed to the repeated Friday
+`21:00 UTC` empty-payload behavior before larger sample batches continue.
+
+## Cross-Provider Findings
+
+Cross-provider verification result: `BLOCKED / INTERIM`
+
+Generated:
+
+- `reports/validation/st_c3/data_integrity/CROSS_PROVIDER_VERIFICATION_REPORT.md`
+- `reports/validation/st_c3/data_integrity/CROSS_PROVIDER_VERIFICATION_REPORT.json`
+
+Current interim findings:
+
+- `DUKASCOPY_AND_REFERENCE_ABSENT`: 42
+- `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT`: 146
+
+This evidence is not a provider decision. It confirms the anomaly set is mixed:
+some zero-tick Dukascopy minutes are also absent in the reference source, while
+many are present in HistData M1. No reference rows were merged into Dukascopy
+data.
 
 ## Dataset Approval
 
@@ -181,6 +206,9 @@ passed. Statistical validation remains locked.
 - Statistical evidence remains insufficient. The deterministic 100-day sample
   must be acquired and audited before rejecting the provider or opening a
   governance change request.
+- Repeated Friday `21:00 UTC` empty payloads must be classified as either
+  expected source closure behavior, source-provider unavailability, or an
+  evidence-calendar defect before larger evidence batches continue.
 - Full five-year construction may require substantial runtime and storage.
 
 ## Files Changed
@@ -208,8 +236,12 @@ passed. Statistical validation remains locked.
 - `reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_STATISTICAL_REPORT.md`
 - `reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_SAMPLE_ACQUISITION.json`
 - `reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_SAMPLE_ACQUISITION.md`
+- `reports/validation/st_c3/data_integrity/CROSS_PROVIDER_VERIFICATION_REPORT.json`
+- `reports/validation/st_c3/data_integrity/CROSS_PROVIDER_VERIFICATION_REPORT.md`
 - `tools/st_c3_acquire_source_integrity_sample.py`
+- `tools/st_c3_cross_provider_verification.py`
 - `tests/test_st_c3_source_integrity_sample_acquisition.py`
+- `tests/test_st_c3_cross_provider_verification.py`
 - `reports/validation/st_c3/data_integrity/DATA_INTEGRITY_REPORT.md`
 - `reports/validation/st_c3/data_integrity/VALIDATION_SUMMARY.md`
 - `reports/validation/st_c3/data_integrity/RECOVERY_LOG.md`

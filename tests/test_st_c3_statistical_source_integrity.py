@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import lzma
 import struct
+import zipfile
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 
@@ -31,6 +32,13 @@ def _write_day(cache: Path, symbol: str, day: date, *, missing_hour: int | None 
         path.write_bytes(_payload(missing_minute=minute))
 
 
+def _write_histdata_zip(cache: Path, symbol: str, year: int, rows: list[str]) -> None:
+    path = cache / symbol / f"DAT_ASCII_{symbol}_M1_{year}.zip"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(path, "w") as archive:
+        archive.writestr(f"DAT_ASCII_{symbol}_M1_{year}.csv", "\n".join(rows) + "\n")
+
+
 def test_statistical_source_integrity_passes_complete_target_sample(tmp_path: Path):
     day = date(2021, 1, 4)
     for symbol in ("EURUSD", "GBPUSD"):
@@ -48,15 +56,20 @@ def test_statistical_source_integrity_passes_complete_target_sample(tmp_path: Pa
     assert result["details"]["statistically_sufficient"] is True
     assert result["details"]["total_missing_minutes"] == 0
     assert result["details"]["decision_framework"]["status"] == "MISSING_RATE_BELOW_THRESHOLD"
+    assert result["details"]["sample_stratification"]["by_weekday"] == {"Monday": 1}
+    assert result["details"]["cross_source_comparison"]["observations"] == 0
 
 
 def test_statistical_source_integrity_blocks_for_missing_minutes(tmp_path: Path):
     day = date(2021, 1, 4)
+    reference_cache = tmp_path / "reference"
     _write_day(tmp_path, "EURUSD", day, missing_hour=22, missing_minute=45)
     _write_day(tmp_path, "GBPUSD", day)
+    _write_histdata_zip(reference_cache, "EURUSD", 2021, ["20210104 174400;1;1;1;1;0"])
 
     result = run_statistical_source_integrity(
         cache_dir=tmp_path,
+        reference_cache_dir=reference_cache,
         start_date=day,
         end_date=day,
         target_sample_days=1,
@@ -69,8 +82,22 @@ def test_statistical_source_integrity_blocks_for_missing_minutes(tmp_path: Path)
     assert eurusd["distribution_by_hour_utc"] == {"22": 1}
     assert eurusd["distribution_by_session"] == {"ROLLOVER": 1}
     assert eurusd["distribution_by_root_cause_category"] == {"ROLLOVER_ZERO_TICK": 1}
-    assert eurusd["missing_observations"][0]["previous_minute_tick_count"] == 1
-    assert eurusd["missing_observations"][0]["next_minute_tick_count"] == 1
+    observation = result["details"]["missing_observations"][0]
+    assert observation["provider"] == "Dukascopy"
+    assert observation["market_open"] is True
+    assert observation["previous_minute_tick_count"] == 1
+    assert observation["next_minute_tick_count"] == 1
+    assert observation["cross_source_reference"] == {
+        "checked": True,
+        "provider": "HistData.com Generic ASCII M1",
+        "present": False,
+    }
+    assert result["details"]["cross_source_comparison"] == {
+        "observations": 1,
+        "checked": 1,
+        "reference_present": 0,
+        "reference_absent": 1,
+    }
     assert result["details"]["missing_minute_rate_confidence_interval_95"]["upper"] > 0
 
 

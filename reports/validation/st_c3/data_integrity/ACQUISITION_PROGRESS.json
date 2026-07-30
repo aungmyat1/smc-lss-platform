@@ -1,21 +1,24 @@
 {
-  "cached_open_hours_in_range": 48,
-  "completed_date_range": {
-    "from": "2021-01-04T00:00:00Z",
-    "to": "2021-01-04T23:59:59Z"
+  "approval_status": "NOT_APPROVED",
+  "attempted_source_hours_latest_batch": 468,
+  "completed_sample_days": 8,
+  "coverage": {
+    "from": "2021-01-01",
+    "to": "2025-12-31"
   },
   "dataset_version": "Dataset_v1.0_5Y",
-  "downloaded_hours": 0,
-  "duplicate_count": "PENDING_FULL_VALIDATION",
-  "estimated_completion": "CONTINUE_BATCHED_DOWNLOADS",
-  "failed_hours": 0,
-  "guardrail": "Acquisition builds candidates only; approval, replay, A3, demo, and live remain gated.",
-  "missing_candles": "EURUSD_H4.csv: data\\market\\approved\\st_c3\\EURUSD_H4.csv: CSV coverage 2021-01-04T00:00:00Z..2021-01-04T19:59:59Z does not cover requested 2021-01-01..2025-12-31",
+  "downloaded_or_cached_source_hours_latest_batch": 462,
+  "evidence_sprint": "source_integrity",
+  "failed_source_hours_latest_batch": 6,
+  "first_remaining_day": "2021-04-16",
+  "guardrail": "Evidence-sample acquisition downloads raw source files only; it does not approve data, change governance, or open replay.",
   "provider": "Dukascopy tick datafeed",
-  "reconstructed_candles": 1158,
-  "skipped_closed_hours": 0,
-  "stage": "market_data_acquisition",
+  "recommendation": "CONTINUE_EVIDENCE_COLLECTION",
+  "remaining_sample_days": 92,
+  "replay_status": "BLOCKED",
+  "sample_seed": 107,
+  "stage": "source_integrity_sample_acquisition",
   "status": "BLOCKED",
-  "validation_status": "BLOCKED",
-  "verified_cached_hours": 0
+  "target_sample_days": 100,
+  "validation_status": "SOURCE_INTEGRITY_EVIDENCE_COLLECTION"
 }

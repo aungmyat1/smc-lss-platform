@@ -13,7 +13,14 @@ from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any, Iterable
 
-from tools.st_c3_acquire_dukascopy_dataset import RAW_CACHE, _cache_path, _download_hour, _format_time
+from tools.st_c3_acquire_dukascopy_dataset import (
+    ACQUISITION_PROGRESS,
+    DOWNLOAD_RECOVERY_LOG,
+    RAW_CACHE,
+    _cache_path,
+    _download_hour,
+    _format_time,
+)
 from tools.st_c3_statistical_source_integrity import _deterministic_sample, _open_hours, _parse_date, _trading_days
 from validation.st_c3.dataset_loader import EXPECTED_SYMBOLS
 
@@ -41,10 +48,12 @@ def acquire_source_integrity_sample(
     pending_days = [day for day in sample_days if day not in completed_before]
     selected_days = pending_days[:max_days] if max_days is not None else pending_days
     attempts: list[dict[str, Any]] = []
+    day_progress: list[dict[str, Any]] = []
     processed_hours = 0
     stopped_by_limit = False
 
     for day in selected_days:
+        before_day_attempts = len(attempts)
         for hour in _open_hours(day):
             for symbol in sorted(EXPECTED_SYMBOLS):
                 if max_hours is not None and processed_hours >= max_hours:
@@ -54,6 +63,20 @@ def acquire_source_integrity_sample(
                 processed_hours += 1
             if stopped_by_limit:
                 break
+        day_attempts = attempts[before_day_attempts:]
+        completed_so_far = [sample_day for sample_day in sample_days if _day_cache_complete(cache, sample_day, EXPECTED_SYMBOLS)]
+        failed_for_day = [item for item in day_attempts if item["status"] == "FAILED"]
+        day_progress.append(
+            {
+                "sample_day": day.isoformat(),
+                "status": "BLOCKED" if failed_for_day else ("PARTIAL" if stopped_by_limit else "COMPLETE"),
+                "attempted_source_hours": len(day_attempts),
+                "downloaded_source_hours": len([item for item in day_attempts if item["status"] == "DOWNLOADED"]),
+                "cached_verified_source_hours": len([item for item in day_attempts if item["status"] == "CACHED_VERIFIED"]),
+                "failed_source_hours": failed_for_day,
+                "completed_sample_days_after_day": len(completed_so_far),
+            }
+        )
         if stopped_by_limit:
             break
 
@@ -73,6 +96,7 @@ def acquire_source_integrity_sample(
             "completed_sample_days_after": len(completed_after),
             "remaining_sample_days": max(target_sample_days - len(completed_after), 0),
             "selected_days": [day.isoformat() for day in selected_days],
+            "day_progress": day_progress,
             "attempted_hours": len(attempts),
             "downloaded_or_cached_hours": len([item for item in attempts if item["status"] in {"DOWNLOADED", "CACHED_VERIFIED"}]),
             "failed_hours": failed,
@@ -86,6 +110,7 @@ def acquire_source_integrity_sample(
         REPORT_JSON.parent.mkdir(parents=True, exist_ok=True)
         REPORT_JSON.write_text(json.dumps(result, indent=2, sort_keys=True), encoding="utf-8")
         REPORT_MD.write_text(_markdown(result), encoding="utf-8")
+        _write_sprint_progress(result)
     return result
 
 
@@ -148,9 +173,79 @@ def _markdown(result: dict[str, Any]) -> str:
         f"- Failed source hours: `{len(details['failed_hours'])}`",
         f"- First remaining sample day: `{details['first_remaining_day']}`",
         "",
+        "## Day Progress",
+        "",
+        "| Sample Day | Status | Attempted | Downloaded | Cached | Failed | Completed After Day |",
+        "|---|---|---:|---:|---:|---:|---:|",
+    ]
+    for item in details["day_progress"]:
+        lines.append(
+            f"| `{item['sample_day']}` | `{item['status']}` | {item['attempted_source_hours']} | "
+            f"{item['downloaded_source_hours']} | {item['cached_verified_source_hours']} | "
+            f"{len(item['failed_source_hours'])} | {item['completed_sample_days_after_day']} |"
+        )
+    lines += [
+        "",
         "No candles were fabricated, interpolated, or manually inserted.",
     ]
     return "\n".join(lines) + "\n"
+
+
+def _write_sprint_progress(result: dict[str, Any]) -> None:
+    details = result["details"]
+    progress = {
+        "stage": result["stage"],
+        "status": result["status"],
+        "dataset_version": "Dataset_v1.0_5Y",
+        "provider": "Dukascopy tick datafeed",
+        "evidence_sprint": "source_integrity",
+        "coverage": details["coverage"],
+        "target_sample_days": details["target_sample_days"],
+        "sample_seed": details["sample_seed"],
+        "completed_sample_days": details["completed_sample_days_after"],
+        "remaining_sample_days": details["remaining_sample_days"],
+        "attempted_source_hours_latest_batch": details["attempted_hours"],
+        "downloaded_or_cached_source_hours_latest_batch": details["downloaded_or_cached_hours"],
+        "failed_source_hours_latest_batch": len(details["failed_hours"]),
+        "first_remaining_day": details["first_remaining_day"],
+        "validation_status": "SOURCE_INTEGRITY_EVIDENCE_COLLECTION",
+        "approval_status": "NOT_APPROVED",
+        "replay_status": "BLOCKED",
+        "recommendation": result["recommendation"],
+        "guardrail": result["guardrail"],
+    }
+    ACQUISITION_PROGRESS.write_text(json.dumps(progress, indent=2, sort_keys=True), encoding="utf-8")
+
+    failed = details["failed_hours"]
+    lines = [
+        "# ST-C3 Dukascopy Download Recovery Log",
+        "",
+        "Dataset version: `Dataset_v1.0_5Y`",
+        "",
+        "Scope: source-integrity evidence sample only",
+        "",
+        f"Latest status: **{result['status']}**",
+        "",
+        f"Completed sample days: `{details['completed_sample_days_after']}/{details['target_sample_days']}`",
+        "",
+        "## Latest Batch Day Progress",
+        "",
+        "| Sample Day | Status | Attempted | Failed |",
+        "|---|---|---:|---:|",
+    ]
+    for item in details["day_progress"]:
+        lines.append(
+            f"| `{item['sample_day']}` | `{item['status']}` | "
+            f"{item['attempted_source_hours']} | {len(item['failed_source_hours'])} |"
+        )
+    lines += ["", "## Failed Hours", ""]
+    if failed:
+        for item in failed:
+            lines.append(f"- `{item['symbol']}` `{item['hour_utc']}`: {item['reason']}")
+    else:
+        lines.append("- No failed market-open hours in the latest evidence-sample batch.")
+    lines += ["", "No candles were fabricated, interpolated, or manually edited."]
+    DOWNLOAD_RECOVERY_LOG.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def main() -> None:
