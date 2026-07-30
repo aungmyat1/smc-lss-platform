@@ -26,12 +26,14 @@ approved_scope:
     scope and downstream validation contract.
 
 provider:
-  current_candidate: local MetaTrader 5 terminal export
+  current_candidate: HistData.com Generic ASCII M1 export
   status: REJECTED_FOR_CANONICAL_APPROVAL
   reason: >
-    Current MT5 candidate is fragmented: M15 coverage begins in 2022
-    instead of 2018, M3 contains one 2025 candle, and automatic recovery
-    did not return exact candles for attempted gaps.
+    Current HistData-derived candidate was acquired and normalized from
+    2017-2024 M1 source files, but fails the existing ST-C3 integrity
+    validator because source gaps and incomplete aggregation windows leave
+    missing H4, M15, and M3 candles under the repository no-missing-candles
+    contract.
 
 manifest:
   path: data/market/approved/st_c3/DATASET_MANIFEST_ST_C3.yaml
@@ -82,19 +84,22 @@ expected_files:
 known_blockers:
   - file: EURUSD_H4.csv
     issue: missing_market_open_candle
-    timestamp: "2018-12-26T00:00:00Z"
+    timestamp: "2018-01-02T04:00:00Z"
   - file: EURUSD_M15.csv
-    issue: incomplete_coverage
-    detail: starts at 2022-07-22T01:45:00Z, not 2018-01-01
+    issue: missing_market_open_candle
+    timestamp: "2018-01-02T05:00:00Z"
   - file: EURUSD_M3.csv
-    issue: wrong_range_partial_file
-    detail: one 2025 candle, not 2018-2024 coverage
+    issue: missing_market_open_candle
+    timestamp: "2018-01-02T05:06:00Z"
+  - file: GBPUSD_H4.csv
+    issue: missing_market_open_candle
+    timestamp: "2018-01-02T20:00:00Z"
   - file: GBPUSD_M15.csv
-    issue: incomplete_coverage
-    detail: starts at 2022-07-22T02:15:00Z, not 2018-01-01
+    issue: missing_market_open_candle
+    timestamp: "2018-01-02T02:30:00Z"
   - file: GBPUSD_M3.csv
-    issue: wrong_range_partial_file
-    detail: one 2025 candle, not 2018-2024 coverage
+    issue: missing_market_open_candle
+    timestamp: "2018-01-02T02:33:00Z"
 
 checks:
   missing_timestamps: required

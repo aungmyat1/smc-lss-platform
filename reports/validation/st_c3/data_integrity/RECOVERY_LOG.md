@@ -1,24 +1,14 @@
 # ST-C3 Data Recovery Log
 
-Recovery attempted: **True**
+Recovery attempted: **False**
 
 Final status: **BLOCKED**
 
-Reason: EURUSD_H4.csv missing candle 2018-12-26T00:00:00Z
+Reason: EURUSD_H4.csv missing candle 2018-01-02T04:00:00Z
 
 ## Attempts
 
-- `BLOCKED` EURUSD H4 2018-12-26T00:00:00Z: approved source did not return the exact missing candle
-- `BLOCKED` EURUSD H4 2019-01-02T00:00:00Z: approved source did not return the exact missing candle
-- `BLOCKED` EURUSD H4 2019-12-26T00:00:00Z: approved source did not return the exact missing candle
-- `BLOCKED` EURUSD H4 2020-01-02T00:00:00Z: approved source did not return the exact missing candle
-- `BLOCKED` EURUSD H4 2022-12-26T00:00:00Z: approved source did not return the exact missing candle
-- `BLOCKED` EURUSD H4 2022-12-26T04:00:00Z: approved source did not return the exact missing candle
-- `BLOCKED` EURUSD H4 2023-01-02T00:00:00Z: approved source did not return the exact missing candle
-- `BLOCKED` EURUSD M15 2022-12-26T00:00:00Z: approved source did not return the exact missing candle
-- `BLOCKED` EURUSD M15 2022-12-26T00:15:00Z: approved source did not return the exact missing candle
-- `BLOCKED` EURUSD M15 2022-12-26T00:30:00Z: approved source did not return the exact missing candle
-- `BLOCKED`   : recovery capped at 10 gaps; 136 gaps not attempted
+- No recovery attempts were made.
 
 ## Guardrail
 

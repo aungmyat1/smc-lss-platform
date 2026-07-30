@@ -1,10 +1,13 @@
 # ST-C3 Dataset Release Notes
 
-## Dataset_v0.1_blocked_candidate
+## Dataset_v1.0_candidate_histdata
 
 Release status: **BLOCKED / NOT APPROVED**
 
 Date: 2026-07-30
+
+Source: HistData.com Generic ASCII M1, converted from EST without daylight
+saving adjustment to UTC, then derived into H4/M15/M3.
 
 ## Coverage
 
@@ -17,9 +20,10 @@ Required:
 
 Current candidate:
 
-- H4 files are present but contain market-open gaps.
-- M15 files are present but start in 2022, not 2018.
-- M3 files are one-row 2025 stubs, not 2018-2024 datasets.
+- All required files are present.
+- All required files are derived from the same HistData M1 source family.
+- All required files still contain missing timestamps under the existing
+  ST-C3 continuity validator.
 
 ## Integrity Status
 
@@ -34,10 +38,9 @@ See:
 
 ## Recovery Status
 
-Automatic MT5 recovery was attempted for the first 10 detected gaps.
-No exact matching candles were returned by the approved source. Recovery was
-capped with 136 additional gaps left unattempted. No rows were fabricated,
-interpolated, or manually edited.
+HistData candidate acquisition and construction completed. Validation failed
+because source gaps/incomplete aggregation windows leave missing H4/M15/M3
+candles. No rows were fabricated, interpolated, or manually edited.
 
 ## Approval Status
 
@@ -50,6 +53,6 @@ Replay remains blocked. A3 remains closed. Demo/live remain blocked.
 
 ## Next Version Requirement
 
-`Dataset_v1.0` may be released only after the owner supplies complete
+`Dataset_v1.0` may be released only after a source provides complete
 canonical EURUSD/GBPUSD H4/M15/M3 data for 2018-2024 and all integrity,
 manifest, and contract checks pass.

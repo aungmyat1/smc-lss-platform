@@ -4,6 +4,7 @@ __pycache__/
 env/
 data/*.csv
 data/**/*.csv
+data/market/raw/
 !data/.gitkeep
 reports/_scratch/
 reports/audit/phase_a_gate/

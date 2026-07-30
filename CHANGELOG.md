@@ -28,3 +28,18 @@
   while refusing to replace an already approved immutable dataset.
 - Added dataset-governance regression tests for manifest/contract approval
   mismatch handling and candidate download behavior.
+- Added the ST-C3 Walk-Forward Validation Engine prompt, blocked until
+  dataset approval, replay acceptance, A3 opening, and A3 backtest acceptance.
+- Added the ST-C3 Monte-Carlo Robustness Engine prompt, blocked until
+  walk-forward acceptance and owner-approved simulation bounds/seeds exist.
+- Added the ST-C3 Market Data Acquisition Engine prompt and updated the
+  orchestrator stage order to separate acquisition, construction,
+  validation, and approval before replay.
+- Implemented `tools.st_c3_acquire_histdata_dataset` for HistData M1
+  candidate acquisition, UTC normalization, and deterministic H4/M15/M3
+  construction.
+- Downloaded and staged HistData EURUSD/GBPUSD M1 source ZIPs for 2017-2024,
+  constructed six ST-C3 candidate CSVs, and rejected the candidate after the
+  unchanged integrity validator reported missing timestamps.
+- Added market-data provider evaluation, acquisition, and approval reports
+  documenting HistData rejection and Dukascopy as the next recommended source.

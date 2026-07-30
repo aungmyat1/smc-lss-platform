@@ -9,6 +9,11 @@
 Current manifest state: `approved: false` / `approval_status: NOT_APPROVED`.
 This is intentional until integrity, manifest, and contract checks all pass.
 
+Current candidate state: HistData.com Generic ASCII M1 was acquired and
+normalized into H4/M15/M3 candidate files, but integrity validation failed
+with missing timestamps in every required file. Dataset approval remains
+blocked.
+
 ## Purpose
 
 This document records owner approval for historical datasets used by the
@@ -47,4 +52,4 @@ execution, broker integration, demo trading, live trading, or production.
 - Decision: PENDING
 - Approved by:
 - Date:
-- Notes:
+- Notes: HistData candidate rejected for canonical approval on 2026-07-30.
