@@ -22,3 +22,9 @@
 - Added `DATASET_APPROVAL_SPRINT_REPORT.md` for the current blocked sprint
   handoff.
 - Wired the dataset-contract guardrail into CI.
+- Corrected the ST-C3 candidate manifest to `approved: false` until all
+  integrity, manifest, and contract gates pass.
+- Updated the MT5 dataset downloader to build unapproved candidate datasets
+  while refusing to replace an already approved immutable dataset.
+- Added dataset-governance regression tests for manifest/contract approval
+  mismatch handling and candidate download behavior.

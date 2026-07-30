@@ -37,37 +37,45 @@ manifest:
   path: data/market/approved/st_c3/DATASET_MANIFEST_ST_C3.yaml
   status: BLOCKED
   hash_status: BLOCKED
+  manifest_hash: BLOCKED_PENDING_VALIDATION
+  dataset_checksum: BLOCKED_PENDING_VALIDATION
   updated_manifest_report: reports/validation/st_c3/data_integrity/UPDATED_MANIFEST.json
 
 expected_files:
   EURUSD_H4.csv:
     symbol: EURUSD
     timeframe: H4
+    expected_rows: BLOCKED_PENDING_CANONICAL_PROVIDER_EXPORT
     expected_status: complete_2018_2024_required
     current_status: BLOCKED
   EURUSD_M15.csv:
     symbol: EURUSD
     timeframe: M15
+    expected_rows: BLOCKED_PENDING_CANONICAL_PROVIDER_EXPORT
     expected_status: complete_2018_2024_required
     current_status: BLOCKED
   EURUSD_M3.csv:
     symbol: EURUSD
     timeframe: M3
+    expected_rows: BLOCKED_PENDING_CANONICAL_PROVIDER_EXPORT
     expected_status: complete_2018_2024_required
     current_status: BLOCKED
   GBPUSD_H4.csv:
     symbol: GBPUSD
     timeframe: H4
+    expected_rows: BLOCKED_PENDING_CANONICAL_PROVIDER_EXPORT
     expected_status: complete_2018_2024_required
     current_status: BLOCKED
   GBPUSD_M15.csv:
     symbol: GBPUSD
     timeframe: M15
+    expected_rows: BLOCKED_PENDING_CANONICAL_PROVIDER_EXPORT
     expected_status: complete_2018_2024_required
     current_status: BLOCKED
   GBPUSD_M3.csv:
     symbol: GBPUSD
     timeframe: M3
+    expected_rows: BLOCKED_PENDING_CANONICAL_PROVIDER_EXPORT
     expected_status: complete_2018_2024_required
     current_status: BLOCKED
 

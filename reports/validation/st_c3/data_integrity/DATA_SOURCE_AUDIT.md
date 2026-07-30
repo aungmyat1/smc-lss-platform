@@ -22,7 +22,7 @@ scope.
 
 | Source | Provider | Method | Timezone | Status | Quality Issues |
 |---|---|---|---|---|---|
-| `data/market/approved/st_c3/*.csv` | Local MT5 terminal candidate | `tools.st_c3_download_mt5_dataset` and prior manual placement | UTC-normalized CSV timestamps | BLOCKED | Partial M15 coverage, one-row M3 files, market-open H4/M15 gaps |
+| `data/market/approved/st_c3/*.csv` | Local MT5 terminal candidate | `tools.st_c3_download_mt5_dataset` candidate export and prior placement | UTC-normalized CSV timestamps | BLOCKED / NOT_APPROVED | Partial M15 coverage, one-row M3 files, market-open H4/M15 gaps |
 | `data/*.csv` legacy files | Local MT5 terminal / historical repo artifacts | `src/load_history.py` and older scripts | Mixed/legacy formatting | NOT_APPROVED_FOR_ST_C3 | Not governed by ST-C3 manifest, not canonical |
 
 ## Current Candidate Findings
@@ -38,6 +38,9 @@ scope.
 
 ## API / Provider Limitations Observed
 
+- Candidate downloads are allowed only while the dataset manifest is
+  unapproved. Once the manifest and contract are approved, the dataset is
+  immutable and the MT5 downloader refuses replacement.
 - Native MT5 M3 retrieval returned unusable current/future-range stubs in
   this environment.
 - Chunked MT5 downloads improved request reliability but did not provide

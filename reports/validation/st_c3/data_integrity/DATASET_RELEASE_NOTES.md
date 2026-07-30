@@ -35,12 +35,16 @@ See:
 ## Recovery Status
 
 Automatic MT5 recovery was attempted for the first 10 detected gaps.
-No exact matching candles were returned by the approved source. No rows were
-fabricated, interpolated, or manually edited.
+No exact matching candles were returned by the approved source. Recovery was
+capped with 136 additional gaps left unattempted. No rows were fabricated,
+interpolated, or manually edited.
 
 ## Approval Status
 
 Not approved.
+
+The candidate manifest is intentionally marked `approved: false` until all
+file-integrity, manifest, and contract gates pass.
 
 Replay remains blocked. A3 remains closed. Demo/live remain blocked.
 

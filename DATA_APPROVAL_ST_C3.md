@@ -6,6 +6,9 @@
 **Dataset directory:** `data/market/approved/st_c3/`
 **Manifest:** `data/market/approved/st_c3/DATASET_MANIFEST_ST_C3.yaml`
 
+Current manifest state: `approved: false` / `approval_status: NOT_APPROVED`.
+This is intentional until integrity, manifest, and contract checks all pass.
+
 ## Purpose
 
 This document records owner approval for historical datasets used by the

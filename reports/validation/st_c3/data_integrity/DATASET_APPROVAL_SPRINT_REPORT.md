@@ -45,7 +45,9 @@ Current blockers include:
 
 **FAIL / BLOCKED**
 
-Manifest hashes must not be rebuilt until all integrity checks pass.
+The manifest is explicitly `approved: false` / `approval_status:
+NOT_APPROVED`. Manifest hashes must not be rebuilt until all integrity checks
+pass.
 
 ## Replay Status
 
@@ -58,14 +60,18 @@ A3 is closed. Replay, backtest, demo, and live execution remain blocked.
 Automatic recovery was attempted for the first 10 detected gaps.
 
 Result: **BLOCKED**. The approved MT5 source did not return exact matching
-candles for the attempted gaps. No candles were fabricated, interpolated, or
-manually edited.
+candles for the attempted gaps. Recovery was capped with 136 additional gaps
+left unattempted. No candles were fabricated, interpolated, or manually
+edited.
 
 ## Files Changed / Added In Sprint
 
 - `contracts/DATASET_CONTRACT.yaml`
 - `tools/st_c3_dataset_contract.py`
 - `tools/st_c3_data_integrity.py`
+- `tools/st_c3_download_mt5_dataset.py`
+- `tests/test_st_c3_dataset_governance.py`
+- `data/market/approved/st_c3/DATASET_MANIFEST_ST_C3.yaml`
 - `reports/validation/st_c3/data_integrity/DATA_SOURCE_AUDIT.md`
 - `reports/validation/st_c3/data_integrity/DATASET_RELEASE_NOTES.md`
 - `reports/validation/st_c3/data_integrity/DATA_INTEGRITY_REPORT.md`

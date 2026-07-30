@@ -1,9 +1,9 @@
 strategy: ST-C3
 spec_version: "1.0.7"
-approved: true
-approval_status: "owner-approved"
-approval_date: "2026-07-29"
-approved_by: "Aung"
+approved: false
+approval_status: "NOT_APPROVED"
+approval_date: ""
+approved_by: ""
 
 symbols:
   - EURUSD

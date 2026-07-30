@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Download the six ST-C3 v1.0.7 approved-data CSVs from local MetaTrader 5.
+"""Download the six ST-C3 v1.0.7 candidate-data CSVs from local MetaTrader 5.
 
 This tool only reads historical market data. It does not open A3, accept
 S1-G5/S1-G6, or activate execution/demo/live paths.
@@ -23,7 +23,7 @@ from validation.st_c3.dataset_loader import (
     MANIFEST_NAME,
 )
 
-GUARDRAIL = "Replay run does not open A3 or imply acceptance."
+GUARDRAIL = "Dataset download does not approve data, open A3, or imply replay acceptance."
 
 
 @dataclass(frozen=True)
@@ -48,8 +48,8 @@ def download_st_c3_mt5_dataset(
     manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
     if not isinstance(manifest, dict):
         return _blocked("dataset manifest must be a mapping")
-    if manifest.get("approved") is not True:
-        return _blocked("dataset manifest is not approved")
+    if manifest.get("approved") is True:
+        return _blocked("dataset manifest is already approved; approved datasets are immutable")
     if str(manifest.get("spec_version")) != "1.0.7":
         return _blocked("dataset manifest spec_version must be 1.0.7")
     if set(manifest.get("symbols") or []) != EXPECTED_SYMBOLS:

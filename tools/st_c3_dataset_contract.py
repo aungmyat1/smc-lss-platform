@@ -10,6 +10,7 @@ from typing import Any
 import yaml
 
 from tools.st_c3_data_integrity import inspect_dataset
+from validation.st_c3.dataset_loader import MANIFEST_NAME
 
 
 def validate_dataset_contract(
@@ -43,9 +44,12 @@ def validate_dataset_contract(
     summaries = inspect_dataset(data_dir)
     integrity_pass = all(summary.status == "PASS" for summary in summaries)
     contract_approved = contract.get("approval_status") == "APPROVED"
+    manifest_approval = _manifest_approval_state(data_dir)
     gate = contract.get("approval_gate") or {}
     replay_prohibited = bool(gate.get("replay_prohibited_unless_approved", True))
 
+    if manifest_approval.get("approved") and not contract_approved:
+        return _rejected("manifest claims approval while dataset contract is not approved", summaries)
     if contract_approved and not integrity_pass:
         return _rejected("contract claims approval while dataset integrity is blocked", summaries)
     if not contract_approved and not replay_prohibited:
@@ -61,6 +65,8 @@ def validate_dataset_contract(
             "contract": str(contract_file),
             "contract_status": contract.get("status"),
             "approval_status": contract.get("approval_status"),
+            "manifest_approved": manifest_approval.get("approved"),
+            "manifest_approval_status": manifest_approval.get("approval_status"),
             "integrity_pass": integrity_pass,
             "require_approved": require_approved,
             "replay_prohibited_unless_approved": replay_prohibited,
@@ -79,6 +85,19 @@ def validate_dataset_contract(
     if require_approved and status != "ACCEPTED":
         result["next_action"] = "Release gate requires an approved dataset contract; keep replay blocked."
     return result
+
+
+def _manifest_approval_state(data_dir: str | Path) -> dict[str, Any]:
+    manifest_path = Path(data_dir) / MANIFEST_NAME
+    if not manifest_path.exists():
+        return {"approved": False, "approval_status": "MISSING"}
+    loaded = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+    if not isinstance(loaded, dict):
+        return {"approved": False, "approval_status": "INVALID"}
+    return {
+        "approved": loaded.get("approved") is True,
+        "approval_status": loaded.get("approval_status"),
+    }
 
 
 def _first_blocker(summaries: list[Any]) -> str:

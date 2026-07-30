@@ -424,7 +424,7 @@ def test_data_integrity_recovery_merges_only_exact_source_candle(tmp_path, monke
 
 
 def test_dataset_contract_accepts_honest_blocked_state(tmp_path):
-    data_dir = _write_dataset_dir(tmp_path, approved=True, missing_candle=True)
+    data_dir = _write_dataset_dir(tmp_path, approved=False, missing_candle=True)
     contract_path = tmp_path / "DATASET_CONTRACT.yaml"
     contract_path.write_text(
         yaml.safe_dump(
@@ -451,7 +451,7 @@ def test_dataset_contract_accepts_honest_blocked_state(tmp_path):
 
 
 def test_dataset_contract_require_approved_marks_release_gate(tmp_path):
-    data_dir = _write_dataset_dir(tmp_path, approved=True, missing_candle=True)
+    data_dir = _write_dataset_dir(tmp_path, approved=False, missing_candle=True)
     contract_path = tmp_path / "DATASET_CONTRACT.yaml"
     contract_path.write_text(
         yaml.safe_dump(
