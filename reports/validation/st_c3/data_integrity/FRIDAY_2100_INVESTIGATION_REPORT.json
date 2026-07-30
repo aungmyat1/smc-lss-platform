@@ -1,0 +1,647 @@
+{
+  "details": {
+    "classification": {
+      "next_action": "Document DST Friday close behavior and review the evidence-sample market calendar before resuming larger sample batches.",
+      "reason": "Dukascopy returns empty payloads for DST Friday 21:00 UTC while adjacent Friday 20:00 UTC and winter Friday 21:00 UTC controls parse.",
+      "root_cause": "DST_FRIDAY_CLOSE_PROVIDER_CALENDAR_MISMATCH"
+    },
+    "probes": [
+      {
+        "dukascopy_reason": "payload decompressed and parsed",
+        "dukascopy_status": "PARSED",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/03/16/20h_ticks.bi5",
+        "first_tick": "2021-04-16T20:00:00.055000Z",
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 60,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 20,
+        "hour_utc": "2021-04-16T20:00:00Z",
+        "last_tick": "2021-04-16T20:59:59.621000Z",
+        "month": "04",
+        "payload_bytes": 4658,
+        "sha256": "5e331b4da5fcde1617018f00d8cde685092ba40dc727e64ce009be6b2188155c",
+        "symbol": "EURUSD",
+        "tick_count": 864,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "payload decompressed and parsed",
+        "dukascopy_status": "PARSED",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/03/16/20h_ticks.bi5",
+        "first_tick": "2021-04-16T20:00:00.005000Z",
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 60,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 20,
+        "hour_utc": "2021-04-16T20:00:00Z",
+        "last_tick": "2021-04-16T20:59:56.473000Z",
+        "month": "04",
+        "payload_bytes": 5830,
+        "sha256": "c115ad34330157028c2e9e94c8bd99b95e38909c517569d5b7b7d6c5147ae390",
+        "symbol": "GBPUSD",
+        "tick_count": 1290,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "provider returned zero bytes",
+        "dukascopy_status": "EMPTY_PAYLOAD",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/03/16/21h_ticks.bi5",
+        "first_tick": null,
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 58,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 21,
+        "hour_utc": "2021-04-16T21:00:00Z",
+        "last_tick": null,
+        "month": "04",
+        "payload_bytes": 0,
+        "sha256": null,
+        "symbol": "EURUSD",
+        "tick_count": 0,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "provider returned zero bytes",
+        "dukascopy_status": "EMPTY_PAYLOAD",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/03/16/21h_ticks.bi5",
+        "first_tick": null,
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 60,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 21,
+        "hour_utc": "2021-04-16T21:00:00Z",
+        "last_tick": null,
+        "month": "04",
+        "payload_bytes": 0,
+        "sha256": null,
+        "symbol": "GBPUSD",
+        "tick_count": 0,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "provider returned zero bytes",
+        "dukascopy_status": "EMPTY_PAYLOAD",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/03/16/22h_ticks.bi5",
+        "first_tick": null,
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 0,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 22,
+        "hour_utc": "2021-04-16T22:00:00Z",
+        "last_tick": null,
+        "month": "04",
+        "payload_bytes": 0,
+        "sha256": null,
+        "symbol": "EURUSD",
+        "tick_count": 0,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "provider returned zero bytes",
+        "dukascopy_status": "EMPTY_PAYLOAD",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/03/16/22h_ticks.bi5",
+        "first_tick": null,
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 0,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 22,
+        "hour_utc": "2021-04-16T22:00:00Z",
+        "last_tick": null,
+        "month": "04",
+        "payload_bytes": 0,
+        "sha256": null,
+        "symbol": "GBPUSD",
+        "tick_count": 0,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "payload decompressed and parsed",
+        "dukascopy_status": "PARSED",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/04/14/20h_ticks.bi5",
+        "first_tick": "2021-05-14T20:00:00.088000Z",
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 60,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 20,
+        "hour_utc": "2021-05-14T20:00:00Z",
+        "last_tick": "2021-05-14T20:59:59.612000Z",
+        "month": "05",
+        "payload_bytes": 8093,
+        "sha256": "23ce37e8011ba4a13c7ab233a8d6b01b4d68626022552ecb444e4defe730be67",
+        "symbol": "EURUSD",
+        "tick_count": 1693,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "payload decompressed and parsed",
+        "dukascopy_status": "PARSED",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/04/14/20h_ticks.bi5",
+        "first_tick": "2021-05-14T20:00:00.051000Z",
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 60,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 20,
+        "hour_utc": "2021-05-14T20:00:00Z",
+        "last_tick": "2021-05-14T20:59:46.086000Z",
+        "month": "05",
+        "payload_bytes": 7562,
+        "sha256": "f3971b723603819544f82d736f073cb2116374f33ff68f666334db5b9dfee870",
+        "symbol": "GBPUSD",
+        "tick_count": 1769,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "provider returned zero bytes",
+        "dukascopy_status": "EMPTY_PAYLOAD",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/04/14/21h_ticks.bi5",
+        "first_tick": null,
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 60,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 21,
+        "hour_utc": "2021-05-14T21:00:00Z",
+        "last_tick": null,
+        "month": "05",
+        "payload_bytes": 0,
+        "sha256": null,
+        "symbol": "EURUSD",
+        "tick_count": 0,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "provider returned zero bytes",
+        "dukascopy_status": "EMPTY_PAYLOAD",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/04/14/21h_ticks.bi5",
+        "first_tick": null,
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 57,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 21,
+        "hour_utc": "2021-05-14T21:00:00Z",
+        "last_tick": null,
+        "month": "05",
+        "payload_bytes": 0,
+        "sha256": null,
+        "symbol": "GBPUSD",
+        "tick_count": 0,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "provider returned zero bytes",
+        "dukascopy_status": "EMPTY_PAYLOAD",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/04/14/22h_ticks.bi5",
+        "first_tick": null,
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 0,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 22,
+        "hour_utc": "2021-05-14T22:00:00Z",
+        "last_tick": null,
+        "month": "05",
+        "payload_bytes": 0,
+        "sha256": null,
+        "symbol": "EURUSD",
+        "tick_count": 0,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "provider returned zero bytes",
+        "dukascopy_status": "EMPTY_PAYLOAD",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/04/14/22h_ticks.bi5",
+        "first_tick": null,
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 0,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 22,
+        "hour_utc": "2021-05-14T22:00:00Z",
+        "last_tick": null,
+        "month": "05",
+        "payload_bytes": 0,
+        "sha256": null,
+        "symbol": "GBPUSD",
+        "tick_count": 0,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "payload decompressed and parsed",
+        "dukascopy_status": "PARSED",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/06/02/20h_ticks.bi5",
+        "first_tick": "2021-07-02T20:00:00.060000Z",
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 58,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 20,
+        "hour_utc": "2021-07-02T20:00:00Z",
+        "last_tick": "2021-07-02T20:59:59.767000Z",
+        "month": "07",
+        "payload_bytes": 7742,
+        "sha256": "d5de2360436aa94777540f48581a9943b5438667f3b98a0c9d547b30ad275622",
+        "symbol": "EURUSD",
+        "tick_count": 1631,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "payload decompressed and parsed",
+        "dukascopy_status": "PARSED",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/06/02/20h_ticks.bi5",
+        "first_tick": "2021-07-02T20:00:00.020000Z",
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 60,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 20,
+        "hour_utc": "2021-07-02T20:00:00Z",
+        "last_tick": "2021-07-02T20:59:59.495000Z",
+        "month": "07",
+        "payload_bytes": 7895,
+        "sha256": "2cdf38c3d4b298865071918c574f390e08d4c41be23aa36dcc2987e2dd387bb3",
+        "symbol": "GBPUSD",
+        "tick_count": 1818,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "provider returned zero bytes",
+        "dukascopy_status": "EMPTY_PAYLOAD",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/06/02/21h_ticks.bi5",
+        "first_tick": null,
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 59,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 21,
+        "hour_utc": "2021-07-02T21:00:00Z",
+        "last_tick": null,
+        "month": "07",
+        "payload_bytes": 0,
+        "sha256": null,
+        "symbol": "EURUSD",
+        "tick_count": 0,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "provider returned zero bytes",
+        "dukascopy_status": "EMPTY_PAYLOAD",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/06/02/21h_ticks.bi5",
+        "first_tick": null,
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 59,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 21,
+        "hour_utc": "2021-07-02T21:00:00Z",
+        "last_tick": null,
+        "month": "07",
+        "payload_bytes": 0,
+        "sha256": null,
+        "symbol": "GBPUSD",
+        "tick_count": 0,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "provider returned zero bytes",
+        "dukascopy_status": "EMPTY_PAYLOAD",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/06/02/22h_ticks.bi5",
+        "first_tick": null,
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 0,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 22,
+        "hour_utc": "2021-07-02T22:00:00Z",
+        "last_tick": null,
+        "month": "07",
+        "payload_bytes": 0,
+        "sha256": null,
+        "symbol": "EURUSD",
+        "tick_count": 0,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "provider returned zero bytes",
+        "dukascopy_status": "EMPTY_PAYLOAD",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/06/02/22h_ticks.bi5",
+        "first_tick": null,
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 0,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 22,
+        "hour_utc": "2021-07-02T22:00:00Z",
+        "last_tick": null,
+        "month": "07",
+        "payload_bytes": 0,
+        "sha256": null,
+        "symbol": "GBPUSD",
+        "tick_count": 0,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "payload decompressed and parsed",
+        "dukascopy_status": "PARSED",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/03/23/20h_ticks.bi5",
+        "first_tick": "2021-04-23T20:00:01.028000Z",
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 60,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 20,
+        "hour_utc": "2021-04-23T20:00:00Z",
+        "last_tick": "2021-04-23T20:59:59.714000Z",
+        "month": "04",
+        "payload_bytes": 9167,
+        "sha256": "79021d87c40253505f9f0c4f4fd3eb194fd35079c6fa7ad2d6459d36effe6773",
+        "symbol": "EURUSD",
+        "tick_count": 1951,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "payload decompressed and parsed",
+        "dukascopy_status": "PARSED",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/03/23/20h_ticks.bi5",
+        "first_tick": "2021-04-23T20:00:00.032000Z",
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 60,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 20,
+        "hour_utc": "2021-04-23T20:00:00Z",
+        "last_tick": "2021-04-23T20:59:58.209000Z",
+        "month": "04",
+        "payload_bytes": 9021,
+        "sha256": "44506f8ebf3fbd503d7278e1e0681997b5412914d67cfac0e64049db3acc6fa1",
+        "symbol": "GBPUSD",
+        "tick_count": 2065,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "provider returned zero bytes",
+        "dukascopy_status": "EMPTY_PAYLOAD",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/03/23/21h_ticks.bi5",
+        "first_tick": null,
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 60,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 21,
+        "hour_utc": "2021-04-23T21:00:00Z",
+        "last_tick": null,
+        "month": "04",
+        "payload_bytes": 0,
+        "sha256": null,
+        "symbol": "EURUSD",
+        "tick_count": 0,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "provider returned zero bytes",
+        "dukascopy_status": "EMPTY_PAYLOAD",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/03/23/21h_ticks.bi5",
+        "first_tick": null,
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 60,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 21,
+        "hour_utc": "2021-04-23T21:00:00Z",
+        "last_tick": null,
+        "month": "04",
+        "payload_bytes": 0,
+        "sha256": null,
+        "symbol": "GBPUSD",
+        "tick_count": 0,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "payload decompressed and parsed",
+        "dukascopy_status": "PARSED",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/03/19/21h_ticks.bi5",
+        "first_tick": "2021-04-19T21:00:00.119000Z",
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 60,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 21,
+        "hour_utc": "2021-04-19T21:00:00Z",
+        "last_tick": "2021-04-19T21:59:59.389000Z",
+        "month": "04",
+        "payload_bytes": 4206,
+        "sha256": "808fbb563ff8c5ef734e01db29a6fa2b263d173f7927f9db7593c7e020c51e24",
+        "symbol": "EURUSD",
+        "tick_count": 1178,
+        "weekday": "Monday"
+      },
+      {
+        "dukascopy_reason": "payload decompressed and parsed",
+        "dukascopy_status": "PARSED",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/03/19/21h_ticks.bi5",
+        "first_tick": "2021-04-19T21:00:00.068000Z",
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 60,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 21,
+        "hour_utc": "2021-04-19T21:00:00Z",
+        "last_tick": "2021-04-19T21:59:59.733000Z",
+        "month": "04",
+        "payload_bytes": 2378,
+        "sha256": "016bbbb5e07ea6580ab5dedea1246aea37bb403d369c9a7d9fc746f9bc476a8c",
+        "symbol": "GBPUSD",
+        "tick_count": 515,
+        "weekday": "Monday"
+      },
+      {
+        "dukascopy_reason": "payload decompressed and parsed",
+        "dukascopy_status": "PARSED",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/00/22/20h_ticks.bi5",
+        "first_tick": "2021-01-22T20:00:00.052000Z",
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 60,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 20,
+        "hour_utc": "2021-01-22T20:00:00Z",
+        "last_tick": "2021-01-22T20:59:59.928000Z",
+        "month": "01",
+        "payload_bytes": 9740,
+        "sha256": "9af9067597952823dbba6e7237804aaf6e2a5c6ee2152db4f4af1eadd68744c4",
+        "symbol": "EURUSD",
+        "tick_count": 1762,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "payload decompressed and parsed",
+        "dukascopy_status": "PARSED",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/00/22/20h_ticks.bi5",
+        "first_tick": "2021-01-22T20:00:00.096000Z",
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 59,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 20,
+        "hour_utc": "2021-01-22T20:00:00Z",
+        "last_tick": "2021-01-22T20:59:59.854000Z",
+        "month": "01",
+        "payload_bytes": 7044,
+        "sha256": "ef318db2b67d7ae5766451541253eafef1be7f540d4aafc6583bc5f0cbc82eb3",
+        "symbol": "GBPUSD",
+        "tick_count": 1430,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "payload decompressed and parsed",
+        "dukascopy_status": "PARSED",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/00/22/21h_ticks.bi5",
+        "first_tick": "2021-01-22T21:00:00.030000Z",
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 59,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 21,
+        "hour_utc": "2021-01-22T21:00:00Z",
+        "last_tick": "2021-01-22T21:59:57.988000Z",
+        "month": "01",
+        "payload_bytes": 8905,
+        "sha256": "cbd1370387ff6afc4cc3761257199a3a2ed9fa54e64fdac958e8b8c856362898",
+        "symbol": "EURUSD",
+        "tick_count": 1779,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "payload decompressed and parsed",
+        "dukascopy_status": "PARSED",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/00/22/21h_ticks.bi5",
+        "first_tick": "2021-01-22T21:00:00.057000Z",
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 60,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 21,
+        "hour_utc": "2021-01-22T21:00:00Z",
+        "last_tick": "2021-01-22T21:59:56.166000Z",
+        "month": "01",
+        "payload_bytes": 10956,
+        "sha256": "3df1710366f4b892c3208f546f28a8cb7e48c58dc983c62833f5ecf3b0b4804a",
+        "symbol": "GBPUSD",
+        "tick_count": 2390,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "provider returned zero bytes",
+        "dukascopy_status": "EMPTY_PAYLOAD",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/00/22/22h_ticks.bi5",
+        "first_tick": null,
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 0,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 22,
+        "hour_utc": "2021-01-22T22:00:00Z",
+        "last_tick": null,
+        "month": "01",
+        "payload_bytes": 0,
+        "sha256": null,
+        "symbol": "EURUSD",
+        "tick_count": 0,
+        "weekday": "Friday"
+      },
+      {
+        "dukascopy_reason": "provider returned zero bytes",
+        "dukascopy_status": "EMPTY_PAYLOAD",
+        "dukascopy_url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/00/22/22h_ticks.bi5",
+        "first_tick": null,
+        "histdata_reference": {
+          "checked": true,
+          "minute_rows": 0,
+          "reason": "reference year indexed"
+        },
+        "hour_of_day_utc": 22,
+        "hour_utc": "2021-01-22T22:00:00Z",
+        "last_tick": null,
+        "month": "01",
+        "payload_bytes": 0,
+        "sha256": null,
+        "symbol": "GBPUSD",
+        "tick_count": 0,
+        "weekday": "Friday"
+      }
+    ],
+    "provider": "Dukascopy tick datafeed",
+    "reference_provider": "HistData.com Generic ASCII M1",
+    "summary": {
+      "by_dukascopy_status": {
+        "EMPTY_PAYLOAD": 16,
+        "PARSED": 14
+      },
+      "by_weekday_hour_status": {
+        "Friday 20:00 PARSED": 10,
+        "Friday 21:00 EMPTY_PAYLOAD": 8,
+        "Friday 21:00 PARSED": 2,
+        "Friday 22:00 EMPTY_PAYLOAD": 8,
+        "Monday 21:00 PARSED": 2
+      },
+      "histdata_checked": 30,
+      "histdata_hour_rows_by_dukascopy_status": {
+        "EMPTY_PAYLOAD": {
+          "0": 8,
+          "57": 1,
+          "58": 1,
+          "59": 2,
+          "60": 4
+        },
+        "PARSED": {
+          "58": 1,
+          "59": 2,
+          "60": 11
+        }
+      }
+    }
+  },
+  "guardrail": "Friday 21:00 investigation is evidence only; it does not change contracts, validators, calendars, approval, replay, or market data.",
+  "next_action": "Document DST Friday close behavior and review the evidence-sample market calendar before resuming larger sample batches.",
+  "reason": "Dukascopy returns empty payloads for DST Friday 21:00 UTC while adjacent Friday 20:00 UTC and winter Friday 21:00 UTC controls parse.",
+  "recommendation": "CONTINUE_EVIDENCE_COLLECTION",
+  "stage": "friday_2100_source_integrity_investigation",
+  "status": "BLOCKED"
+}

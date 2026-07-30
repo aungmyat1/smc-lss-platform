@@ -102,18 +102,34 @@ sample days plus cached pilot evidence:
 - Evidence-sample acquisition is blocked by repeated empty Dukascopy payloads
   for Friday `21:00 UTC` hours on `2021-04-16`, `2021-05-14`, and
   `2021-07-02`
+- Focused Friday `21:00 UTC` investigation classified the repeated empty
+  payloads as `DST_FRIDAY_CLOSE_PROVIDER_CALENDAR_MISMATCH`
 
 Generated reports:
 
 - `SOURCE_INTEGRITY_STATISTICAL_REPORT.md`
 - `SOURCE_INTEGRITY_SAMPLE_ACQUISITION.md`
 - `CROSS_PROVIDER_VERIFICATION_REPORT.md`
+- `FRIDAY_2100_INVESTIGATION_REPORT.md`
 
 Recommendation remains:
 
 `CONTINUE_EVIDENCE_COLLECTION`
 
 The release is not approved, and replay remains blocked.
+
+## Friday 21:00 UTC Investigation
+
+Status: **BLOCKED / CLASSIFIED**
+
+The focused probe found that Dukascopy parses DST Friday `20:00 UTC`, winter
+Friday `21:00 UTC`, and Monday DST `21:00 UTC` controls, while returning
+zero-byte payloads for DST Friday `21:00 UTC` and Friday `22:00 UTC`. HistData
+M1 contains rows for many of the DST Friday `21:00 UTC` reference hours.
+
+This supports a provider/calendar-policy divergence around DST Friday close,
+not a parser, decompression, or generic downloader defect. No contract,
+validator, approval, replay, or historical-price change was made.
 - Distribution: mostly rollover, with two observed GBPUSD pilot gaps outside
   rollover on the first deterministic sample day
 - Root-cause categories: 21 `ROLLOVER_ZERO_TICK`, 2 `OFF_SESSION_ZERO_TICK`

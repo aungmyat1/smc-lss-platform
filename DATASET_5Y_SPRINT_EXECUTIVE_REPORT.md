@@ -148,6 +148,8 @@ Evidence:
   146 present in HistData M1 and 42 absent in HistData M1
 - Evidence acquisition blocked on repeated empty Dukascopy payloads for Friday
   `21:00 UTC` hours on `2021-04-16`, `2021-05-14`, and `2021-07-02`
+- Focused Friday `21:00 UTC` investigation classified the repeated failures as
+  `DST_FRIDAY_CLOSE_PROVIDER_CALENDAR_MISMATCH`
 - Pre-registered exit criteria: at least 95 of 100 deterministic sample days,
   missing-minute rate, confidence interval, distributions by session/weekday/
   symbol/hour, root-cause categories, contextual missing-minute observations,
@@ -176,6 +178,34 @@ This evidence is not a provider decision. It confirms the anomaly set is mixed:
 some zero-tick Dukascopy minutes are also absent in the reference source, while
 many are present in HistData M1. No reference rows were merged into Dukascopy
 data.
+
+## Friday 21:00 UTC Findings
+
+Friday `21:00 UTC` source-integrity investigation result: `BLOCKED / CLASSIFIED`
+
+Generated:
+
+- `reports/validation/st_c3/data_integrity/FRIDAY_2100_INVESTIGATION_REPORT.md`
+- `reports/validation/st_c3/data_integrity/FRIDAY_2100_INVESTIGATION_REPORT.json`
+
+Classification:
+
+`DST_FRIDAY_CLOSE_PROVIDER_CALENDAR_MISMATCH`
+
+Evidence summary:
+
+- DST Friday `20:00 UTC` payloads parse for both symbols.
+- DST Friday `21:00 UTC` payloads return zero bytes for both symbols.
+- Friday `22:00 UTC` payloads return zero bytes, consistent with Friday close.
+- Winter Friday `21:00 UTC` controls parse for both symbols.
+- Monday DST `21:00 UTC` controls parse for both symbols.
+- HistData M1 has rows for many DST Friday `21:00 UTC` reference hours where
+  Dukascopy returns zero bytes.
+
+The evidence narrows the repeated sample-acquisition blocker to provider
+calendar/policy behavior around DST Friday close. This is not a provider
+decision and does not change the ST-C3 calendar, contract, validator, approval
+state, or replay state.
 
 ## Dataset Approval
 
@@ -206,9 +236,9 @@ passed. Statistical validation remains locked.
 - Statistical evidence remains insufficient. The deterministic 100-day sample
   must be acquired and audited before rejecting the provider or opening a
   governance change request.
-- Repeated Friday `21:00 UTC` empty payloads must be classified as either
-  expected source closure behavior, source-provider unavailability, or an
-  evidence-calendar defect before larger evidence batches continue.
+- Repeated Friday `21:00 UTC` empty payloads are now classified as
+  `DST_FRIDAY_CLOSE_PROVIDER_CALENDAR_MISMATCH`; a governed calendar/source
+  policy review is required before larger evidence batches continue.
 - Full five-year construction may require substantial runtime and storage.
 
 ## Files Changed
@@ -238,10 +268,14 @@ passed. Statistical validation remains locked.
 - `reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_SAMPLE_ACQUISITION.md`
 - `reports/validation/st_c3/data_integrity/CROSS_PROVIDER_VERIFICATION_REPORT.json`
 - `reports/validation/st_c3/data_integrity/CROSS_PROVIDER_VERIFICATION_REPORT.md`
+- `reports/validation/st_c3/data_integrity/FRIDAY_2100_INVESTIGATION_REPORT.json`
+- `reports/validation/st_c3/data_integrity/FRIDAY_2100_INVESTIGATION_REPORT.md`
 - `tools/st_c3_acquire_source_integrity_sample.py`
 - `tools/st_c3_cross_provider_verification.py`
+- `tools/st_c3_investigate_friday_2100.py`
 - `tests/test_st_c3_source_integrity_sample_acquisition.py`
 - `tests/test_st_c3_cross_provider_verification.py`
+- `tests/test_st_c3_friday_2100_investigation.py`
 - `reports/validation/st_c3/data_integrity/DATA_INTEGRITY_REPORT.md`
 - `reports/validation/st_c3/data_integrity/VALIDATION_SUMMARY.md`
 - `reports/validation/st_c3/data_integrity/RECOVERY_LOG.md`

@@ -248,6 +248,8 @@ Findings:
 - Evidence-sample acquisition is blocked on repeated empty Dukascopy payloads
   for Friday `21:00 UTC` hours on `2021-04-16`, `2021-05-14`, and
   `2021-07-02` for both symbols
+- Focused Friday `21:00 UTC` investigation classified the repeated empty
+  payloads as `DST_FRIDAY_CLOSE_PROVIDER_CALENDAR_MISMATCH`
 - Exit criteria are now pre-registered: at least 95% sample completion,
   missing-minute rate, confidence interval, distributions by session/weekday/
   symbol, hour-of-day, root-cause categories, contextual missing-minute
@@ -289,6 +291,45 @@ Current interim conclusions:
 The cross-provider report is evidence only. It does not replace Dukascopy data
 with HistData rows and does not alter governance.
 
+## Friday 21:00 UTC Investigation
+
+Status: **BLOCKED / CLASSIFIED**
+
+Command:
+
+```powershell
+python -m tools.st_c3_investigate_friday_2100
+```
+
+Output:
+
+- `reports/validation/st_c3/data_integrity/FRIDAY_2100_INVESTIGATION_REPORT.md`
+- `reports/validation/st_c3/data_integrity/FRIDAY_2100_INVESTIGATION_REPORT.json`
+
+Finding:
+
+`DST_FRIDAY_CLOSE_PROVIDER_CALENDAR_MISMATCH`
+
+Evidence:
+
+- DST Friday `20:00 UTC` control hours parsed for both symbols.
+- DST Friday `21:00 UTC` hours returned zero-byte Dukascopy payloads for both
+  symbols on `2021-04-16`, `2021-04-23`, `2021-05-14`, and `2021-07-02`.
+- Friday `22:00 UTC` hours also returned zero-byte payloads, consistent with
+  known Friday close behavior.
+- Winter Friday `21:00 UTC` controls on `2021-01-22` parsed for both symbols.
+- Monday `21:00 UTC` DST controls on `2021-04-19` parsed for both symbols.
+- HistData M1 often contains rows for the same DST Friday `21:00 UTC` hours,
+  confirming the behavior is provider/reference-policy divergence rather than
+  a universal no-data condition.
+
+Conclusion:
+
+The repeated source-hour failures are reproducible and localized. The evidence
+supports a provider/calendar mismatch during DST Friday close handling, not a
+decompression, parser, or generic downloader defect. No calendar, contract, or
+validator change has been made.
+
 ## Approval Status
 
 Dataset approval: **NOT_APPROVED**
@@ -313,6 +354,6 @@ Recommended next command:
 python -m tools.st_c3_acquire_source_integrity_sample --max-days 1 --retries 3
 ```
 
-Before running larger batches, resolve or explicitly document the repeated
-Friday `21:00 UTC` empty-payload source-hour behavior. Do not synthesize
-candles, weaken validation, approve data, or unlock replay.
+Before running larger batches, review the evidence-sample market calendar in a
+separate governed decision. Do not synthesize candles, weaken validation,
+approve data, or unlock replay.

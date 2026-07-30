@@ -53,3 +53,7 @@
 - Advanced deterministic source-integrity evidence from 1 to 8 completed
   sample days; kept recommendation at `CONTINUE_EVIDENCE_COLLECTION` after
   repeated Friday `21:00 UTC` empty Dukascopy payloads blocked larger batches.
+- Added `tools.st_c3_investigate_friday_2100` and
+  `FRIDAY_2100_INVESTIGATION_REPORT.md`, classifying the repeated empty
+  payloads as `DST_FRIDAY_CLOSE_PROVIDER_CALENDAR_MISMATCH` without changing
+  ST-C3 calendars, validators, contracts, approval, replay, or prices.
