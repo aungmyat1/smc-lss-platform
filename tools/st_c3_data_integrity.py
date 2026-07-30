@@ -459,10 +459,8 @@ def _root_cause_text(rows: list[dict[str, Any]], result: dict[str, Any]) -> str:
     if coverage_failures:
         return (
             "The approved-data directory contains partial or wrong-range files. "
-            "M15 files begin in 2022 instead of 2018, and M3 files contain one "
-            "2025 candle rather than the approved 2018-2024 window. "
-            "The attempted MT5 recovery did not return exact missing candles, "
-            "so no repair was applied.\n\n"
+            "The files do not cover the manifest's requested window, so manifest "
+            "hashes and dataset approval remain blocked. No repair was applied.\n\n"
             + "\n".join(f"- {item}" for item in coverage_failures)
         )
     if missing_files:

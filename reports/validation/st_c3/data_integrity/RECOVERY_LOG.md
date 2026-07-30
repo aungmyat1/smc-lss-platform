@@ -4,7 +4,7 @@ Recovery attempted: **False**
 
 Final status: **BLOCKED**
 
-Reason: EURUSD_H4.csv missing candle 2018-01-02T04:00:00Z
+Reason: EURUSD_H4.csv: data\market\approved\st_c3\EURUSD_H4.csv: CSV coverage 2021-01-04T00:00:00Z..2021-01-04T19:59:59Z does not cover requested 2021-01-01..2025-12-31
 
 ## Attempts
 

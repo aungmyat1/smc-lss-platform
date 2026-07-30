@@ -1,5 +1,49 @@
 # ST-C3 Dataset Release Notes
 
+## Dataset_v1.0_5Y_candidate_dukascopy
+
+Release status: **IN PROGRESS / NOT APPROVED**
+
+Date: 2026-07-30
+
+Source: Dukascopy hourly tick `.bi5` files for 2021-2025, reconstructed into
+UTC M1 bid candles, then derived into H4/M15/M3 using complete M1 windows only.
+
+## Dukascopy Acquisition Status
+
+Five-year bounded raw-tick acquisition has started.
+
+Latest batch:
+
+- Checkpoint range: `2021-01-04T00:00:00Z` through `2021-01-04T23:59:59Z`
+- Symbols: `EURUSD`, `GBPUSD`
+- Cached open-market source hours in checkpoint range: 48
+- Reconstructed checkpoint candles: 1,158
+- Failed downloads: 0
+- Validation status: BLOCKED
+
+Status report:
+
+- `DUKASCOPY_ACQUISITION_STATUS.json`
+- `ACQUISITION_PROGRESS.json`
+- `CHECKPOINT_MANIFEST.json`
+- `DOWNLOAD_RECOVERY_LOG.md`
+- `NORMALIZATION_REPORT.md`
+- `AGGREGATION_REPORT.md`
+
+Candidate construction and full-range validation have not run yet.
+
+## Dukascopy Approval Status
+
+Not approved.
+
+The manifest remains `approved: false` for `Dataset_v1.0_5Y`. Replay remains
+blocked. A3 remains closed. Demo/live remain blocked.
+
+The dataset may become immutable only after complete acquisition, construction,
+strict integrity validation, manifest/checksum regeneration, contract
+validation, and explicit owner approval.
+
 ## Dataset_v1.0_candidate_histdata
 
 Release status: **BLOCKED / NOT APPROVED**

@@ -2,7 +2,7 @@ contract_id: ST-C3-DATASET-CONTRACT
 contract_version: "0.1.0-blocked"
 strategy: ST-C3
 spec_version: "1.0.7"
-dataset_version: "Dataset_v0.1_blocked_candidate"
+dataset_version: "Dataset_v1.0_5Y"
 status: BLOCKED
 approval_status: NOT_APPROVED
 integrity_status: BLOCKED
@@ -18,22 +18,22 @@ approved_scope:
     - M15
     - M3
   coverage:
-    from: "2018-01-01"
-    to: "2024-12-31"
+    from: "2021-01-01"
+    to: "2025-12-31"
   rationale: >
     Active scope mirrors frozen ST-C3 v1.0.7 governance. XAUUSD/H1/M5 are
     not added here because that would change the current approved dataset
     scope and downstream validation contract.
 
 provider:
-  current_candidate: HistData.com Generic ASCII M1 export
-  status: REJECTED_FOR_CANONICAL_APPROVAL
+  current_candidate: Dukascopy tick datafeed
+  status: ACQUISITION_IN_PROGRESS
   reason: >
-    Current HistData-derived candidate was acquired and normalized from
-    2017-2024 M1 source files, but fails the existing ST-C3 integrity
-    validator because source gaps and incomplete aggregation windows leave
-    missing H4, M15, and M3 candles under the repository no-missing-candles
-    contract.
+    Dataset_v1.0_5Y acquisition is in progress from Dukascopy hourly tick
+    files for the 2021-2025 coverage window. Candidate approval remains
+    blocked until raw acquisition, deterministic construction, strict
+    integrity validation, manifest/checksum generation, and explicit owner
+    approval all pass.
 
 manifest:
   path: data/market/approved/st_c3/DATASET_MANIFEST_ST_C3.yaml
@@ -47,59 +47,44 @@ expected_files:
   EURUSD_H4.csv:
     symbol: EURUSD
     timeframe: H4
-    expected_rows: BLOCKED_PENDING_CANONICAL_PROVIDER_EXPORT
-    expected_status: complete_2018_2024_required
+    expected_rows: BLOCKED_PENDING_5Y_CANONICAL_EXPORT
+    expected_status: complete_2021_2025_required
     current_status: BLOCKED
   EURUSD_M15.csv:
     symbol: EURUSD
     timeframe: M15
-    expected_rows: BLOCKED_PENDING_CANONICAL_PROVIDER_EXPORT
-    expected_status: complete_2018_2024_required
+    expected_rows: BLOCKED_PENDING_5Y_CANONICAL_EXPORT
+    expected_status: complete_2021_2025_required
     current_status: BLOCKED
   EURUSD_M3.csv:
     symbol: EURUSD
     timeframe: M3
-    expected_rows: BLOCKED_PENDING_CANONICAL_PROVIDER_EXPORT
-    expected_status: complete_2018_2024_required
+    expected_rows: BLOCKED_PENDING_5Y_CANONICAL_EXPORT
+    expected_status: complete_2021_2025_required
     current_status: BLOCKED
   GBPUSD_H4.csv:
     symbol: GBPUSD
     timeframe: H4
-    expected_rows: BLOCKED_PENDING_CANONICAL_PROVIDER_EXPORT
-    expected_status: complete_2018_2024_required
+    expected_rows: BLOCKED_PENDING_5Y_CANONICAL_EXPORT
+    expected_status: complete_2021_2025_required
     current_status: BLOCKED
   GBPUSD_M15.csv:
     symbol: GBPUSD
     timeframe: M15
-    expected_rows: BLOCKED_PENDING_CANONICAL_PROVIDER_EXPORT
-    expected_status: complete_2018_2024_required
+    expected_rows: BLOCKED_PENDING_5Y_CANONICAL_EXPORT
+    expected_status: complete_2021_2025_required
     current_status: BLOCKED
   GBPUSD_M3.csv:
     symbol: GBPUSD
     timeframe: M3
-    expected_rows: BLOCKED_PENDING_CANONICAL_PROVIDER_EXPORT
-    expected_status: complete_2018_2024_required
+    expected_rows: BLOCKED_PENDING_5Y_CANONICAL_EXPORT
+    expected_status: complete_2021_2025_required
     current_status: BLOCKED
 
 known_blockers:
-  - file: EURUSD_H4.csv
-    issue: missing_market_open_candle
-    timestamp: "2018-01-02T04:00:00Z"
-  - file: EURUSD_M15.csv
-    issue: missing_market_open_candle
-    timestamp: "2018-01-02T05:00:00Z"
-  - file: EURUSD_M3.csv
-    issue: missing_market_open_candle
-    timestamp: "2018-01-02T05:06:00Z"
-  - file: GBPUSD_H4.csv
-    issue: missing_market_open_candle
-    timestamp: "2018-01-02T20:00:00Z"
-  - file: GBPUSD_M15.csv
-    issue: missing_market_open_candle
-    timestamp: "2018-01-02T02:30:00Z"
-  - file: GBPUSD_M3.csv
-    issue: missing_market_open_candle
-    timestamp: "2018-01-02T02:33:00Z"
+  - issue: five_year_dukascopy_acquisition_incomplete
+    required_coverage: "2021-01-01T00:00:00Z..2025-12-31T23:59:59Z"
+    current_status: IN_PROGRESS
 
 checks:
   missing_timestamps: required

@@ -1,14 +1,16 @@
-# ST-C3 Dataset Acquisition Plan
+# ST-C3 Five-Year Dataset Acquisition Plan
 
-Status: **READY FOR OWNER APPROVAL**
+Status: **IN PROGRESS**
 
 Date: 2026-07-30
 
 Provider: **Dukascopy**
 
+Dataset version: **Dataset_v1.0_5Y**
+
 ## Objective
 
-Acquire the full canonical ST-C3 Dataset v1.0 candidate from Dukascopy and
+Acquire the five-year canonical ST-C3 Dataset v1.0 candidate from Dukascopy and
 submit it to the unchanged dataset validation and approval gates.
 
 Replay remains blocked until acquisition, validation, manifest generation,
@@ -23,7 +25,7 @@ Symbols:
 
 Coverage:
 
-- `2018-01-01T00:00:00Z` through `2024-12-31T23:59:59Z`
+- `2021-01-01T00:00:00Z` through `2025-12-31T23:59:59Z`
 
 Source granularity:
 
@@ -38,12 +40,36 @@ Constructed timeframes:
 ## Download Order
 
 1. Create raw cache root: `data/market/raw/dukascopy/st_c3/`.
-2. Download `EURUSD` hourly tick files from `2017-12-31T19:00:00Z` through
-   `2024-12-31T23:00:00Z` to ensure aggregation coverage at the contract
-   boundaries.
+2. Download `EURUSD` hourly tick files from `2021-01-01T00:00:00Z` through
+   `2025-12-31T23:00:00Z`.
 3. Download `GBPUSD` hourly tick files for the same UTC range.
 4. Store raw `.bi5` files by symbol/year/month/day/hour.
 5. Record every attempted URL, byte count, checksum, and failure.
+
+Initial seven-year qualification batch was retained as provider evidence only.
+The active five-year sprint starts from 2021 onward and does not download
+earlier history unless explicitly requested.
+
+Initial five-year sprint batch started on 2026-07-30:
+
+- Range attempted: `2021-01-01T00:00:00Z` through `2021-01-06T23:00:00Z`
+- Completed checkpoint range: `2021-01-04T00:00:00Z` through `2021-01-04T23:59:59Z`
+- Symbols: `EURUSD`, `GBPUSD`
+- Cached open-market source hours in checkpoint range: 48
+- Reconstructed checkpoint candles: 1,158
+- Validation status: BLOCKED, as expected for a one-day slice against the full
+  five-year contract
+- Status report: `reports/validation/st_c3/data_integrity/DUKASCOPY_ACQUISITION_STATUS.json`
+
+## Checkpoint Policy
+
+After each bounded batch, regenerate:
+
+- `reports/validation/st_c3/data_integrity/ACQUISITION_PROGRESS.json`
+- `reports/validation/st_c3/data_integrity/CHECKPOINT_MANIFEST.json`
+- `reports/validation/st_c3/data_integrity/DOWNLOAD_RECOVERY_LOG.md`
+- `reports/validation/st_c3/data_integrity/NORMALIZATION_REPORT.md`
+- `reports/validation/st_c3/data_integrity/AGGREGATION_REPORT.md`
 
 ## Retry Policy
 
@@ -116,7 +142,7 @@ python -m tools.st_c3_dataset_contract --contract contracts/DATASET_CONTRACT.yam
 
 Target release:
 
-`Dataset_v1.0`
+`Dataset_v1.0_5Y`
 
 Release contents:
 

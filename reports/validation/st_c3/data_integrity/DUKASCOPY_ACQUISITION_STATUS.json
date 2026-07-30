@@ -1,0 +1,150 @@
+{
+  "details": {
+    "cache_dir": "data\\market\\raw\\dukascopy\\st_c3",
+    "cached_open_hours_in_range": 48,
+    "construction": [
+      {
+        "first_timestamp": "2021-01-04T00:00:00Z",
+        "last_timestamp": "2021-01-04T16:00:00Z",
+        "path": "data\\market\\approved\\st_c3\\EURUSD_H4.csv",
+        "rows": 5,
+        "status": "CONSTRUCTED",
+        "symbol": "EURUSD",
+        "timeframe": "H4"
+      },
+      {
+        "first_timestamp": "2021-01-04T00:00:00Z",
+        "last_timestamp": "2021-01-04T23:45:00Z",
+        "path": "data\\market\\approved\\st_c3\\EURUSD_M15.csv",
+        "rows": 95,
+        "status": "CONSTRUCTED",
+        "symbol": "EURUSD",
+        "timeframe": "M15"
+      },
+      {
+        "first_timestamp": "2021-01-04T00:00:00Z",
+        "last_timestamp": "2021-01-04T23:57:00Z",
+        "path": "data\\market\\approved\\st_c3\\EURUSD_M3.csv",
+        "rows": 479,
+        "status": "CONSTRUCTED",
+        "symbol": "EURUSD",
+        "timeframe": "M3"
+      },
+      {
+        "first_timestamp": "2021-01-04T00:00:00Z",
+        "last_timestamp": "2021-01-04T16:00:00Z",
+        "path": "data\\market\\approved\\st_c3\\GBPUSD_H4.csv",
+        "rows": 5,
+        "status": "CONSTRUCTED",
+        "symbol": "GBPUSD",
+        "timeframe": "H4"
+      },
+      {
+        "first_timestamp": "2021-01-04T00:00:00Z",
+        "last_timestamp": "2021-01-04T23:45:00Z",
+        "path": "data\\market\\approved\\st_c3\\GBPUSD_M15.csv",
+        "rows": 95,
+        "status": "CONSTRUCTED",
+        "symbol": "GBPUSD",
+        "timeframe": "M15"
+      },
+      {
+        "first_timestamp": "2021-01-04T00:00:00Z",
+        "last_timestamp": "2021-01-04T23:57:00Z",
+        "path": "data\\market\\approved\\st_c3\\GBPUSD_M3.csv",
+        "rows": 479,
+        "status": "CONSTRUCTED",
+        "symbol": "GBPUSD",
+        "timeframe": "M3"
+      }
+    ],
+    "contract": {
+      "details": {
+        "approval_status": "NOT_APPROVED",
+        "contract": "contracts\\DATASET_CONTRACT.yaml",
+        "contract_status": "BLOCKED",
+        "files": [
+          {
+            "duplicate_count": 0,
+            "issue_count": 1,
+            "missing_count": 0,
+            "path": "data\\market\\approved\\st_c3\\EURUSD_H4.csv",
+            "status": "BLOCKED"
+          },
+          {
+            "duplicate_count": 0,
+            "issue_count": 1,
+            "missing_count": 1,
+            "path": "data\\market\\approved\\st_c3\\EURUSD_M15.csv",
+            "status": "BLOCKED"
+          },
+          {
+            "duplicate_count": 0,
+            "issue_count": 1,
+            "missing_count": 1,
+            "path": "data\\market\\approved\\st_c3\\EURUSD_M3.csv",
+            "status": "BLOCKED"
+          },
+          {
+            "duplicate_count": 0,
+            "issue_count": 1,
+            "missing_count": 0,
+            "path": "data\\market\\approved\\st_c3\\GBPUSD_H4.csv",
+            "status": "BLOCKED"
+          },
+          {
+            "duplicate_count": 0,
+            "issue_count": 1,
+            "missing_count": 1,
+            "path": "data\\market\\approved\\st_c3\\GBPUSD_M15.csv",
+            "status": "BLOCKED"
+          },
+          {
+            "duplicate_count": 0,
+            "issue_count": 1,
+            "missing_count": 1,
+            "path": "data\\market\\approved\\st_c3\\GBPUSD_M3.csv",
+            "status": "BLOCKED"
+          }
+        ],
+        "integrity_pass": false,
+        "manifest_approval_status": "NOT_APPROVED",
+        "manifest_approved": false,
+        "replay_prohibited_unless_approved": true,
+        "require_approved": false
+      },
+      "next_action": "Owner must provide a complete canonical dataset and approve the contract.",
+      "reason": "EURUSD_H4.csv: data\\market\\approved\\st_c3\\EURUSD_H4.csv: CSV coverage 2021-01-04T00:00:00Z..2021-01-04T19:59:59Z does not cover requested 2021-01-01..2025-12-31",
+      "stage": "dataset_contract",
+      "status": "BLOCKED"
+    },
+    "corrupt_cached_hours": [],
+    "coverage_end_utc": "2021-01-04T23:59:59Z",
+    "coverage_start_utc": "2021-01-04T00:00:00Z",
+    "data_dir": "data\\market\\approved\\st_c3",
+    "downloaded_hours": 0,
+    "failed_hours": [],
+    "provider": "Dukascopy tick datafeed",
+    "skipped_closed_hours": 0,
+    "symbols": [
+      "EURUSD",
+      "GBPUSD"
+    ],
+    "timeframes": [
+      "H4",
+      "M15",
+      "M3"
+    ],
+    "validation": {
+      "manifest_status": "BLOCKED",
+      "reason": "EURUSD_H4.csv: data\\market\\approved\\st_c3\\EURUSD_H4.csv: CSV coverage 2021-01-04T00:00:00Z..2021-01-04T19:59:59Z does not cover requested 2021-01-01..2025-12-31",
+      "status": "BLOCKED"
+    },
+    "verified_cached_hours": 0
+  },
+  "guardrail": "Acquisition builds candidates only; approval, replay, A3, demo, and live remain gated.",
+  "next_action": "Resolve validation blockers without changing validation rules.",
+  "reason": "EURUSD_H4.csv: data\\market\\approved\\st_c3\\EURUSD_H4.csv: CSV coverage 2021-01-04T00:00:00Z..2021-01-04T19:59:59Z does not cover requested 2021-01-01..2025-12-31",
+  "stage": "market_data_acquisition",
+  "status": "BLOCKED"
+}

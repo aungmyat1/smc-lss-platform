@@ -1,5 +1,6 @@
 strategy: ST-C3
 spec_version: "1.0.7"
+dataset_version: "Dataset_v1.0_5Y"
 approved: false
 approval_status: "NOT_APPROVED"
 approval_date: ""
@@ -15,8 +16,8 @@ timeframes:
   - M3
 
 coverage:
-  from: "2018-01-01"
-  to: "2024-12-31"
+  from: "2021-01-01"
+  to: "2025-12-31"
 
 sessions:
   london:

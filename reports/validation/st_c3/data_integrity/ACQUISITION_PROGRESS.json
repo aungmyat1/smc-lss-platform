@@ -1,0 +1,21 @@
+{
+  "cached_open_hours_in_range": 48,
+  "completed_date_range": {
+    "from": "2021-01-04T00:00:00Z",
+    "to": "2021-01-04T23:59:59Z"
+  },
+  "dataset_version": "Dataset_v1.0_5Y",
+  "downloaded_hours": 0,
+  "duplicate_count": "PENDING_FULL_VALIDATION",
+  "estimated_completion": "CONTINUE_BATCHED_DOWNLOADS",
+  "failed_hours": 0,
+  "guardrail": "Acquisition builds candidates only; approval, replay, A3, demo, and live remain gated.",
+  "missing_candles": "EURUSD_H4.csv: data\\market\\approved\\st_c3\\EURUSD_H4.csv: CSV coverage 2021-01-04T00:00:00Z..2021-01-04T19:59:59Z does not cover requested 2021-01-01..2025-12-31",
+  "provider": "Dukascopy tick datafeed",
+  "reconstructed_candles": 1158,
+  "skipped_closed_hours": 0,
+  "stage": "market_data_acquisition",
+  "status": "BLOCKED",
+  "validation_status": "BLOCKED",
+  "verified_cached_hours": 0
+}

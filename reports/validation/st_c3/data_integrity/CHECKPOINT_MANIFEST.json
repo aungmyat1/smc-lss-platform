@@ -1,0 +1,22 @@
+{
+  "approval_status": "NOT_APPROVED",
+  "cache_dir": "data\\market\\raw\\dukascopy\\st_c3",
+  "coverage": {
+    "from": "2021-01-04T00:00:00Z",
+    "to": "2021-01-04T23:59:59Z"
+  },
+  "data_dir": "data\\market\\approved\\st_c3",
+  "dataset_version": "Dataset_v1.0_5Y",
+  "provider": "Dukascopy tick datafeed",
+  "replay_status": "BLOCKED",
+  "status_report": "reports\\validation\\st_c3\\data_integrity\\DUKASCOPY_ACQUISITION_STATUS.json",
+  "symbols": [
+    "EURUSD",
+    "GBPUSD"
+  ],
+  "timeframes": [
+    "H4",
+    "M15",
+    "M3"
+  ]
+}

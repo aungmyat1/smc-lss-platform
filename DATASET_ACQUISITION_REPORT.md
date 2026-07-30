@@ -1,8 +1,12 @@
-# ST-C3 Dataset Acquisition Report
+# ST-C3 Five-Year Dataset Acquisition Report
 
-Status: **BLOCKED / NOT_APPROVED**
+Status: **IN_PROGRESS**
 
 Date: 2026-07-30
+
+Provider: **Dukascopy tick datafeed**
+
+Dataset version: **Dataset_v1.0_5Y**
 
 ## Objective
 
@@ -11,7 +15,7 @@ candidate for:
 
 - `EURUSD`, `GBPUSD`
 - `H4`, `M15`, `M3`
-- `2018-01-01` through `2024-12-31`
+- `2021-01-01` through `2025-12-31`
 - UTC timestamps
 
 No ST-C3 strategy logic, detection logic, replay logic, validation rules, or
@@ -21,95 +25,101 @@ approval gates were modified.
 
 Added:
 
-`tools/st_c3_acquire_histdata_dataset.py`
+`tools/st_c3_acquire_dukascopy_dataset.py`
 
 The tool:
 
-- downloads HistData yearly Generic ASCII M1 ZIP files
-- includes 2017 source data so UTC conversion can cover the beginning of 2018
-- converts HistData EST-without-DST timestamps to UTC
-- constructs H4, M15, and M3 candles from complete M1 windows only
-- writes repository-standard CSV files
-- keeps the manifest `NOT_APPROVED`
-- invokes the existing integrity and contract validators without modifying
+- downloads hourly Dukascopy `.bi5` tick files into a resumable raw cache
+- skips ST-C3-recognized weekend and fixed-holiday closures
+- records every attempted hour, byte count, hash, and failure
+- reconstructs UTC M1 bid candles from ticks
+- aggregates only complete M1 windows into `H4`, `M15`, and `M3`
+- writes repository-standard candidate CSV files
+- can invoke the existing integrity and contract validators without modifying
   their rules
-
-## Raw Source Files Downloaded
-
-All expected HistData ZIPs were downloaded:
-
-- `EURUSD` M1: 2017 through 2024
-- `GBPUSD` M1: 2017 through 2024
+- keeps dataset approval, replay, A3, demo, and live gates locked
 
 Raw cache path:
 
-`data/market/raw/histdata/st_c3/`
+`data/market/raw/dukascopy/st_c3/`
 
-Raw ZIP count: 16
+Latest status report:
 
-Raw byte total: 53,870,181
+`reports/validation/st_c3/data_integrity/DUKASCOPY_ACQUISITION_STATUS.json`
 
-## Candidate Files Constructed
+## Initial Five-Year Sprint Download Batch
 
-Path:
-
-`data/market/approved/st_c3/`
-
-Constructed files:
-
-| File | Status |
-|---|---|
-| `EURUSD_H4.csv` | constructed from HistData M1 |
-| `EURUSD_M15.csv` | constructed from HistData M1 |
-| `EURUSD_M3.csv` | constructed from HistData M1 |
-| `GBPUSD_H4.csv` | constructed from HistData M1 |
-| `GBPUSD_M15.csv` | constructed from HistData M1 |
-| `GBPUSD_M3.csv` | constructed from HistData M1 |
-
-The files are candidate data only. They are not approved.
-
-## Validation Result
-
-Existing validation command:
+Command:
 
 ```powershell
-python -m tools.st_c3_data_integrity --data data/market/approved/st_c3 --write-reports
+python -m tools.st_c3_acquire_dukascopy_dataset --download --start 2021-01-04T00:00:00Z --end 2021-01-04T23:00:00Z --max-hours 48 --retries 2
 ```
+
+Result: **IN_PROGRESS**
+
+| Metric | Value |
+|---|---:|
+| Cached open-market hourly files in checkpoint range | 48 |
+| Failed downloads | 0 |
+| Corrupt cached files remaining | 0 |
+
+The earlier 2018 sample cache remains provider evidence only. The active
+canonical sprint is limited to 2021-2025.
+
+The completed checkpoint covered both `EURUSD` and `GBPUSD` together. It did
+not modify approval fields.
+
+## Checkpoint Artifacts
+
+The acquisition engine now regenerates:
+
+- `reports/validation/st_c3/data_integrity/ACQUISITION_PROGRESS.json`
+- `reports/validation/st_c3/data_integrity/CHECKPOINT_MANIFEST.json`
+- `reports/validation/st_c3/data_integrity/DOWNLOAD_RECOVERY_LOG.md`
+- `reports/validation/st_c3/data_integrity/NORMALIZATION_REPORT.md`
+- `reports/validation/st_c3/data_integrity/AGGREGATION_REPORT.md`
+
+## Candidate Construction
+
+Status: **CHECKPOINT_CONSTRUCTED / FULL_RANGE_INCOMPLETE**
+
+The first checkpoint construction generated 1,158 candles across all six
+candidate files for `2021-01-04`.
+
+Construction command:
+
+```powershell
+python -m tools.st_c3_acquire_dukascopy_dataset --construct
+```
+
+The constructor emits only complete aggregation windows. It does not fabricate,
+interpolate, or manually edit prices.
+
+## Validation Status
+
+Status: **BLOCKED**
+
+Checkpoint validation command:
+
+```powershell
+python -m tools.st_c3_acquire_dukascopy_dataset --construct --validate --start 2021-01-04T00:00:00Z --end 2021-01-04T23:59:59Z
+```
+
+This calls the existing integrity scanner and dataset contract checker. The
+validation engine remains unchanged.
 
 Result: **BLOCKED**
 
-First blocker:
+Primary blocker:
 
-`EURUSD_H4.csv` missing `2018-01-02T04:00:00Z`
+`EURUSD_H4.csv` checkpoint coverage `2021-01-04T00:00:00Z` through
+`2021-01-04T19:59:59Z` does not cover required `2021-01-01` through
+`2025-12-31`.
 
-Per-file missing counts:
-
-| File | Missing | Duplicates | Issues |
-|---|---:|---:|---:|
-| `EURUSD_H4.csv` | 2,971 | 0 | 1 |
-| `EURUSD_M15.csv` | 8,958 | 0 | 1 |
-| `EURUSD_M3.csv` | 25,589 | 0 | 1 |
-| `GBPUSD_H4.csv` | 2,737 | 0 | 1 |
-| `GBPUSD_M15.csv` | 7,974 | 0 | 1 |
-| `GBPUSD_M3.csv` | 24,289 | 0 | 1 |
-
-Contract validation command:
-
-```powershell
-python -m tools.st_c3_dataset_contract --contract contracts/DATASET_CONTRACT.yaml --data data/market/approved/st_c3
-```
-
-Result: **BLOCKED**
-
-## Root Cause
-
-HistData M1 source files do not contain every minute required to construct
-complete H4, M15, and M3 windows under the repository's strict ST-C3
-continuity contract.
-
-The construction tool intentionally drops incomplete aggregation windows
-instead of fabricating or interpolating prices. The existing validator then
-correctly reports missing timestamps.
+Additional checkpoint risk: lower-timeframe gaps were observed in the one-day
+slice, including `EURUSD_M15.csv` missing `2021-01-04T22:45:00Z` and
+`GBPUSD_M15.csv` missing `2021-01-04T22:15:00Z`. These remain unresolved and
+must not be filled manually.
 
 ## Approval Status
 
@@ -123,15 +133,16 @@ Replay status: **BLOCKED**
 
 A3/statistics/demo/live: **BLOCKED**
 
-## Recommendation
+## Next Action
 
-Stop using HistData as the canonical ST-C3 Dataset v1.0 source under the
-current validation contract.
+Continue resumable Dukascopy tick acquisition until every required open-market
+hour for `EURUSD` and `GBPUSD` from 2021-01-01 through 2025-12-31 is cached.
 
-Next source to try:
+Recommended next command:
 
-**Dukascopy Historical Data Export / JForex historical data**
+```powershell
+python -m tools.st_c3_acquire_dukascopy_dataset --download --max-hours 1000 --retries 3
+```
 
-If Dukascopy cannot provide data that passes the existing validator without
-fabrication or interpolation, escalate to a paid institutional FX intraday
-provider or an owner-approved broker export with complete bar continuity.
+If any market-open source hour fails repeatedly, stop and document the missing
+coverage. Do not synthesize candles or weaken validation.
