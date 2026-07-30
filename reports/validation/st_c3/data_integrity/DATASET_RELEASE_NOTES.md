@@ -30,8 +30,40 @@ Status report:
 - `DOWNLOAD_RECOVERY_LOG.md`
 - `NORMALIZATION_REPORT.md`
 - `AGGREGATION_REPORT.md`
+- `AGGREGATION_VALIDATION_REPORT.md`
+- `SOURCE_INTEGRITY_INVESTIGATION.md`
 
 Candidate construction and full-range validation have not run yet.
+
+## Aggregation Validation
+
+Status: **BLOCKED**
+
+The first one-day checkpoint showed sparse Dukascopy source minutes in the
+22:00 UTC hour:
+
+- `EURUSD`: missing `2021-01-04T22:45:00Z` and `2021-01-04T22:46:00Z`
+- `GBPUSD`: missing `2021-01-04T22:19:00Z`
+
+No H4/M15/M3 OHLCV mismatches were found against the available M1 data. The
+release remains blocked because the current no-fill construction policy cannot
+produce complete candles when a source minute has no ticks.
+
+## Source Integrity Investigation
+
+Status: **BLOCKED**
+
+Fresh Dukascopy re-downloads matched the cached `.bi5` file hashes exactly,
+and the parser successfully decoded the affected hours. HistData M1 reference
+data also lacks the exact probed minutes:
+
+- `EURUSD` `2021-01-04T22:45:00Z`
+- `EURUSD` `2021-01-04T22:46:00Z`
+- `GBPUSD` `2021-01-04T22:19:00Z`
+
+Current evidence points to sparse zero-tick historical minutes rather than a
+downloader, cache, or parser defect. Dataset approval remains blocked pending
+Dataset Contract Review.
 
 ## Dukascopy Approval Status
 

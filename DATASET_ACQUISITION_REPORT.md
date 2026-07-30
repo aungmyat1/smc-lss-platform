@@ -121,6 +121,71 @@ slice, including `EURUSD_M15.csv` missing `2021-01-04T22:45:00Z` and
 `GBPUSD_M15.csv` missing `2021-01-04T22:15:00Z`. These remain unresolved and
 must not be filled manually.
 
+## Aggregation Validation
+
+Status: **BLOCKED**
+
+Command:
+
+```powershell
+python -m tools.st_c3_validate_aggregation --start 2021-01-04T00:00:00Z --end 2021-01-04T23:59:59Z
+```
+
+Result:
+
+- `EURUSD` M1 rows: 1,438 of 1,440 expected
+- `EURUSD` missing source minutes: `2021-01-04T22:45:00Z`,
+  `2021-01-04T22:46:00Z`
+- `GBPUSD` M1 rows: 1,439 of 1,440 expected
+- `GBPUSD` missing source minute: `2021-01-04T22:19:00Z`
+- Aggregation mismatches: 0
+
+Root cause:
+
+The missing M3/M15/H4 windows are explained by sparse source ticks in the
+Dukascopy `22h_ticks.bi5` files. The aggregation algorithm did not show an
+OHLCV mismatch against the available reconstructed M1 data.
+
+Decision required:
+
+The current constructor emits only minutes that have source ticks. Under the
+repository's no-missing-candles contract, sparse zero-tick minutes will keep
+the dataset blocked unless an owner-approved, governance-compliant bar policy
+is adopted or a provider supplies complete M1/bar data for those minutes.
+
+## Source Integrity Investigation
+
+Status: **BLOCKED**
+
+Command:
+
+```powershell
+python -m tools.st_c3_investigate_source_integrity
+```
+
+Findings:
+
+- Cached Dukascopy `.bi5` files parse successfully.
+- Fresh Dukascopy downloads for the same hourly files match cached SHA-256
+  hashes exactly.
+- The missing minutes contain zero Dukascopy ticks.
+- HistData M1 reference data also lacks the exact probed minutes.
+
+Probe verdicts:
+
+| Symbol | Timestamp | Verdict |
+|---|---|---|
+| `EURUSD` | `2021-01-04T22:45:00Z` | `DUKASCOPY_AND_REFERENCE_ABSENT` |
+| `EURUSD` | `2021-01-04T22:46:00Z` | `DUKASCOPY_AND_REFERENCE_ABSENT` |
+| `GBPUSD` | `2021-01-04T22:19:00Z` | `DUKASCOPY_AND_REFERENCE_ABSENT` |
+
+Conclusion:
+
+The current evidence does not indicate a parser defect, truncated cache, or
+stale download. It indicates sparse zero-tick minutes in independently checked
+historical data. Dataset production remains blocked pending Dataset Contract
+Review.
+
 ## Approval Status
 
 Dataset approval: **NOT_APPROVED**
@@ -135,8 +200,10 @@ A3/statistics/demo/live: **BLOCKED**
 
 ## Next Action
 
-Continue resumable Dukascopy tick acquisition until every required open-market
-hour for `EURUSD` and `GBPUSD` from 2021-01-01 through 2025-12-31 is cached.
+Pause large-scale acquisition and open Dataset Contract Review for zero-tick
+market-open minutes. Continue full five-year acquisition only after governance
+decides whether the contract requires candles for zero-tick minutes or only
+minutes with at least one underlying tick.
 
 Recommended next command:
 

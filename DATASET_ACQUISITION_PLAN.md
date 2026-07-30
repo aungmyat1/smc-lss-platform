@@ -99,6 +99,54 @@ After each bounded batch, regenerate:
 7. Keep manifest `approved: false` until validation passes and owner
    approval is recorded.
 
+## Aggregation Validation Gate
+
+Status: **BLOCKED_PENDING_SOURCE_SPARSE_MINUTE_DECISION**
+
+Before continuing large-scale acquisition, run:
+
+```powershell
+python -m tools.st_c3_validate_aggregation --start 2021-01-04T00:00:00Z --end 2021-01-04T23:59:59Z
+```
+
+Latest result:
+
+- `EURUSD` missing M1 source candles: `2021-01-04T22:45:00Z`,
+  `2021-01-04T22:46:00Z`
+- `GBPUSD` missing M1 source candle: `2021-01-04T22:19:00Z`
+- H4/M15/M3 aggregation produced no OHLCV mismatches against available M1
+  data
+- Missing aggregated windows are caused by missing source M1 minutes under the
+  current no-fill construction policy
+
+Do not proceed to full five-year acquisition until the sparse-source-minute
+policy is resolved without weakening governance.
+
+## Source Integrity Investigation
+
+Status: **BLOCKED_PENDING_DATASET_CONTRACT_REVIEW**
+
+Run:
+
+```powershell
+python -m tools.st_c3_investigate_source_integrity
+```
+
+Latest result:
+
+- Cached Dukascopy payloads parse successfully.
+- Fresh Dukascopy downloads match cached SHA-256 hashes exactly.
+- HistData M1 cross-source reference is also absent for all three probed
+  minutes.
+- Verdict: `DUKASCOPY_AND_REFERENCE_ABSENT` for `EURUSD 22:45`,
+  `EURUSD 22:46`, and `GBPUSD 22:19` on `2021-01-04`.
+
+Next gate:
+
+Dataset Contract Review must decide whether ST-C3 requires candles for
+market-open zero-tick minutes or only for minutes with at least one underlying
+source tick. No validator or contract change is authorized in this sprint.
+
 ## Integrity Validation Sequence
 
 Run:

@@ -1,0 +1,166 @@
+{
+  "details": {
+    "cross_source_reference": "ABSENT",
+    "fresh_download_audit": "PASS",
+    "parser_audit": "PASS",
+    "policy_question": "Does the ST-C3 Dataset Contract require candles for zero-tick market-open minutes, or only minutes with at least one source tick?",
+    "probes": [
+      {
+        "dukascopy_cached": {
+          "bytes": 2982,
+          "exists": true,
+          "first_tick_after_missing_minute": {
+            "ask": 1.22504,
+            "ask_volume": 0.9399999976158142,
+            "bid": 1.22497,
+            "bid_volume": 0.3700000047683716,
+            "timestamp_utc": "2021-01-04T22:47:20.272000Z"
+          },
+          "hour_minute_count": 58,
+          "hour_tick_count": 610,
+          "last_tick_before_missing_minute": {
+            "ask": 1.22504,
+            "ask_volume": 0.75,
+            "bid": 1.22496,
+            "bid_volume": 0.75,
+            "timestamp_utc": "2021-01-04T22:44:56.418000Z"
+          },
+          "minute_present": false,
+          "minute_tick_count": 0,
+          "neighbor_tick_counts": {
+            "2021-01-04T22:43:00Z": 7,
+            "2021-01-04T22:44:00Z": 3,
+            "2021-01-04T22:45:00Z": 0,
+            "2021-01-04T22:46:00Z": 0,
+            "2021-01-04T22:47:00Z": 4
+          },
+          "parse_status": "PASS",
+          "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\22h_ticks.bi5",
+          "sha256": "cc8bbd04aa621bff0a04284360b14ce2dcf5fa959187c1f6818ac4653cce8fd2"
+        },
+        "dukascopy_fresh": {
+          "bytes": 2982,
+          "cache_sha256": "cc8bbd04aa621bff0a04284360b14ce2dcf5fa959187c1f6818ac4653cce8fd2",
+          "sha256": "cc8bbd04aa621bff0a04284360b14ce2dcf5fa959187c1f6818ac4653cce8fd2",
+          "status": "MATCHED_CACHE",
+          "url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/00/04/22h_ticks.bi5"
+        },
+        "histdata_reference": {
+          "path": "data\\market\\raw\\histdata\\st_c3\\EURUSD\\DAT_ASCII_EURUSD_M1_2021.zip",
+          "present": false,
+          "provider": "HistData.com Generic ASCII M1",
+          "reason": "minute absent"
+        },
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-01-04T22:45:00Z",
+        "verdict": "DUKASCOPY_AND_REFERENCE_ABSENT"
+      },
+      {
+        "dukascopy_cached": {
+          "bytes": 2982,
+          "exists": true,
+          "first_tick_after_missing_minute": {
+            "ask": 1.22504,
+            "ask_volume": 0.9399999976158142,
+            "bid": 1.22497,
+            "bid_volume": 0.3700000047683716,
+            "timestamp_utc": "2021-01-04T22:47:20.272000Z"
+          },
+          "hour_minute_count": 58,
+          "hour_tick_count": 610,
+          "last_tick_before_missing_minute": {
+            "ask": 1.22504,
+            "ask_volume": 0.75,
+            "bid": 1.22496,
+            "bid_volume": 0.75,
+            "timestamp_utc": "2021-01-04T22:44:56.418000Z"
+          },
+          "minute_present": false,
+          "minute_tick_count": 0,
+          "neighbor_tick_counts": {
+            "2021-01-04T22:44:00Z": 3,
+            "2021-01-04T22:45:00Z": 0,
+            "2021-01-04T22:46:00Z": 0,
+            "2021-01-04T22:47:00Z": 4,
+            "2021-01-04T22:48:00Z": 12
+          },
+          "parse_status": "PASS",
+          "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\22h_ticks.bi5",
+          "sha256": "cc8bbd04aa621bff0a04284360b14ce2dcf5fa959187c1f6818ac4653cce8fd2"
+        },
+        "dukascopy_fresh": {
+          "bytes": 2982,
+          "cache_sha256": "cc8bbd04aa621bff0a04284360b14ce2dcf5fa959187c1f6818ac4653cce8fd2",
+          "sha256": "cc8bbd04aa621bff0a04284360b14ce2dcf5fa959187c1f6818ac4653cce8fd2",
+          "status": "MATCHED_CACHE",
+          "url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2021/00/04/22h_ticks.bi5"
+        },
+        "histdata_reference": {
+          "path": "data\\market\\raw\\histdata\\st_c3\\EURUSD\\DAT_ASCII_EURUSD_M1_2021.zip",
+          "present": false,
+          "provider": "HistData.com Generic ASCII M1",
+          "reason": "minute absent"
+        },
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-01-04T22:46:00Z",
+        "verdict": "DUKASCOPY_AND_REFERENCE_ABSENT"
+      },
+      {
+        "dukascopy_cached": {
+          "bytes": 3568,
+          "exists": true,
+          "first_tick_after_missing_minute": {
+            "ask": 1.3576,
+            "ask_volume": 0.15000000596046448,
+            "bid": 1.35706,
+            "bid_volume": 0.75,
+            "timestamp_utc": "2021-01-04T22:20:59.807000Z"
+          },
+          "hour_minute_count": 59,
+          "hour_tick_count": 705,
+          "last_tick_before_missing_minute": {
+            "ask": 1.3576,
+            "ask_volume": 0.14000000059604645,
+            "bid": 1.35704,
+            "bid_volume": 1.5,
+            "timestamp_utc": "2021-01-04T22:18:52.236000Z"
+          },
+          "minute_present": false,
+          "minute_tick_count": 0,
+          "neighbor_tick_counts": {
+            "2021-01-04T22:17:00Z": 8,
+            "2021-01-04T22:18:00Z": 18,
+            "2021-01-04T22:19:00Z": 0,
+            "2021-01-04T22:20:00Z": 1,
+            "2021-01-04T22:21:00Z": 3
+          },
+          "parse_status": "PASS",
+          "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\22h_ticks.bi5",
+          "sha256": "7b268d007754a788c0f14bef1fcd6ab3e4dfb5337d277135b2a3afa9aed8821c"
+        },
+        "dukascopy_fresh": {
+          "bytes": 3568,
+          "cache_sha256": "7b268d007754a788c0f14bef1fcd6ab3e4dfb5337d277135b2a3afa9aed8821c",
+          "sha256": "7b268d007754a788c0f14bef1fcd6ab3e4dfb5337d277135b2a3afa9aed8821c",
+          "status": "MATCHED_CACHE",
+          "url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2021/00/04/22h_ticks.bi5"
+        },
+        "histdata_reference": {
+          "path": "data\\market\\raw\\histdata\\st_c3\\GBPUSD\\DAT_ASCII_GBPUSD_M1_2021.zip",
+          "present": false,
+          "provider": "HistData.com Generic ASCII M1",
+          "reason": "minute absent"
+        },
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-01-04T22:19:00Z",
+        "verdict": "DUKASCOPY_AND_REFERENCE_ABSENT"
+      }
+    ]
+  },
+  "guardrail": "Source integrity investigation does not approve data, fill candles, open replay, or change validation rules.",
+  "next_action": "Document legitimate sparse market minutes and open Dataset Contract Review before changing policy.",
+  "reason": "Dukascopy is sparse at probed minutes and independent reference also lacks bars",
+  "recommendation": "INVESTIGATE_SOURCE_INTEGRITY",
+  "stage": "source_integrity_investigation",
+  "status": "BLOCKED"
+}

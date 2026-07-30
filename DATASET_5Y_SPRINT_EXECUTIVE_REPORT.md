@@ -61,6 +61,48 @@ including `EURUSD_M15.csv` missing `2021-01-04T22:45:00Z` and
 through source coverage and aggregation evidence only. No interpolation or
 manual price editing is allowed.
 
+## Aggregation Verification
+
+Aggregation validation result: `BLOCKED`
+
+The dedicated aggregation validation gate found no OHLCV mismatches between
+aggregated H4/M15/M3 candles and the available reconstructed M1 data.
+
+Root cause evidence:
+
+- `EURUSD` has 1,438 reconstructed M1 rows versus 1,440 expected on
+  `2021-01-04`
+- `EURUSD` missing source minutes: `2021-01-04T22:45:00Z`,
+  `2021-01-04T22:46:00Z`
+- `GBPUSD` has 1,439 reconstructed M1 rows versus 1,440 expected on
+  `2021-01-04`
+- `GBPUSD` missing source minute: `2021-01-04T22:19:00Z`
+
+This points to sparse source ticks in the Dukascopy `22h_ticks.bi5` files
+under the current no-fill construction policy, not an observed aggregation
+math mismatch.
+
+## Source Integrity Investigation
+
+Source integrity investigation result: `BLOCKED`
+
+Evidence:
+
+- Cached Dukascopy `.bi5` files parse successfully.
+- Fresh Dukascopy downloads match cached SHA-256 hashes exactly.
+- The affected Dukascopy minutes contain zero ticks.
+- HistData M1 reference data is also absent for all three probed minutes.
+
+Probe verdicts:
+
+- `EURUSD` `2021-01-04T22:45:00Z`: `DUKASCOPY_AND_REFERENCE_ABSENT`
+- `EURUSD` `2021-01-04T22:46:00Z`: `DUKASCOPY_AND_REFERENCE_ABSENT`
+- `GBPUSD` `2021-01-04T22:19:00Z`: `DUKASCOPY_AND_REFERENCE_ABSENT`
+
+The evidence does not support a downloader, cache, parser, or aggregation
+defect. The remaining issue is provider/contract suitability for market-open
+minutes with zero source ticks.
+
 ## Dataset Approval
 
 Dataset approval remains `NOT_APPROVED`.
@@ -82,6 +124,11 @@ passed. Statistical validation remains locked.
 - Checkpoint validation correctly fails full-range coverage.
 - Missing lower-timeframe checkpoint windows must be explained before final
   approval can be considered.
+- Sparse zero-tick source minutes are incompatible with the current
+  no-missing-candles contract unless a governance-approved bar policy or a
+  more complete source is selected.
+- Dataset Contract Review is required before any policy change, provider
+  change, or continuation to full five-year production acquisition.
 - Full five-year construction may require substantial runtime and storage.
 
 ## Files Changed
@@ -99,6 +146,10 @@ passed. Statistical validation remains locked.
 - `reports/validation/st_c3/data_integrity/DOWNLOAD_RECOVERY_LOG.md`
 - `reports/validation/st_c3/data_integrity/NORMALIZATION_REPORT.md`
 - `reports/validation/st_c3/data_integrity/AGGREGATION_REPORT.md`
+- `reports/validation/st_c3/data_integrity/AGGREGATION_VALIDATION_REPORT.json`
+- `reports/validation/st_c3/data_integrity/AGGREGATION_VALIDATION_REPORT.md`
+- `reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_INVESTIGATION.json`
+- `reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_INVESTIGATION.md`
 - `reports/validation/st_c3/data_integrity/DATA_INTEGRITY_REPORT.md`
 - `reports/validation/st_c3/data_integrity/VALIDATION_SUMMARY.md`
 - `reports/validation/st_c3/data_integrity/RECOVERY_LOG.md`
@@ -112,4 +163,4 @@ Full repository tests pass: `416 passed, 2 warnings`.
 
 ## Recommendation
 
-CONTINUE_DATA_ACQUISITION
+INVESTIGATE_SOURCE_INTEGRITY

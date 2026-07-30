@@ -1,0 +1,655 @@
+{
+  "details": {
+    "coverage_end_utc": "2021-01-04T23:59:59Z",
+    "coverage_start_utc": "2021-01-04T00:00:00Z",
+    "symbols": [
+      {
+        "expected_m1_rows": 1440,
+        "first_missing_m1": "2021-01-04T22:45:00Z",
+        "m1_rows": 1438,
+        "missing_m1_count": 2,
+        "missing_m1_samples": [
+          "2021-01-04T22:45:00Z",
+          "2021-01-04T22:46:00Z"
+        ],
+        "source_hours": [
+          {
+            "bytes": 20938,
+            "exists": true,
+            "hour_utc": "2021-01-04T00:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\00h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 3906
+          },
+          {
+            "bytes": 24298,
+            "exists": true,
+            "hour_utc": "2021-01-04T01:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\01h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 4556
+          },
+          {
+            "bytes": 20730,
+            "exists": true,
+            "hour_utc": "2021-01-04T02:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\02h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 3932
+          },
+          {
+            "bytes": 16597,
+            "exists": true,
+            "hour_utc": "2021-01-04T03:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\03h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 3018
+          },
+          {
+            "bytes": 11562,
+            "exists": true,
+            "hour_utc": "2021-01-04T04:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\04h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 1991
+          },
+          {
+            "bytes": 14524,
+            "exists": true,
+            "hour_utc": "2021-01-04T05:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\05h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 2592
+          },
+          {
+            "bytes": 20492,
+            "exists": true,
+            "hour_utc": "2021-01-04T06:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\06h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 3687
+          },
+          {
+            "bytes": 25551,
+            "exists": true,
+            "hour_utc": "2021-01-04T07:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\07h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 4707
+          },
+          {
+            "bytes": 33248,
+            "exists": true,
+            "hour_utc": "2021-01-04T08:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\08h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 6412
+          },
+          {
+            "bytes": 28318,
+            "exists": true,
+            "hour_utc": "2021-01-04T09:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\09h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 5459
+          },
+          {
+            "bytes": 23574,
+            "exists": true,
+            "hour_utc": "2021-01-04T10:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\10h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 4397
+          },
+          {
+            "bytes": 21838,
+            "exists": true,
+            "hour_utc": "2021-01-04T11:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\11h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 4071
+          },
+          {
+            "bytes": 26403,
+            "exists": true,
+            "hour_utc": "2021-01-04T12:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\12h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 5005
+          },
+          {
+            "bytes": 34143,
+            "exists": true,
+            "hour_utc": "2021-01-04T13:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\13h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 6602
+          },
+          {
+            "bytes": 44777,
+            "exists": true,
+            "hour_utc": "2021-01-04T14:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\14h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 8651
+          },
+          {
+            "bytes": 49226,
+            "exists": true,
+            "hour_utc": "2021-01-04T15:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\15h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 9552
+          },
+          {
+            "bytes": 46520,
+            "exists": true,
+            "hour_utc": "2021-01-04T16:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\16h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 8919
+          },
+          {
+            "bytes": 35300,
+            "exists": true,
+            "hour_utc": "2021-01-04T17:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\17h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 6735
+          },
+          {
+            "bytes": 23548,
+            "exists": true,
+            "hour_utc": "2021-01-04T18:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\18h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 4409
+          },
+          {
+            "bytes": 18376,
+            "exists": true,
+            "hour_utc": "2021-01-04T19:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\19h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 3476
+          },
+          {
+            "bytes": 18162,
+            "exists": true,
+            "hour_utc": "2021-01-04T20:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\20h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 3358
+          },
+          {
+            "bytes": 10546,
+            "exists": true,
+            "hour_utc": "2021-01-04T21:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\21h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 1916
+          },
+          {
+            "bytes": 2982,
+            "exists": true,
+            "hour_utc": "2021-01-04T22:00:00Z",
+            "minute_bars": 58,
+            "missing_minute_count": 2,
+            "missing_minutes": [
+              "2021-01-04T22:45:00Z",
+              "2021-01-04T22:46:00Z"
+            ],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\22h_ticks.bi5",
+            "status": "SPARSE_TICKS",
+            "ticks": 610
+          },
+          {
+            "bytes": 8465,
+            "exists": true,
+            "hour_utc": "2021-01-04T23:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\EURUSD\\2021\\01\\04\\23h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 1559
+          }
+        ],
+        "status": "BLOCKED",
+        "symbol": "EURUSD",
+        "timeframes": [
+          {
+            "aggregated_rows": 5,
+            "expected_rows": 6,
+            "first_missing": "2021-01-04T20:00:00Z",
+            "mismatch_count": 0,
+            "mismatch_samples": [],
+            "missing_count": 1,
+            "missing_samples": [
+              "2021-01-04T20:00:00Z"
+            ],
+            "status": "BLOCKED",
+            "timeframe": "H4"
+          },
+          {
+            "aggregated_rows": 95,
+            "expected_rows": 96,
+            "first_missing": "2021-01-04T22:45:00Z",
+            "mismatch_count": 0,
+            "mismatch_samples": [],
+            "missing_count": 1,
+            "missing_samples": [
+              "2021-01-04T22:45:00Z"
+            ],
+            "status": "BLOCKED",
+            "timeframe": "M15"
+          },
+          {
+            "aggregated_rows": 479,
+            "expected_rows": 480,
+            "first_missing": "2021-01-04T22:45:00Z",
+            "mismatch_count": 0,
+            "mismatch_samples": [],
+            "missing_count": 1,
+            "missing_samples": [
+              "2021-01-04T22:45:00Z"
+            ],
+            "status": "BLOCKED",
+            "timeframe": "M3"
+          }
+        ]
+      },
+      {
+        "expected_m1_rows": 1440,
+        "first_missing_m1": "2021-01-04T22:19:00Z",
+        "m1_rows": 1439,
+        "missing_m1_count": 1,
+        "missing_m1_samples": [
+          "2021-01-04T22:19:00Z"
+        ],
+        "source_hours": [
+          {
+            "bytes": 23765,
+            "exists": true,
+            "hour_utc": "2021-01-04T00:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\00h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 5135
+          },
+          {
+            "bytes": 25253,
+            "exists": true,
+            "hour_utc": "2021-01-04T01:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\01h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 5371
+          },
+          {
+            "bytes": 20563,
+            "exists": true,
+            "hour_utc": "2021-01-04T02:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\02h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 4321
+          },
+          {
+            "bytes": 14298,
+            "exists": true,
+            "hour_utc": "2021-01-04T03:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\03h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 2999
+          },
+          {
+            "bytes": 13203,
+            "exists": true,
+            "hour_utc": "2021-01-04T04:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\04h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 2671
+          },
+          {
+            "bytes": 14955,
+            "exists": true,
+            "hour_utc": "2021-01-04T05:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\05h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 3058
+          },
+          {
+            "bytes": 18526,
+            "exists": true,
+            "hour_utc": "2021-01-04T06:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\06h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 3808
+          },
+          {
+            "bytes": 24306,
+            "exists": true,
+            "hour_utc": "2021-01-04T07:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\07h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 5130
+          },
+          {
+            "bytes": 39019,
+            "exists": true,
+            "hour_utc": "2021-01-04T08:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\08h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 8264
+          },
+          {
+            "bytes": 33380,
+            "exists": true,
+            "hour_utc": "2021-01-04T09:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\09h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 6953
+          },
+          {
+            "bytes": 26240,
+            "exists": true,
+            "hour_utc": "2021-01-04T10:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\10h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 5512
+          },
+          {
+            "bytes": 24722,
+            "exists": true,
+            "hour_utc": "2021-01-04T11:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\11h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 5148
+          },
+          {
+            "bytes": 31041,
+            "exists": true,
+            "hour_utc": "2021-01-04T12:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\12h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 6502
+          },
+          {
+            "bytes": 38757,
+            "exists": true,
+            "hour_utc": "2021-01-04T13:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\13h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 8088
+          },
+          {
+            "bytes": 43841,
+            "exists": true,
+            "hour_utc": "2021-01-04T14:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\14h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 9514
+          },
+          {
+            "bytes": 50470,
+            "exists": true,
+            "hour_utc": "2021-01-04T15:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\15h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 10827
+          },
+          {
+            "bytes": 40955,
+            "exists": true,
+            "hour_utc": "2021-01-04T16:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\16h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 8733
+          },
+          {
+            "bytes": 33414,
+            "exists": true,
+            "hour_utc": "2021-01-04T17:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\17h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 7208
+          },
+          {
+            "bytes": 22510,
+            "exists": true,
+            "hour_utc": "2021-01-04T18:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\18h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 4771
+          },
+          {
+            "bytes": 20121,
+            "exists": true,
+            "hour_utc": "2021-01-04T19:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\19h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 4430
+          },
+          {
+            "bytes": 20986,
+            "exists": true,
+            "hour_utc": "2021-01-04T20:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\20h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 4627
+          },
+          {
+            "bytes": 15215,
+            "exists": true,
+            "hour_utc": "2021-01-04T21:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\21h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 3364
+          },
+          {
+            "bytes": 3568,
+            "exists": true,
+            "hour_utc": "2021-01-04T22:00:00Z",
+            "minute_bars": 59,
+            "missing_minute_count": 1,
+            "missing_minutes": [
+              "2021-01-04T22:19:00Z"
+            ],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\22h_ticks.bi5",
+            "status": "SPARSE_TICKS",
+            "ticks": 705
+          },
+          {
+            "bytes": 14913,
+            "exists": true,
+            "hour_utc": "2021-01-04T23:00:00Z",
+            "minute_bars": 60,
+            "missing_minute_count": 0,
+            "missing_minutes": [],
+            "path": "data\\market\\raw\\dukascopy\\st_c3\\GBPUSD\\2021\\01\\04\\23h_ticks.bi5",
+            "status": "PASS",
+            "ticks": 3576
+          }
+        ],
+        "status": "BLOCKED",
+        "symbol": "GBPUSD",
+        "timeframes": [
+          {
+            "aggregated_rows": 5,
+            "expected_rows": 6,
+            "first_missing": "2021-01-04T20:00:00Z",
+            "mismatch_count": 0,
+            "mismatch_samples": [],
+            "missing_count": 1,
+            "missing_samples": [
+              "2021-01-04T20:00:00Z"
+            ],
+            "status": "BLOCKED",
+            "timeframe": "H4"
+          },
+          {
+            "aggregated_rows": 95,
+            "expected_rows": 96,
+            "first_missing": "2021-01-04T22:15:00Z",
+            "mismatch_count": 0,
+            "mismatch_samples": [],
+            "missing_count": 1,
+            "missing_samples": [
+              "2021-01-04T22:15:00Z"
+            ],
+            "status": "BLOCKED",
+            "timeframe": "M15"
+          },
+          {
+            "aggregated_rows": 479,
+            "expected_rows": 480,
+            "first_missing": "2021-01-04T22:18:00Z",
+            "mismatch_count": 0,
+            "mismatch_samples": [],
+            "missing_count": 1,
+            "missing_samples": [
+              "2021-01-04T22:18:00Z"
+            ],
+            "status": "BLOCKED",
+            "timeframe": "M3"
+          }
+        ]
+      }
+    ]
+  },
+  "guardrail": "Aggregation validation does not approve data, open replay, or weaken dataset validation.",
+  "next_action": "Resolve source-minute gaps or aggregation defects before full download.",
+  "reason": "EURUSD missing M1 source candle 2021-01-04T22:45:00Z",
+  "stage": "aggregation_validation",
+  "status": "BLOCKED"
+}
