@@ -192,6 +192,14 @@ Latest result:
 - Most pilot missing minutes occurred during rollover, but the first
   deterministic sample day also found GBPUSD sparse minutes at `18:24 UTC`
   and `20:26 UTC`
+- Current root-cause categories: 21 `ROLLOVER_ZERO_TICK`, 2
+  `OFF_SESSION_ZERO_TICK`
+- Current missing-minute-rate 95% confidence interval:
+  `0.0013591321291721624..0.003057932662333974`
+- Pre-registered completion criteria: at least 95 of 100 deterministic sample
+  days cached, missing-minute rate and 95% confidence interval calculated,
+  distributions by symbol/session/weekday produced, root-cause categories
+  assigned, and contextual observation rows emitted
 - Recommendation: `CONTINUE_EVIDENCE_COLLECTION`
 
 Governance change is not authorized from the current pilot evidence. The next

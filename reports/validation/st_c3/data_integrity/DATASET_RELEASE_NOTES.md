@@ -93,6 +93,12 @@ The first statistical evidence gate audited the currently cached pilot days:
 - Missing pilot M1 minutes: 23 of 11,280
 - Distribution: mostly rollover, with two observed GBPUSD pilot gaps outside
   rollover on the first deterministic sample day
+- Root-cause categories: 21 `ROLLOVER_ZERO_TICK`, 2 `OFF_SESSION_ZERO_TICK`
+- Missing-minute-rate 95% confidence interval:
+  `0.0013591321291721624..0.003057932662333974`
+- Pre-registered exit criteria now require at least 95 of 100 deterministic
+  sample days plus missing-rate, confidence-interval, distribution, category,
+  and contextual observation outputs
 
 The pilot supports further evidence collection, not an immediate governance
 change. Current recommendation:

@@ -141,6 +141,12 @@ Evidence:
 - Total missing pilot M1 minutes: 23
 - Distribution: mostly rollover, with two observed GBPUSD pilot gaps outside
   rollover on the first deterministic sample day
+- Root-cause categories: 21 `ROLLOVER_ZERO_TICK`, 2 `OFF_SESSION_ZERO_TICK`
+- Missing-minute-rate 95% confidence interval:
+  `0.0013591321291721624..0.003057932662333974`
+- Pre-registered exit criteria: at least 95 of 100 deterministic sample days,
+  missing-minute rate, confidence interval, distributions by session/weekday/
+  symbol, root-cause categories, and contextual missing-minute observations
 
 The pilot evidence shows a pattern worth investigating, but it is not
 statistically sufficient to reject the provider or open a governance change.

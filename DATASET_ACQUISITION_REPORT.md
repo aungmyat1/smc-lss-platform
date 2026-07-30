@@ -240,6 +240,12 @@ Findings:
 - Missing minute distribution: mostly rollover, with first deterministic
   sample day also showing GBPUSD sparse minutes at `18:24 UTC` and
   `20:26 UTC`
+- Root-cause categories: 21 `ROLLOVER_ZERO_TICK`, 2 `OFF_SESSION_ZERO_TICK`
+- Missing-minute-rate 95% confidence interval:
+  `0.0013591321291721624..0.003057932662333974`
+- Exit criteria are now pre-registered: at least 95% sample completion,
+  missing-minute rate, confidence interval, distributions by session/weekday/
+  symbol, root-cause categories, and contextual missing-minute observations
 
 Recommendation:
 

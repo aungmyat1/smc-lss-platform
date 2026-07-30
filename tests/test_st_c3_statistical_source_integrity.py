@@ -47,6 +47,7 @@ def test_statistical_source_integrity_passes_complete_target_sample(tmp_path: Pa
     assert result["status"] == "PASS"
     assert result["details"]["statistically_sufficient"] is True
     assert result["details"]["total_missing_minutes"] == 0
+    assert result["details"]["decision_framework"]["status"] == "MISSING_RATE_BELOW_THRESHOLD"
 
 
 def test_statistical_source_integrity_blocks_for_missing_minutes(tmp_path: Path):
@@ -67,6 +68,10 @@ def test_statistical_source_integrity_blocks_for_missing_minutes(tmp_path: Path)
     assert result["details"]["total_missing_minutes"] == 1
     assert eurusd["distribution_by_hour_utc"] == {"22": 1}
     assert eurusd["distribution_by_session"] == {"ROLLOVER": 1}
+    assert eurusd["distribution_by_root_cause_category"] == {"ROLLOVER_ZERO_TICK": 1}
+    assert eurusd["missing_observations"][0]["previous_minute_tick_count"] == 1
+    assert eurusd["missing_observations"][0]["next_minute_tick_count"] == 1
+    assert result["details"]["missing_minute_rate_confidence_interval_95"]["upper"] > 0
 
 
 def test_statistical_source_integrity_marks_insufficient_sample(tmp_path: Path):
@@ -85,3 +90,4 @@ def test_statistical_source_integrity_marks_insufficient_sample(tmp_path: Path):
     assert result["status"] == "BLOCKED"
     assert result["details"]["sample_days_cached_complete"] == 1
     assert result["details"]["statistically_sufficient"] is False
+    assert result["details"]["decision_framework"]["recommendation"] == "CONTINUE_EVIDENCE_COLLECTION"
