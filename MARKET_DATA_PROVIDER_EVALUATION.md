@@ -1,6 +1,6 @@
 # ST-C3 Market Data Provider Evaluation
 
-Status: **BLOCKED / SOURCE REJECTED AFTER VALIDATION**
+Status: **UPDATED / DUKASCOPY QUALIFIED**
 
 Evaluation date: 2026-07-30
 
@@ -61,13 +61,24 @@ The validator reported:
 
 No candles were fabricated, interpolated, forward-filled, or manually edited.
 
+## Updated Provider Qualification Decision
+
+After the HistData rejection, Dukascopy was verified with a limited live
+sample using `tools.st_c3_verify_dukascopy_provider`.
+
+Result: **PASS**
+
+Dukascopy is now qualified for the next Dataset Acquisition Sprint.
+
+This does not approve a dataset or unblock replay.
+
 ## Recommendation
 
 Reject HistData.com as the canonical ST-C3 Dataset v1.0 source under the
 current no-missing-candles validation contract.
 
-Next recommended source: **Dukascopy Historical Data Export / JForex
-historical data**.
+Selected provider for the next sprint: **Dukascopy Historical Data Export /
+JForex historical data**.
 
 Reason:
 

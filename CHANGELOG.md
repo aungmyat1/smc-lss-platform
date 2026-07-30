@@ -43,3 +43,7 @@
   unchanged integrity validator reported missing timestamps.
 - Added market-data provider evaluation, acquisition, and approval reports
   documenting HistData rejection and Dukascopy as the next recommended source.
+- Added Dukascopy provider verification tooling, limited live sample evidence,
+  contract audit, timeframe report, qualification matrix, canonical provider
+  decision, acquisition plan, and risk review for the provider qualification
+  sprint.
