@@ -147,6 +147,30 @@ Dataset Contract Review must decide whether ST-C3 requires candles for
 market-open zero-tick minutes or only for minutes with at least one underlying
 source tick. No validator or contract change is authorized in this sprint.
 
+## Dataset Contract Review
+
+Status: **BLOCKED**
+
+Run:
+
+```powershell
+python -m tools.st_c3_dataset_contract_review
+```
+
+Latest result:
+
+- Current policy: `strict_market_open_candle_continuity`
+- Missing timestamp check: `required`
+- Zero-tick probe count: 3
+- Aggregation mismatch count: 0
+- Recommendation: `OPEN_GOVERNANCE_CHANGE_REQUEST`
+
+Five-year production acquisition remains paused until the owner chooses one of:
+
+- retain strict continuity and select a provider that emits complete bars
+- govern a deterministic zero-tick candle policy
+- qualify a different authoritative M1/bar source
+
 ## Integrity Validation Sequence
 
 Run:

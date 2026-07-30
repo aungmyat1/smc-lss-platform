@@ -1,0 +1,60 @@
+{
+  "details": {
+    "aggregation_mismatch_count": 0,
+    "allowed_gap_policy": "weekend_and_fixed_holiday_only",
+    "approval_status": "NOT_APPROVED",
+    "contract": "contracts\\DATASET_CONTRACT.yaml",
+    "current_policy": "strict_market_open_candle_continuity",
+    "dataset_version": "Dataset_v1.0_5Y",
+    "missing_timestamps_check": "required",
+    "options": [
+      {
+        "description": "Keep requiring every market-open timeframe candle. Dukascopy tick-derived data remains unsuitable unless a provider supplies complete bars.",
+        "governance_impact": "no rule change",
+        "id": "retain_strict_contract"
+      },
+      {
+        "description": "Open a governance change to define deterministic candles for zero-tick minutes, with explicit evidence and owner approval.",
+        "governance_impact": "contract and validator change required",
+        "id": "define_zero_tick_candle_policy"
+      },
+      {
+        "description": "Use an authoritative M1/bar provider that emits complete zero-volume or carry-forward bars under a documented methodology.",
+        "governance_impact": "provider qualification and dataset contract evidence required",
+        "id": "select_bar_provider"
+      }
+    ],
+    "recommended_option": "contract_governance_review_before_acquisition",
+    "replay_status": "BLOCKED",
+    "zero_tick_probe_count": 3,
+    "zero_tick_probes": [
+      {
+        "fresh_dukascopy": "MATCHED_CACHE",
+        "histdata_present": false,
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-01-04T22:45:00Z",
+        "verdict": "DUKASCOPY_AND_REFERENCE_ABSENT"
+      },
+      {
+        "fresh_dukascopy": "MATCHED_CACHE",
+        "histdata_present": false,
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-01-04T22:46:00Z",
+        "verdict": "DUKASCOPY_AND_REFERENCE_ABSENT"
+      },
+      {
+        "fresh_dukascopy": "MATCHED_CACHE",
+        "histdata_present": false,
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-01-04T22:19:00Z",
+        "verdict": "DUKASCOPY_AND_REFERENCE_ABSENT"
+      }
+    ]
+  },
+  "guardrail": "Dataset Contract Review does not change the contract, approve data, fill candles, or open replay.",
+  "next_action": "Owner must decide contract policy for market-open zero-tick minutes before full dataset production.",
+  "reason": "current contract requires missing timestamps to block approval, but source evidence shows market-open zero-tick minutes",
+  "recommendation": "OPEN_GOVERNANCE_CHANGE_REQUEST",
+  "stage": "dataset_contract_review",
+  "status": "BLOCKED"
+}

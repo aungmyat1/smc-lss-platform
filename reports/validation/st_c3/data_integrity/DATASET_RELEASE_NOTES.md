@@ -65,6 +65,19 @@ Current evidence points to sparse zero-tick historical minutes rather than a
 downloader, cache, or parser defect. Dataset approval remains blocked pending
 Dataset Contract Review.
 
+## Dataset Contract Review
+
+Status: **BLOCKED**
+
+The current contract requires missing timestamps to block approval and only
+allows weekend/fixed-holiday gaps. The observed zero-tick minutes are
+market-open timestamps, so `Dataset_v1.0_5Y` cannot be approved under the
+current contract.
+
+Recommendation:
+
+`OPEN_GOVERNANCE_CHANGE_REQUEST`
+
 ## Dukascopy Approval Status
 
 Not approved.

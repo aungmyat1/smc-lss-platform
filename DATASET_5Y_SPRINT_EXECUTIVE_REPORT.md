@@ -103,6 +103,25 @@ The evidence does not support a downloader, cache, parser, or aggregation
 defect. The remaining issue is provider/contract suitability for market-open
 minutes with zero source ticks.
 
+## Dataset Contract Review
+
+Dataset contract review result: `BLOCKED`
+
+The active contract requires `missing_timestamps: required`, and the effective
+loader policy allows only weekend and fixed-holiday gaps. The zero-tick source
+minutes are market-open timestamps, so the dataset cannot be approved under
+the current contract.
+
+Review recommendation:
+
+`OPEN_GOVERNANCE_CHANGE_REQUEST`
+
+Available choices:
+
+- retain strict continuity and select a source that emits complete bars
+- govern a deterministic zero-tick candle policy
+- qualify a different authoritative M1/bar provider
+
 ## Dataset Approval
 
 Dataset approval remains `NOT_APPROVED`.
@@ -150,6 +169,8 @@ passed. Statistical validation remains locked.
 - `reports/validation/st_c3/data_integrity/AGGREGATION_VALIDATION_REPORT.md`
 - `reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_INVESTIGATION.json`
 - `reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_INVESTIGATION.md`
+- `reports/validation/st_c3/data_integrity/DATASET_CONTRACT_REVIEW.json`
+- `reports/validation/st_c3/data_integrity/DATASET_CONTRACT_REVIEW.md`
 - `reports/validation/st_c3/data_integrity/DATA_INTEGRITY_REPORT.md`
 - `reports/validation/st_c3/data_integrity/VALIDATION_SUMMARY.md`
 - `reports/validation/st_c3/data_integrity/RECOVERY_LOG.md`
@@ -163,4 +184,4 @@ Full repository tests pass: `416 passed, 2 warnings`.
 
 ## Recommendation
 
-INVESTIGATE_SOURCE_INTEGRITY
+OPEN_GOVERNANCE_CHANGE_REQUEST

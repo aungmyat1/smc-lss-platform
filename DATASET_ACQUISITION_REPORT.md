@@ -186,6 +186,36 @@ stale download. It indicates sparse zero-tick minutes in independently checked
 historical data. Dataset production remains blocked pending Dataset Contract
 Review.
 
+## Dataset Contract Review
+
+Status: **BLOCKED**
+
+Command:
+
+```powershell
+python -m tools.st_c3_dataset_contract_review
+```
+
+Findings:
+
+- Current policy: `strict_market_open_candle_continuity`
+- Missing timestamp check: `required`
+- Allowed gap policy: weekend and fixed holidays only
+- Zero-tick probe count: 3
+- Aggregation mismatch count: 0
+
+Recommendation:
+
+`OPEN_GOVERNANCE_CHANGE_REQUEST`
+
+Available governance options:
+
+- Retain strict contract and select a provider that supplies complete bars.
+- Define a deterministic zero-tick candle policy through a governed contract
+  and validator change.
+- Select an authoritative M1/bar provider with documented zero-volume or
+  carry-forward bar methodology.
+
 ## Approval Status
 
 Dataset approval: **NOT_APPROVED**
