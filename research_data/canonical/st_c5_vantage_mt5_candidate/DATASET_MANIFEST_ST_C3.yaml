@@ -1,0 +1,50 @@
+strategy: ST-C3
+spec_version: 1.0.7
+dataset_version: ST-C5_Broker_MT5_Candidate_v0
+approved: false
+approval_status: NOT_APPROVED
+approval_date: ''
+approved_by: ''
+symbols:
+- EURUSD
+- GBPUSD
+timeframes:
+- H4
+- M15
+- M3
+coverage:
+  from: '2021-01-01'
+  to: '2025-12-31'
+sessions:
+  london:
+    start: 07:00
+    end: '10:00'
+  new_york:
+    start: '13:00'
+    end: '16:00'
+symbol_metadata:
+  EURUSD:
+    pip_size: 0.0001
+    min_tick: 1.0e-05
+    lot_size: 100000
+  GBPUSD:
+    pip_size: 0.0001
+    min_tick: 1.0e-05
+    lot_size: 100000
+files:
+  EURUSD_H4.csv:
+    sha256: <pending>
+  EURUSD_M15.csv:
+    sha256: <pending>
+  EURUSD_M3.csv:
+    sha256: <pending>
+  GBPUSD_H4.csv:
+    sha256: <pending>
+  GBPUSD_M15.csv:
+    sha256: <pending>
+  GBPUSD_M3.csv:
+    sha256: <pending>
+provider: Vantage MT5
+source: broker_native_mt5_export
+guardrail: ST-C5 broker-data qualification only; dataset approval, replay, strategy
+  validation, demo, and live remain blocked.

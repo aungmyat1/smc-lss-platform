@@ -1,0 +1,26 @@
+{
+  "acquisition": {
+    "reason": "acquisition not requested; run with --acquire on a machine with the broker MT5 terminal open and authenticated",
+    "status": "BLOCKED"
+  },
+  "broker": "Vantage MT5",
+  "candidate_dir": "research_data\\canonical\\st_c5_vantage_mt5_candidate",
+  "decision": {
+    "dataset_status": "NOT_APPROVED",
+    "next_action": "Acquire broker MT5 candidate data, then rerun unchanged ST-C3 integrity and governance checks.",
+    "reason": "acquisition not requested; run with --acquire on a machine with the broker MT5 terminal open and authenticated",
+    "recommendation": "BROKER_DATA_PENDING",
+    "replay_status": "BLOCKED",
+    "strategy_validation_status": "BLOCKED"
+  },
+  "guardrail": "ST-C5 broker-data qualification only; dataset approval, replay, strategy validation, demo, and live remain blocked.",
+  "integrity": null,
+  "manifest": "research_data\\canonical\\st_c5_vantage_mt5_candidate\\DATASET_MANIFEST_ST_C3.yaml",
+  "preflight": {
+    "package_available": true,
+    "reason": "MetaTrader5 package is installed; terminal initialization is attempted only during --acquire",
+    "terminal_initialized": null
+  },
+  "stage": "st_c5_broker_data_qualification",
+  "status": "COMPLETE"
+}

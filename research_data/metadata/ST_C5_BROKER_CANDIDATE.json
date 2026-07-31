@@ -1,0 +1,8 @@
+{
+  "approval_status": "NOT_APPROVED",
+  "broker": "Vantage MT5",
+  "candidate_dir": "research_data\\canonical\\st_c5_vantage_mt5_candidate",
+  "created_at_utc": "2026-07-31T16:15:04Z",
+  "guardrail": "ST-C5 broker-data qualification only; dataset approval, replay, strategy validation, demo, and live remain blocked.",
+  "manifest": "research_data\\canonical\\st_c5_vantage_mt5_candidate\\DATASET_MANIFEST_ST_C3.yaml"
+}

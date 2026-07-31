@@ -1,0 +1,5 @@
+{
+  "package_available": true,
+  "reason": "MetaTrader5 package is installed; terminal initialization is attempted only during --acquire",
+  "terminal_initialized": null
+}
