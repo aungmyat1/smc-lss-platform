@@ -1,0 +1,27 @@
+{
+  "calendar_event_counts": {
+    "Broker maintenance": 115,
+    "Daily Maintenance": 303,
+    "Unexpected market-open period": 822
+  },
+  "classification_counts": {
+    "EXPECTED": 303,
+    "UNEXPECTED": 630,
+    "UNKNOWN": 307
+  },
+  "dst_minutes": 0,
+  "effective_missing_rate": 0.0032507632528448517,
+  "explained_missing_minutes": 303,
+  "explained_missing_rate": 0.0010512073272273105,
+  "holiday_minutes": 0,
+  "maintenance_minutes": 418,
+  "original_missing_rate": 0.004301970580072162,
+  "threshold": 0.001,
+  "total_clusters": 902,
+  "total_missing_minutes": 1240,
+  "unexpected_minutes": 630,
+  "unexplained_missing_minutes": 937,
+  "unknown_minutes": 307,
+  "validated_market_open_minutes": 288240,
+  "weekend_minutes": 0
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_status": "NOT_APPROVED",
+  "decision": "REQUIRES_MANUAL_REVIEW",
+  "demo_status": "BLOCKED",
+  "effective_missing_rate": 0.0032507632528448517,
+  "guardrail": "Governance review only; replay, strategy validation, demo, and live trading remain blocked unless data is approved.",
+  "live_status": "BLOCKED",
+  "reason": "Unknown gaps remain; stop condition prevents approval or rejection-as-final.",
+  "recommendation": "REQUIRES_MANUAL_REVIEW",
+  "replay_status": "BLOCKED",
+  "strategy_validation_status": "BLOCKED",
+  "threshold": 0.001,
+  "unknown_cluster_count": 244,
+  "unknown_missing_minutes": 307
+}

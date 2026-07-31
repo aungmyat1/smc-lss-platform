@@ -1,0 +1,903 @@
+cluster_id,market_expected_open,calendar_event,classification,reason,confidence
+MM-00001,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00002,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00003,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00004,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00005,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00006,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00007,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00008,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00009,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00010,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00011,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00012,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00013,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00014,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00015,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00016,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00017,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00018,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00019,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00020,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00021,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00022,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00023,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00024,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00025,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00026,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00027,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00028,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00029,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00030,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00031,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00032,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00033,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00034,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00035,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00036,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00037,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00038,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00039,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00040,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00041,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00042,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00043,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00044,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00045,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00046,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00047,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00048,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00049,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00050,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00051,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00052,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00053,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00054,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00055,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00056,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00057,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00058,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00059,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00060,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00061,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00062,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00063,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00064,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00065,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00066,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00067,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00068,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00069,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00070,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00071,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00072,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00073,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00074,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00075,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00076,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00077,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00078,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00079,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00080,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00081,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00082,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00083,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00084,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00085,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00086,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00087,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00088,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00089,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00090,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00091,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00092,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00093,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00094,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00095,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00096,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00097,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00098,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00099,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00100,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00101,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00102,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00103,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00104,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00105,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00106,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00107,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00108,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00109,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00110,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00111,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00112,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00113,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00114,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00115,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00116,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00117,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00118,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00119,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00120,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00121,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00122,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00123,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00124,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00125,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00126,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00127,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00128,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00129,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00130,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00131,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00132,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00133,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00134,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00135,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00136,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00137,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00138,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00139,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00140,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00141,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00142,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00143,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00144,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00145,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00146,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00147,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00148,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00149,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00150,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00151,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00152,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00153,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00154,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00155,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00156,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00157,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00158,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00159,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00160,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00161,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00162,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00163,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00164,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00165,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00166,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00167,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00168,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00169,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00170,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00171,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00172,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00173,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00174,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00175,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00176,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00177,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00178,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00179,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00180,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00181,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00182,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00183,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00184,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00185,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00186,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00187,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00188,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00189,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00190,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00191,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00192,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00193,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00194,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00195,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00196,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00197,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00198,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00199,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00200,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00201,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00202,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00203,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00204,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00205,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00206,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00207,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00208,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00209,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00210,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00211,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00212,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00213,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00214,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00215,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00216,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00217,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00218,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00219,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00220,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00221,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00222,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00223,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00224,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00225,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00226,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00227,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00228,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00229,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00230,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00231,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00232,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00233,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00234,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00235,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00236,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00237,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00238,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00239,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00240,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00241,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00242,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00243,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00244,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00245,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00246,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00247,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00248,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00249,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00250,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00251,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00252,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00253,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00254,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00255,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00256,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00257,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00258,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00259,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00260,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00261,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00262,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00263,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00264,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00265,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00266,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00267,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00268,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00269,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00270,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00271,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00272,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00273,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00274,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00275,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00276,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00277,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00278,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00279,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00280,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00281,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00282,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00283,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00284,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00285,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00286,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00287,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00288,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00289,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00290,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00291,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00292,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00293,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00294,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00295,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00296,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00297,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00298,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00299,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00300,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00301,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00302,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00303,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00304,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00305,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00306,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00307,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00308,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00309,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00310,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00311,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00312,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00313,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00314,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00315,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00316,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00317,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00318,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00319,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00320,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00321,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00322,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00323,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00324,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00325,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00326,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00327,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00328,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00329,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00330,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00331,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00332,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00333,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00334,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00335,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00336,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00337,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00338,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00339,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00340,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00341,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00342,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00343,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00344,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00345,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00346,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00347,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00348,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00349,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00350,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00351,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00352,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00353,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00354,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00355,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00356,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00357,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00358,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00359,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00360,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00361,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00362,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00363,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00364,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00365,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00366,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00367,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00368,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00369,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00370,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00371,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00372,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00373,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00374,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00375,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00376,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00377,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00378,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00379,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00380,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00381,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00382,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00383,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00384,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00385,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00386,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00387,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00388,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00389,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00390,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00391,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00392,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00393,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00394,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00395,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00396,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00397,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00398,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00399,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00400,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00401,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00402,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00403,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00404,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00405,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00406,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00407,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00408,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00409,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00410,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00411,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00412,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00413,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00414,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00415,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00416,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00417,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00418,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00419,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00420,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00421,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00422,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00423,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00424,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00425,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00426,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00427,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00428,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00429,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00430,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00431,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00432,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00433,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00434,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00435,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00436,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00437,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00438,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00439,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00440,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00441,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00442,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00443,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00444,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00445,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00446,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00447,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00448,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00449,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00450,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00451,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00452,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00453,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00454,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00455,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00456,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00457,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00458,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00459,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00460,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00461,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00462,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00463,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00464,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00465,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00466,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00467,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00468,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00469,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00470,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00471,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00472,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00473,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00474,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00475,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00476,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00477,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00478,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00479,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00480,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00481,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00482,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00483,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00484,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00485,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00486,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00487,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00488,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00489,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00490,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00491,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00492,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00493,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00494,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00495,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00496,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00497,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00498,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00499,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00500,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00501,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00502,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00503,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00504,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00505,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00506,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00507,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00508,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00509,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00510,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00511,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00512,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00513,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00514,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00515,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00516,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00517,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00518,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00519,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00520,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00521,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00522,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00523,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00524,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00525,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00526,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00527,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00528,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00529,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00530,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00531,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00532,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00533,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00534,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00535,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00536,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00537,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00538,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00539,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00540,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00541,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00542,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00543,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00544,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00545,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00546,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00547,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00548,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00549,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00550,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00551,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00552,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00553,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00554,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00555,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00556,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00557,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00558,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00559,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00560,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00561,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00562,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00563,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00564,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00565,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00566,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00567,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00568,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00569,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00570,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00571,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00572,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00573,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00574,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00575,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00576,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00577,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00578,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00579,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00580,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00581,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00582,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00583,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00584,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00585,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00586,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00587,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00588,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00589,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00590,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00591,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00592,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00593,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00594,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00595,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00596,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00597,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00598,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00599,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00600,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00601,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00602,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00603,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00604,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00605,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00606,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00607,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00608,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00609,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00610,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00611,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00612,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00613,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00614,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00615,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00616,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00617,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00618,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00619,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00620,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00621,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00622,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00623,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00624,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00625,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00626,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00627,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00628,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00629,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00630,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00631,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00632,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00633,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00634,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00635,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00636,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00637,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00638,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00639,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00640,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00641,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00642,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00643,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00644,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00645,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00646,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00647,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00648,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00649,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00650,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00651,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00652,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00653,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00654,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00655,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00656,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00657,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00658,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00659,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00660,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00661,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00662,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00663,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00664,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00665,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00666,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00667,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00668,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00669,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00670,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00671,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00672,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00673,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00674,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00675,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00676,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00677,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00678,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00679,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00680,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00681,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00682,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00683,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00684,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00685,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00686,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00687,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00688,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00689,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00690,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00691,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00692,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00693,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00694,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00695,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00696,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00697,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00698,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00699,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00700,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00701,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00702,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00703,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00704,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00705,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00706,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00707,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00708,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00709,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00710,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00711,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00712,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00713,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00714,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00715,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00716,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00717,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00718,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00719,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00720,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00721,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00722,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00723,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00724,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00725,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00726,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00727,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00728,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00729,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00730,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00731,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00732,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00733,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00734,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00735,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00736,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00737,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00738,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00739,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00740,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00741,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00742,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00743,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00744,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00745,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00746,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00747,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00748,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00749,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00750,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00751,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00752,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00753,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00754,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00755,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00756,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00757,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00758,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00759,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00760,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00761,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00762,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00763,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00764,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00765,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00766,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00767,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00768,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00769,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00770,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00771,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00772,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00773,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00774,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00775,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00776,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00777,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00778,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00779,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00780,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00781,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00782,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00783,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00784,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00785,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00786,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00787,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00788,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00789,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00790,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00791,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00792,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00793,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00794,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00795,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00796,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00797,True,Unexpected market-open period,UNEXPECTED,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00798,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00799,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00800,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00801,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00802,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00803,True,Daily Maintenance,EXPECTED,All checked reference minutes absent during rollover window,0.7
+MM-00804,True,Broker maintenance,UNKNOWN,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00805,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00806,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00807,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00808,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00809,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00810,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00811,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00812,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00813,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00814,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00815,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00816,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00817,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00818,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00819,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00820,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00821,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00822,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00823,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00824,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00825,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00826,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00827,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00828,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00829,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00830,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00831,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00832,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00833,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00834,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00835,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00836,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00837,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00838,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00839,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00840,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00841,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00842,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00843,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00844,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00845,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00846,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00847,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00848,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00849,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00850,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00851,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00852,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00853,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00854,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00855,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00856,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00857,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00858,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00859,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00860,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00861,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00862,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00863,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00864,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00865,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00866,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00867,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00868,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00869,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00870,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00871,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00872,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00873,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00874,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00875,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00876,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00877,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00878,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00879,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00880,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00881,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00882,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00883,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00884,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00885,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00886,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00887,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00888,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00889,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00890,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00891,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00892,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00893,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00894,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00895,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00896,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00897,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00898,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00899,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00900,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00901,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00902,True,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
