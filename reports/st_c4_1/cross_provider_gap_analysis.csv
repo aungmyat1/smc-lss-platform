@@ -1,0 +1,6 @@
+gap_scope,provider_a,provider_b,provider_b_status,conclusion,confidence
+ST-C3 rejected Dukascopy unexplained/provider-specific gaps,Dukascopy,TrueFX,CREDENTIALS_UNAVAILABLE,comparison_blocked_no_validated_sample,LOW
+ST-C3 rejected Dukascopy unexplained/provider-specific gaps,Dukascopy,Tiingo FX,CREDENTIALS_UNAVAILABLE,comparison_blocked_no_validated_sample,LOW
+ST-C3 rejected Dukascopy unexplained/provider-specific gaps,Dukascopy,HistData,AVAILABLE_REJECTED_EVIDENCE,reference_available_but_not_canonical_pass,HIGH
+ST-C3 rejected Dukascopy unexplained/provider-specific gaps,Dukascopy,Darwinex,CREDENTIALS_UNAVAILABLE,comparison_blocked_no_validated_sample,LOW
+ST-C3 rejected Dukascopy unexplained/provider-specific gaps,Dukascopy,Broker MT5 Export,COMPLETE_EXPORT_UNAVAILABLE,comparison_blocked_no_validated_sample,LOW

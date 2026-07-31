@@ -1,0 +1,51 @@
+schema_version: "st-c4.1-provider-registry-v1"
+guardrail: "Provider qualification only; ST-C3 thresholds and downstream gates remain unchanged."
+providers:
+  dukascopy:
+    status: rejected_st_c3_evidence
+    license: research_use_requires_governance_review
+    api: public_historical_export
+    cost: free
+    symbols: [EURUSD, GBPUSD]
+    timeframes: [tick, M1, M3, M15, H4]
+    evaluation_status: evaluated_failed_st_c3
+  truefx:
+    status: candidate_credentials_required
+    license: account_terms_required
+    api: historical_download_account
+    cost: subscription_or_account_dependent
+    symbols: [EURUSD, GBPUSD]
+    timeframes: [tick]
+    evaluation_status: not_evaluated_credentials_unavailable
+  tiingo:
+    status: candidate_api_token_required
+    license: api_terms_required
+    api: rest
+    cost: subscription_dependent
+    symbols: [EURUSD, GBPUSD]
+    timeframes: [intraday_bars]
+    evaluation_status: not_evaluated_credentials_unavailable
+  histdata:
+    status: rejected_prior_candidate
+    license: free_download_terms_require_review
+    api: web_download
+    cost: free
+    symbols: [EURUSD, GBPUSD]
+    timeframes: [M1]
+    evaluation_status: evaluated_failed_integrity
+  darwinex:
+    status: candidate_ftp_required
+    license: live_account_terms_required
+    api: ftp
+    cost: account_dependent
+    symbols: [EURUSD, GBPUSD]
+    timeframes: [tick]
+    evaluation_status: not_evaluated_credentials_unavailable
+  mt5:
+    status: candidate_terminal_export_required
+    license: broker_terms_required
+    api: local_terminal
+    cost: broker_dependent
+    symbols: [EURUSD, GBPUSD]
+    timeframes: [M3, M15, H4]
+    evaluation_status: not_evaluated_complete_export_unavailable
