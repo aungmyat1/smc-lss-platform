@@ -65,3 +65,8 @@
   with `--workers`, `PARALLEL_EXECUTION_STATUS.json`, and
   `PERFORMANCE_PROFILE.md`; latest 4-worker evidence batch advanced progress
   to 28/100 sample days with zero duplicate or failed tasks.
+- Reordered source-integrity acceleration to profile first, documented the
+  sequential performance baseline and 2-worker download/cache batch at 30/100
+  sample days, kept parallelism scoped to download/cache tasks, and split
+  Provider Qualification from disabled Canonical Dataset Construction in
+  `PROVIDER_QUALIFICATION_PIPELINE.md`.

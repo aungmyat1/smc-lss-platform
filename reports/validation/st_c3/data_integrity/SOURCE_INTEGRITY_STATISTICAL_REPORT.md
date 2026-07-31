@@ -2,7 +2,7 @@
 
 Status: **BLOCKED**
 
-Reason: insufficient cached deterministic sample: 28/100 target days available
+Reason: insufficient cached deterministic sample: 30/100 target days available
 
 Recommendation: **CONTINUE_EVIDENCE_COLLECTION**
 
@@ -15,12 +15,12 @@ Guardrail: Statistical source integrity investigation does not change contracts,
 - Minimum sample completion rate: `0.95`
 - Minimum complete sample days: `95`
 - Missing-rate threshold for contract review: `0.001`
-- Deterministic sample days cached complete: `28`
-- Audited cached day count: `31`
+- Deterministic sample days cached complete: `30`
+- Audited cached day count: `33`
 - Provider-calendar excluded source hours: `16`
 - Provider-calendar excluded expected minutes: `960`
 - Statistically sufficient: `False`
-- Missing-rate 95% confidence interval: `{'lower': 0.004343785742805563, 'upper': 0.0052675333602455}`
+- Missing-rate 95% confidence interval: `{'lower': 0.004663689753505748, 'upper': 0.0055872055391268036}`
 - Decision status: `INSUFFICIENT_EVIDENCE`
 - Sample weekday stratification: `{'Friday': 27, 'Monday': 13, 'Thursday': 18, 'Tuesday': 23, 'Wednesday': 19}`
 - Sample month stratification: `{'01': 8, '02': 8, '03': 9, '04': 10, '05': 7, '06': 12, '07': 5, '08': 6, '09': 7, '10': 6, '11': 12, '12': 10}`
@@ -30,25 +30,25 @@ Guardrail: Statistical source integrity investigation does not change contracts,
 
 | Symbol | Days | Hours | Expected Minutes | Missing Minutes | Missing Rate | First Missing |
 |---|---:|---:|---:|---:|---:|---|
-| `EURUSD` | 31 | 716 | 42960 | 229 | 0.00533054 | 2021-01-04T22:45:00Z |
-| `GBPUSD` | 31 | 716 | 42960 | 182 | 0.00423650 | 2021-01-04T22:19:00Z |
+| `EURUSD` | 33 | 764 | 45840 | 261 | 0.00569372 | 2021-01-04T22:45:00Z |
+| `GBPUSD` | 33 | 764 | 45840 | 207 | 0.00451571 | 2021-01-04T22:19:00Z |
 
 ## Missing Distribution
 
 ### EURUSD
 
-- By hour UTC: `{'0': 3, '17': 2, '18': 6, '19': 6, '2': 3, '20': 21, '21': 26, '22': 74, '23': 46, '3': 15, '4': 19, '5': 5, '6': 2, '8': 1}`
-- By weekday: `{'Friday': 25, 'Monday': 20, 'Thursday': 26, 'Tuesday': 83, 'Wednesday': 75}`
-- By session: `{'LONDON': 1, 'OTHER': 128, 'ROLLOVER': 100}`
-- By root-cause category: `{'OFF_SESSION_ZERO_TICK': 128, 'PRIMARY_SESSION_ZERO_TICK': 1, 'ROLLOVER_ZERO_TICK': 100}`
+- By hour UTC: `{'0': 3, '10': 2, '17': 2, '18': 6, '19': 6, '2': 3, '20': 21, '21': 56, '22': 74, '23': 46, '3': 15, '4': 19, '5': 5, '6': 2, '8': 1}`
+- By weekday: `{'Friday': 25, 'Monday': 20, 'Thursday': 58, 'Tuesday': 83, 'Wednesday': 75}`
+- By session: `{'LONDON': 1, 'OTHER': 130, 'ROLLOVER': 130}`
+- By root-cause category: `{'OFF_SESSION_ZERO_TICK': 130, 'PRIMARY_SESSION_ZERO_TICK': 1, 'ROLLOVER_ZERO_TICK': 130}`
 - Samples: `['2021-01-04T22:45:00Z', '2021-01-04T22:46:00Z', '2021-01-05T22:02:00Z', '2021-01-05T22:20:00Z', '2021-01-05T22:23:00Z', '2021-01-05T22:44:00Z', '2021-01-05T22:46:00Z', '2021-01-05T22:49:00Z', '2021-01-05T22:50:00Z', '2021-01-06T22:08:00Z', '2021-01-06T22:09:00Z', '2021-01-06T22:16:00Z', '2021-01-06T22:21:00Z', '2021-01-06T22:23:00Z', '2021-01-06T22:26:00Z', '2021-01-06T22:28:00Z', '2021-01-22T21:38:00Z', '2021-02-10T04:29:00Z', '2021-02-10T21:24:00Z', '2021-02-10T22:07:00Z', '2021-02-10T22:44:00Z', '2021-02-10T22:45:00Z', '2021-02-10T22:46:00Z', '2021-02-10T22:49:00Z', '2021-02-10T22:50:00Z']`
 
 ### GBPUSD
 
-- By hour UTC: `{'0': 3, '1': 1, '17': 1, '18': 2, '19': 6, '2': 4, '20': 19, '21': 58, '22': 70, '23': 9, '4': 2, '5': 4, '6': 1, '7': 1, '8': 1}`
-- By weekday: `{'Friday': 9, 'Monday': 19, 'Thursday': 43, 'Tuesday': 65, 'Wednesday': 46}`
-- By session: `{'LONDON': 2, 'OTHER': 52, 'ROLLOVER': 128}`
-- By root-cause category: `{'OFF_SESSION_ZERO_TICK': 52, 'PRIMARY_SESSION_ZERO_TICK': 2, 'ROLLOVER_ZERO_TICK': 128}`
+- By hour UTC: `{'0': 3, '1': 1, '10': 2, '17': 1, '18': 2, '19': 6, '2': 4, '20': 19, '21': 81, '22': 70, '23': 9, '4': 2, '5': 4, '6': 1, '7': 1, '8': 1}`
+- By weekday: `{'Friday': 9, 'Monday': 19, 'Thursday': 68, 'Tuesday': 65, 'Wednesday': 46}`
+- By session: `{'LONDON': 2, 'OTHER': 54, 'ROLLOVER': 151}`
+- By root-cause category: `{'OFF_SESSION_ZERO_TICK': 54, 'PRIMARY_SESSION_ZERO_TICK': 2, 'ROLLOVER_ZERO_TICK': 151}`
 - Samples: `['2021-01-04T22:19:00Z', '2021-01-05T22:18:00Z', '2021-01-05T22:19:00Z', '2021-01-06T22:04:00Z', '2021-01-22T18:24:00Z', '2021-01-22T20:26:00Z', '2021-02-10T04:48:00Z', '2021-02-10T05:11:00Z', '2021-02-10T05:53:00Z', '2021-02-10T21:24:00Z', '2021-02-10T21:32:00Z', '2021-02-10T22:17:00Z', '2021-04-13T00:30:00Z', '2021-04-13T02:12:00Z', '2021-04-13T04:41:00Z', '2021-04-13T08:29:00Z', '2021-04-13T20:18:00Z', '2021-04-13T20:22:00Z', '2021-04-13T20:26:00Z', '2021-04-13T20:27:00Z', '2021-04-13T20:28:00Z', '2021-04-13T21:07:00Z', '2021-04-13T21:08:00Z', '2021-04-13T21:46:00Z', '2021-04-13T22:24:00Z']`
 
 ## Cross-Source Comparison

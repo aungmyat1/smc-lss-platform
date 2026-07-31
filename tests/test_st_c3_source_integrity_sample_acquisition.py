@@ -157,8 +157,6 @@ def test_parallel_sample_acquisition_uses_deterministic_non_overlapping_tasks(tm
 
 
 def test_parallel_and_sequential_preserve_task_order(tmp_path: Path, monkeypatch):
-    observed: list[tuple[str, str, str]] = []
-
     def fake_download(symbol: str, hour: datetime, cache: Path, *, retries: int):
         path = _cache_path(cache, symbol, hour)
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -191,8 +189,9 @@ def test_parallel_and_sequential_preserve_task_order(tmp_path: Path, monkeypatch
         write_report=False,
     )
 
-    seq_order = [(item["symbol"], item["hour_utc"]) for item in sequential["details"]["failed_hours"]]
-    par_order = [(item["symbol"], item["hour_utc"]) for item in parallel["details"]["failed_hours"]]
-    assert seq_order == par_order == observed
+    seq_order = sequential["details"]["parallel_execution"]["completed_task_order"]
+    par_order = parallel["details"]["parallel_execution"]["completed_task_order"]
+    assert seq_order == par_order
+    assert sequential["details"]["parallel_execution"]["task_order_matches_plan"] is True
+    assert parallel["details"]["parallel_execution"]["task_order_matches_plan"] is True
     assert sequential["details"]["attempted_hours"] == parallel["details"]["attempted_hours"] == 6
-    assert [item["task_index"] for item in parallel["details"]["day_progress"][0]["failed_source_hours"]] == []

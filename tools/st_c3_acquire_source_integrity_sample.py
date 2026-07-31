@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import statistics
 import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, date, datetime
@@ -31,6 +32,7 @@ from tools.st_c3_statistical_source_integrity import (
     _source_required_hours,
     _trading_days,
 )
+from tools.st_c3_verify_dukascopy_provider import _parse_bi5_ticks
 from validation.st_c3.dataset_loader import EXPECTED_SYMBOLS
 
 REPORT_JSON = Path("reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_SAMPLE_ACQUISITION.json")
@@ -87,8 +89,12 @@ def acquire_source_integrity_sample(
 
     completed_after = [day for day in sample_days if _day_cache_complete(cache, day, EXPECTED_SYMBOLS)]
     failed = [item for item in attempts if item["status"] == "FAILED"]
+    acquisition_elapsed_seconds = time.perf_counter() - started
+    profile_started = time.perf_counter()
+    parse_profile = _profile_parse_and_m1(attempts)
+    profile_elapsed_seconds = time.perf_counter() - profile_started
     elapsed_seconds = time.perf_counter() - started
-    performance = _performance_profile(attempts, elapsed_seconds, workers)
+    performance = _performance_profile(attempts, elapsed_seconds, acquisition_elapsed_seconds, profile_elapsed_seconds, parse_profile, workers)
     parallel_status = _parallel_status(tasks, attempts, workers)
     status = "BLOCKED" if failed else "IN_PROGRESS"
     result = {
@@ -116,6 +122,8 @@ def acquire_source_integrity_sample(
                 "workers": workers,
                 "planned_tasks": len(tasks),
                 "elapsed_seconds": elapsed_seconds,
+                "acquisition_elapsed_seconds": acquisition_elapsed_seconds,
+                "profiling_elapsed_seconds": profile_elapsed_seconds,
             },
             "parallel_execution": parallel_status,
             "performance_profile": performance,
@@ -178,6 +186,8 @@ def _execute_tasks(tasks: list[dict[str, Any]], cache: Path, retries: int, worke
 
 
 def _execute_task(task: dict[str, Any], cache: Path, retries: int) -> dict[str, Any]:
+    path = _cache_path(cache, task["symbol"], task["hour"])
+    cache_present_before = path.exists() and path.stat().st_size > 0
     started = time.perf_counter()
     result = _download_hour(task["symbol"], task["hour"], cache, retries=retries)
     elapsed = time.perf_counter() - started
@@ -186,6 +196,7 @@ def _execute_task(task: dict[str, Any], cache: Path, retries: int) -> dict[str, 
         "task_index": task["task_index"],
         "sample_day": task["sample_day"],
         "scheduled_worker": task["scheduled_worker"],
+        "cache_present_before": cache_present_before,
         "elapsed_seconds": elapsed,
     }
 
@@ -225,16 +236,30 @@ def _next_action(failed: list[dict[str, Any]], completed_after: list[date], targ
     return "Continue deterministic evidence-sample acquisition in bounded batches."
 
 
-def _performance_profile(attempts: list[dict[str, Any]], elapsed_seconds: float, workers: int) -> dict[str, Any]:
+def _performance_profile(
+    attempts: list[dict[str, Any]],
+    elapsed_seconds: float,
+    acquisition_elapsed_seconds: float,
+    profiling_elapsed_seconds: float,
+    parse_profile: dict[str, Any],
+    workers: int,
+) -> dict[str, Any]:
     downloaded = [item for item in attempts if item["status"] == "DOWNLOADED"]
     cached = [item for item in attempts if item["status"] == "CACHED_VERIFIED"]
     failed = [item for item in attempts if item["status"] == "FAILED"]
     total_bytes = sum(int(item.get("bytes") or 0) for item in attempts)
     total_task_seconds = sum(float(item.get("elapsed_seconds") or 0.0) for item in attempts)
+    status_seconds = {
+        status: sum(float(item.get("elapsed_seconds") or 0.0) for item in attempts if item["status"] == status)
+        for status in sorted({item["status"] for item in attempts})
+    }
+    bottlenecks = _bottlenecks(acquisition_elapsed_seconds, parse_profile)
     return {
         "mode": "parallel" if workers > 1 else "sequential",
         "workers": workers,
         "elapsed_seconds": elapsed_seconds,
+        "acquisition_elapsed_seconds": acquisition_elapsed_seconds,
+        "profiling_elapsed_seconds": profiling_elapsed_seconds,
         "attempted_source_hours": len(attempts),
         "downloaded_source_hours": len(downloaded),
         "cached_verified_source_hours": len(cached),
@@ -244,8 +269,73 @@ def _performance_profile(attempts: list[dict[str, Any]], elapsed_seconds: float,
         "payload_bytes": total_bytes,
         "payload_megabytes": total_bytes / 1_000_000,
         "total_task_seconds": total_task_seconds,
+        "task_seconds_by_status": status_seconds,
+        "avg_seconds_per_downloaded_hour": statistics.fmean(float(item.get("elapsed_seconds") or 0.0) for item in downloaded) if downloaded else None,
+        "avg_seconds_per_cached_hour": statistics.fmean(float(item.get("elapsed_seconds") or 0.0) for item in cached) if cached else None,
         "parallel_efficiency_proxy": (total_task_seconds / (elapsed_seconds * workers)) if elapsed_seconds > 0 and workers > 0 else None,
+        "stage_timings": {
+            "download_cache_seconds": acquisition_elapsed_seconds,
+            "bi5_decompression_parse_seconds": parse_profile["bi5_decompression_parse_seconds"],
+            "m1_reconstruction_seconds": parse_profile["m1_reconstruction_seconds"],
+            "aggregation_seconds": None,
+            "validation_seconds": None,
+            "cross_provider_lookup_seconds": None,
+            "report_generation_seconds": profiling_elapsed_seconds,
+        },
+        "stage_notes": {
+            "download_cache_seconds": "includes network download, cache verification, retries, and payload parse verification inside _download_hour",
+            "bi5_decompression_parse_seconds": "post-acquisition profiling pass over successful source-hour files",
+            "m1_reconstruction_seconds": "post-acquisition minute grouping profile over parsed ticks",
+            "aggregation_seconds": "not run in provider-qualification acquisition pipeline",
+            "validation_seconds": "not run in provider-qualification acquisition pipeline",
+            "cross_provider_lookup_seconds": "measured by statistical/cross-provider report generation, not acquisition",
+            "report_generation_seconds": "time spent on post-acquisition profiling before report serialization",
+        },
+        "profiled_successful_files": parse_profile["profiled_files"],
+        "profiled_ticks": parse_profile["profiled_ticks"],
+        "profiled_m1_rows": parse_profile["profiled_m1_rows"],
+        "top_bottlenecks": bottlenecks,
     }
+
+
+def _profile_parse_and_m1(attempts: list[dict[str, Any]]) -> dict[str, Any]:
+    parse_seconds = 0.0
+    m1_seconds = 0.0
+    profiled_files = 0
+    profiled_ticks = 0
+    profiled_m1_rows = 0
+    for item in attempts:
+        if item["status"] not in {"DOWNLOADED", "CACHED_VERIFIED"} or not item.get("path"):
+            continue
+        path = Path(str(item["path"]))
+        if not path.exists() or path.stat().st_size <= 0:
+            continue
+        hour = datetime.strptime(item["hour_utc"], "%Y-%m-%dT%H:00:00Z").replace(tzinfo=UTC)
+        parse_started = time.perf_counter()
+        ticks = _parse_bi5_ticks(path.read_bytes(), hour, item["symbol"])
+        parse_seconds += time.perf_counter() - parse_started
+        m1_started = time.perf_counter()
+        minutes = {tick.timestamp.replace(second=0, microsecond=0) for tick in ticks}
+        m1_seconds += time.perf_counter() - m1_started
+        profiled_files += 1
+        profiled_ticks += len(ticks)
+        profiled_m1_rows += len(minutes)
+    return {
+        "bi5_decompression_parse_seconds": parse_seconds,
+        "m1_reconstruction_seconds": m1_seconds,
+        "profiled_files": profiled_files,
+        "profiled_ticks": profiled_ticks,
+        "profiled_m1_rows": profiled_m1_rows,
+    }
+
+
+def _bottlenecks(acquisition_elapsed_seconds: float, parse_profile: dict[str, Any]) -> list[dict[str, Any]]:
+    rows = [
+        {"stage": "download_cache", "seconds": acquisition_elapsed_seconds},
+        {"stage": "bi5_decompression_parse", "seconds": parse_profile["bi5_decompression_parse_seconds"]},
+        {"stage": "m1_reconstruction", "seconds": parse_profile["m1_reconstruction_seconds"]},
+    ]
+    return sorted(rows, key=lambda item: float(item["seconds"]), reverse=True)[:2]
 
 
 def _parallel_status(tasks: list[dict[str, Any]], attempts: list[dict[str, Any]], workers: int) -> dict[str, Any]:
@@ -253,6 +343,8 @@ def _parallel_status(tasks: list[dict[str, Any]], attempts: list[dict[str, Any]]
     completed_by_worker = {str(worker): 0 for worker in range(1, workers + 1)}
     failed_by_worker = {str(worker): 0 for worker in range(1, workers + 1)}
     seconds_by_worker = {str(worker): 0.0 for worker in range(1, workers + 1)}
+    planned_task_order = [_task_key(task) for task in tasks]
+    completed_task_order = [_task_key(item) for item in sorted(attempts, key=lambda item: int(item["task_index"]))]
     for task in tasks:
         planned_by_worker[str(task["scheduled_worker"])] += 1
     for item in attempts:
@@ -268,11 +360,23 @@ def _parallel_status(tasks: list[dict[str, Any]], attempts: list[dict[str, Any]]
         "planned_tasks": len(tasks),
         "completed_tasks": len(attempts),
         "duplicate_task_count": len(tasks) - len({(task["symbol"], task["hour"]) for task in tasks}),
+        "planned_task_order": planned_task_order,
+        "completed_task_order": completed_task_order,
+        "task_order_matches_plan": planned_task_order == completed_task_order,
         "planned_by_worker": planned_by_worker,
         "completed_by_worker": completed_by_worker,
         "failed_by_worker": failed_by_worker,
         "task_seconds_by_worker": seconds_by_worker,
     }
+
+
+def _task_key(item: dict[str, Any]) -> str:
+    hour = item.get("hour") or item.get("hour_utc")
+    if isinstance(hour, datetime):
+        hour_text = hour.isoformat().replace("+00:00", "Z")
+    else:
+        hour_text = str(hour)
+    return f"{int(item['task_index']):06d}|{item['symbol']}|{hour_text}"
 
 
 def _markdown(result: dict[str, Any]) -> str:
@@ -419,6 +523,8 @@ def _performance_markdown(performance: dict[str, Any], parallel: dict[str, Any])
         f"- Mode: `{details['mode']}`",
         f"- Workers: `{details['workers']}`",
         f"- Elapsed seconds: `{details['elapsed_seconds']}`",
+        f"- Acquisition seconds: `{details['acquisition_elapsed_seconds']}`",
+        f"- Profiling/report seconds: `{details['profiling_elapsed_seconds']}`",
         f"- Attempted source hours: `{details['attempted_source_hours']}`",
         f"- Downloaded source hours: `{details['downloaded_source_hours']}`",
         f"- Cached verified source hours: `{details['cached_verified_source_hours']}`",
@@ -427,6 +533,26 @@ def _performance_markdown(performance: dict[str, Any], parallel: dict[str, Any])
         f"- Download throughput hours/minute: `{details['download_throughput_hours_per_minute']}`",
         f"- Payload MB: `{details['payload_megabytes']}`",
         f"- Parallel efficiency proxy: `{details['parallel_efficiency_proxy']}`",
+        f"- Top bottlenecks: `{details['top_bottlenecks']}`",
+        "",
+        "## Stage Timings",
+        "",
+        f"- Download/cache seconds: `{details['stage_timings']['download_cache_seconds']}`",
+        f"- `.bi5` decompression/parse seconds: `{details['stage_timings']['bi5_decompression_parse_seconds']}`",
+        f"- M1 reconstruction seconds: `{details['stage_timings']['m1_reconstruction_seconds']}`",
+        f"- Aggregation seconds: `{details['stage_timings']['aggregation_seconds']}`",
+        f"- Validation seconds: `{details['stage_timings']['validation_seconds']}`",
+        f"- Cross-provider lookup seconds: `{details['stage_timings']['cross_provider_lookup_seconds']}`",
+        f"- Report generation/profile seconds: `{details['stage_timings']['report_generation_seconds']}`",
+        "",
+        "## Stage Notes",
+        "",
+        f"- Download/cache: {details['stage_notes']['download_cache_seconds']}",
+        f"- `.bi5` decompression/parse: {details['stage_notes']['bi5_decompression_parse_seconds']}",
+        f"- M1 reconstruction: {details['stage_notes']['m1_reconstruction_seconds']}",
+        f"- Aggregation: {details['stage_notes']['aggregation_seconds']}",
+        f"- Validation: {details['stage_notes']['validation_seconds']}",
+        f"- Cross-provider lookup: {details['stage_notes']['cross_provider_lookup_seconds']}",
         "",
         "## Worker Utilization",
         "",
@@ -435,6 +561,7 @@ def _performance_markdown(performance: dict[str, Any], parallel: dict[str, Any])
         f"- Completed by worker: `{parallel_details['completed_by_worker']}`",
         f"- Failed by worker: `{parallel_details['failed_by_worker']}`",
         f"- Task seconds by worker: `{parallel_details['task_seconds_by_worker']}`",
+        f"- Task order matches plan: `{parallel_details['task_order_matches_plan']}`",
         "",
         "No market data was altered, fabricated, interpolated, or approved.",
     ]

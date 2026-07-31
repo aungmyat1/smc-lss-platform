@@ -1,8 +1,8 @@
 {
   "details": {
-    "attempted_hours": 186,
-    "completed_sample_days_after": 28,
-    "completed_sample_days_before": 24,
+    "attempted_hours": 48,
+    "completed_sample_days_after": 30,
+    "completed_sample_days_before": 29,
     "coverage": {
       "from": "2021-01-01",
       "to": "2025-12-31"
@@ -11,124 +11,222 @@
       {
         "attempted_source_hours": 48,
         "cached_verified_source_hours": 0,
-        "completed_sample_days_after_day": 28,
+        "completed_sample_days_after_day": 30,
         "downloaded_source_hours": 48,
         "failed_source_hours": [],
         "provider_calendar_excluded_source_hours": 0,
-        "sample_day": "2022-07-12",
-        "status": "COMPLETE"
-      },
-      {
-        "attempted_source_hours": 48,
-        "cached_verified_source_hours": 0,
-        "completed_sample_days_after_day": 28,
-        "downloaded_source_hours": 48,
-        "failed_source_hours": [],
-        "provider_calendar_excluded_source_hours": 0,
-        "sample_day": "2022-08-25",
-        "status": "COMPLETE"
-      },
-      {
-        "attempted_source_hours": 48,
-        "cached_verified_source_hours": 0,
-        "completed_sample_days_after_day": 28,
-        "downloaded_source_hours": 48,
-        "failed_source_hours": [],
-        "provider_calendar_excluded_source_hours": 0,
-        "sample_day": "2022-09-20",
-        "status": "COMPLETE"
-      },
-      {
-        "attempted_source_hours": 42,
-        "cached_verified_source_hours": 0,
-        "completed_sample_days_after_day": 28,
-        "downloaded_source_hours": 42,
-        "failed_source_hours": [],
-        "provider_calendar_excluded_source_hours": 2,
-        "sample_day": "2022-09-23",
+        "sample_day": "2022-11-03",
         "status": "COMPLETE"
       }
     ],
-    "downloaded_or_cached_hours": 186,
+    "downloaded_or_cached_hours": 48,
     "execution": {
-      "elapsed_seconds": 102.5809900000022,
+      "acquisition_elapsed_seconds": 49.77690850000363,
+      "elapsed_seconds": 57.74290550000296,
       "mode": "parallel",
-      "planned_tasks": 186,
-      "workers": 4
+      "planned_tasks": 48,
+      "profiling_elapsed_seconds": 7.9659919000041555,
+      "workers": 2
     },
     "failed_hours": [],
-    "first_remaining_day": "2022-10-27",
+    "first_remaining_day": "2022-11-09",
     "parallel_execution": {
       "completed_by_worker": {
-        "1": 47,
-        "2": 47,
-        "3": 46,
-        "4": 46
+        "1": 24,
+        "2": 24
       },
-      "completed_tasks": 186,
+      "completed_task_order": [
+        "000000|EURUSD|2022-11-03T00:00:00Z",
+        "000001|GBPUSD|2022-11-03T00:00:00Z",
+        "000002|EURUSD|2022-11-03T01:00:00Z",
+        "000003|GBPUSD|2022-11-03T01:00:00Z",
+        "000004|EURUSD|2022-11-03T02:00:00Z",
+        "000005|GBPUSD|2022-11-03T02:00:00Z",
+        "000006|EURUSD|2022-11-03T03:00:00Z",
+        "000007|GBPUSD|2022-11-03T03:00:00Z",
+        "000008|EURUSD|2022-11-03T04:00:00Z",
+        "000009|GBPUSD|2022-11-03T04:00:00Z",
+        "000010|EURUSD|2022-11-03T05:00:00Z",
+        "000011|GBPUSD|2022-11-03T05:00:00Z",
+        "000012|EURUSD|2022-11-03T06:00:00Z",
+        "000013|GBPUSD|2022-11-03T06:00:00Z",
+        "000014|EURUSD|2022-11-03T07:00:00Z",
+        "000015|GBPUSD|2022-11-03T07:00:00Z",
+        "000016|EURUSD|2022-11-03T08:00:00Z",
+        "000017|GBPUSD|2022-11-03T08:00:00Z",
+        "000018|EURUSD|2022-11-03T09:00:00Z",
+        "000019|GBPUSD|2022-11-03T09:00:00Z",
+        "000020|EURUSD|2022-11-03T10:00:00Z",
+        "000021|GBPUSD|2022-11-03T10:00:00Z",
+        "000022|EURUSD|2022-11-03T11:00:00Z",
+        "000023|GBPUSD|2022-11-03T11:00:00Z",
+        "000024|EURUSD|2022-11-03T12:00:00Z",
+        "000025|GBPUSD|2022-11-03T12:00:00Z",
+        "000026|EURUSD|2022-11-03T13:00:00Z",
+        "000027|GBPUSD|2022-11-03T13:00:00Z",
+        "000028|EURUSD|2022-11-03T14:00:00Z",
+        "000029|GBPUSD|2022-11-03T14:00:00Z",
+        "000030|EURUSD|2022-11-03T15:00:00Z",
+        "000031|GBPUSD|2022-11-03T15:00:00Z",
+        "000032|EURUSD|2022-11-03T16:00:00Z",
+        "000033|GBPUSD|2022-11-03T16:00:00Z",
+        "000034|EURUSD|2022-11-03T17:00:00Z",
+        "000035|GBPUSD|2022-11-03T17:00:00Z",
+        "000036|EURUSD|2022-11-03T18:00:00Z",
+        "000037|GBPUSD|2022-11-03T18:00:00Z",
+        "000038|EURUSD|2022-11-03T19:00:00Z",
+        "000039|GBPUSD|2022-11-03T19:00:00Z",
+        "000040|EURUSD|2022-11-03T20:00:00Z",
+        "000041|GBPUSD|2022-11-03T20:00:00Z",
+        "000042|EURUSD|2022-11-03T21:00:00Z",
+        "000043|GBPUSD|2022-11-03T21:00:00Z",
+        "000044|EURUSD|2022-11-03T22:00:00Z",
+        "000045|GBPUSD|2022-11-03T22:00:00Z",
+        "000046|EURUSD|2022-11-03T23:00:00Z",
+        "000047|GBPUSD|2022-11-03T23:00:00Z"
+      ],
+      "completed_tasks": 48,
       "deterministic_assignment": "task_index modulo worker_count",
       "duplicate_task_count": 0,
       "failed_by_worker": {
         "1": 0,
-        "2": 0,
-        "3": 0,
-        "4": 0
+        "2": 0
       },
       "mode": "parallel",
       "planned_by_worker": {
-        "1": 47,
-        "2": 47,
-        "3": 46,
-        "4": 46
+        "1": 24,
+        "2": 24
       },
-      "planned_tasks": 186,
+      "planned_task_order": [
+        "000000|EURUSD|2022-11-03T00:00:00Z",
+        "000001|GBPUSD|2022-11-03T00:00:00Z",
+        "000002|EURUSD|2022-11-03T01:00:00Z",
+        "000003|GBPUSD|2022-11-03T01:00:00Z",
+        "000004|EURUSD|2022-11-03T02:00:00Z",
+        "000005|GBPUSD|2022-11-03T02:00:00Z",
+        "000006|EURUSD|2022-11-03T03:00:00Z",
+        "000007|GBPUSD|2022-11-03T03:00:00Z",
+        "000008|EURUSD|2022-11-03T04:00:00Z",
+        "000009|GBPUSD|2022-11-03T04:00:00Z",
+        "000010|EURUSD|2022-11-03T05:00:00Z",
+        "000011|GBPUSD|2022-11-03T05:00:00Z",
+        "000012|EURUSD|2022-11-03T06:00:00Z",
+        "000013|GBPUSD|2022-11-03T06:00:00Z",
+        "000014|EURUSD|2022-11-03T07:00:00Z",
+        "000015|GBPUSD|2022-11-03T07:00:00Z",
+        "000016|EURUSD|2022-11-03T08:00:00Z",
+        "000017|GBPUSD|2022-11-03T08:00:00Z",
+        "000018|EURUSD|2022-11-03T09:00:00Z",
+        "000019|GBPUSD|2022-11-03T09:00:00Z",
+        "000020|EURUSD|2022-11-03T10:00:00Z",
+        "000021|GBPUSD|2022-11-03T10:00:00Z",
+        "000022|EURUSD|2022-11-03T11:00:00Z",
+        "000023|GBPUSD|2022-11-03T11:00:00Z",
+        "000024|EURUSD|2022-11-03T12:00:00Z",
+        "000025|GBPUSD|2022-11-03T12:00:00Z",
+        "000026|EURUSD|2022-11-03T13:00:00Z",
+        "000027|GBPUSD|2022-11-03T13:00:00Z",
+        "000028|EURUSD|2022-11-03T14:00:00Z",
+        "000029|GBPUSD|2022-11-03T14:00:00Z",
+        "000030|EURUSD|2022-11-03T15:00:00Z",
+        "000031|GBPUSD|2022-11-03T15:00:00Z",
+        "000032|EURUSD|2022-11-03T16:00:00Z",
+        "000033|GBPUSD|2022-11-03T16:00:00Z",
+        "000034|EURUSD|2022-11-03T17:00:00Z",
+        "000035|GBPUSD|2022-11-03T17:00:00Z",
+        "000036|EURUSD|2022-11-03T18:00:00Z",
+        "000037|GBPUSD|2022-11-03T18:00:00Z",
+        "000038|EURUSD|2022-11-03T19:00:00Z",
+        "000039|GBPUSD|2022-11-03T19:00:00Z",
+        "000040|EURUSD|2022-11-03T20:00:00Z",
+        "000041|GBPUSD|2022-11-03T20:00:00Z",
+        "000042|EURUSD|2022-11-03T21:00:00Z",
+        "000043|GBPUSD|2022-11-03T21:00:00Z",
+        "000044|EURUSD|2022-11-03T22:00:00Z",
+        "000045|GBPUSD|2022-11-03T22:00:00Z",
+        "000046|EURUSD|2022-11-03T23:00:00Z",
+        "000047|GBPUSD|2022-11-03T23:00:00Z"
+      ],
+      "planned_tasks": 48,
+      "task_order_matches_plan": true,
       "task_seconds_by_worker": {
-        "1": 93.74889060000714,
-        "2": 97.72383829999308,
-        "3": 94.32947629999762,
-        "4": 99.16467689998899
+        "1": 44.090181200022926,
+        "2": 47.178346799984865
       },
-      "workers": 4
+      "workers": 2
     },
     "performance_profile": {
-      "attempted_source_hours": 186,
+      "acquisition_elapsed_seconds": 49.77690850000363,
+      "attempted_source_hours": 48,
+      "avg_seconds_per_cached_hour": null,
+      "avg_seconds_per_downloaded_hour": 1.901427666666829,
       "cache_hit_rate": 0.0,
       "cached_verified_source_hours": 0,
-      "download_throughput_hours_per_minute": 108.79208711087463,
-      "downloaded_source_hours": 186,
-      "elapsed_seconds": 102.5809900000022,
+      "download_throughput_hours_per_minute": 49.87625709274107,
+      "downloaded_source_hours": 48,
+      "elapsed_seconds": 57.74290550000296,
       "failed_source_hours": 0,
       "mode": "parallel",
-      "parallel_efficiency_proxy": 0.9382022977648651,
-      "payload_bytes": 6283412,
-      "payload_megabytes": 6.283412,
-      "total_task_seconds": 384.96688209998683,
-      "workers": 4
+      "parallel_efficiency_proxy": 0.7903007928827127,
+      "payload_bytes": 1950616,
+      "payload_megabytes": 1.950616,
+      "profiled_m1_rows": 2870,
+      "profiled_successful_files": 48,
+      "profiled_ticks": 464526,
+      "profiling_elapsed_seconds": 7.9659919000041555,
+      "stage_notes": {
+        "aggregation_seconds": "not run in provider-qualification acquisition pipeline",
+        "bi5_decompression_parse_seconds": "post-acquisition profiling pass over successful source-hour files",
+        "cross_provider_lookup_seconds": "measured by statistical/cross-provider report generation, not acquisition",
+        "download_cache_seconds": "includes network download, cache verification, retries, and payload parse verification inside _download_hour",
+        "m1_reconstruction_seconds": "post-acquisition minute grouping profile over parsed ticks",
+        "report_generation_seconds": "time spent on post-acquisition profiling before report serialization",
+        "validation_seconds": "not run in provider-qualification acquisition pipeline"
+      },
+      "stage_timings": {
+        "aggregation_seconds": null,
+        "bi5_decompression_parse_seconds": 6.610903299981146,
+        "cross_provider_lookup_seconds": null,
+        "download_cache_seconds": 49.77690850000363,
+        "m1_reconstruction_seconds": 1.3092256000018097,
+        "report_generation_seconds": 7.9659919000041555,
+        "validation_seconds": null
+      },
+      "task_seconds_by_status": {
+        "DOWNLOADED": 91.26852800000779
+      },
+      "top_bottlenecks": [
+        {
+          "seconds": 49.77690850000363,
+          "stage": "download_cache"
+        },
+        {
+          "seconds": 6.610903299981146,
+          "stage": "bi5_decompression_parse"
+        }
+      ],
+      "total_task_seconds": 91.26852800000779,
+      "workers": 2
     },
     "provider_calendar_exclusions": {
-      "excluded_expected_minutes": 120,
+      "excluded_expected_minutes": 0,
       "policy": "DUKASCOPY_DST_FRIDAY_CLOSE_PROVIDER_CALENDAR_MISMATCH",
       "status": "evidence-only exclusion; ST-C3 Dataset Contract unchanged",
-      "symbol_hour_count": 2,
-      "unique_hour_count": 1,
-      "unique_hours": [
-        "2022-09-23T21:00:00Z"
-      ]
+      "symbol_hour_count": 0,
+      "unique_hour_count": 0,
+      "unique_hours": []
     },
-    "remaining_sample_days": 72,
+    "remaining_sample_days": 70,
     "sample_seed": 107,
     "selected_days": [
-      "2022-07-12",
-      "2022-08-25",
-      "2022-09-20",
-      "2022-09-23"
+      "2022-11-03"
     ],
     "stopped_by_limit": false,
     "target_sample_days": 100
   },
   "guardrail": "Evidence-sample acquisition downloads raw source files only; it does not approve data, change governance, or open replay.",
   "next_action": "Continue deterministic evidence-sample acquisition in bounded batches.",
-  "reason": "evidence-sample acquisition in progress; 28/100 target days cached",
+  "reason": "evidence-sample acquisition in progress; 30/100 target days cached",
   "recommendation": "CONTINUE_EVIDENCE_COLLECTION",
   "stage": "source_integrity_sample_acquisition",
   "status": "IN_PROGRESS"

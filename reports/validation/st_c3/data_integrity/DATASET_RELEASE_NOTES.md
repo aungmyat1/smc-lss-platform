@@ -89,12 +89,12 @@ The statistical evidence gate now audits the currently cached deterministic
 sample days plus cached pilot evidence:
 
 - Target sample: 100 deterministic trading days
-- Deterministic sample days cached complete: 28 of 100
-- Audited cached days: 31
-- Missing audited M1 minutes: 411 of 85,920
-- Missing minute rate: `0.004783519553072626`
+- Deterministic sample days cached complete: 30 of 100
+- Audited cached days: 33
+- Missing audited M1 minutes: 468 of 91,680
+- Missing minute rate: `0.005104712041884817`
 - 95% confidence interval:
-  `0.004343785742805563..0.0052675333602455`
+  `0.004663689753505748..0.0055872055391268036`
 - Cross-provider anomalous-timestamp checks: 200 checked, 151 present in
   HistData M1, 49 absent in HistData M1
 - Evidence-sample acquisition is blocked by repeated empty Dukascopy payloads
@@ -151,21 +151,36 @@ approval/replay posture.
 
 Status: **IN_PROGRESS**
 
-The evidence acquisition workflow now supports deterministic bounded
-parallelism with configurable worker count. The latest 4-worker batch advanced
-the deterministic sample from 24 of 100 to 28 of 100 days, completed 186
-source-hour tasks, recorded zero duplicate tasks, and recorded zero failures.
+The execution order is now baseline first, then bounded parallelism only for
+the proven download/cache bottleneck.
+
+Latest sequential baseline:
+
+- Progress advanced from 28 of 100 to 29 of 100 days
+- Attempted source hours: 48
+- Failed source hours: 0
+- Elapsed seconds: `111.35310690000188`
+- Acquisition seconds: `99.99727680000069`
+- `.bi5` decompression/parse seconds: `9.571653900005913`
+- M1 reconstruction seconds: `1.7178865000096266`
+- Throughput: `25.863669907174828` source hours/minute
+- Top measured bottlenecks: download/cache, then `.bi5` decompression/parse
+
+The evidence acquisition workflow also supports deterministic bounded
+parallelism with configurable worker count for download/cache tasks only. The
+latest 2-worker batch advanced the deterministic sample from 29 of 100 to 30
+of 100 days, completed 48 source-hour tasks, recorded zero duplicate tasks,
+recorded zero failures, and preserved deterministic task order. The prior
+latest 4-worker batch advanced the deterministic sample from 24 of 100 to 28
+of 100 days, completed 186 source-hour tasks, recorded zero duplicate tasks,
+and recorded zero failures.
 
 Sequential mode remains supported. No market data, contract, validator,
 approval gate, replay logic, or strategy logic was changed.
-- Distribution: mostly rollover, with two observed GBPUSD pilot gaps outside
-  rollover on the first deterministic sample day
-- Root-cause categories: 21 `ROLLOVER_ZERO_TICK`, 2 `OFF_SESSION_ZERO_TICK`
-- Missing-minute-rate 95% confidence interval:
-  `0.0013591321291721624..0.003057932662333974`
-- Pre-registered exit criteria now require at least 95 of 100 deterministic
-  sample days plus missing-rate, confidence-interval, distribution, category,
-  and contextual observation outputs
+
+Provider Qualification and Canonical Dataset Construction are documented as
+separate workflows in `PROVIDER_QUALIFICATION_PIPELINE.md`; canonical
+construction remains disabled until provider acceptance.
 
 The pilot supports further evidence collection, not an immediate governance
 change. Current recommendation:

@@ -2,7 +2,7 @@
 
 Status: **IN_PROGRESS**
 
-Reason: evidence-sample acquisition in progress; 28/100 target days cached
+Reason: evidence-sample acquisition in progress; 30/100 target days cached
 
 Recommendation: **CONTINUE_EVIDENCE_COLLECTION**
 
@@ -11,25 +11,22 @@ Guardrail: Evidence-sample acquisition downloads raw source files only; it does 
 ## Progress
 
 - Target sample days: `100`
-- Completed before: `24`
-- Completed after: `28`
-- Remaining sample days: `72`
-- Attempted source hours: `186`
-- Downloaded or cached source hours: `186`
-- Provider-calendar excluded source hours: `2`
+- Completed before: `29`
+- Completed after: `30`
+- Remaining sample days: `70`
+- Attempted source hours: `48`
+- Downloaded or cached source hours: `48`
+- Provider-calendar excluded source hours: `0`
 - Failed source hours: `0`
-- First remaining sample day: `2022-10-27`
+- First remaining sample day: `2022-11-09`
 - Execution mode: `parallel`
-- Workers: `4`
-- Throughput hours/minute: `108.79208711087463`
+- Workers: `2`
+- Throughput hours/minute: `49.87625709274107`
 
 ## Day Progress
 
 | Sample Day | Status | Attempted | Downloaded | Cached | Provider Excluded | Failed | Completed After Day |
 |---|---|---:|---:|---:|---:|---:|---:|
-| `2022-07-12` | `COMPLETE` | 48 | 48 | 0 | 0 | 0 | 28 |
-| `2022-08-25` | `COMPLETE` | 48 | 48 | 0 | 0 | 0 | 28 |
-| `2022-09-20` | `COMPLETE` | 48 | 48 | 0 | 0 | 0 | 28 |
-| `2022-09-23` | `COMPLETE` | 42 | 42 | 0 | 2 | 0 | 28 |
+| `2022-11-03` | `COMPLETE` | 48 | 48 | 0 | 0 | 0 | 30 |
 
 No candles were fabricated, interpolated, or manually inserted.

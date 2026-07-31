@@ -1,18 +1,56 @@
 {
   "details": {
-    "attempted_source_hours": 186,
+    "acquisition_elapsed_seconds": 49.77690850000363,
+    "attempted_source_hours": 48,
+    "avg_seconds_per_cached_hour": null,
+    "avg_seconds_per_downloaded_hour": 1.901427666666829,
     "cache_hit_rate": 0.0,
     "cached_verified_source_hours": 0,
-    "download_throughput_hours_per_minute": 108.79208711087463,
-    "downloaded_source_hours": 186,
-    "elapsed_seconds": 102.5809900000022,
+    "download_throughput_hours_per_minute": 49.87625709274107,
+    "downloaded_source_hours": 48,
+    "elapsed_seconds": 57.74290550000296,
     "failed_source_hours": 0,
     "mode": "parallel",
-    "parallel_efficiency_proxy": 0.9382022977648651,
-    "payload_bytes": 6283412,
-    "payload_megabytes": 6.283412,
-    "total_task_seconds": 384.96688209998683,
-    "workers": 4
+    "parallel_efficiency_proxy": 0.7903007928827127,
+    "payload_bytes": 1950616,
+    "payload_megabytes": 1.950616,
+    "profiled_m1_rows": 2870,
+    "profiled_successful_files": 48,
+    "profiled_ticks": 464526,
+    "profiling_elapsed_seconds": 7.9659919000041555,
+    "stage_notes": {
+      "aggregation_seconds": "not run in provider-qualification acquisition pipeline",
+      "bi5_decompression_parse_seconds": "post-acquisition profiling pass over successful source-hour files",
+      "cross_provider_lookup_seconds": "measured by statistical/cross-provider report generation, not acquisition",
+      "download_cache_seconds": "includes network download, cache verification, retries, and payload parse verification inside _download_hour",
+      "m1_reconstruction_seconds": "post-acquisition minute grouping profile over parsed ticks",
+      "report_generation_seconds": "time spent on post-acquisition profiling before report serialization",
+      "validation_seconds": "not run in provider-qualification acquisition pipeline"
+    },
+    "stage_timings": {
+      "aggregation_seconds": null,
+      "bi5_decompression_parse_seconds": 6.610903299981146,
+      "cross_provider_lookup_seconds": null,
+      "download_cache_seconds": 49.77690850000363,
+      "m1_reconstruction_seconds": 1.3092256000018097,
+      "report_generation_seconds": 7.9659919000041555,
+      "validation_seconds": null
+    },
+    "task_seconds_by_status": {
+      "DOWNLOADED": 91.26852800000779
+    },
+    "top_bottlenecks": [
+      {
+        "seconds": 49.77690850000363,
+        "stage": "download_cache"
+      },
+      {
+        "seconds": 6.610903299981146,
+        "stage": "bi5_decompression_parse"
+      }
+    ],
+    "total_task_seconds": 91.26852800000779,
+    "workers": 2
   },
   "guardrail": "Evidence-sample acquisition downloads raw source files only; it does not approve data, change governance, or open replay.",
   "recommendation": "CONTINUE_EVIDENCE_COLLECTION",

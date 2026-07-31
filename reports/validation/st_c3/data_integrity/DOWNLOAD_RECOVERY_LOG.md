@@ -6,16 +6,13 @@ Scope: source-integrity evidence sample only
 
 Latest status: **IN_PROGRESS**
 
-Completed sample days: `28/100`
+Completed sample days: `30/100`
 
 ## Latest Batch Day Progress
 
 | Sample Day | Status | Attempted | Provider Excluded | Failed |
 |---|---|---:|---:|---:|
-| `2022-07-12` | `COMPLETE` | 48 | 0 | 0 |
-| `2022-08-25` | `COMPLETE` | 48 | 0 | 0 |
-| `2022-09-20` | `COMPLETE` | 48 | 0 | 0 |
-| `2022-09-23` | `COMPLETE` | 42 | 2 | 0 |
+| `2022-11-03` | `COMPLETE` | 48 | 0 | 0 |
 
 ## Failed Hours
 

@@ -135,13 +135,13 @@ pilot cache.
 Evidence:
 
 - Target sample: 100 deterministic trading days across 2021-2025
-- Deterministic target sample days cached complete: 28 of 100
-- Audited cached days: 31
-- Total expected audited M1 minutes: 85,920
-- Total missing audited M1 minutes: 411
-- Missing minute rate: `0.004783519553072626`
+- Deterministic target sample days cached complete: 30 of 100
+- Audited cached days: 33
+- Total expected audited M1 minutes: 91,680
+- Total missing audited M1 minutes: 468
+- Missing minute rate: `0.005104712041884817`
 - Missing-minute-rate 95% confidence interval:
-  `0.004343785742805563..0.0052675333602455`
+  `0.004663689753505748..0.0055872055391268036`
 - Cross-provider anomalous-timestamp verification: 200 observations checked,
   151 present in HistData M1 and 49 absent in HistData M1
 - Evidence acquisition blocked on repeated empty Dukascopy payloads for Friday
@@ -153,16 +153,45 @@ Evidence:
   symbol/hour, root-cause categories, contextual missing-minute observations,
   and cross-provider verification for anomalous timestamps
 
-The evidence remains statistically insufficient because only 28 of 100
+The evidence remains statistically insufficient because only 30 of 100
 deterministic sample days are complete. The active recommendation is evidence
 collection, now accelerated with bounded parallel acquisition and the
 evidence-only Dukascopy DST Friday close source-hour exclusion.
 
 ## Performance Improvements
 
-Source-integrity sample acquisition now supports configurable bounded
-parallelism while preserving deterministic sample ordering, idempotent cache
-reuse, and resumable checkpoints.
+Execution has been reordered to profile first, then parallelize only measured
+bottlenecks. Source-integrity sample acquisition now supports configurable
+bounded parallelism for download/cache operations while preserving deterministic
+sample ordering, idempotent cache reuse, and resumable checkpoints.
+
+Latest sequential baseline:
+
+- Command: `python -m tools.st_c3_acquire_source_integrity_sample --max-days 1 --workers 1 --retries 3`
+- Progress advanced from 28 of 100 to 29 of 100 deterministic sample days
+- Attempted source hours: 48
+- Failed source hours: 0
+- Elapsed seconds: `111.35310690000188`
+- Acquisition seconds: `99.99727680000069`
+- `.bi5` decompression/parse seconds: `9.571653900005913`
+- M1 reconstruction seconds: `1.7178865000096266`
+- Throughput: `25.863669907174828` source hours/minute
+- Top measured bottlenecks: download/cache, then `.bi5` decompression/parse
+
+Latest bounded 2-worker download/cache batch:
+
+- Command: `python -m tools.st_c3_acquire_source_integrity_sample --max-days 1 --workers 2 --retries 3`
+- Progress advanced from 29 of 100 to 30 of 100 deterministic sample days
+- Planned tasks: 48
+- Completed tasks: 48
+- Duplicate task count: 0
+- Failed tasks: 0
+- Task order matched deterministic plan: true
+- Worker distribution: 24, 24 tasks
+- Elapsed seconds: `57.74290550000296`
+- Throughput: `49.87625709274107` source hours/minute
+- Parallel scope: download/cache only; reconstruction, validation,
+  statistical reporting, and cross-provider reporting remain sequential
 
 Latest parallel batch:
 
@@ -176,6 +205,8 @@ Latest parallel batch:
 - Elapsed seconds: `102.5809900000022`
 - Throughput: `108.79208711087463` source hours/minute
 - Parallel efficiency proxy: `0.9382022977648651`
+- Parallel scope: download/cache only; reconstruction, validation, statistical
+  reporting, and cross-provider reporting remain sequential
 
 Generated:
 
@@ -184,6 +215,18 @@ Generated:
 - `reports/validation/st_c3/data_integrity/PERFORMANCE_PROFILE.json`
 
 Sequential mode remains the compatibility path through `--workers 1`.
+
+## Pipeline Split
+
+Provider Qualification and Canonical Dataset Construction are now documented as
+separate workflows in `PROVIDER_QUALIFICATION_PIPELINE.md`.
+
+- Pipeline A, Provider Qualification: active.
+- Pipeline B, Canonical Dataset Construction: disabled until provider
+  acceptance.
+- Allowed provider outcomes remain limited to `ACCEPT_DUKASCOPY`,
+  `OPEN_DATA_GOVERNANCE_REVIEW`, and `REJECT_DUKASCOPY`.
+- Research dashboard work and aggressive worker scaling are postponed.
 
 ## Cross-Provider Findings
 

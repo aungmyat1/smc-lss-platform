@@ -233,13 +233,13 @@ Findings:
 
 - Target sample: 100 deterministic trading days across `2021-01-01` through
   `2025-12-31`
-- Deterministic sample days cached complete: 28 of 100
-- Audited cached days: 31
-- Total expected audited M1 minutes: 85,920
-- Total missing audited M1 minutes: 411
-- Missing minute rate: `0.004783519553072626`
+- Deterministic sample days cached complete: 30 of 100
+- Audited cached days: 33
+- Total expected audited M1 minutes: 91,680
+- Total missing audited M1 minutes: 468
+- Missing minute rate: `0.005104712041884817`
 - Missing-minute-rate 95% confidence interval:
-  `0.004343785742805563..0.0052675333602455`
+  `0.004663689753505748..0.0055872055391268036`
 - Cross-provider comparison for anomalous timestamps:
   200 checked against cached HistData M1 reference rows, with 151 reference
   timestamps present and 49 reference timestamps absent
@@ -270,6 +270,45 @@ preserving the ST-C3 Dataset Contract unchanged.
 
 Status: **IN_PROGRESS**
 
+Execution order:
+
+- Sprint A performance baseline is complete for the sequential evidence
+  acquisition path.
+- Sprint B bounded parallelism is implemented only for raw source-hour
+  download/cache verification.
+- Reconstruction, validation, cross-provider reporting, and statistical
+  reporting remain sequential.
+- Sprint C parallel evidence processing is deferred until download/cache
+  parallelism remains deterministic over more evidence batches.
+
+Latest sequential performance baseline:
+
+- Command: `python -m tools.st_c3_acquire_source_integrity_sample --max-days 1 --workers 1 --retries 3`
+- Progress advanced from 28 of 100 to 29 of 100 deterministic sample days
+- Attempted source hours: 48
+- Failed source hours: 0
+- Elapsed seconds: `111.35310690000188`
+- Acquisition seconds: `99.99727680000069`
+- `.bi5` decompression/parse seconds: `9.571653900005913`
+- M1 reconstruction seconds: `1.7178865000096266`
+- Throughput: `25.863669907174828` source hours/minute
+- Top measured bottlenecks: download/cache, then `.bi5` decompression/parse
+
+Latest bounded 2-worker download/cache batch:
+
+- Command: `python -m tools.st_c3_acquire_source_integrity_sample --max-days 1 --workers 2 --retries 3`
+- Progress advanced from 29 of 100 to 30 of 100 deterministic sample days
+- Attempted source hours: 48
+- Failed source hours: 0
+- Duplicate task count: 0
+- Task order matched deterministic plan: true
+- Elapsed seconds: `57.74290550000296`
+- Acquisition seconds: `49.77690850000363`
+- `.bi5` decompression/parse seconds: `6.610903299981146`
+- M1 reconstruction seconds: `1.3092256000018097`
+- Throughput: `49.87625709274107` source hours/minute
+- Top measured bottlenecks: download/cache, then `.bi5` decompression/parse
+
 Command:
 
 ```powershell
@@ -293,9 +332,18 @@ Latest parallel batch:
 - Elapsed seconds: `102.5809900000022`
 - Throughput: `108.79208711087463` source hours/minute
 - Provider-calendar excluded source hours: 2
+- Parallel scope: download/cache only
 
 Sequential mode remains available by omitting `--workers` or setting
 `--workers 1`.
+
+Pipeline split:
+
+- Pipeline A, Provider Qualification, is active and produces statistical,
+  session-calendar, cross-provider, and performance evidence.
+- Pipeline B, Canonical Dataset Construction, is disabled until a provider is
+  accepted through the existing governance outcomes.
+- See `PROVIDER_QUALIFICATION_PIPELINE.md`.
 
 ## Cross-Provider Verification
 
@@ -415,9 +463,9 @@ provider rejection or governance change request.
 Recommended next command:
 
 ```powershell
-python -m tools.st_c3_acquire_source_integrity_sample --max-days 1 --retries 3
+python -m tools.st_c3_acquire_source_integrity_sample --max-days 1 --workers 2 --retries 3
 ```
 
-Before running larger batches, review the evidence-sample market calendar in a
-separate governed decision. Do not synthesize candles, weaken validation,
-approve data, or unlock replay.
+Continue with small 2-4 worker download/cache batches only. Do not synthesize
+candles, weaken validation, approve data, run canonical construction, or unlock
+replay.
