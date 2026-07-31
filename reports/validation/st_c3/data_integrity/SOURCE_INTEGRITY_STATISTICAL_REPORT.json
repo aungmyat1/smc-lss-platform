@@ -1,6 +1,6 @@
 {
   "details": {
-    "audited_cached_day_count": 11,
+    "audited_cached_day_count": 31,
     "audited_cached_days": [
       "2021-01-04",
       "2021-01-05",
@@ -8,21 +8,41 @@
       "2021-01-22",
       "2021-02-10",
       "2021-04-13",
+      "2021-04-16",
+      "2021-05-14",
+      "2021-07-02",
       "2021-07-27",
       "2021-08-10",
       "2021-08-25",
       "2021-09-14",
-      "2021-09-30"
+      "2021-09-30",
+      "2021-11-24",
+      "2021-11-26",
+      "2021-12-23",
+      "2022-01-31",
+      "2022-02-02",
+      "2022-02-07",
+      "2022-03-17",
+      "2022-03-18",
+      "2022-04-08",
+      "2022-04-21",
+      "2022-06-23",
+      "2022-06-24",
+      "2022-07-01",
+      "2022-07-12",
+      "2022-08-25",
+      "2022-09-20",
+      "2022-09-23"
     ],
     "coverage": {
       "from": "2021-01-01",
       "to": "2025-12-31"
     },
     "cross_source_comparison": {
-      "checked": 188,
-      "observations": 188,
-      "reference_absent": 42,
-      "reference_present": 146
+      "checked": 200,
+      "observations": 200,
+      "reference_absent": 49,
+      "reference_present": 151
     },
     "decision_framework": {
       "next_gate": "complete deterministic source-integrity evidence sample",
@@ -132,10 +152,10 @@
       "2025-12-05",
       "2025-12-29"
     ],
-    "missing_minute_rate": 0.006870229007633588,
+    "missing_minute_rate": 0.004783519553072626,
     "missing_minute_rate_confidence_interval_95": {
-      "lower": 0.006015492553545249,
-      "upper": 0.007845455683058679
+      "lower": 0.004343785742805563,
+      "upper": 0.0052675333602455
     },
     "missing_observations": [
       {
@@ -1334,6 +1354,500 @@
         "timestamp_utc": "2021-04-13T23:44:00Z",
         "utc_time": "23:44",
         "weekday": "Tuesday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-04-16",
+        "market_open": true,
+        "next_minute_tick_count": 13,
+        "previous_minute_tick_count": 22,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-04-16T00:13:00Z",
+        "utc_time": "00:13",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-04-16",
+        "market_open": true,
+        "next_minute_tick_count": 20,
+        "previous_minute_tick_count": 1,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-04-16T04:50:00Z",
+        "utc_time": "04:50",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-04-16",
+        "market_open": true,
+        "next_minute_tick_count": 14,
+        "previous_minute_tick_count": 23,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-04-16T17:15:00Z",
+        "utc_time": "17:15",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-04-16",
+        "market_open": true,
+        "next_minute_tick_count": 6,
+        "previous_minute_tick_count": 25,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-04-16T17:48:00Z",
+        "utc_time": "17:48",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-04-16",
+        "market_open": true,
+        "next_minute_tick_count": 20,
+        "previous_minute_tick_count": 17,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-04-16T17:50:00Z",
+        "utc_time": "17:50",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-04-16",
+        "market_open": true,
+        "next_minute_tick_count": 3,
+        "previous_minute_tick_count": 21,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-04-16T18:20:00Z",
+        "utc_time": "18:20",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-04-16",
+        "market_open": true,
+        "next_minute_tick_count": 0,
+        "previous_minute_tick_count": 9,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-04-16T18:29:00Z",
+        "utc_time": "18:29",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-04-16",
+        "market_open": true,
+        "next_minute_tick_count": 4,
+        "previous_minute_tick_count": 0,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-04-16T18:30:00Z",
+        "utc_time": "18:30",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-04-16",
+        "market_open": true,
+        "next_minute_tick_count": 10,
+        "previous_minute_tick_count": 8,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-04-16T20:05:00Z",
+        "utc_time": "20:05",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-04-16",
+        "market_open": true,
+        "next_minute_tick_count": 6,
+        "previous_minute_tick_count": 5,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-04-16T20:19:00Z",
+        "utc_time": "20:19",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-05-14",
+        "market_open": true,
+        "next_minute_tick_count": 10,
+        "previous_minute_tick_count": 22,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-05-14T03:41:00Z",
+        "utc_time": "03:41",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-05-14",
+        "market_open": true,
+        "next_minute_tick_count": 11,
+        "previous_minute_tick_count": 12,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-05-14T04:54:00Z",
+        "utc_time": "04:54",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-05-14",
+        "market_open": true,
+        "next_minute_tick_count": 5,
+        "previous_minute_tick_count": 3,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-05-14T20:09:00Z",
+        "utc_time": "20:09",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-05-14",
+        "market_open": true,
+        "next_minute_tick_count": 6,
+        "previous_minute_tick_count": 5,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-05-14T20:11:00Z",
+        "utc_time": "20:11",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-05-14",
+        "market_open": true,
+        "next_minute_tick_count": 1,
+        "previous_minute_tick_count": 7,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-05-14T20:16:00Z",
+        "utc_time": "20:16",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-07-02",
+        "market_open": true,
+        "next_minute_tick_count": 2,
+        "previous_minute_tick_count": 1,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T03:53:00Z",
+        "utc_time": "03:53",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-07-02",
+        "market_open": true,
+        "next_minute_tick_count": 13,
+        "previous_minute_tick_count": 18,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T04:09:00Z",
+        "utc_time": "04:09",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-07-02",
+        "market_open": true,
+        "next_minute_tick_count": 4,
+        "previous_minute_tick_count": 10,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T04:52:00Z",
+        "utc_time": "04:52",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-07-02",
+        "market_open": true,
+        "next_minute_tick_count": 2,
+        "previous_minute_tick_count": 1,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T04:55:00Z",
+        "utc_time": "04:55",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-07-02",
+        "market_open": true,
+        "next_minute_tick_count": 19,
+        "previous_minute_tick_count": 12,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T05:20:00Z",
+        "utc_time": "05:20",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-07-02",
+        "market_open": true,
+        "next_minute_tick_count": 12,
+        "previous_minute_tick_count": 11,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T18:39:00Z",
+        "utc_time": "18:39",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-07-02",
+        "market_open": true,
+        "next_minute_tick_count": 8,
+        "previous_minute_tick_count": 12,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T18:41:00Z",
+        "utc_time": "18:41",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-07-02",
+        "market_open": true,
+        "next_minute_tick_count": 2,
+        "previous_minute_tick_count": 8,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T19:23:00Z",
+        "utc_time": "19:23",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-07-02",
+        "market_open": true,
+        "next_minute_tick_count": 17,
+        "previous_minute_tick_count": 3,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T19:30:00Z",
+        "utc_time": "19:30",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-07-02",
+        "market_open": true,
+        "next_minute_tick_count": 3,
+        "previous_minute_tick_count": 15,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T20:18:00Z",
+        "utc_time": "20:18",
+        "weekday": "Friday"
+      },
+      {
+        "around_daily_rollover": false,
+        "cross_source_reference": {
+          "checked": true,
+          "present": true,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-07-02",
+        "market_open": true,
+        "next_minute_tick_count": 10,
+        "previous_minute_tick_count": 10,
+        "provider": "Dukascopy",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-07-02T20:18:00Z",
+        "utc_time": "20:18",
+        "weekday": "Friday"
       },
       {
         "around_daily_rollover": false,
@@ -2921,44 +3435,6 @@
         },
         "date": "2021-08-25",
         "market_open": true,
-        "next_minute_tick_count": 8,
-        "previous_minute_tick_count": 2,
-        "provider": "Dukascopy",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T19:26:00Z",
-        "utc_time": "19:26",
-        "weekday": "Wednesday"
-      },
-      {
-        "around_daily_rollover": false,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-08-25",
-        "market_open": true,
-        "next_minute_tick_count": 7,
-        "previous_minute_tick_count": 8,
-        "provider": "Dukascopy",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T19:28:00Z",
-        "utc_time": "19:28",
-        "weekday": "Wednesday"
-      },
-      {
-        "around_daily_rollover": false,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-08-25",
-        "market_open": true,
         "next_minute_tick_count": 13,
         "previous_minute_tick_count": 12,
         "provider": "Dukascopy",
@@ -2997,25 +3473,6 @@
         },
         "date": "2021-08-25",
         "market_open": true,
-        "next_minute_tick_count": 8,
-        "previous_minute_tick_count": 9,
-        "provider": "Dukascopy",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T20:22:00Z",
-        "utc_time": "20:22",
-        "weekday": "Wednesday"
-      },
-      {
-        "around_daily_rollover": false,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-08-25",
-        "market_open": true,
         "next_minute_tick_count": 10,
         "previous_minute_tick_count": 5,
         "provider": "Dukascopy",
@@ -3024,82 +3481,6 @@
         "symbol": "GBPUSD",
         "timestamp_utc": "2021-08-25T20:23:00Z",
         "utc_time": "20:23",
-        "weekday": "Wednesday"
-      },
-      {
-        "around_daily_rollover": false,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-08-25",
-        "market_open": true,
-        "next_minute_tick_count": 28,
-        "previous_minute_tick_count": 14,
-        "provider": "Dukascopy",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T20:30:00Z",
-        "utc_time": "20:30",
-        "weekday": "Wednesday"
-      },
-      {
-        "around_daily_rollover": false,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-08-25",
-        "market_open": true,
-        "next_minute_tick_count": 0,
-        "previous_minute_tick_count": 3,
-        "provider": "Dukascopy",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T20:36:00Z",
-        "utc_time": "20:36",
-        "weekday": "Wednesday"
-      },
-      {
-        "around_daily_rollover": false,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-08-25",
-        "market_open": true,
-        "next_minute_tick_count": 4,
-        "previous_minute_tick_count": 0,
-        "provider": "Dukascopy",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T20:37:00Z",
-        "utc_time": "20:37",
-        "weekday": "Wednesday"
-      },
-      {
-        "around_daily_rollover": false,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-08-25",
-        "market_open": true,
-        "next_minute_tick_count": 7,
-        "previous_minute_tick_count": 1,
-        "provider": "Dukascopy",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T20:41:00Z",
-        "utc_time": "20:41",
         "weekday": "Wednesday"
       },
       {
@@ -3149,82 +3530,6 @@
         },
         "date": "2021-08-25",
         "market_open": true,
-        "next_minute_tick_count": 0,
-        "previous_minute_tick_count": 2,
-        "provider": "Dukascopy",
-        "root_cause_category": "ROLLOVER_ZERO_TICK",
-        "session": "ROLLOVER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T22:10:00Z",
-        "utc_time": "22:10",
-        "weekday": "Wednesday"
-      },
-      {
-        "around_daily_rollover": true,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-08-25",
-        "market_open": true,
-        "next_minute_tick_count": 6,
-        "previous_minute_tick_count": 0,
-        "provider": "Dukascopy",
-        "root_cause_category": "ROLLOVER_ZERO_TICK",
-        "session": "ROLLOVER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T22:11:00Z",
-        "utc_time": "22:11",
-        "weekday": "Wednesday"
-      },
-      {
-        "around_daily_rollover": true,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-08-25",
-        "market_open": true,
-        "next_minute_tick_count": 10,
-        "previous_minute_tick_count": 7,
-        "provider": "Dukascopy",
-        "root_cause_category": "ROLLOVER_ZERO_TICK",
-        "session": "ROLLOVER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T22:21:00Z",
-        "utc_time": "22:21",
-        "weekday": "Wednesday"
-      },
-      {
-        "around_daily_rollover": true,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-08-25",
-        "market_open": true,
-        "next_minute_tick_count": 4,
-        "previous_minute_tick_count": 10,
-        "provider": "Dukascopy",
-        "root_cause_category": "ROLLOVER_ZERO_TICK",
-        "session": "ROLLOVER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T22:23:00Z",
-        "utc_time": "22:23",
-        "weekday": "Wednesday"
-      },
-      {
-        "around_daily_rollover": true,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-08-25",
-        "market_open": true,
         "next_minute_tick_count": 4,
         "previous_minute_tick_count": 15,
         "provider": "Dukascopy",
@@ -3233,44 +3538,6 @@
         "symbol": "GBPUSD",
         "timestamp_utc": "2021-08-25T22:42:00Z",
         "utc_time": "22:42",
-        "weekday": "Wednesday"
-      },
-      {
-        "around_daily_rollover": true,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-08-25",
-        "market_open": true,
-        "next_minute_tick_count": 4,
-        "previous_minute_tick_count": 10,
-        "provider": "Dukascopy",
-        "root_cause_category": "ROLLOVER_ZERO_TICK",
-        "session": "ROLLOVER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T22:47:00Z",
-        "utc_time": "22:47",
-        "weekday": "Wednesday"
-      },
-      {
-        "around_daily_rollover": true,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-08-25",
-        "market_open": true,
-        "next_minute_tick_count": 2,
-        "previous_minute_tick_count": 2,
-        "provider": "Dukascopy",
-        "root_cause_category": "ROLLOVER_ZERO_TICK",
-        "session": "ROLLOVER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T22:53:00Z",
-        "utc_time": "22:53",
         "weekday": "Wednesday"
       },
       {
@@ -3302,63 +3569,6 @@
         "date": "2021-08-25",
         "market_open": true,
         "next_minute_tick_count": 1,
-        "previous_minute_tick_count": 1,
-        "provider": "Dukascopy",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T23:38:00Z",
-        "utc_time": "23:38",
-        "weekday": "Wednesday"
-      },
-      {
-        "around_daily_rollover": false,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-08-25",
-        "market_open": true,
-        "next_minute_tick_count": 0,
-        "previous_minute_tick_count": 1,
-        "provider": "Dukascopy",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T23:40:00Z",
-        "utc_time": "23:40",
-        "weekday": "Wednesday"
-      },
-      {
-        "around_daily_rollover": false,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-08-25",
-        "market_open": true,
-        "next_minute_tick_count": 0,
-        "previous_minute_tick_count": 0,
-        "provider": "Dukascopy",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T23:41:00Z",
-        "utc_time": "23:41",
-        "weekday": "Wednesday"
-      },
-      {
-        "around_daily_rollover": false,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-08-25",
-        "market_open": true,
-        "next_minute_tick_count": 1,
         "previous_minute_tick_count": 3,
         "provider": "Dukascopy",
         "root_cause_category": "OFF_SESSION_ZERO_TICK",
@@ -3366,25 +3576,6 @@
         "symbol": "GBPUSD",
         "timestamp_utc": "2021-08-25T23:41:00Z",
         "utc_time": "23:41",
-        "weekday": "Wednesday"
-      },
-      {
-        "around_daily_rollover": false,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-08-25",
-        "market_open": true,
-        "next_minute_tick_count": 4,
-        "previous_minute_tick_count": 0,
-        "provider": "Dukascopy",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T23:42:00Z",
-        "utc_time": "23:42",
         "weekday": "Wednesday"
       },
       {
@@ -3404,82 +3595,6 @@
         "symbol": "GBPUSD",
         "timestamp_utc": "2021-09-14T20:10:00Z",
         "utc_time": "20:10",
-        "weekday": "Tuesday"
-      },
-      {
-        "around_daily_rollover": false,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-09-14",
-        "market_open": true,
-        "next_minute_tick_count": 5,
-        "previous_minute_tick_count": 7,
-        "provider": "Dukascopy",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-09-14T20:21:00Z",
-        "utc_time": "20:21",
-        "weekday": "Tuesday"
-      },
-      {
-        "around_daily_rollover": false,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-09-14",
-        "market_open": true,
-        "next_minute_tick_count": 0,
-        "previous_minute_tick_count": 6,
-        "provider": "Dukascopy",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-09-14T20:25:00Z",
-        "utc_time": "20:25",
-        "weekday": "Tuesday"
-      },
-      {
-        "around_daily_rollover": false,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-09-14",
-        "market_open": true,
-        "next_minute_tick_count": 4,
-        "previous_minute_tick_count": 0,
-        "provider": "Dukascopy",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-09-14T20:26:00Z",
-        "utc_time": "20:26",
-        "weekday": "Tuesday"
-      },
-      {
-        "around_daily_rollover": false,
-        "cross_source_reference": {
-          "checked": true,
-          "present": true,
-          "provider": "HistData.com Generic ASCII M1"
-        },
-        "date": "2021-09-14",
-        "market_open": true,
-        "next_minute_tick_count": 4,
-        "previous_minute_tick_count": 6,
-        "provider": "Dukascopy",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-09-14T20:32:00Z",
-        "utc_time": "20:32",
         "weekday": "Tuesday"
       },
       {
@@ -3709,6 +3824,139 @@
         "timestamp_utc": "2021-09-30T22:37:00Z",
         "utc_time": "22:37",
         "weekday": "Thursday"
+      },
+      {
+        "around_daily_rollover": true,
+        "cross_source_reference": {
+          "checked": true,
+          "present": false,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-11-24",
+        "market_open": true,
+        "next_minute_tick_count": 1,
+        "previous_minute_tick_count": 1,
+        "provider": "Dukascopy",
+        "root_cause_category": "ROLLOVER_ZERO_TICK",
+        "session": "ROLLOVER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-11-24T22:02:00Z",
+        "utc_time": "22:02",
+        "weekday": "Wednesday"
+      },
+      {
+        "around_daily_rollover": true,
+        "cross_source_reference": {
+          "checked": true,
+          "present": false,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-11-24",
+        "market_open": true,
+        "next_minute_tick_count": 1,
+        "previous_minute_tick_count": 1,
+        "provider": "Dukascopy",
+        "root_cause_category": "ROLLOVER_ZERO_TICK",
+        "session": "ROLLOVER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-11-24T22:04:00Z",
+        "utc_time": "22:04",
+        "weekday": "Wednesday"
+      },
+      {
+        "around_daily_rollover": true,
+        "cross_source_reference": {
+          "checked": true,
+          "present": false,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-11-24",
+        "market_open": true,
+        "next_minute_tick_count": 2,
+        "previous_minute_tick_count": 1,
+        "provider": "Dukascopy",
+        "root_cause_category": "ROLLOVER_ZERO_TICK",
+        "session": "ROLLOVER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-11-24T22:07:00Z",
+        "utc_time": "22:07",
+        "weekday": "Wednesday"
+      },
+      {
+        "around_daily_rollover": true,
+        "cross_source_reference": {
+          "checked": true,
+          "present": false,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-11-24",
+        "market_open": true,
+        "next_minute_tick_count": 0,
+        "previous_minute_tick_count": 2,
+        "provider": "Dukascopy",
+        "root_cause_category": "ROLLOVER_ZERO_TICK",
+        "session": "ROLLOVER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-11-24T22:09:00Z",
+        "utc_time": "22:09",
+        "weekday": "Wednesday"
+      },
+      {
+        "around_daily_rollover": true,
+        "cross_source_reference": {
+          "checked": true,
+          "present": false,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-11-24",
+        "market_open": true,
+        "next_minute_tick_count": 0,
+        "previous_minute_tick_count": 0,
+        "provider": "Dukascopy",
+        "root_cause_category": "ROLLOVER_ZERO_TICK",
+        "session": "ROLLOVER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-11-24T22:10:00Z",
+        "utc_time": "22:10",
+        "weekday": "Wednesday"
+      },
+      {
+        "around_daily_rollover": true,
+        "cross_source_reference": {
+          "checked": true,
+          "present": false,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-11-24",
+        "market_open": true,
+        "next_minute_tick_count": 0,
+        "previous_minute_tick_count": 0,
+        "provider": "Dukascopy",
+        "root_cause_category": "ROLLOVER_ZERO_TICK",
+        "session": "ROLLOVER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-11-24T22:11:00Z",
+        "utc_time": "22:11",
+        "weekday": "Wednesday"
+      },
+      {
+        "around_daily_rollover": true,
+        "cross_source_reference": {
+          "checked": true,
+          "present": false,
+          "provider": "HistData.com Generic ASCII M1"
+        },
+        "date": "2021-11-24",
+        "market_open": true,
+        "next_minute_tick_count": 0,
+        "previous_minute_tick_count": 0,
+        "provider": "Dukascopy",
+        "root_cause_category": "ROLLOVER_ZERO_TICK",
+        "session": "ROLLOVER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-11-24T22:12:00Z",
+        "utc_time": "22:12",
+        "weekday": "Wednesday"
       }
     ],
     "pre_registered_exit_criteria": {
@@ -3735,11 +3983,11 @@
     },
     "recommendation": "CONTINUE_EVIDENCE_COLLECTION",
     "root_cause_categories": {
-      "OFF_SESSION_ZERO_TICK": 99,
-      "PRIMARY_SESSION_ZERO_TICK": 2,
-      "ROLLOVER_ZERO_TICK": 115
+      "OFF_SESSION_ZERO_TICK": 180,
+      "PRIMARY_SESSION_ZERO_TICK": 3,
+      "ROLLOVER_ZERO_TICK": 228
     },
-    "sample_days_cached_complete": 8,
+    "sample_days_cached_complete": 28,
     "sample_seed": 107,
     "sample_stratification": {
       "all_months_present": true,
@@ -3773,45 +4021,65 @@
         "QUIET_PERIOD_PROXY": 17
       }
     },
+    "source_calendar_exclusions": {
+      "excluded_expected_minutes": 960,
+      "policy": "DUKASCOPY_DST_FRIDAY_CLOSE_PROVIDER_CALENDAR_MISMATCH",
+      "status": "evidence-only exclusion; ST-C3 Dataset Contract unchanged",
+      "symbol_hour_count": 16,
+      "unique_hour_count": 8,
+      "unique_hours": [
+        "2021-04-16T21:00:00Z",
+        "2021-05-14T21:00:00Z",
+        "2021-07-02T21:00:00Z",
+        "2022-03-18T21:00:00Z",
+        "2022-04-08T21:00:00Z",
+        "2022-06-24T21:00:00Z",
+        "2022-07-01T21:00:00Z",
+        "2022-09-23T21:00:00Z"
+      ]
+    },
     "statistically_sufficient": false,
     "symbols": [
       {
-        "audited_days": 11,
-        "audited_hours": 262,
+        "audited_days": 31,
+        "audited_hours": 716,
         "distribution_by_hour_utc": {
-          "18": 1,
-          "19": 4,
-          "20": 10,
-          "21": 15,
-          "22": 48,
-          "23": 34,
-          "3": 5,
-          "4": 8,
-          "5": 1,
-          "6": 1,
+          "0": 3,
+          "17": 2,
+          "18": 6,
+          "19": 6,
+          "2": 3,
+          "20": 21,
+          "21": 26,
+          "22": 74,
+          "23": 46,
+          "3": 15,
+          "4": 19,
+          "5": 5,
+          "6": 2,
           "8": 1
         },
         "distribution_by_root_cause_category": {
-          "OFF_SESSION_ZERO_TICK": 64,
+          "OFF_SESSION_ZERO_TICK": 128,
           "PRIMARY_SESSION_ZERO_TICK": 1,
-          "ROLLOVER_ZERO_TICK": 63
+          "ROLLOVER_ZERO_TICK": 100
         },
         "distribution_by_session": {
           "LONDON": 1,
-          "OTHER": 64,
-          "ROLLOVER": 63
+          "OTHER": 128,
+          "ROLLOVER": 100
         },
         "distribution_by_weekday": {
-          "Friday": 1,
-          "Monday": 2,
-          "Thursday": 4,
-          "Tuesday": 80,
-          "Wednesday": 41
+          "Friday": 25,
+          "Monday": 20,
+          "Thursday": 26,
+          "Tuesday": 83,
+          "Wednesday": 75
         },
-        "expected_minutes": 15720,
+        "expected_minutes": 42960,
         "first_missing_minute": "2021-01-04T22:45:00Z",
-        "missing_minute_rate": 0.008142493638676845,
-        "missing_minutes": 128,
+        "missing_minute_rate": 0.0053305400372439474,
+        "missing_minutes": 229,
         "missing_observations": [
           {
             "around_daily_rollover": true,
@@ -4458,6 +4726,363 @@
             "timestamp_utc": "2021-04-13T23:44:00Z",
             "utc_time": "23:44",
             "weekday": "Tuesday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-04-16",
+            "market_open": true,
+            "next_minute_tick_count": 13,
+            "previous_minute_tick_count": 22,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-04-16T00:13:00Z",
+            "utc_time": "00:13",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-04-16",
+            "market_open": true,
+            "next_minute_tick_count": 20,
+            "previous_minute_tick_count": 1,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-04-16T04:50:00Z",
+            "utc_time": "04:50",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-04-16",
+            "market_open": true,
+            "next_minute_tick_count": 14,
+            "previous_minute_tick_count": 23,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-04-16T17:15:00Z",
+            "utc_time": "17:15",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-04-16",
+            "market_open": true,
+            "next_minute_tick_count": 20,
+            "previous_minute_tick_count": 17,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-04-16T17:50:00Z",
+            "utc_time": "17:50",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-04-16",
+            "market_open": true,
+            "next_minute_tick_count": 3,
+            "previous_minute_tick_count": 21,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-04-16T18:20:00Z",
+            "utc_time": "18:20",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-04-16",
+            "market_open": true,
+            "next_minute_tick_count": 0,
+            "previous_minute_tick_count": 9,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-04-16T18:29:00Z",
+            "utc_time": "18:29",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-04-16",
+            "market_open": true,
+            "next_minute_tick_count": 4,
+            "previous_minute_tick_count": 0,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-04-16T18:30:00Z",
+            "utc_time": "18:30",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-04-16",
+            "market_open": true,
+            "next_minute_tick_count": 10,
+            "previous_minute_tick_count": 8,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-04-16T20:05:00Z",
+            "utc_time": "20:05",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-04-16",
+            "market_open": true,
+            "next_minute_tick_count": 6,
+            "previous_minute_tick_count": 5,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-04-16T20:19:00Z",
+            "utc_time": "20:19",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-05-14",
+            "market_open": true,
+            "next_minute_tick_count": 10,
+            "previous_minute_tick_count": 22,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-05-14T03:41:00Z",
+            "utc_time": "03:41",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-05-14",
+            "market_open": true,
+            "next_minute_tick_count": 11,
+            "previous_minute_tick_count": 12,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-05-14T04:54:00Z",
+            "utc_time": "04:54",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-07-02",
+            "market_open": true,
+            "next_minute_tick_count": 2,
+            "previous_minute_tick_count": 1,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-07-02T03:53:00Z",
+            "utc_time": "03:53",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-07-02",
+            "market_open": true,
+            "next_minute_tick_count": 13,
+            "previous_minute_tick_count": 18,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-07-02T04:09:00Z",
+            "utc_time": "04:09",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-07-02",
+            "market_open": true,
+            "next_minute_tick_count": 4,
+            "previous_minute_tick_count": 10,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-07-02T04:52:00Z",
+            "utc_time": "04:52",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-07-02",
+            "market_open": true,
+            "next_minute_tick_count": 2,
+            "previous_minute_tick_count": 1,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-07-02T04:55:00Z",
+            "utc_time": "04:55",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-07-02",
+            "market_open": true,
+            "next_minute_tick_count": 19,
+            "previous_minute_tick_count": 12,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-07-02T05:20:00Z",
+            "utc_time": "05:20",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-07-02",
+            "market_open": true,
+            "next_minute_tick_count": 12,
+            "previous_minute_tick_count": 11,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-07-02T18:39:00Z",
+            "utc_time": "18:39",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-07-02",
+            "market_open": true,
+            "next_minute_tick_count": 8,
+            "previous_minute_tick_count": 12,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-07-02T18:41:00Z",
+            "utc_time": "18:41",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-07-02",
+            "market_open": true,
+            "next_minute_tick_count": 2,
+            "previous_minute_tick_count": 8,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-07-02T19:23:00Z",
+            "utc_time": "19:23",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-07-02",
+            "market_open": true,
+            "next_minute_tick_count": 17,
+            "previous_minute_tick_count": 3,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-07-02T19:30:00Z",
+            "utc_time": "19:30",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-07-02",
+            "market_open": true,
+            "next_minute_tick_count": 3,
+            "previous_minute_tick_count": 15,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "EURUSD",
+            "timestamp_utc": "2021-07-02T20:18:00Z",
+            "utc_time": "20:18",
+            "weekday": "Friday"
           },
           {
             "around_daily_rollover": false,
@@ -5155,363 +5780,6 @@
             "timestamp_utc": "2021-08-25T19:17:00Z",
             "utc_time": "19:17",
             "weekday": "Wednesday"
-          },
-          {
-            "around_daily_rollover": false,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-08-25",
-            "market_open": true,
-            "next_minute_tick_count": 8,
-            "previous_minute_tick_count": 2,
-            "provider": "Dukascopy",
-            "root_cause_category": "OFF_SESSION_ZERO_TICK",
-            "session": "OTHER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-08-25T19:26:00Z",
-            "utc_time": "19:26",
-            "weekday": "Wednesday"
-          },
-          {
-            "around_daily_rollover": false,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-08-25",
-            "market_open": true,
-            "next_minute_tick_count": 7,
-            "previous_minute_tick_count": 8,
-            "provider": "Dukascopy",
-            "root_cause_category": "OFF_SESSION_ZERO_TICK",
-            "session": "OTHER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-08-25T19:28:00Z",
-            "utc_time": "19:28",
-            "weekday": "Wednesday"
-          },
-          {
-            "around_daily_rollover": false,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-08-25",
-            "market_open": true,
-            "next_minute_tick_count": 8,
-            "previous_minute_tick_count": 9,
-            "provider": "Dukascopy",
-            "root_cause_category": "OFF_SESSION_ZERO_TICK",
-            "session": "OTHER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-08-25T20:22:00Z",
-            "utc_time": "20:22",
-            "weekday": "Wednesday"
-          },
-          {
-            "around_daily_rollover": false,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-08-25",
-            "market_open": true,
-            "next_minute_tick_count": 28,
-            "previous_minute_tick_count": 14,
-            "provider": "Dukascopy",
-            "root_cause_category": "OFF_SESSION_ZERO_TICK",
-            "session": "OTHER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-08-25T20:30:00Z",
-            "utc_time": "20:30",
-            "weekday": "Wednesday"
-          },
-          {
-            "around_daily_rollover": false,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-08-25",
-            "market_open": true,
-            "next_minute_tick_count": 0,
-            "previous_minute_tick_count": 3,
-            "provider": "Dukascopy",
-            "root_cause_category": "OFF_SESSION_ZERO_TICK",
-            "session": "OTHER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-08-25T20:36:00Z",
-            "utc_time": "20:36",
-            "weekday": "Wednesday"
-          },
-          {
-            "around_daily_rollover": false,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-08-25",
-            "market_open": true,
-            "next_minute_tick_count": 4,
-            "previous_minute_tick_count": 0,
-            "provider": "Dukascopy",
-            "root_cause_category": "OFF_SESSION_ZERO_TICK",
-            "session": "OTHER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-08-25T20:37:00Z",
-            "utc_time": "20:37",
-            "weekday": "Wednesday"
-          },
-          {
-            "around_daily_rollover": false,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-08-25",
-            "market_open": true,
-            "next_minute_tick_count": 7,
-            "previous_minute_tick_count": 1,
-            "provider": "Dukascopy",
-            "root_cause_category": "OFF_SESSION_ZERO_TICK",
-            "session": "OTHER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-08-25T20:41:00Z",
-            "utc_time": "20:41",
-            "weekday": "Wednesday"
-          },
-          {
-            "around_daily_rollover": true,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-08-25",
-            "market_open": true,
-            "next_minute_tick_count": 0,
-            "previous_minute_tick_count": 2,
-            "provider": "Dukascopy",
-            "root_cause_category": "ROLLOVER_ZERO_TICK",
-            "session": "ROLLOVER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-08-25T22:10:00Z",
-            "utc_time": "22:10",
-            "weekday": "Wednesday"
-          },
-          {
-            "around_daily_rollover": true,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-08-25",
-            "market_open": true,
-            "next_minute_tick_count": 6,
-            "previous_minute_tick_count": 0,
-            "provider": "Dukascopy",
-            "root_cause_category": "ROLLOVER_ZERO_TICK",
-            "session": "ROLLOVER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-08-25T22:11:00Z",
-            "utc_time": "22:11",
-            "weekday": "Wednesday"
-          },
-          {
-            "around_daily_rollover": true,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-08-25",
-            "market_open": true,
-            "next_minute_tick_count": 10,
-            "previous_minute_tick_count": 7,
-            "provider": "Dukascopy",
-            "root_cause_category": "ROLLOVER_ZERO_TICK",
-            "session": "ROLLOVER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-08-25T22:21:00Z",
-            "utc_time": "22:21",
-            "weekday": "Wednesday"
-          },
-          {
-            "around_daily_rollover": true,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-08-25",
-            "market_open": true,
-            "next_minute_tick_count": 4,
-            "previous_minute_tick_count": 10,
-            "provider": "Dukascopy",
-            "root_cause_category": "ROLLOVER_ZERO_TICK",
-            "session": "ROLLOVER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-08-25T22:23:00Z",
-            "utc_time": "22:23",
-            "weekday": "Wednesday"
-          },
-          {
-            "around_daily_rollover": true,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-08-25",
-            "market_open": true,
-            "next_minute_tick_count": 4,
-            "previous_minute_tick_count": 10,
-            "provider": "Dukascopy",
-            "root_cause_category": "ROLLOVER_ZERO_TICK",
-            "session": "ROLLOVER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-08-25T22:47:00Z",
-            "utc_time": "22:47",
-            "weekday": "Wednesday"
-          },
-          {
-            "around_daily_rollover": true,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-08-25",
-            "market_open": true,
-            "next_minute_tick_count": 2,
-            "previous_minute_tick_count": 2,
-            "provider": "Dukascopy",
-            "root_cause_category": "ROLLOVER_ZERO_TICK",
-            "session": "ROLLOVER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-08-25T22:53:00Z",
-            "utc_time": "22:53",
-            "weekday": "Wednesday"
-          },
-          {
-            "around_daily_rollover": false,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-08-25",
-            "market_open": true,
-            "next_minute_tick_count": 1,
-            "previous_minute_tick_count": 1,
-            "provider": "Dukascopy",
-            "root_cause_category": "OFF_SESSION_ZERO_TICK",
-            "session": "OTHER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-08-25T23:38:00Z",
-            "utc_time": "23:38",
-            "weekday": "Wednesday"
-          },
-          {
-            "around_daily_rollover": false,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-08-25",
-            "market_open": true,
-            "next_minute_tick_count": 0,
-            "previous_minute_tick_count": 1,
-            "provider": "Dukascopy",
-            "root_cause_category": "OFF_SESSION_ZERO_TICK",
-            "session": "OTHER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-08-25T23:40:00Z",
-            "utc_time": "23:40",
-            "weekday": "Wednesday"
-          },
-          {
-            "around_daily_rollover": false,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-08-25",
-            "market_open": true,
-            "next_minute_tick_count": 0,
-            "previous_minute_tick_count": 0,
-            "provider": "Dukascopy",
-            "root_cause_category": "OFF_SESSION_ZERO_TICK",
-            "session": "OTHER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-08-25T23:41:00Z",
-            "utc_time": "23:41",
-            "weekday": "Wednesday"
-          },
-          {
-            "around_daily_rollover": false,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-08-25",
-            "market_open": true,
-            "next_minute_tick_count": 4,
-            "previous_minute_tick_count": 0,
-            "provider": "Dukascopy",
-            "root_cause_category": "OFF_SESSION_ZERO_TICK",
-            "session": "OTHER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-08-25T23:42:00Z",
-            "utc_time": "23:42",
-            "weekday": "Wednesday"
-          },
-          {
-            "around_daily_rollover": false,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-09-14",
-            "market_open": true,
-            "next_minute_tick_count": 5,
-            "previous_minute_tick_count": 7,
-            "provider": "Dukascopy",
-            "root_cause_category": "OFF_SESSION_ZERO_TICK",
-            "session": "OTHER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-09-14T20:21:00Z",
-            "utc_time": "20:21",
-            "weekday": "Tuesday"
-          },
-          {
-            "around_daily_rollover": false,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-09-14",
-            "market_open": true,
-            "next_minute_tick_count": 0,
-            "previous_minute_tick_count": 6,
-            "provider": "Dukascopy",
-            "root_cause_category": "OFF_SESSION_ZERO_TICK",
-            "session": "OTHER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-09-14T20:25:00Z",
-            "utc_time": "20:25",
-            "weekday": "Tuesday"
-          },
-          {
-            "around_daily_rollover": false,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-09-14",
-            "market_open": true,
-            "next_minute_tick_count": 4,
-            "previous_minute_tick_count": 0,
-            "provider": "Dukascopy",
-            "root_cause_category": "OFF_SESSION_ZERO_TICK",
-            "session": "OTHER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-09-14T20:26:00Z",
-            "utc_time": "20:26",
-            "weekday": "Tuesday"
-          },
-          {
-            "around_daily_rollover": false,
-            "cross_source_reference": {
-              "checked": false
-            },
-            "date": "2021-09-14",
-            "market_open": true,
-            "next_minute_tick_count": 4,
-            "previous_minute_tick_count": 6,
-            "provider": "Dukascopy",
-            "root_cause_category": "OFF_SESSION_ZERO_TICK",
-            "session": "OTHER",
-            "symbol": "EURUSD",
-            "timestamp_utc": "2021-09-14T20:32:00Z",
-            "utc_time": "20:32",
-            "weekday": "Tuesday"
           }
         ],
         "missing_samples": [
@@ -5542,45 +5810,49 @@
           "2021-02-10T22:50:00Z"
         ],
         "symbol": "EURUSD",
-        "tick_count": 825962
+        "tick_count": 2829829
       },
       {
-        "audited_days": 11,
-        "audited_hours": 262,
+        "audited_days": 31,
+        "audited_hours": 716,
         "distribution_by_hour_utc": {
-          "0": 1,
+          "0": 3,
+          "1": 1,
+          "17": 1,
           "18": 2,
-          "19": 4,
-          "2": 3,
-          "20": 12,
-          "21": 37,
-          "22": 15,
-          "23": 7,
+          "19": 6,
+          "2": 4,
+          "20": 19,
+          "21": 58,
+          "22": 70,
+          "23": 9,
           "4": 2,
           "5": 4,
+          "6": 1,
+          "7": 1,
           "8": 1
         },
         "distribution_by_root_cause_category": {
-          "OFF_SESSION_ZERO_TICK": 35,
-          "PRIMARY_SESSION_ZERO_TICK": 1,
-          "ROLLOVER_ZERO_TICK": 52
+          "OFF_SESSION_ZERO_TICK": 52,
+          "PRIMARY_SESSION_ZERO_TICK": 2,
+          "ROLLOVER_ZERO_TICK": 128
         },
         "distribution_by_session": {
-          "LONDON": 1,
-          "OTHER": 35,
-          "ROLLOVER": 52
+          "LONDON": 2,
+          "OTHER": 52,
+          "ROLLOVER": 128
         },
         "distribution_by_weekday": {
-          "Friday": 2,
-          "Monday": 1,
-          "Thursday": 3,
-          "Tuesday": 63,
-          "Wednesday": 19
+          "Friday": 9,
+          "Monday": 19,
+          "Thursday": 43,
+          "Tuesday": 65,
+          "Wednesday": 46
         },
-        "expected_minutes": 15720,
+        "expected_minutes": 42960,
         "first_missing_minute": "2021-01-04T22:19:00Z",
-        "missing_minute_rate": 0.0055979643765903305,
-        "missing_minutes": 88,
+        "missing_minute_rate": 0.004236499068901303,
+        "missing_minutes": 182,
         "missing_observations": [
           {
             "around_daily_rollover": true,
@@ -6006,6 +6278,91 @@
             "timestamp_utc": "2021-04-13T22:24:00Z",
             "utc_time": "22:24",
             "weekday": "Tuesday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-04-16",
+            "market_open": true,
+            "next_minute_tick_count": 6,
+            "previous_minute_tick_count": 25,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "GBPUSD",
+            "timestamp_utc": "2021-04-16T17:48:00Z",
+            "utc_time": "17:48",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-05-14",
+            "market_open": true,
+            "next_minute_tick_count": 5,
+            "previous_minute_tick_count": 3,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "GBPUSD",
+            "timestamp_utc": "2021-05-14T20:09:00Z",
+            "utc_time": "20:09",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-05-14",
+            "market_open": true,
+            "next_minute_tick_count": 6,
+            "previous_minute_tick_count": 5,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "GBPUSD",
+            "timestamp_utc": "2021-05-14T20:11:00Z",
+            "utc_time": "20:11",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-05-14",
+            "market_open": true,
+            "next_minute_tick_count": 1,
+            "previous_minute_tick_count": 7,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "GBPUSD",
+            "timestamp_utc": "2021-05-14T20:16:00Z",
+            "utc_time": "20:16",
+            "weekday": "Friday"
+          },
+          {
+            "around_daily_rollover": false,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-07-02",
+            "market_open": true,
+            "next_minute_tick_count": 10,
+            "previous_minute_tick_count": 10,
+            "provider": "Dukascopy",
+            "root_cause_category": "OFF_SESSION_ZERO_TICK",
+            "session": "OTHER",
+            "symbol": "GBPUSD",
+            "timestamp_utc": "2021-07-02T20:18:00Z",
+            "utc_time": "20:18",
+            "weekday": "Friday"
           },
           {
             "around_daily_rollover": false,
@@ -7077,6 +7434,125 @@
             "timestamp_utc": "2021-09-30T22:37:00Z",
             "utc_time": "22:37",
             "weekday": "Thursday"
+          },
+          {
+            "around_daily_rollover": true,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-11-24",
+            "market_open": true,
+            "next_minute_tick_count": 1,
+            "previous_minute_tick_count": 1,
+            "provider": "Dukascopy",
+            "root_cause_category": "ROLLOVER_ZERO_TICK",
+            "session": "ROLLOVER",
+            "symbol": "GBPUSD",
+            "timestamp_utc": "2021-11-24T22:02:00Z",
+            "utc_time": "22:02",
+            "weekday": "Wednesday"
+          },
+          {
+            "around_daily_rollover": true,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-11-24",
+            "market_open": true,
+            "next_minute_tick_count": 1,
+            "previous_minute_tick_count": 1,
+            "provider": "Dukascopy",
+            "root_cause_category": "ROLLOVER_ZERO_TICK",
+            "session": "ROLLOVER",
+            "symbol": "GBPUSD",
+            "timestamp_utc": "2021-11-24T22:04:00Z",
+            "utc_time": "22:04",
+            "weekday": "Wednesday"
+          },
+          {
+            "around_daily_rollover": true,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-11-24",
+            "market_open": true,
+            "next_minute_tick_count": 2,
+            "previous_minute_tick_count": 1,
+            "provider": "Dukascopy",
+            "root_cause_category": "ROLLOVER_ZERO_TICK",
+            "session": "ROLLOVER",
+            "symbol": "GBPUSD",
+            "timestamp_utc": "2021-11-24T22:07:00Z",
+            "utc_time": "22:07",
+            "weekday": "Wednesday"
+          },
+          {
+            "around_daily_rollover": true,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-11-24",
+            "market_open": true,
+            "next_minute_tick_count": 0,
+            "previous_minute_tick_count": 2,
+            "provider": "Dukascopy",
+            "root_cause_category": "ROLLOVER_ZERO_TICK",
+            "session": "ROLLOVER",
+            "symbol": "GBPUSD",
+            "timestamp_utc": "2021-11-24T22:09:00Z",
+            "utc_time": "22:09",
+            "weekday": "Wednesday"
+          },
+          {
+            "around_daily_rollover": true,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-11-24",
+            "market_open": true,
+            "next_minute_tick_count": 0,
+            "previous_minute_tick_count": 0,
+            "provider": "Dukascopy",
+            "root_cause_category": "ROLLOVER_ZERO_TICK",
+            "session": "ROLLOVER",
+            "symbol": "GBPUSD",
+            "timestamp_utc": "2021-11-24T22:10:00Z",
+            "utc_time": "22:10",
+            "weekday": "Wednesday"
+          },
+          {
+            "around_daily_rollover": true,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-11-24",
+            "market_open": true,
+            "next_minute_tick_count": 0,
+            "previous_minute_tick_count": 0,
+            "provider": "Dukascopy",
+            "root_cause_category": "ROLLOVER_ZERO_TICK",
+            "session": "ROLLOVER",
+            "symbol": "GBPUSD",
+            "timestamp_utc": "2021-11-24T22:11:00Z",
+            "utc_time": "22:11",
+            "weekday": "Wednesday"
+          },
+          {
+            "around_daily_rollover": true,
+            "cross_source_reference": {
+              "checked": false
+            },
+            "date": "2021-11-24",
+            "market_open": true,
+            "next_minute_tick_count": 0,
+            "previous_minute_tick_count": 0,
+            "provider": "Dukascopy",
+            "root_cause_category": "ROLLOVER_ZERO_TICK",
+            "session": "ROLLOVER",
+            "symbol": "GBPUSD",
+            "timestamp_utc": "2021-11-24T22:12:00Z",
+            "utc_time": "22:12",
+            "weekday": "Wednesday"
           }
         ],
         "missing_samples": [
@@ -7107,17 +7583,17 @@
           "2021-04-13T22:24:00Z"
         ],
         "symbol": "GBPUSD",
-        "tick_count": 965375
+        "tick_count": 3248481
       }
     ],
     "target_sample_days": 100,
-    "total_expected_minutes": 31440,
-    "total_missing_minutes": 216,
+    "total_expected_minutes": 85920,
+    "total_missing_minutes": 411,
     "trading_day_population": 1298
   },
   "guardrail": "Statistical source integrity investigation does not change contracts, validators, approval, replay, or market data.",
   "next_action": "Acquire the deterministic 100-day evidence sample; do not change governance or approve data.",
-  "reason": "insufficient cached deterministic sample: 8/100 target days available",
+  "reason": "insufficient cached deterministic sample: 28/100 target days available",
   "stage": "source_integrity_statistical_investigation",
   "status": "BLOCKED"
 }

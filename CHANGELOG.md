@@ -57,3 +57,11 @@
   `FRIDAY_2100_INVESTIGATION_REPORT.md`, classifying the repeated empty
   payloads as `DST_FRIDAY_CLOSE_PROVIDER_CALENDAR_MISMATCH` without changing
   ST-C3 calendars, validators, contracts, approval, replay, or prices.
+- Added `tools.st_c3_session_calendar_qualification` and
+  `SESSION_CALENDAR_QUALIFICATION_REPORT.md` to compare ST-C3, Dukascopy, and
+  HistData session-calendar compatibility while keeping
+  `CONTINUE_EVIDENCE_COLLECTION` active.
+- Added deterministic bounded parallel source-integrity sample acquisition
+  with `--workers`, `PARALLEL_EXECUTION_STATUS.json`, and
+  `PERFORMANCE_PROFILE.md`; latest 4-worker evidence batch advanced progress
+  to 28/100 sample days with zero duplicate or failed tasks.

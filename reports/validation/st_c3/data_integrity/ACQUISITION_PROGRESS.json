@@ -1,24 +1,25 @@
 {
   "approval_status": "NOT_APPROVED",
-  "attempted_source_hours_latest_batch": 468,
-  "completed_sample_days": 8,
+  "attempted_source_hours_latest_batch": 186,
+  "completed_sample_days": 28,
   "coverage": {
     "from": "2021-01-01",
     "to": "2025-12-31"
   },
   "dataset_version": "Dataset_v1.0_5Y",
-  "downloaded_or_cached_source_hours_latest_batch": 462,
+  "downloaded_or_cached_source_hours_latest_batch": 186,
   "evidence_sprint": "source_integrity",
-  "failed_source_hours_latest_batch": 6,
-  "first_remaining_day": "2021-04-16",
+  "failed_source_hours_latest_batch": 0,
+  "first_remaining_day": "2022-10-27",
   "guardrail": "Evidence-sample acquisition downloads raw source files only; it does not approve data, change governance, or open replay.",
   "provider": "Dukascopy tick datafeed",
+  "provider_calendar_excluded_source_hours_latest_batch": 2,
   "recommendation": "CONTINUE_EVIDENCE_COLLECTION",
-  "remaining_sample_days": 92,
+  "remaining_sample_days": 72,
   "replay_status": "BLOCKED",
   "sample_seed": 107,
   "stage": "source_integrity_sample_acquisition",
-  "status": "BLOCKED",
+  "status": "IN_PROGRESS",
   "target_sample_days": 100,
   "validation_status": "SOURCE_INTEGRITY_EVIDENCE_COLLECTION"
 }

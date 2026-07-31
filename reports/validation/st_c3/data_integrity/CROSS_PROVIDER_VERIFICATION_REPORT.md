@@ -12,11 +12,11 @@ Guardrail: Cross-provider verification is evidence only; it never replaces Dukas
 
 - Source report: `reports\validation\st_c3\data_integrity\SOURCE_INTEGRITY_STATISTICAL_REPORT.json`
 - Source status: `BLOCKED`
-- Observations checked: `188`
-- By conclusion: `{'DUKASCOPY_AND_REFERENCE_ABSENT': 42, 'DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT': 146}`
-- By symbol: `{'EURUSD': 100, 'GBPUSD': 88}`
-- By session: `{'LONDON': 2, 'OTHER': 83, 'ROLLOVER': 103}`
-- By root-cause category: `{'OFF_SESSION_ZERO_TICK': 83, 'PRIMARY_SESSION_ZERO_TICK': 2, 'ROLLOVER_ZERO_TICK': 103}`
+- Observations checked: `200`
+- By conclusion: `{'DUKASCOPY_AND_REFERENCE_ABSENT': 49, 'DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT': 151}`
+- By symbol: `{'EURUSD': 100, 'GBPUSD': 100}`
+- By session: `{'LONDON': 2, 'OTHER': 94, 'ROLLOVER': 104}`
+- By root-cause category: `{'OFF_SESSION_ZERO_TICK': 94, 'PRIMARY_SESSION_ZERO_TICK': 2, 'ROLLOVER_ZERO_TICK': 104}`
 
 ## Findings
 
@@ -85,6 +85,32 @@ Guardrail: Cross-provider verification is evidence only; it never replaces Dukas
 | `2021-04-13T22:26:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-04-13T23:43:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-04-13T23:44:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-04-16T00:13:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-04-16T04:50:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-04-16T17:15:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-04-16T17:48:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-04-16T17:50:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-04-16T18:20:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-04-16T18:29:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-04-16T18:30:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-04-16T20:05:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-04-16T20:19:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-05-14T03:41:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-05-14T04:54:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-05-14T20:09:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-05-14T20:11:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-05-14T20:16:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-07-02T03:53:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-07-02T04:09:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-07-02T04:52:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-07-02T04:55:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-07-02T05:20:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-07-02T18:39:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-07-02T18:41:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-07-02T19:23:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-07-02T19:30:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-07-02T20:18:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-07-02T20:18:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-07-27T03:36:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-07-27T04:29:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-07-27T19:11:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
@@ -168,36 +194,15 @@ Guardrail: Cross-provider verification is evidence only; it never replaces Dukas
 | `2021-08-25T18:50:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-08-25T19:17:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-08-25T19:17:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-08-25T19:26:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-08-25T19:28:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-08-25T19:34:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-08-25T19:36:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-08-25T20:22:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-08-25T20:23:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-08-25T20:30:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-08-25T20:36:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-08-25T20:37:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-08-25T20:41:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-08-25T20:46:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-08-25T21:16:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-08-25T22:10:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-08-25T22:11:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-08-25T22:21:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-08-25T22:23:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-08-25T22:42:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-08-25T22:47:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-08-25T22:53:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-08-25T23:31:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-08-25T23:38:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-08-25T23:40:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-08-25T23:41:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-08-25T23:41:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-08-25T23:42:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-09-14T20:10:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-09-14T20:21:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-09-14T20:25:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-09-14T20:26:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
-| `2021-09-14T20:32:00Z` | `EURUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-09-14T21:13:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-09-14T21:14:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-09-14T21:27:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
@@ -210,6 +215,13 @@ Guardrail: Cross-provider verification is evidence only; it never replaces Dukas
 | `2021-09-30T21:26:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-09-30T22:36:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
 | `2021-09-30T22:37:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp present | `DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT` |
+| `2021-11-24T22:02:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp absent | `DUKASCOPY_AND_REFERENCE_ABSENT` |
+| `2021-11-24T22:04:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp absent | `DUKASCOPY_AND_REFERENCE_ABSENT` |
+| `2021-11-24T22:07:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp absent | `DUKASCOPY_AND_REFERENCE_ABSENT` |
+| `2021-11-24T22:09:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp absent | `DUKASCOPY_AND_REFERENCE_ABSENT` |
+| `2021-11-24T22:10:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp absent | `DUKASCOPY_AND_REFERENCE_ABSENT` |
+| `2021-11-24T22:11:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp absent | `DUKASCOPY_AND_REFERENCE_ABSENT` |
+| `2021-11-24T22:12:00Z` | `GBPUSD` | zero ticks in reconstructed M1 source minute | `HistData.com Generic ASCII M1`: timestamp absent | `DUKASCOPY_AND_REFERENCE_ABSENT` |
 
 ## Decision
 

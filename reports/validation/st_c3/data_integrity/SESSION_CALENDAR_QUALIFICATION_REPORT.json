@@ -1,0 +1,116 @@
+{
+  "details": {
+    "comparison_matrix": [
+      {
+        "Dukascopy": "observed Friday 22:00 UTC in winter and Friday 21:00 UTC during DST",
+        "HistData": "cached reference shows many DST Friday 21:00 UTC rows and zero Friday 22:00 UTC rows in the focused probes",
+        "ST-C3 Dataset Contract": "Friday 22:00 UTC year-round by current loader",
+        "criterion": "trading_week_close_utc"
+      },
+      {
+        "Dukascopy": "official Dukascopy notice says FX trading day/opening/settlement changes from 22:00 GMT to 21:00 GMT during US DST",
+        "HistData": "official FAQ says CSV timestamps use EST without daylight-saving adjustments",
+        "ST-C3 Dataset Contract": "no DST adjustment encoded",
+        "criterion": "dst_behavior"
+      },
+      {
+        "Dukascopy": "provider opening/settlement shifts with US DST per official notice",
+        "HistData": "not fully qualified for ST-C3 sample",
+        "ST-C3 Dataset Contract": "22:00 UTC treated as rollover evidence bucket in source-integrity tooling",
+        "criterion": "daily_rollover_time"
+      },
+      {
+        "Dukascopy": "not fully qualified for ST-C3 sample",
+        "HistData": "not fully qualified for ST-C3 sample",
+        "ST-C3 Dataset Contract": "weekends plus fixed Jan 1 and Dec 25 closures",
+        "criterion": "holiday_handling"
+      },
+      {
+        "Dukascopy": "{'Friday 20:00 PARSED': 10, 'Friday 21:00 EMPTY_PAYLOAD': 8, 'Friday 21:00 PARSED': 2, 'Friday 22:00 EMPTY_PAYLOAD': 8, 'Monday 21:00 PARSED': 2}",
+        "HistData": "{'DUKASCOPY_AND_REFERENCE_ABSENT': 49, 'DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT': 151}",
+        "ST-C3 Dataset Contract": "weekend/fixed-holiday closure only; market-open missing timestamps block approval",
+        "criterion": "expected_zero_tick_periods"
+      },
+      {
+        "Dukascopy": "tick source; zero-byte source hours observed at DST Friday 21:00 UTC",
+        "HistData": "M1 bar files; methodology for zero-volume/carry-forward bars remains unqualified",
+        "ST-C3 Dataset Contract": "all required fixed-timeframe candles must exist; no fabrication/interpolation",
+        "criterion": "bar_generation_policy"
+      },
+      {
+        "Dukascopy": "DST_FRIDAY_CLOSE_PROVIDER_CALENDAR_MISMATCH",
+        "HistData": "fixed EST timestamp convention converted to UTC in current reference tooling",
+        "ST-C3 Dataset Contract": "UTC-only fixed boundaries",
+        "criterion": "session_boundary_conventions"
+      },
+      {
+        "Dukascopy": "session mismatch with current fixed-UTC ST-C3 Friday close assumption",
+        "HistData": "closer to current fixed Friday 22:00 UTC assumption for probed DST Friday close, but full suitability remains unqualified",
+        "ST-C3 Dataset Contract": "baseline contract, not a provider",
+        "criterion": "compatibility_assessment"
+      }
+    ],
+    "decision_layer": {
+      "data_completeness": "not final until 100-day deterministic source-integrity sample completes",
+      "provider_freeze_rule": "after provider selection, use one canonical data source and session calendar for all ST-C3 v1.x validation stages",
+      "session_compatibility": "not final until provider calendars are reviewed against ST-C3 replay assumptions"
+    },
+    "profiles": {
+      "Dukascopy": {
+        "bar_generation_policy": "tick source; zero-byte source hours observed at DST Friday 21:00 UTC",
+        "basis": "official DST notice plus live probes",
+        "compatibility_assessment": "session mismatch with current fixed-UTC ST-C3 Friday close assumption",
+        "daily_rollover_time": "provider opening/settlement shifts with US DST per official notice",
+        "dst_behavior": "official Dukascopy notice says FX trading day/opening/settlement changes from 22:00 GMT to 21:00 GMT during US DST",
+        "expected_zero_tick_periods": {
+          "Friday 20:00 PARSED": 10,
+          "Friday 21:00 EMPTY_PAYLOAD": 8,
+          "Friday 21:00 PARSED": 2,
+          "Friday 22:00 EMPTY_PAYLOAD": 8,
+          "Monday 21:00 PARSED": 2
+        },
+        "holiday_handling": "not fully qualified for ST-C3 sample",
+        "session_boundary_conventions": "DST_FRIDAY_CLOSE_PROVIDER_CALENDAR_MISMATCH",
+        "trading_week_close_utc": "observed Friday 22:00 UTC in winter and Friday 21:00 UTC during DST"
+      },
+      "HistData": {
+        "bar_generation_policy": "M1 bar files; methodology for zero-volume/carry-forward bars remains unqualified",
+        "basis": "FAQ plus cached M1 reference comparison",
+        "compatibility_assessment": "closer to current fixed Friday 22:00 UTC assumption for probed DST Friday close, but full suitability remains unqualified",
+        "daily_rollover_time": "not fully qualified for ST-C3 sample",
+        "dst_behavior": "official FAQ says CSV timestamps use EST without daylight-saving adjustments",
+        "expected_zero_tick_periods": {
+          "DUKASCOPY_AND_REFERENCE_ABSENT": 49,
+          "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT": 151
+        },
+        "holiday_handling": "not fully qualified for ST-C3 sample",
+        "session_boundary_conventions": "fixed EST timestamp convention converted to UTC in current reference tooling",
+        "trading_week_close_utc": "cached reference shows many DST Friday 21:00 UTC rows and zero Friday 22:00 UTC rows in the focused probes"
+      },
+      "ST-C3 Dataset Contract": {
+        "bar_generation_policy": "all required fixed-timeframe candles must exist; no fabrication/interpolation",
+        "basis": "contract/loader",
+        "compatibility_assessment": "baseline contract, not a provider",
+        "daily_rollover_time": "22:00 UTC treated as rollover evidence bucket in source-integrity tooling",
+        "dst_behavior": "no DST adjustment encoded",
+        "expected_zero_tick_periods": "weekend/fixed-holiday closure only; market-open missing timestamps block approval",
+        "holiday_handling": "weekends plus fixed Jan 1 and Dec 25 closures",
+        "session_boundary_conventions": "UTC-only fixed boundaries",
+        "trading_week_close_utc": "Friday 22:00 UTC year-round by current loader"
+      }
+    },
+    "research_question": "Which provider's trading calendar matches the assumptions encoded in the ST-C3 Dataset Contract?",
+    "sources": {
+      "dukascopy_dst": "https://www.dukascopy.com/swiss/english/about/ournews/daylight-saving-time-2025-in-the-us",
+      "dukascopy_hours": "https://www.dukascopy.com/swiss/english/fx-market-tools/forex-market-hours/",
+      "histdata_timezone": "https://www.histdata.com/f-a-q/",
+      "st_c3_contract": "contracts/DATASET_CONTRACT.yaml and validation/st_c3/dataset_loader.py"
+    }
+  },
+  "guardrail": "Session calendar qualification is evidence only; it does not change ST-C3 contracts, validators, approval, replay, or prices.",
+  "next_action": "Continue evidence collection and perform governed calendar/source-policy review before provider decision.",
+  "reason": "session-calendar compatibility is not yet qualified; source-integrity sample remains incomplete",
+  "recommendation": "CONTINUE_EVIDENCE_COLLECTION",
+  "stage": "session_calendar_qualification",
+  "status": "BLOCKED"
+}

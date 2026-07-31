@@ -233,18 +233,16 @@ Findings:
 
 - Target sample: 100 deterministic trading days across `2021-01-01` through
   `2025-12-31`
-- Deterministic sample days cached complete: 8 of 100
-- Audited cached days: 11
-- Total expected audited M1 minutes: 31,440
-- Total missing audited M1 minutes: 216
-- Missing minute rate: `0.006870229007633588`
+- Deterministic sample days cached complete: 28 of 100
+- Audited cached days: 31
+- Total expected audited M1 minutes: 85,920
+- Total missing audited M1 minutes: 411
+- Missing minute rate: `0.004783519553072626`
 - Missing-minute-rate 95% confidence interval:
-  `0.006015492553545249..0.007845455683058679`
-- Root-cause categories: 115 `ROLLOVER_ZERO_TICK`,
-  99 `OFF_SESSION_ZERO_TICK`, 2 `PRIMARY_SESSION_ZERO_TICK`
+  `0.004343785742805563..0.0052675333602455`
 - Cross-provider comparison for anomalous timestamps:
-  188 checked against cached HistData M1 reference rows, with 146 reference
-  timestamps present and 42 reference timestamps absent
+  200 checked against cached HistData M1 reference rows, with 151 reference
+  timestamps present and 49 reference timestamps absent
 - Evidence-sample acquisition is blocked on repeated empty Dukascopy payloads
   for Friday `21:00 UTC` hours on `2021-04-16`, `2021-05-14`, and
   `2021-07-02` for both symbols
@@ -264,9 +262,40 @@ Conclusion:
 The evidence remains insufficient for provider acceptance or rejection. The
 expanded sample shows both confirmed zero-tick minutes across Dukascopy and
 HistData and timestamps where HistData has an M1 row while Dukascopy has zero
-ticks. The immediate blocker is now the repeated Friday `21:00 UTC` empty
-payload behavior in the deterministic sample. Treat that as source/calendar
-evidence and resolve it before continuing large evidence batches.
+ticks. The immediate execution path is to continue the deterministic sample
+using the evidence-only Dukascopy DST Friday close source-hour exclusion while
+preserving the ST-C3 Dataset Contract unchanged.
+
+## Parallel Evidence Collection
+
+Status: **IN_PROGRESS**
+
+Command:
+
+```powershell
+python -m tools.st_c3_acquire_source_integrity_sample --max-days 4 --workers 4 --retries 3
+```
+
+Outputs:
+
+- `reports/validation/st_c3/data_integrity/PARALLEL_EXECUTION_STATUS.json`
+- `reports/validation/st_c3/data_integrity/PERFORMANCE_PROFILE.md`
+- `reports/validation/st_c3/data_integrity/PERFORMANCE_PROFILE.json`
+
+Latest parallel batch:
+
+- Completed sample progress: 24 of 100 to 28 of 100
+- Planned source tasks: 186
+- Completed source tasks: 186
+- Duplicate task count: 0
+- Failed source tasks: 0
+- Workers: 4
+- Elapsed seconds: `102.5809900000022`
+- Throughput: `108.79208711087463` source hours/minute
+- Provider-calendar excluded source hours: 2
+
+Sequential mode remains available by omitting `--workers` or setting
+`--workers 1`.
 
 ## Cross-Provider Verification
 
@@ -329,6 +358,41 @@ The repeated source-hour failures are reproducible and localized. The evidence
 supports a provider/calendar mismatch during DST Friday close handling, not a
 decompression, parser, or generic downloader defect. No calendar, contract, or
 validator change has been made.
+
+## Session Calendar Qualification
+
+Status: **BLOCKED / IN PROGRESS**
+
+Command:
+
+```powershell
+python -m tools.st_c3_session_calendar_qualification
+```
+
+Output:
+
+- `reports/validation/st_c3/data_integrity/SESSION_CALENDAR_QUALIFICATION_REPORT.md`
+- `reports/validation/st_c3/data_integrity/SESSION_CALENDAR_QUALIFICATION_REPORT.json`
+
+Research question:
+
+Which provider's trading calendar matches the assumptions encoded in the
+ST-C3 Dataset Contract?
+
+Interim findings:
+
+- ST-C3 currently encodes a fixed UTC calendar with Friday close at
+  `22:00 UTC` and no DST adjustment.
+- Dukascopy official DST notices and live probes indicate Friday close/opening
+  behavior shifts to `21:00 UTC` during US DST.
+- HistData documents EST timestamps without daylight-saving adjustments, and
+  cached reference rows are present for many DST Friday `21:00 UTC` periods.
+- HistData bar-generation methodology remains unqualified for canonical use.
+
+Decision layer:
+
+Provider selection must evaluate both data completeness and session-calendar
+compatibility. No provider is accepted or rejected by this report.
 
 ## Approval Status
 

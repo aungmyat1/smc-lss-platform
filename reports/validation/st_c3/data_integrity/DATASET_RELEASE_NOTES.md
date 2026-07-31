@@ -89,16 +89,14 @@ The statistical evidence gate now audits the currently cached deterministic
 sample days plus cached pilot evidence:
 
 - Target sample: 100 deterministic trading days
-- Deterministic sample days cached complete: 8 of 100
-- Audited cached days: 11
-- Missing audited M1 minutes: 216 of 31,440
-- Missing minute rate: `0.006870229007633588`
+- Deterministic sample days cached complete: 28 of 100
+- Audited cached days: 31
+- Missing audited M1 minutes: 411 of 85,920
+- Missing minute rate: `0.004783519553072626`
 - 95% confidence interval:
-  `0.006015492553545249..0.007845455683058679`
-- Root-cause categories: 115 `ROLLOVER_ZERO_TICK`,
-  99 `OFF_SESSION_ZERO_TICK`, 2 `PRIMARY_SESSION_ZERO_TICK`
-- Cross-provider anomalous-timestamp checks: 188 checked, 146 present in
-  HistData M1, 42 absent in HistData M1
+  `0.004343785742805563..0.0052675333602455`
+- Cross-provider anomalous-timestamp checks: 200 checked, 151 present in
+  HistData M1, 49 absent in HistData M1
 - Evidence-sample acquisition is blocked by repeated empty Dukascopy payloads
   for Friday `21:00 UTC` hours on `2021-04-16`, `2021-05-14`, and
   `2021-07-02`
@@ -111,6 +109,9 @@ Generated reports:
 - `SOURCE_INTEGRITY_SAMPLE_ACQUISITION.md`
 - `CROSS_PROVIDER_VERIFICATION_REPORT.md`
 - `FRIDAY_2100_INVESTIGATION_REPORT.md`
+- `SESSION_CALENDAR_QUALIFICATION_REPORT.md`
+- `PARALLEL_EXECUTION_STATUS.json`
+- `PERFORMANCE_PROFILE.md`
 
 Recommendation remains:
 
@@ -130,6 +131,33 @@ M1 contains rows for many of the DST Friday `21:00 UTC` reference hours.
 This supports a provider/calendar-policy divergence around DST Friday close,
 not a parser, decompression, or generic downloader defect. No contract,
 validator, approval, replay, or historical-price change was made.
+
+## Session Calendar Qualification
+
+Status: **BLOCKED / IN PROGRESS**
+
+The session-calendar report compares ST-C3 contract assumptions, Dukascopy
+observed/official DST behavior, and HistData reference behavior. It separates
+provider evaluation into two dimensions:
+
+- data completeness
+- session compatibility
+
+The report does not accept or reject a provider. It keeps
+`CONTINUE_EVIDENCE_COLLECTION` active and preserves the current blocked
+approval/replay posture.
+
+## Source Integrity Acceleration
+
+Status: **IN_PROGRESS**
+
+The evidence acquisition workflow now supports deterministic bounded
+parallelism with configurable worker count. The latest 4-worker batch advanced
+the deterministic sample from 24 of 100 to 28 of 100 days, completed 186
+source-hour tasks, recorded zero duplicate tasks, and recorded zero failures.
+
+Sequential mode remains supported. No market data, contract, validator,
+approval gate, replay logic, or strategy logic was changed.
 - Distribution: mostly rollover, with two observed GBPUSD pilot gaps outside
   rollover on the first deterministic sample day
 - Root-cause categories: 21 `ROLLOVER_ZERO_TICK`, 2 `OFF_SESSION_ZERO_TICK`

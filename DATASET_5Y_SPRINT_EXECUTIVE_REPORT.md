@@ -135,17 +135,15 @@ pilot cache.
 Evidence:
 
 - Target sample: 100 deterministic trading days across 2021-2025
-- Deterministic target sample days cached complete: 8 of 100
-- Audited cached days: 11
-- Total expected audited M1 minutes: 31,440
-- Total missing audited M1 minutes: 216
-- Missing minute rate: `0.006870229007633588`
+- Deterministic target sample days cached complete: 28 of 100
+- Audited cached days: 31
+- Total expected audited M1 minutes: 85,920
+- Total missing audited M1 minutes: 411
+- Missing minute rate: `0.004783519553072626`
 - Missing-minute-rate 95% confidence interval:
-  `0.006015492553545249..0.007845455683058679`
-- Root-cause categories: 115 `ROLLOVER_ZERO_TICK`,
-  99 `OFF_SESSION_ZERO_TICK`, 2 `PRIMARY_SESSION_ZERO_TICK`
-- Cross-provider anomalous-timestamp verification: 188 observations checked,
-  146 present in HistData M1 and 42 absent in HistData M1
+  `0.004343785742805563..0.0052675333602455`
+- Cross-provider anomalous-timestamp verification: 200 observations checked,
+  151 present in HistData M1 and 49 absent in HistData M1
 - Evidence acquisition blocked on repeated empty Dukascopy payloads for Friday
   `21:00 UTC` hours on `2021-04-16`, `2021-05-14`, and `2021-07-02`
 - Focused Friday `21:00 UTC` investigation classified the repeated failures as
@@ -155,10 +153,37 @@ Evidence:
   symbol/hour, root-cause categories, contextual missing-minute observations,
   and cross-provider verification for anomalous timestamps
 
-The evidence remains statistically insufficient because only 8 of 100
+The evidence remains statistically insufficient because only 28 of 100
 deterministic sample days are complete. The active recommendation is evidence
-collection, with the next engineering question narrowed to the repeated Friday
-`21:00 UTC` empty-payload behavior before larger sample batches continue.
+collection, now accelerated with bounded parallel acquisition and the
+evidence-only Dukascopy DST Friday close source-hour exclusion.
+
+## Performance Improvements
+
+Source-integrity sample acquisition now supports configurable bounded
+parallelism while preserving deterministic sample ordering, idempotent cache
+reuse, and resumable checkpoints.
+
+Latest parallel batch:
+
+- Command: `python -m tools.st_c3_acquire_source_integrity_sample --max-days 4 --workers 4 --retries 3`
+- Progress advanced from 24 of 100 to 28 of 100 deterministic sample days
+- Planned tasks: 186
+- Completed tasks: 186
+- Duplicate task count: 0
+- Failed tasks: 0
+- Worker distribution: 47, 47, 46, 46 tasks
+- Elapsed seconds: `102.5809900000022`
+- Throughput: `108.79208711087463` source hours/minute
+- Parallel efficiency proxy: `0.9382022977648651`
+
+Generated:
+
+- `reports/validation/st_c3/data_integrity/PARALLEL_EXECUTION_STATUS.json`
+- `reports/validation/st_c3/data_integrity/PERFORMANCE_PROFILE.md`
+- `reports/validation/st_c3/data_integrity/PERFORMANCE_PROFILE.json`
+
+Sequential mode remains the compatibility path through `--workers 1`.
 
 ## Cross-Provider Findings
 
@@ -206,6 +231,32 @@ The evidence narrows the repeated sample-acquisition blocker to provider
 calendar/policy behavior around DST Friday close. This is not a provider
 decision and does not change the ST-C3 calendar, contract, validator, approval
 state, or replay state.
+
+## Session Calendar Qualification
+
+Session calendar qualification result: `BLOCKED / IN PROGRESS`
+
+Generated:
+
+- `reports/validation/st_c3/data_integrity/SESSION_CALENDAR_QUALIFICATION_REPORT.md`
+- `reports/validation/st_c3/data_integrity/SESSION_CALENDAR_QUALIFICATION_REPORT.json`
+
+Interim comparison:
+
+- ST-C3 Dataset Contract: fixed UTC calendar, Friday close at `22:00 UTC`,
+  no DST adjustment encoded.
+- Dukascopy: official DST notices and live probes support a `21:00 UTC`
+  Friday close/opening behavior during US DST.
+- HistData: official FAQ documents EST timestamps without daylight-saving
+  adjustments; cached M1 reference rows are present for many DST Friday
+  `21:00 UTC` periods, but bar-generation policy remains unqualified.
+
+Provider selection now has two independent decision dimensions:
+
+- data completeness
+- session-calendar compatibility with ST-C3 replay assumptions
+
+No provider is accepted or rejected by this report.
 
 ## Dataset Approval
 
@@ -270,12 +321,19 @@ passed. Statistical validation remains locked.
 - `reports/validation/st_c3/data_integrity/CROSS_PROVIDER_VERIFICATION_REPORT.md`
 - `reports/validation/st_c3/data_integrity/FRIDAY_2100_INVESTIGATION_REPORT.json`
 - `reports/validation/st_c3/data_integrity/FRIDAY_2100_INVESTIGATION_REPORT.md`
+- `reports/validation/st_c3/data_integrity/SESSION_CALENDAR_QUALIFICATION_REPORT.json`
+- `reports/validation/st_c3/data_integrity/SESSION_CALENDAR_QUALIFICATION_REPORT.md`
+- `reports/validation/st_c3/data_integrity/PARALLEL_EXECUTION_STATUS.json`
+- `reports/validation/st_c3/data_integrity/PERFORMANCE_PROFILE.json`
+- `reports/validation/st_c3/data_integrity/PERFORMANCE_PROFILE.md`
 - `tools/st_c3_acquire_source_integrity_sample.py`
 - `tools/st_c3_cross_provider_verification.py`
 - `tools/st_c3_investigate_friday_2100.py`
+- `tools/st_c3_session_calendar_qualification.py`
 - `tests/test_st_c3_source_integrity_sample_acquisition.py`
 - `tests/test_st_c3_cross_provider_verification.py`
 - `tests/test_st_c3_friday_2100_investigation.py`
+- `tests/test_st_c3_session_calendar_qualification.py`
 - `reports/validation/st_c3/data_integrity/DATA_INTEGRITY_REPORT.md`
 - `reports/validation/st_c3/data_integrity/VALIDATION_SUMMARY.md`
 - `reports/validation/st_c3/data_integrity/RECOVERY_LOG.md`

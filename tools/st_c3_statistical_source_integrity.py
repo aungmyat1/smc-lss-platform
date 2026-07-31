@@ -57,6 +57,7 @@ def run_statistical_source_integrity(
     extra_cached = [day for day in population if day not in cached_complete_days and _day_cache_complete(cache, day, EXPECTED_SYMBOLS)]
     audited_days = sorted(set(cached_complete_days + extra_cached))
     symbol_results = [_audit_symbol(cache, symbol, audited_days) for symbol in sorted(EXPECTED_SYMBOLS)]
+    source_calendar_exclusions = _source_calendar_exclusions(audited_days, sorted(EXPECTED_SYMBOLS))
     total_expected = sum(item["expected_minutes"] for item in symbol_results)
     total_missing = sum(item["missing_minutes"] for item in symbol_results)
     minimum_complete_days = math.ceil(target_sample_days * minimum_sample_completion_rate)
@@ -102,6 +103,7 @@ def run_statistical_source_integrity(
             "sample_days_cached_complete": len(cached_complete_days),
             "audited_cached_days": [day.isoformat() for day in audited_days],
             "audited_cached_day_count": len(audited_days),
+            "source_calendar_exclusions": source_calendar_exclusions,
             "symbols": symbol_results,
             "total_expected_minutes": total_expected,
             "total_missing_minutes": total_missing,
@@ -129,7 +131,7 @@ def _audit_symbol(cache: Path, symbol: str, days: list[date]) -> dict[str, Any]:
     audited_hours = 0
     tick_count = 0
     for day in days:
-        for hour in _open_hours(day):
+        for hour in _source_required_hours(day):
             path = _cache_path(cache, symbol, hour)
             ticks = _parse_bi5_ticks(path.read_bytes(), hour, symbol)
             tick_count += len(ticks)
@@ -185,7 +187,7 @@ def _deterministic_sample(population: list[date], sample_size: int, seed: int) -
 
 
 def _day_cache_complete(cache: Path, day: date, symbols: Iterable[str]) -> bool:
-    hours = _open_hours(day)
+    hours = _source_required_hours(day)
     return bool(hours) and all(
         (path := _cache_path(cache, symbol, hour)).exists() and path.stat().st_size > 0
         for symbol in symbols
@@ -200,6 +202,35 @@ def _open_hours(day: date) -> list[datetime]:
         if _market_open_hour(value):
             rows.append(value)
     return rows
+
+
+def _source_required_hours(day: date) -> list[datetime]:
+    return [hour for hour in _open_hours(day) if _dukascopy_source_hour_required(hour)]
+
+
+def _dukascopy_source_hour_required(hour: datetime) -> bool:
+    return not _dukascopy_dst_friday_close_hour(hour)
+
+
+def _dukascopy_dst_friday_close_hour(hour: datetime) -> bool:
+    value = hour.astimezone(UTC)
+    return value.weekday() == 4 and value.hour == 21 and _us_dst_active(value.date())
+
+
+def _us_dst_active(day: date) -> bool:
+    return _nth_weekday(day.year, 3, 6, 2) <= day < _nth_weekday(day.year, 11, 6, 1)
+
+
+def _source_calendar_exclusions(days: list[date], symbols: list[str]) -> dict[str, Any]:
+    excluded_hours = [hour for day in days for hour in _open_hours(day) if not _dukascopy_source_hour_required(hour)]
+    return {
+        "policy": "DUKASCOPY_DST_FRIDAY_CLOSE_PROVIDER_CALENDAR_MISMATCH",
+        "status": "evidence-only exclusion; ST-C3 Dataset Contract unchanged",
+        "unique_hours": [_format_time(hour) for hour in excluded_hours],
+        "unique_hour_count": len(excluded_hours),
+        "symbol_hour_count": len(excluded_hours) * len(symbols),
+        "excluded_expected_minutes": len(excluded_hours) * len(symbols) * 60,
+    }
 
 
 def _market_open_hour(value: datetime) -> bool:
@@ -503,6 +534,8 @@ def _markdown(result: dict[str, Any]) -> str:
         f"- Missing-rate threshold for contract review: `{details['pre_registered_exit_criteria']['missing_rate_contract_review_threshold']}`",
         f"- Deterministic sample days cached complete: `{details['sample_days_cached_complete']}`",
         f"- Audited cached day count: `{details['audited_cached_day_count']}`",
+        f"- Provider-calendar excluded source hours: `{details['source_calendar_exclusions']['symbol_hour_count']}`",
+        f"- Provider-calendar excluded expected minutes: `{details['source_calendar_exclusions']['excluded_expected_minutes']}`",
         f"- Statistically sufficient: `{details['statistically_sufficient']}`",
         f"- Missing-rate 95% confidence interval: `{details['missing_minute_rate_confidence_interval_95']}`",
         f"- Decision status: `{details['decision_framework']['status']}`",

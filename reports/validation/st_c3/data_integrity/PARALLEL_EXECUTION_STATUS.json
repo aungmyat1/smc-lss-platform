@@ -1,0 +1,38 @@
+{
+  "details": {
+    "completed_by_worker": {
+      "1": 47,
+      "2": 47,
+      "3": 46,
+      "4": 46
+    },
+    "completed_tasks": 186,
+    "deterministic_assignment": "task_index modulo worker_count",
+    "duplicate_task_count": 0,
+    "failed_by_worker": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "mode": "parallel",
+    "planned_by_worker": {
+      "1": 47,
+      "2": 47,
+      "3": 46,
+      "4": 46
+    },
+    "planned_tasks": 186,
+    "task_seconds_by_worker": {
+      "1": 93.74889060000714,
+      "2": 97.72383829999308,
+      "3": 94.32947629999762,
+      "4": 99.16467689998899
+    },
+    "workers": 4
+  },
+  "guardrail": "Evidence-sample acquisition downloads raw source files only; it does not approve data, change governance, or open replay.",
+  "recommendation": "CONTINUE_EVIDENCE_COLLECTION",
+  "stage": "parallel_evidence_collection",
+  "status": "IN_PROGRESS"
+}

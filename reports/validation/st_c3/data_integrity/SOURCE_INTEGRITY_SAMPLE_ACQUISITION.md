@@ -1,8 +1,8 @@
 # ST-C3 Source Integrity Sample Acquisition
 
-Status: **BLOCKED**
+Status: **IN_PROGRESS**
 
-Reason: EURUSD 2021-04-16T21:00:00Z evidence-sample download failed: empty payload
+Reason: evidence-sample acquisition in progress; 28/100 target days cached
 
 Recommendation: **CONTINUE_EVIDENCE_COLLECTION**
 
@@ -11,27 +11,25 @@ Guardrail: Evidence-sample acquisition downloads raw source files only; it does 
 ## Progress
 
 - Target sample days: `100`
-- Completed before: `1`
-- Completed after: `8`
-- Remaining sample days: `92`
-- Attempted source hours: `468`
-- Downloaded or cached source hours: `462`
-- Failed source hours: `6`
-- First remaining sample day: `2021-04-16`
+- Completed before: `24`
+- Completed after: `28`
+- Remaining sample days: `72`
+- Attempted source hours: `186`
+- Downloaded or cached source hours: `186`
+- Provider-calendar excluded source hours: `2`
+- Failed source hours: `0`
+- First remaining sample day: `2022-10-27`
+- Execution mode: `parallel`
+- Workers: `4`
+- Throughput hours/minute: `108.79208711087463`
 
 ## Day Progress
 
-| Sample Day | Status | Attempted | Downloaded | Cached | Failed | Completed After Day |
-|---|---|---:|---:|---:|---:|---:|
-| `2021-02-10` | `COMPLETE` | 48 | 48 | 0 | 0 | 2 |
-| `2021-04-13` | `COMPLETE` | 48 | 48 | 0 | 0 | 3 |
-| `2021-04-16` | `BLOCKED` | 44 | 42 | 0 | 2 | 3 |
-| `2021-05-14` | `BLOCKED` | 44 | 42 | 0 | 2 | 3 |
-| `2021-07-02` | `BLOCKED` | 44 | 42 | 0 | 2 | 3 |
-| `2021-07-27` | `COMPLETE` | 48 | 48 | 0 | 0 | 4 |
-| `2021-08-10` | `COMPLETE` | 48 | 48 | 0 | 0 | 5 |
-| `2021-08-25` | `COMPLETE` | 48 | 48 | 0 | 0 | 6 |
-| `2021-09-14` | `COMPLETE` | 48 | 48 | 0 | 0 | 7 |
-| `2021-09-30` | `COMPLETE` | 48 | 48 | 0 | 0 | 8 |
+| Sample Day | Status | Attempted | Downloaded | Cached | Provider Excluded | Failed | Completed After Day |
+|---|---|---:|---:|---:|---:|---:|---:|
+| `2022-07-12` | `COMPLETE` | 48 | 48 | 0 | 0 | 0 | 28 |
+| `2022-08-25` | `COMPLETE` | 48 | 48 | 0 | 0 | 0 | 28 |
+| `2022-09-20` | `COMPLETE` | 48 | 48 | 0 | 0 | 0 | 28 |
+| `2022-09-23` | `COMPLETE` | 42 | 42 | 0 | 2 | 0 | 28 |
 
 No candles were fabricated, interpolated, or manually inserted.

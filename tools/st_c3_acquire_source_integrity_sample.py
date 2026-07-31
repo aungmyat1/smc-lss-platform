@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import time
+from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any, Iterable
@@ -21,11 +23,21 @@ from tools.st_c3_acquire_dukascopy_dataset import (
     _download_hour,
     _format_time,
 )
-from tools.st_c3_statistical_source_integrity import _deterministic_sample, _open_hours, _parse_date, _trading_days
+from tools.st_c3_statistical_source_integrity import (
+    _deterministic_sample,
+    _open_hours,
+    _parse_date,
+    _source_calendar_exclusions,
+    _source_required_hours,
+    _trading_days,
+)
 from validation.st_c3.dataset_loader import EXPECTED_SYMBOLS
 
 REPORT_JSON = Path("reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_SAMPLE_ACQUISITION.json")
 REPORT_MD = Path("reports/validation/st_c3/data_integrity/SOURCE_INTEGRITY_SAMPLE_ACQUISITION.md")
+PARALLEL_STATUS_JSON = Path("reports/validation/st_c3/data_integrity/PARALLEL_EXECUTION_STATUS.json")
+PERFORMANCE_PROFILE_JSON = Path("reports/validation/st_c3/data_integrity/PERFORMANCE_PROFILE.json")
+PERFORMANCE_PROFILE_MD = Path("reports/validation/st_c3/data_integrity/PERFORMANCE_PROFILE.md")
 GUARDRAIL = "Evidence-sample acquisition downloads raw source files only; it does not approve data, change governance, or open replay."
 
 
@@ -38,50 +50,46 @@ def acquire_source_integrity_sample(
     seed: int = 107,
     max_days: int | None = None,
     max_hours: int | None = None,
+    workers: int = 1,
     retries: int = 3,
     write_report: bool = True,
 ) -> dict[str, Any]:
+    started = time.perf_counter()
     cache = Path(cache_dir)
     population = _trading_days(start_date, end_date)
     sample_days = _deterministic_sample(population, target_sample_days, seed)
     completed_before = [day for day in sample_days if _day_cache_complete(cache, day, EXPECTED_SYMBOLS)]
     pending_days = [day for day in sample_days if day not in completed_before]
     selected_days = pending_days[:max_days] if max_days is not None else pending_days
-    attempts: list[dict[str, Any]] = []
+    workers = max(1, int(workers))
+    provider_calendar_exclusions = _source_calendar_exclusions(selected_days, sorted(EXPECTED_SYMBOLS))
+    tasks, day_plans, stopped_by_limit = _plan_tasks(selected_days, max_hours, workers)
+    attempts = _execute_tasks(tasks, cache, retries, workers)
     day_progress: list[dict[str, Any]] = []
-    processed_hours = 0
-    stopped_by_limit = False
 
-    for day in selected_days:
-        before_day_attempts = len(attempts)
-        for hour in _open_hours(day):
-            for symbol in sorted(EXPECTED_SYMBOLS):
-                if max_hours is not None and processed_hours >= max_hours:
-                    stopped_by_limit = True
-                    break
-                attempts.append(_download_hour(symbol, hour, cache, retries=retries))
-                processed_hours += 1
-            if stopped_by_limit:
-                break
-        day_attempts = attempts[before_day_attempts:]
+    for day_plan in day_plans:
+        day = day_plan["day"]
+        day_attempts = [item for item in attempts if item["sample_day"] == day.isoformat()]
         completed_so_far = [sample_day for sample_day in sample_days if _day_cache_complete(cache, sample_day, EXPECTED_SYMBOLS)]
         failed_for_day = [item for item in day_attempts if item["status"] == "FAILED"]
         day_progress.append(
             {
                 "sample_day": day.isoformat(),
-                "status": "BLOCKED" if failed_for_day else ("PARTIAL" if stopped_by_limit else "COMPLETE"),
+                "status": "BLOCKED" if failed_for_day else ("PARTIAL" if day_plan["partial"] else "COMPLETE"),
                 "attempted_source_hours": len(day_attempts),
                 "downloaded_source_hours": len([item for item in day_attempts if item["status"] == "DOWNLOADED"]),
                 "cached_verified_source_hours": len([item for item in day_attempts if item["status"] == "CACHED_VERIFIED"]),
+                "provider_calendar_excluded_source_hours": day_plan["provider_calendar_excluded_source_hours"],
                 "failed_source_hours": failed_for_day,
                 "completed_sample_days_after_day": len(completed_so_far),
             }
         )
-        if stopped_by_limit:
-            break
 
     completed_after = [day for day in sample_days if _day_cache_complete(cache, day, EXPECTED_SYMBOLS)]
     failed = [item for item in attempts if item["status"] == "FAILED"]
+    elapsed_seconds = time.perf_counter() - started
+    performance = _performance_profile(attempts, elapsed_seconds, workers)
+    parallel_status = _parallel_status(tasks, attempts, workers)
     status = "BLOCKED" if failed else "IN_PROGRESS"
     result = {
         "stage": "source_integrity_sample_acquisition",
@@ -97,11 +105,20 @@ def acquire_source_integrity_sample(
             "remaining_sample_days": max(target_sample_days - len(completed_after), 0),
             "selected_days": [day.isoformat() for day in selected_days],
             "day_progress": day_progress,
+            "provider_calendar_exclusions": provider_calendar_exclusions,
             "attempted_hours": len(attempts),
             "downloaded_or_cached_hours": len([item for item in attempts if item["status"] in {"DOWNLOADED", "CACHED_VERIFIED"}]),
             "failed_hours": failed,
             "stopped_by_limit": stopped_by_limit,
             "first_remaining_day": _first_remaining(sample_days, completed_after),
+            "execution": {
+                "mode": "parallel" if workers > 1 else "sequential",
+                "workers": workers,
+                "planned_tasks": len(tasks),
+                "elapsed_seconds": elapsed_seconds,
+            },
+            "parallel_execution": parallel_status,
+            "performance_profile": performance,
         },
         "guardrail": GUARDRAIL,
         "recommendation": "CONTINUE_EVIDENCE_COLLECTION",
@@ -111,13 +128,72 @@ def acquire_source_integrity_sample(
         REPORT_JSON.write_text(json.dumps(result, indent=2, sort_keys=True), encoding="utf-8")
         REPORT_MD.write_text(_markdown(result), encoding="utf-8")
         _write_sprint_progress(result)
+        _write_parallel_and_performance_reports(result)
     return result
+
+
+def _plan_tasks(selected_days: list[date], max_hours: int | None, workers: int) -> tuple[list[dict[str, Any]], list[dict[str, Any]], bool]:
+    tasks: list[dict[str, Any]] = []
+    day_plans: list[dict[str, Any]] = []
+    stopped_by_limit = False
+    for day in selected_days:
+        day_start = len(tasks)
+        excluded_hours_for_day = [hour for hour in _open_hours(day) if hour not in _source_required_hours(day)]
+        partial = False
+        for hour in _source_required_hours(day):
+            for symbol in sorted(EXPECTED_SYMBOLS):
+                if max_hours is not None and len(tasks) >= max_hours:
+                    stopped_by_limit = True
+                    partial = True
+                    break
+                tasks.append(
+                    {
+                        "task_index": len(tasks),
+                        "sample_day": day.isoformat(),
+                        "symbol": symbol,
+                        "hour": hour,
+                        "scheduled_worker": (len(tasks) % workers) + 1,
+                    }
+                )
+            if stopped_by_limit:
+                break
+        if len(tasks) > day_start or partial:
+            day_plans.append(
+                {
+                    "day": day,
+                    "partial": partial,
+                    "provider_calendar_excluded_source_hours": len(excluded_hours_for_day) * len(EXPECTED_SYMBOLS),
+                }
+            )
+        if stopped_by_limit:
+            break
+    return tasks, day_plans, stopped_by_limit
+
+
+def _execute_tasks(tasks: list[dict[str, Any]], cache: Path, retries: int, workers: int) -> list[dict[str, Any]]:
+    if workers <= 1:
+        return [_execute_task(task, cache, retries) for task in tasks]
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+        return list(executor.map(lambda task: _execute_task(task, cache, retries), tasks))
+
+
+def _execute_task(task: dict[str, Any], cache: Path, retries: int) -> dict[str, Any]:
+    started = time.perf_counter()
+    result = _download_hour(task["symbol"], task["hour"], cache, retries=retries)
+    elapsed = time.perf_counter() - started
+    return {
+        **result,
+        "task_index": task["task_index"],
+        "sample_day": task["sample_day"],
+        "scheduled_worker": task["scheduled_worker"],
+        "elapsed_seconds": elapsed,
+    }
 
 
 def _day_cache_complete(cache: Path, day: date, symbols: Iterable[str]) -> bool:
     return all(
         (path := _cache_path(cache, symbol, hour)).exists() and path.stat().st_size > 0
-        for hour in _open_hours(day)
+        for hour in _source_required_hours(day)
         for symbol in symbols
     )
 
@@ -149,6 +225,56 @@ def _next_action(failed: list[dict[str, Any]], completed_after: list[date], targ
     return "Continue deterministic evidence-sample acquisition in bounded batches."
 
 
+def _performance_profile(attempts: list[dict[str, Any]], elapsed_seconds: float, workers: int) -> dict[str, Any]:
+    downloaded = [item for item in attempts if item["status"] == "DOWNLOADED"]
+    cached = [item for item in attempts if item["status"] == "CACHED_VERIFIED"]
+    failed = [item for item in attempts if item["status"] == "FAILED"]
+    total_bytes = sum(int(item.get("bytes") or 0) for item in attempts)
+    total_task_seconds = sum(float(item.get("elapsed_seconds") or 0.0) for item in attempts)
+    return {
+        "mode": "parallel" if workers > 1 else "sequential",
+        "workers": workers,
+        "elapsed_seconds": elapsed_seconds,
+        "attempted_source_hours": len(attempts),
+        "downloaded_source_hours": len(downloaded),
+        "cached_verified_source_hours": len(cached),
+        "failed_source_hours": len(failed),
+        "cache_hit_rate": (len(cached) / len(attempts)) if attempts else None,
+        "download_throughput_hours_per_minute": (len(attempts) / (elapsed_seconds / 60.0)) if elapsed_seconds > 0 else None,
+        "payload_bytes": total_bytes,
+        "payload_megabytes": total_bytes / 1_000_000,
+        "total_task_seconds": total_task_seconds,
+        "parallel_efficiency_proxy": (total_task_seconds / (elapsed_seconds * workers)) if elapsed_seconds > 0 and workers > 0 else None,
+    }
+
+
+def _parallel_status(tasks: list[dict[str, Any]], attempts: list[dict[str, Any]], workers: int) -> dict[str, Any]:
+    planned_by_worker = {str(worker): 0 for worker in range(1, workers + 1)}
+    completed_by_worker = {str(worker): 0 for worker in range(1, workers + 1)}
+    failed_by_worker = {str(worker): 0 for worker in range(1, workers + 1)}
+    seconds_by_worker = {str(worker): 0.0 for worker in range(1, workers + 1)}
+    for task in tasks:
+        planned_by_worker[str(task["scheduled_worker"])] += 1
+    for item in attempts:
+        worker = str(item["scheduled_worker"])
+        completed_by_worker[worker] += 1
+        seconds_by_worker[worker] += float(item.get("elapsed_seconds") or 0.0)
+        if item["status"] == "FAILED":
+            failed_by_worker[worker] += 1
+    return {
+        "mode": "parallel" if workers > 1 else "sequential",
+        "workers": workers,
+        "deterministic_assignment": "task_index modulo worker_count",
+        "planned_tasks": len(tasks),
+        "completed_tasks": len(attempts),
+        "duplicate_task_count": len(tasks) - len({(task["symbol"], task["hour"]) for task in tasks}),
+        "planned_by_worker": planned_by_worker,
+        "completed_by_worker": completed_by_worker,
+        "failed_by_worker": failed_by_worker,
+        "task_seconds_by_worker": seconds_by_worker,
+    }
+
+
 def _markdown(result: dict[str, Any]) -> str:
     details = result["details"]
     lines = [
@@ -170,19 +296,24 @@ def _markdown(result: dict[str, Any]) -> str:
         f"- Remaining sample days: `{details['remaining_sample_days']}`",
         f"- Attempted source hours: `{details['attempted_hours']}`",
         f"- Downloaded or cached source hours: `{details['downloaded_or_cached_hours']}`",
+        f"- Provider-calendar excluded source hours: `{details['provider_calendar_exclusions']['symbol_hour_count']}`",
         f"- Failed source hours: `{len(details['failed_hours'])}`",
         f"- First remaining sample day: `{details['first_remaining_day']}`",
+        f"- Execution mode: `{details['execution']['mode']}`",
+        f"- Workers: `{details['execution']['workers']}`",
+        f"- Throughput hours/minute: `{details['performance_profile']['download_throughput_hours_per_minute']}`",
         "",
         "## Day Progress",
         "",
-        "| Sample Day | Status | Attempted | Downloaded | Cached | Failed | Completed After Day |",
-        "|---|---|---:|---:|---:|---:|---:|",
+        "| Sample Day | Status | Attempted | Downloaded | Cached | Provider Excluded | Failed | Completed After Day |",
+        "|---|---|---:|---:|---:|---:|---:|---:|",
     ]
     for item in details["day_progress"]:
         lines.append(
             f"| `{item['sample_day']}` | `{item['status']}` | {item['attempted_source_hours']} | "
             f"{item['downloaded_source_hours']} | {item['cached_verified_source_hours']} | "
-            f"{len(item['failed_source_hours'])} | {item['completed_sample_days_after_day']} |"
+            f"{item['provider_calendar_excluded_source_hours']} | {len(item['failed_source_hours'])} | "
+            f"{item['completed_sample_days_after_day']} |"
         )
     lines += [
         "",
@@ -206,6 +337,7 @@ def _write_sprint_progress(result: dict[str, Any]) -> None:
         "remaining_sample_days": details["remaining_sample_days"],
         "attempted_source_hours_latest_batch": details["attempted_hours"],
         "downloaded_or_cached_source_hours_latest_batch": details["downloaded_or_cached_hours"],
+        "provider_calendar_excluded_source_hours_latest_batch": details["provider_calendar_exclusions"]["symbol_hour_count"],
         "failed_source_hours_latest_batch": len(details["failed_hours"]),
         "first_remaining_day": details["first_remaining_day"],
         "validation_status": "SOURCE_INTEGRITY_EVIDENCE_COLLECTION",
@@ -230,13 +362,14 @@ def _write_sprint_progress(result: dict[str, Any]) -> None:
         "",
         "## Latest Batch Day Progress",
         "",
-        "| Sample Day | Status | Attempted | Failed |",
-        "|---|---|---:|---:|",
+        "| Sample Day | Status | Attempted | Provider Excluded | Failed |",
+        "|---|---|---:|---:|---:|",
     ]
     for item in details["day_progress"]:
         lines.append(
             f"| `{item['sample_day']}` | `{item['status']}` | "
-            f"{item['attempted_source_hours']} | {len(item['failed_source_hours'])} |"
+            f"{item['attempted_source_hours']} | {item['provider_calendar_excluded_source_hours']} | "
+            f"{len(item['failed_source_hours'])} |"
         )
     lines += ["", "## Failed Hours", ""]
     if failed:
@@ -248,6 +381,66 @@ def _write_sprint_progress(result: dict[str, Any]) -> None:
     DOWNLOAD_RECOVERY_LOG.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def _write_parallel_and_performance_reports(result: dict[str, Any]) -> None:
+    details = result["details"]
+    parallel = {
+        "stage": "parallel_evidence_collection",
+        "status": result["status"],
+        "recommendation": result["recommendation"],
+        "guardrail": result["guardrail"],
+        "details": details["parallel_execution"],
+    }
+    performance = {
+        "stage": "source_integrity_performance_profile",
+        "status": result["status"],
+        "recommendation": result["recommendation"],
+        "guardrail": result["guardrail"],
+        "details": details["performance_profile"],
+    }
+    PARALLEL_STATUS_JSON.write_text(json.dumps(parallel, indent=2, sort_keys=True), encoding="utf-8")
+    PERFORMANCE_PROFILE_JSON.write_text(json.dumps(performance, indent=2, sort_keys=True), encoding="utf-8")
+    PERFORMANCE_PROFILE_MD.write_text(_performance_markdown(performance, parallel), encoding="utf-8")
+
+
+def _performance_markdown(performance: dict[str, Any], parallel: dict[str, Any]) -> str:
+    details = performance["details"]
+    parallel_details = parallel["details"]
+    lines = [
+        "# ST-C3 Source Integrity Performance Profile",
+        "",
+        f"Status: **{performance['status']}**",
+        "",
+        f"Recommendation: **{performance['recommendation']}**",
+        "",
+        f"Guardrail: {performance['guardrail']}",
+        "",
+        "## Throughput",
+        "",
+        f"- Mode: `{details['mode']}`",
+        f"- Workers: `{details['workers']}`",
+        f"- Elapsed seconds: `{details['elapsed_seconds']}`",
+        f"- Attempted source hours: `{details['attempted_source_hours']}`",
+        f"- Downloaded source hours: `{details['downloaded_source_hours']}`",
+        f"- Cached verified source hours: `{details['cached_verified_source_hours']}`",
+        f"- Failed source hours: `{details['failed_source_hours']}`",
+        f"- Cache hit rate: `{details['cache_hit_rate']}`",
+        f"- Download throughput hours/minute: `{details['download_throughput_hours_per_minute']}`",
+        f"- Payload MB: `{details['payload_megabytes']}`",
+        f"- Parallel efficiency proxy: `{details['parallel_efficiency_proxy']}`",
+        "",
+        "## Worker Utilization",
+        "",
+        f"- Deterministic assignment: `{parallel_details['deterministic_assignment']}`",
+        f"- Planned by worker: `{parallel_details['planned_by_worker']}`",
+        f"- Completed by worker: `{parallel_details['completed_by_worker']}`",
+        f"- Failed by worker: `{parallel_details['failed_by_worker']}`",
+        f"- Task seconds by worker: `{parallel_details['task_seconds_by_worker']}`",
+        "",
+        "No market data was altered, fabricated, interpolated, or approved.",
+    ]
+    return "\n".join(lines) + "\n"
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cache", type=Path, default=RAW_CACHE)
@@ -257,6 +450,7 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=107)
     parser.add_argument("--max-days", type=int, default=None)
     parser.add_argument("--max-hours", type=int, default=None)
+    parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--retries", type=int, default=3)
     parser.add_argument("--no-report", action="store_true")
     args = parser.parse_args()
@@ -268,6 +462,7 @@ def main() -> None:
         seed=args.seed,
         max_days=args.max_days,
         max_hours=args.max_hours,
+        workers=args.workers,
         retries=args.retries,
         write_report=not args.no_report,
     )

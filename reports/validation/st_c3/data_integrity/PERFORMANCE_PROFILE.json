@@ -1,0 +1,21 @@
+{
+  "details": {
+    "attempted_source_hours": 186,
+    "cache_hit_rate": 0.0,
+    "cached_verified_source_hours": 0,
+    "download_throughput_hours_per_minute": 108.79208711087463,
+    "downloaded_source_hours": 186,
+    "elapsed_seconds": 102.5809900000022,
+    "failed_source_hours": 0,
+    "mode": "parallel",
+    "parallel_efficiency_proxy": 0.9382022977648651,
+    "payload_bytes": 6283412,
+    "payload_megabytes": 6.283412,
+    "total_task_seconds": 384.96688209998683,
+    "workers": 4
+  },
+  "guardrail": "Evidence-sample acquisition downloads raw source files only; it does not approve data, change governance, or open replay.",
+  "recommendation": "CONTINUE_EVIDENCE_COLLECTION",
+  "stage": "source_integrity_performance_profile",
+  "status": "IN_PROGRESS"
+}

@@ -1,6 +1,6 @@
 {
   "details": {
-    "observations": 188,
+    "observations": 200,
     "rows": [
       {
         "conclusion": "DUKASCOPY_AND_REFERENCE_ABSENT",
@@ -694,6 +694,292 @@
         "symbol": "EURUSD",
         "timestamp_utc": "2021-04-13T23:44:00Z",
         "weekday": "Tuesday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-04-16T00:13:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-04-16T04:50:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-04-16T17:15:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-04-16T17:48:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-04-16T17:50:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-04-16T18:20:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-04-16T18:29:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-04-16T18:30:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-04-16T20:05:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-04-16T20:19:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-05-14T03:41:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-05-14T04:54:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-05-14T20:09:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-05-14T20:11:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-05-14T20:16:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T03:53:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T04:09:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T04:52:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T04:55:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T05:20:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T18:39:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T18:41:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T19:23:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T19:30:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "EURUSD",
+        "timestamp_utc": "2021-07-02T20:18:00Z",
+        "weekday": "Friday"
+      },
+      {
+        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp present",
+        "root_cause_category": "OFF_SESSION_ZERO_TICK",
+        "session": "OTHER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-07-02T20:18:00Z",
+        "weekday": "Friday"
       },
       {
         "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
@@ -1615,28 +1901,6 @@
         "reference_result": "timestamp present",
         "root_cause_category": "OFF_SESSION_ZERO_TICK",
         "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T19:26:00Z",
-        "weekday": "Wednesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T19:28:00Z",
-        "weekday": "Wednesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
         "symbol": "GBPUSD",
         "timestamp_utc": "2021-08-25T19:34:00Z",
         "weekday": "Wednesday"
@@ -1659,63 +1923,8 @@
         "reference_result": "timestamp present",
         "root_cause_category": "OFF_SESSION_ZERO_TICK",
         "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T20:22:00Z",
-        "weekday": "Wednesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
         "symbol": "GBPUSD",
         "timestamp_utc": "2021-08-25T20:23:00Z",
-        "weekday": "Wednesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T20:30:00Z",
-        "weekday": "Wednesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T20:36:00Z",
-        "weekday": "Wednesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T20:37:00Z",
-        "weekday": "Wednesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T20:41:00Z",
         "weekday": "Wednesday"
       },
       {
@@ -1747,74 +1956,8 @@
         "reference_result": "timestamp present",
         "root_cause_category": "ROLLOVER_ZERO_TICK",
         "session": "ROLLOVER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T22:10:00Z",
-        "weekday": "Wednesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "ROLLOVER_ZERO_TICK",
-        "session": "ROLLOVER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T22:11:00Z",
-        "weekday": "Wednesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "ROLLOVER_ZERO_TICK",
-        "session": "ROLLOVER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T22:21:00Z",
-        "weekday": "Wednesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "ROLLOVER_ZERO_TICK",
-        "session": "ROLLOVER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T22:23:00Z",
-        "weekday": "Wednesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "ROLLOVER_ZERO_TICK",
-        "session": "ROLLOVER",
         "symbol": "GBPUSD",
         "timestamp_utc": "2021-08-25T22:42:00Z",
-        "weekday": "Wednesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "ROLLOVER_ZERO_TICK",
-        "session": "ROLLOVER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T22:47:00Z",
-        "weekday": "Wednesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "ROLLOVER_ZERO_TICK",
-        "session": "ROLLOVER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T22:53:00Z",
         "weekday": "Wednesday"
       },
       {
@@ -1835,52 +1978,8 @@
         "reference_result": "timestamp present",
         "root_cause_category": "OFF_SESSION_ZERO_TICK",
         "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T23:38:00Z",
-        "weekday": "Wednesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T23:40:00Z",
-        "weekday": "Wednesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T23:41:00Z",
-        "weekday": "Wednesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
         "symbol": "GBPUSD",
         "timestamp_utc": "2021-08-25T23:41:00Z",
-        "weekday": "Wednesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-08-25T23:42:00Z",
         "weekday": "Wednesday"
       },
       {
@@ -1892,50 +1991,6 @@
         "session": "OTHER",
         "symbol": "GBPUSD",
         "timestamp_utc": "2021-09-14T20:10:00Z",
-        "weekday": "Tuesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-09-14T20:21:00Z",
-        "weekday": "Tuesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-09-14T20:25:00Z",
-        "weekday": "Tuesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-09-14T20:26:00Z",
-        "weekday": "Tuesday"
-      },
-      {
-        "conclusion": "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT",
-        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
-        "reference_provider": "HistData.com Generic ASCII M1",
-        "reference_result": "timestamp present",
-        "root_cause_category": "OFF_SESSION_ZERO_TICK",
-        "session": "OTHER",
-        "symbol": "EURUSD",
-        "timestamp_utc": "2021-09-14T20:32:00Z",
         "weekday": "Tuesday"
       },
       {
@@ -2069,6 +2124,83 @@
         "symbol": "GBPUSD",
         "timestamp_utc": "2021-09-30T22:37:00Z",
         "weekday": "Thursday"
+      },
+      {
+        "conclusion": "DUKASCOPY_AND_REFERENCE_ABSENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp absent",
+        "root_cause_category": "ROLLOVER_ZERO_TICK",
+        "session": "ROLLOVER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-11-24T22:02:00Z",
+        "weekday": "Wednesday"
+      },
+      {
+        "conclusion": "DUKASCOPY_AND_REFERENCE_ABSENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp absent",
+        "root_cause_category": "ROLLOVER_ZERO_TICK",
+        "session": "ROLLOVER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-11-24T22:04:00Z",
+        "weekday": "Wednesday"
+      },
+      {
+        "conclusion": "DUKASCOPY_AND_REFERENCE_ABSENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp absent",
+        "root_cause_category": "ROLLOVER_ZERO_TICK",
+        "session": "ROLLOVER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-11-24T22:07:00Z",
+        "weekday": "Wednesday"
+      },
+      {
+        "conclusion": "DUKASCOPY_AND_REFERENCE_ABSENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp absent",
+        "root_cause_category": "ROLLOVER_ZERO_TICK",
+        "session": "ROLLOVER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-11-24T22:09:00Z",
+        "weekday": "Wednesday"
+      },
+      {
+        "conclusion": "DUKASCOPY_AND_REFERENCE_ABSENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp absent",
+        "root_cause_category": "ROLLOVER_ZERO_TICK",
+        "session": "ROLLOVER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-11-24T22:10:00Z",
+        "weekday": "Wednesday"
+      },
+      {
+        "conclusion": "DUKASCOPY_AND_REFERENCE_ABSENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp absent",
+        "root_cause_category": "ROLLOVER_ZERO_TICK",
+        "session": "ROLLOVER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-11-24T22:11:00Z",
+        "weekday": "Wednesday"
+      },
+      {
+        "conclusion": "DUKASCOPY_AND_REFERENCE_ABSENT",
+        "dukascopy_result": "zero ticks in reconstructed M1 source minute",
+        "reference_provider": "HistData.com Generic ASCII M1",
+        "reference_result": "timestamp absent",
+        "root_cause_category": "ROLLOVER_ZERO_TICK",
+        "session": "ROLLOVER",
+        "symbol": "GBPUSD",
+        "timestamp_utc": "2021-11-24T22:12:00Z",
+        "weekday": "Wednesday"
       }
     ],
     "source_recommendation": "CONTINUE_EVIDENCE_COLLECTION",
@@ -2076,22 +2208,22 @@
     "source_status": "BLOCKED",
     "summary": {
       "by_conclusion": {
-        "DUKASCOPY_AND_REFERENCE_ABSENT": 42,
-        "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT": 146
+        "DUKASCOPY_AND_REFERENCE_ABSENT": 49,
+        "DUKASCOPY_ZERO_TICK_REFERENCE_PRESENT": 151
       },
       "by_root_cause_category": {
-        "OFF_SESSION_ZERO_TICK": 83,
+        "OFF_SESSION_ZERO_TICK": 94,
         "PRIMARY_SESSION_ZERO_TICK": 2,
-        "ROLLOVER_ZERO_TICK": 103
+        "ROLLOVER_ZERO_TICK": 104
       },
       "by_session": {
         "LONDON": 2,
-        "OTHER": 83,
-        "ROLLOVER": 103
+        "OTHER": 94,
+        "ROLLOVER": 104
       },
       "by_symbol": {
         "EURUSD": 100,
-        "GBPUSD": 88
+        "GBPUSD": 100
       }
     }
   },

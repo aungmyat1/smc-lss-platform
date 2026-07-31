@@ -4,32 +4,21 @@ Dataset version: `Dataset_v1.0_5Y`
 
 Scope: source-integrity evidence sample only
 
-Latest status: **BLOCKED**
+Latest status: **IN_PROGRESS**
 
-Completed sample days: `8/100`
+Completed sample days: `28/100`
 
 ## Latest Batch Day Progress
 
-| Sample Day | Status | Attempted | Failed |
-|---|---|---:|---:|
-| `2021-02-10` | `COMPLETE` | 48 | 0 |
-| `2021-04-13` | `COMPLETE` | 48 | 0 |
-| `2021-04-16` | `BLOCKED` | 44 | 2 |
-| `2021-05-14` | `BLOCKED` | 44 | 2 |
-| `2021-07-02` | `BLOCKED` | 44 | 2 |
-| `2021-07-27` | `COMPLETE` | 48 | 0 |
-| `2021-08-10` | `COMPLETE` | 48 | 0 |
-| `2021-08-25` | `COMPLETE` | 48 | 0 |
-| `2021-09-14` | `COMPLETE` | 48 | 0 |
-| `2021-09-30` | `COMPLETE` | 48 | 0 |
+| Sample Day | Status | Attempted | Provider Excluded | Failed |
+|---|---|---:|---:|---:|
+| `2022-07-12` | `COMPLETE` | 48 | 0 | 0 |
+| `2022-08-25` | `COMPLETE` | 48 | 0 | 0 |
+| `2022-09-20` | `COMPLETE` | 48 | 0 | 0 |
+| `2022-09-23` | `COMPLETE` | 42 | 2 | 0 |
 
 ## Failed Hours
 
-- `EURUSD` `2021-04-16T21:00:00Z`: empty payload
-- `GBPUSD` `2021-04-16T21:00:00Z`: empty payload
-- `EURUSD` `2021-05-14T21:00:00Z`: empty payload
-- `GBPUSD` `2021-05-14T21:00:00Z`: empty payload
-- `EURUSD` `2021-07-02T21:00:00Z`: empty payload
-- `GBPUSD` `2021-07-02T21:00:00Z`: empty payload
+- No failed market-open hours in the latest evidence-sample batch.
 
 No candles were fabricated, interpolated, or manually edited.

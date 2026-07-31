@@ -32,6 +32,16 @@ def _write_day(cache: Path, symbol: str, day: date, *, missing_hour: int | None 
         path.write_bytes(_payload(missing_minute=minute))
 
 
+def _write_day_without_hour(cache: Path, symbol: str, day: date, omitted_hour: int) -> None:
+    for hour in range(24):
+        if hour == omitted_hour:
+            continue
+        timestamp = datetime(day.year, day.month, day.day, hour, tzinfo=UTC)
+        path = _cache_path(cache, symbol, timestamp)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(_payload())
+
+
 def _write_histdata_zip(cache: Path, symbol: str, year: int, rows: list[str]) -> None:
     path = cache / symbol / f"DAT_ASCII_{symbol}_M1_{year}.zip"
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -118,3 +128,23 @@ def test_statistical_source_integrity_marks_insufficient_sample(tmp_path: Path):
     assert result["details"]["sample_days_cached_complete"] == 1
     assert result["details"]["statistically_sufficient"] is False
     assert result["details"]["decision_framework"]["recommendation"] == "CONTINUE_EVIDENCE_COLLECTION"
+
+
+def test_statistical_source_integrity_excludes_dst_friday_21_provider_close(tmp_path: Path):
+    day = date(2021, 4, 16)
+    for symbol in ("EURUSD", "GBPUSD"):
+        _write_day_without_hour(tmp_path, symbol, day, omitted_hour=21)
+
+    result = run_statistical_source_integrity(
+        cache_dir=tmp_path,
+        start_date=day,
+        end_date=day,
+        target_sample_days=1,
+        write_report=False,
+    )
+
+    assert result["details"]["sample_days_cached_complete"] == 1
+    assert result["details"]["source_calendar_exclusions"]["unique_hours"] == ["2021-04-16T21:00:00Z"]
+    assert result["details"]["source_calendar_exclusions"]["symbol_hour_count"] == 2
+    assert result["details"]["source_calendar_exclusions"]["excluded_expected_minutes"] == 120
+    assert result["details"]["total_expected_minutes"] == 2520
