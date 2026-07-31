@@ -1,0 +1,17 @@
+{
+  "guardrail": "ST-C4 benchmark only; rejected ST-C3 data remains immutable and replay remains blocked.",
+  "samples": [
+    {
+      "notes": "100 deterministic ST-C3 sample days cached; rejected by root-cause analysis.",
+      "path": "data/market/raw/dukascopy/st_c3",
+      "provider": "Dukascopy",
+      "status": "available_existing_rejected_evidence"
+    },
+    {
+      "notes": "Reference cache exists but prior canonical candidate failed integrity.",
+      "path": "data/market/raw/histdata/st_c3",
+      "provider": "HistData",
+      "status": "available_existing_reference_cache"
+    }
+  ]
+}
