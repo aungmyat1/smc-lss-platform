@@ -9,29 +9,29 @@ Guardrail: Evidence-sample acquisition downloads raw source files only; it does 
 ## Throughput
 
 - Mode: `parallel`
-- Workers: `2`
-- Elapsed seconds: `57.74290550000296`
-- Acquisition seconds: `49.77690850000363`
-- Profiling/report seconds: `7.9659919000041555`
-- Attempted source hours: `48`
-- Downloaded source hours: `48`
+- Workers: `8`
+- Elapsed seconds: `2464.029992900003`
+- Acquisition seconds: `2193.6360436999967`
+- Profiling/report seconds: `270.3939434000058`
+- Attempted source hours: `3276`
+- Downloaded source hours: `3276`
 - Cached verified source hours: `0`
 - Failed source hours: `0`
 - Cache hit rate: `0.0`
-- Download throughput hours/minute: `49.87625709274107`
-- Payload MB: `1.950616`
-- Parallel efficiency proxy: `0.7903007928827127`
-- Top bottlenecks: `[{'stage': 'download_cache', 'seconds': 49.77690850000363}, {'stage': 'bi5_decompression_parse', 'seconds': 6.610903299981146}]`
+- Download throughput hours/minute: `79.77175625555664`
+- Payload MB: `62.126862`
+- Parallel efficiency proxy: `0.7727854900454859`
+- Top bottlenecks: `[{'stage': 'download_cache', 'seconds': 2193.6360436999967}, {'stage': 'bi5_decompression_parse', 'seconds': 222.93033089970413}]`
 
 ## Stage Timings
 
-- Download/cache seconds: `49.77690850000363`
-- `.bi5` decompression/parse seconds: `6.610903299981146`
-- M1 reconstruction seconds: `1.3092256000018097`
+- Download/cache seconds: `2193.6360436999967`
+- `.bi5` decompression/parse seconds: `222.93033089970413`
+- M1 reconstruction seconds: `44.393701399996644`
 - Aggregation seconds: `None`
 - Validation seconds: `None`
 - Cross-provider lookup seconds: `None`
-- Report generation/profile seconds: `7.9659919000041555`
+- Report generation/profile seconds: `270.3939434000058`
 
 ## Stage Notes
 
@@ -45,10 +45,10 @@ Guardrail: Evidence-sample acquisition downloads raw source files only; it does 
 ## Worker Utilization
 
 - Deterministic assignment: `task_index modulo worker_count`
-- Planned by worker: `{'1': 24, '2': 24}`
-- Completed by worker: `{'1': 24, '2': 24}`
-- Failed by worker: `{'1': 0, '2': 0}`
-- Task seconds by worker: `{'1': 44.090181200022926, '2': 47.178346799984865}`
+- Planned by worker: `{'1': 410, '2': 410, '3': 410, '4': 410, '5': 409, '6': 409, '7': 409, '8': 409}`
+- Completed by worker: `{'1': 410, '2': 410, '3': 410, '4': 410, '5': 409, '6': 409, '7': 409, '8': 409}`
+- Failed by worker: `{'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0}`
+- Task seconds by worker: `{'1': 1871.2342163001886, '2': 1869.8060353000183, '3': 1955.772226200119, '4': 1996.501723499954, '5': 1868.5672594999342, '6': 1913.242094999805, '7': 1886.641744799941, '8': 1871.5677038000722}`
 - Task order matches plan: `True`
 
 No market data was altered, fabricated, interpolated, or approved.

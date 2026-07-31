@@ -1,23 +1,23 @@
 {
   "details": {
-    "acquisition_elapsed_seconds": 49.77690850000363,
-    "attempted_source_hours": 48,
+    "acquisition_elapsed_seconds": 2193.6360436999967,
+    "attempted_source_hours": 3276,
     "avg_seconds_per_cached_hour": null,
-    "avg_seconds_per_downloaded_hour": 1.901427666666829,
+    "avg_seconds_per_downloaded_hour": 4.6499795495726595,
     "cache_hit_rate": 0.0,
     "cached_verified_source_hours": 0,
-    "download_throughput_hours_per_minute": 49.87625709274107,
-    "downloaded_source_hours": 48,
-    "elapsed_seconds": 57.74290550000296,
+    "download_throughput_hours_per_minute": 79.77175625555664,
+    "downloaded_source_hours": 3276,
+    "elapsed_seconds": 2464.029992900003,
     "failed_source_hours": 0,
     "mode": "parallel",
-    "parallel_efficiency_proxy": 0.7903007928827127,
-    "payload_bytes": 1950616,
-    "payload_megabytes": 1.950616,
-    "profiled_m1_rows": 2870,
-    "profiled_successful_files": 48,
-    "profiled_ticks": 464526,
-    "profiling_elapsed_seconds": 7.9659919000041555,
+    "parallel_efficiency_proxy": 0.7727854900454859,
+    "payload_bytes": 62126862,
+    "payload_megabytes": 62.126862,
+    "profiled_m1_rows": 195788,
+    "profiled_successful_files": 3276,
+    "profiled_ticks": 13941596,
+    "profiling_elapsed_seconds": 270.3939434000058,
     "stage_notes": {
       "aggregation_seconds": "not run in provider-qualification acquisition pipeline",
       "bi5_decompression_parse_seconds": "post-acquisition profiling pass over successful source-hour files",
@@ -29,28 +29,28 @@
     },
     "stage_timings": {
       "aggregation_seconds": null,
-      "bi5_decompression_parse_seconds": 6.610903299981146,
+      "bi5_decompression_parse_seconds": 222.93033089970413,
       "cross_provider_lookup_seconds": null,
-      "download_cache_seconds": 49.77690850000363,
-      "m1_reconstruction_seconds": 1.3092256000018097,
-      "report_generation_seconds": 7.9659919000041555,
+      "download_cache_seconds": 2193.6360436999967,
+      "m1_reconstruction_seconds": 44.393701399996644,
+      "report_generation_seconds": 270.3939434000058,
       "validation_seconds": null
     },
     "task_seconds_by_status": {
-      "DOWNLOADED": 91.26852800000779
+      "DOWNLOADED": 15233.333004400032
     },
     "top_bottlenecks": [
       {
-        "seconds": 49.77690850000363,
+        "seconds": 2193.6360436999967,
         "stage": "download_cache"
       },
       {
-        "seconds": 6.610903299981146,
+        "seconds": 222.93033089970413,
         "stage": "bi5_decompression_parse"
       }
     ],
-    "total_task_seconds": 91.26852800000779,
-    "workers": 2
+    "total_task_seconds": 15233.333004400032,
+    "workers": 8
   },
   "guardrail": "Evidence-sample acquisition downloads raw source files only; it does not approve data, change governance, or open replay.",
   "recommendation": "CONTINUE_EVIDENCE_COLLECTION",

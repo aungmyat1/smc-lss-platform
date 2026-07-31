@@ -1,6 +1,6 @@
 {
   "details": {
-    "audited_cached_day_count": 33,
+    "audited_cached_day_count": 103,
     "audited_cached_days": [
       "2021-01-04",
       "2021-01-05",
@@ -34,7 +34,77 @@
       "2022-09-20",
       "2022-09-23",
       "2022-10-27",
-      "2022-11-03"
+      "2022-11-03",
+      "2022-11-09",
+      "2022-11-23",
+      "2022-11-30",
+      "2022-12-05",
+      "2022-12-09",
+      "2022-12-21",
+      "2022-12-23",
+      "2023-01-10",
+      "2023-02-17",
+      "2023-02-24",
+      "2023-03-17",
+      "2023-03-29",
+      "2023-04-18",
+      "2023-04-19",
+      "2023-04-24",
+      "2023-05-01",
+      "2023-05-09",
+      "2023-06-07",
+      "2023-06-20",
+      "2023-09-01",
+      "2023-09-13",
+      "2023-11-28",
+      "2023-12-06",
+      "2023-12-29",
+      "2024-01-03",
+      "2024-01-16",
+      "2024-01-26",
+      "2024-02-01",
+      "2024-02-27",
+      "2024-02-28",
+      "2024-03-14",
+      "2024-03-20",
+      "2024-03-28",
+      "2024-04-05",
+      "2024-05-01",
+      "2024-05-07",
+      "2024-05-08",
+      "2024-05-20",
+      "2024-06-04",
+      "2024-06-12",
+      "2024-06-14",
+      "2024-06-24",
+      "2024-07-08",
+      "2024-08-12",
+      "2024-10-14",
+      "2024-10-21",
+      "2024-11-19",
+      "2024-11-25",
+      "2024-11-29",
+      "2024-12-17",
+      "2025-01-14",
+      "2025-01-16",
+      "2025-03-20",
+      "2025-03-25",
+      "2025-04-17",
+      "2025-04-25",
+      "2025-06-19",
+      "2025-06-20",
+      "2025-06-24",
+      "2025-06-26",
+      "2025-08-01",
+      "2025-08-26",
+      "2025-09-09",
+      "2025-10-21",
+      "2025-10-30",
+      "2025-10-31",
+      "2025-11-14",
+      "2025-11-20",
+      "2025-12-05",
+      "2025-12-29"
     ],
     "coverage": {
       "from": "2021-01-01",
@@ -47,9 +117,9 @@
       "reference_present": 151
     },
     "decision_framework": {
-      "next_gate": "complete deterministic source-integrity evidence sample",
-      "recommendation": "CONTINUE_EVIDENCE_COLLECTION",
-      "status": "INSUFFICIENT_EVIDENCE",
+      "next_gate": "data governance review board",
+      "recommendation": "OPEN_DATA_GOVERNANCE_REVIEW",
+      "status": "MISSING_RATE_EXCEEDS_THRESHOLD",
       "threshold": 0.001
     },
     "deterministic_sample_days": [
@@ -154,10 +224,10 @@
       "2025-12-05",
       "2025-12-29"
     ],
-    "missing_minute_rate": 0.005104712041884817,
+    "missing_minute_rate": 0.004301970580072162,
     "missing_minute_rate_confidence_interval_95": {
-      "lower": 0.004663689753505748,
-      "upper": 0.0055872055391268036
+      "lower": 0.004069558281261814,
+      "upper": 0.004547595328160722
     },
     "missing_observations": [
       {
@@ -3983,13 +4053,13 @@
       },
       "target_sample_days": 100
     },
-    "recommendation": "CONTINUE_EVIDENCE_COLLECTION",
+    "recommendation": "OPEN_DATA_GOVERNANCE_REVIEW",
     "root_cause_categories": {
-      "OFF_SESSION_ZERO_TICK": 184,
-      "PRIMARY_SESSION_ZERO_TICK": 3,
-      "ROLLOVER_ZERO_TICK": 281
+      "OFF_SESSION_ZERO_TICK": 458,
+      "PRIMARY_SESSION_ZERO_TICK": 9,
+      "ROLLOVER_ZERO_TICK": 773
     },
-    "sample_days_cached_complete": 30,
+    "sample_days_cached_complete": 100,
     "sample_seed": 107,
     "sample_stratification": {
       "all_months_present": true,
@@ -4024,11 +4094,11 @@
       }
     },
     "source_calendar_exclusions": {
-      "excluded_expected_minutes": 960,
+      "excluded_expected_minutes": 1920,
       "policy": "DUKASCOPY_DST_FRIDAY_CLOSE_PROVIDER_CALENDAR_MISMATCH",
       "status": "evidence-only exclusion; ST-C3 Dataset Contract unchanged",
-      "symbol_hour_count": 16,
-      "unique_hour_count": 8,
+      "symbol_hour_count": 32,
+      "unique_hour_count": 16,
       "unique_hours": [
         "2021-04-16T21:00:00Z",
         "2021-05-14T21:00:00Z",
@@ -4037,52 +4107,63 @@
         "2022-04-08T21:00:00Z",
         "2022-06-24T21:00:00Z",
         "2022-07-01T21:00:00Z",
-        "2022-09-23T21:00:00Z"
+        "2022-09-23T21:00:00Z",
+        "2023-03-17T21:00:00Z",
+        "2023-09-01T21:00:00Z",
+        "2024-04-05T21:00:00Z",
+        "2024-06-14T21:00:00Z",
+        "2025-04-25T21:00:00Z",
+        "2025-06-20T21:00:00Z",
+        "2025-08-01T21:00:00Z",
+        "2025-10-31T21:00:00Z"
       ]
     },
-    "statistically_sufficient": false,
+    "statistically_sufficient": true,
     "symbols": [
       {
-        "audited_days": 33,
-        "audited_hours": 764,
+        "audited_days": 103,
+        "audited_hours": 2402,
         "distribution_by_hour_utc": {
-          "0": 3,
+          "0": 6,
           "10": 2,
-          "17": 2,
-          "18": 6,
+          "14": 3,
+          "16": 1,
+          "17": 4,
+          "18": 8,
           "19": 6,
-          "2": 3,
-          "20": 21,
-          "21": 56,
-          "22": 74,
-          "23": 46,
-          "3": 15,
-          "4": 19,
-          "5": 5,
-          "6": 2,
+          "2": 8,
+          "20": 39,
+          "21": 196,
+          "22": 199,
+          "23": 107,
+          "3": 22,
+          "4": 36,
+          "5": 7,
+          "6": 4,
           "8": 1
         },
         "distribution_by_root_cause_category": {
-          "OFF_SESSION_ZERO_TICK": 130,
-          "PRIMARY_SESSION_ZERO_TICK": 1,
-          "ROLLOVER_ZERO_TICK": 130
+          "OFF_SESSION_ZERO_TICK": 250,
+          "PRIMARY_SESSION_ZERO_TICK": 4,
+          "ROLLOVER_ZERO_TICK": 395
         },
         "distribution_by_session": {
           "LONDON": 1,
-          "OTHER": 130,
-          "ROLLOVER": 130
+          "NY": 3,
+          "OTHER": 250,
+          "ROLLOVER": 395
         },
         "distribution_by_weekday": {
-          "Friday": 25,
-          "Monday": 20,
-          "Thursday": 58,
-          "Tuesday": 83,
-          "Wednesday": 75
+          "Friday": 32,
+          "Monday": 160,
+          "Thursday": 95,
+          "Tuesday": 203,
+          "Wednesday": 159
         },
-        "expected_minutes": 45840,
+        "expected_minutes": 144120,
         "first_missing_minute": "2021-01-04T22:45:00Z",
-        "missing_minute_rate": 0.005693717277486911,
-        "missing_minutes": 261,
+        "missing_minute_rate": 0.004503191784623924,
+        "missing_minutes": 649,
         "missing_observations": [
           {
             "around_daily_rollover": true,
@@ -5813,50 +5894,53 @@
           "2021-02-10T22:50:00Z"
         ],
         "symbol": "EURUSD",
-        "tick_count": 3253795
+        "tick_count": 9954498
       },
       {
-        "audited_days": 33,
-        "audited_hours": 764,
+        "audited_days": 103,
+        "audited_hours": 2402,
         "distribution_by_hour_utc": {
-          "0": 3,
-          "1": 1,
+          "0": 7,
+          "1": 2,
           "10": 2,
-          "17": 1,
-          "18": 2,
-          "19": 6,
-          "2": 4,
-          "20": 19,
-          "21": 81,
-          "22": 70,
-          "23": 9,
-          "4": 2,
-          "5": 4,
+          "14": 3,
+          "17": 3,
+          "18": 5,
+          "19": 7,
+          "2": 7,
+          "20": 55,
+          "21": 179,
+          "22": 199,
+          "23": 74,
+          "3": 11,
+          "4": 23,
+          "5": 11,
           "6": 1,
           "7": 1,
           "8": 1
         },
         "distribution_by_root_cause_category": {
-          "OFF_SESSION_ZERO_TICK": 54,
-          "PRIMARY_SESSION_ZERO_TICK": 2,
-          "ROLLOVER_ZERO_TICK": 151
+          "OFF_SESSION_ZERO_TICK": 208,
+          "PRIMARY_SESSION_ZERO_TICK": 5,
+          "ROLLOVER_ZERO_TICK": 378
         },
         "distribution_by_session": {
           "LONDON": 2,
-          "OTHER": 54,
-          "ROLLOVER": 151
+          "NY": 3,
+          "OTHER": 208,
+          "ROLLOVER": 378
         },
         "distribution_by_weekday": {
-          "Friday": 9,
-          "Monday": 19,
-          "Thursday": 68,
-          "Tuesday": 65,
-          "Wednesday": 46
+          "Friday": 19,
+          "Monday": 117,
+          "Thursday": 133,
+          "Tuesday": 196,
+          "Wednesday": 126
         },
-        "expected_minutes": 45840,
+        "expected_minutes": 144120,
         "first_missing_minute": "2021-01-04T22:19:00Z",
-        "missing_minute_rate": 0.004515706806282722,
-        "missing_minutes": 207,
+        "missing_minute_rate": 0.004100749375520399,
+        "missing_minutes": 591,
         "missing_observations": [
           {
             "around_daily_rollover": true,
@@ -7587,17 +7671,17 @@
           "2021-04-13T22:24:00Z"
         ],
         "symbol": "GBPUSD",
-        "tick_count": 3835146
+        "tick_count": 11076039
       }
     ],
     "target_sample_days": 100,
-    "total_expected_minutes": 91680,
-    "total_missing_minutes": 468,
+    "total_expected_minutes": 288240,
+    "total_missing_minutes": 1240,
     "trading_day_population": 1298
   },
   "guardrail": "Statistical source integrity investigation does not change contracts, validators, approval, replay, or market data.",
-  "next_action": "Acquire the deterministic 100-day evidence sample; do not change governance or approve data.",
-  "reason": "insufficient cached deterministic sample: 30/100 target days available",
+  "next_action": "Review provider suitability using the statistical evidence before any governance change.",
+  "reason": "statistical source integrity sample found 1240 zero-tick market-open minutes",
   "stage": "source_integrity_statistical_investigation",
   "status": "BLOCKED"
 }

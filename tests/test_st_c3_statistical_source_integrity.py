@@ -66,6 +66,7 @@ def test_statistical_source_integrity_passes_complete_target_sample(tmp_path: Pa
     assert result["details"]["statistically_sufficient"] is True
     assert result["details"]["total_missing_minutes"] == 0
     assert result["details"]["decision_framework"]["status"] == "MISSING_RATE_BELOW_THRESHOLD"
+    assert result["details"]["decision_framework"]["recommendation"] == "ACCEPT_DUKASCOPY"
     assert result["details"]["sample_stratification"]["by_weekday"] == {"Monday": 1}
     assert result["details"]["cross_source_comparison"]["observations"] == 0
 
@@ -108,6 +109,7 @@ def test_statistical_source_integrity_blocks_for_missing_minutes(tmp_path: Path)
         "reference_present": 0,
         "reference_absent": 1,
     }
+    assert result["details"]["decision_framework"]["recommendation"] == "OPEN_DATA_GOVERNANCE_REVIEW"
     assert result["details"]["missing_minute_rate_confidence_interval_95"]["upper"] > 0
 
 

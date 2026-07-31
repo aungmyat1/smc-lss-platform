@@ -481,18 +481,25 @@ def _decision(statistically_sufficient: bool, missing_rate: float | None, thresh
             "recommendation": "CONTINUE_EVIDENCE_COLLECTION",
             "next_gate": "complete deterministic source-integrity evidence sample",
         }
+    if missing_rate == 0:
+        return {
+            "status": "MISSING_RATE_BELOW_THRESHOLD",
+            "threshold": threshold,
+            "recommendation": "ACCEPT_DUKASCOPY",
+            "next_gate": "canonical provider approval",
+        }
     if missing_rate is not None and missing_rate <= threshold:
         return {
             "status": "MISSING_RATE_BELOW_THRESHOLD",
             "threshold": threshold,
-            "recommendation": "DATA_GOVERNANCE_REVIEW_CONTRACT_COMPATIBILITY",
+            "recommendation": "OPEN_DATA_GOVERNANCE_REVIEW",
             "next_gate": "data governance review board",
         }
     return {
         "status": "MISSING_RATE_EXCEEDS_THRESHOLD",
         "threshold": threshold,
-        "recommendation": "PROVIDER_SUITABILITY_REVIEW",
-        "next_gate": "provider rejection or alternative-source qualification review",
+        "recommendation": "OPEN_DATA_GOVERNANCE_REVIEW",
+        "next_gate": "data governance review board",
     }
 
 

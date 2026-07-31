@@ -2,9 +2,9 @@
 
 Status: **BLOCKED**
 
-Reason: insufficient cached deterministic sample: 30/100 target days available
+Reason: statistical source integrity sample found 1240 zero-tick market-open minutes
 
-Recommendation: **CONTINUE_EVIDENCE_COLLECTION**
+Recommendation: **OPEN_DATA_GOVERNANCE_REVIEW**
 
 Guardrail: Statistical source integrity investigation does not change contracts, validators, approval, replay, or market data.
 
@@ -15,13 +15,13 @@ Guardrail: Statistical source integrity investigation does not change contracts,
 - Minimum sample completion rate: `0.95`
 - Minimum complete sample days: `95`
 - Missing-rate threshold for contract review: `0.001`
-- Deterministic sample days cached complete: `30`
-- Audited cached day count: `33`
-- Provider-calendar excluded source hours: `16`
-- Provider-calendar excluded expected minutes: `960`
-- Statistically sufficient: `False`
-- Missing-rate 95% confidence interval: `{'lower': 0.004663689753505748, 'upper': 0.0055872055391268036}`
-- Decision status: `INSUFFICIENT_EVIDENCE`
+- Deterministic sample days cached complete: `100`
+- Audited cached day count: `103`
+- Provider-calendar excluded source hours: `32`
+- Provider-calendar excluded expected minutes: `1920`
+- Statistically sufficient: `True`
+- Missing-rate 95% confidence interval: `{'lower': 0.004069558281261814, 'upper': 0.004547595328160722}`
+- Decision status: `MISSING_RATE_EXCEEDS_THRESHOLD`
 - Sample weekday stratification: `{'Friday': 27, 'Monday': 13, 'Thursday': 18, 'Tuesday': 23, 'Wednesday': 19}`
 - Sample month stratification: `{'01': 8, '02': 8, '03': 9, '04': 10, '05': 7, '06': 12, '07': 5, '08': 6, '09': 7, '10': 6, '11': 12, '12': 10}`
 - Sample condition tags: `{'DST_TRANSITION_WINDOW': 14, 'MONTH_BOUNDARY': 16, 'ORDINARY_TRADING_DAY': 55, 'QUARTER_BOUNDARY': 8, 'QUIET_PERIOD_PROXY': 17}`
@@ -30,25 +30,25 @@ Guardrail: Statistical source integrity investigation does not change contracts,
 
 | Symbol | Days | Hours | Expected Minutes | Missing Minutes | Missing Rate | First Missing |
 |---|---:|---:|---:|---:|---:|---|
-| `EURUSD` | 33 | 764 | 45840 | 261 | 0.00569372 | 2021-01-04T22:45:00Z |
-| `GBPUSD` | 33 | 764 | 45840 | 207 | 0.00451571 | 2021-01-04T22:19:00Z |
+| `EURUSD` | 103 | 2402 | 144120 | 649 | 0.00450319 | 2021-01-04T22:45:00Z |
+| `GBPUSD` | 103 | 2402 | 144120 | 591 | 0.00410075 | 2021-01-04T22:19:00Z |
 
 ## Missing Distribution
 
 ### EURUSD
 
-- By hour UTC: `{'0': 3, '10': 2, '17': 2, '18': 6, '19': 6, '2': 3, '20': 21, '21': 56, '22': 74, '23': 46, '3': 15, '4': 19, '5': 5, '6': 2, '8': 1}`
-- By weekday: `{'Friday': 25, 'Monday': 20, 'Thursday': 58, 'Tuesday': 83, 'Wednesday': 75}`
-- By session: `{'LONDON': 1, 'OTHER': 130, 'ROLLOVER': 130}`
-- By root-cause category: `{'OFF_SESSION_ZERO_TICK': 130, 'PRIMARY_SESSION_ZERO_TICK': 1, 'ROLLOVER_ZERO_TICK': 130}`
+- By hour UTC: `{'0': 6, '10': 2, '14': 3, '16': 1, '17': 4, '18': 8, '19': 6, '2': 8, '20': 39, '21': 196, '22': 199, '23': 107, '3': 22, '4': 36, '5': 7, '6': 4, '8': 1}`
+- By weekday: `{'Friday': 32, 'Monday': 160, 'Thursday': 95, 'Tuesday': 203, 'Wednesday': 159}`
+- By session: `{'LONDON': 1, 'NY': 3, 'OTHER': 250, 'ROLLOVER': 395}`
+- By root-cause category: `{'OFF_SESSION_ZERO_TICK': 250, 'PRIMARY_SESSION_ZERO_TICK': 4, 'ROLLOVER_ZERO_TICK': 395}`
 - Samples: `['2021-01-04T22:45:00Z', '2021-01-04T22:46:00Z', '2021-01-05T22:02:00Z', '2021-01-05T22:20:00Z', '2021-01-05T22:23:00Z', '2021-01-05T22:44:00Z', '2021-01-05T22:46:00Z', '2021-01-05T22:49:00Z', '2021-01-05T22:50:00Z', '2021-01-06T22:08:00Z', '2021-01-06T22:09:00Z', '2021-01-06T22:16:00Z', '2021-01-06T22:21:00Z', '2021-01-06T22:23:00Z', '2021-01-06T22:26:00Z', '2021-01-06T22:28:00Z', '2021-01-22T21:38:00Z', '2021-02-10T04:29:00Z', '2021-02-10T21:24:00Z', '2021-02-10T22:07:00Z', '2021-02-10T22:44:00Z', '2021-02-10T22:45:00Z', '2021-02-10T22:46:00Z', '2021-02-10T22:49:00Z', '2021-02-10T22:50:00Z']`
 
 ### GBPUSD
 
-- By hour UTC: `{'0': 3, '1': 1, '10': 2, '17': 1, '18': 2, '19': 6, '2': 4, '20': 19, '21': 81, '22': 70, '23': 9, '4': 2, '5': 4, '6': 1, '7': 1, '8': 1}`
-- By weekday: `{'Friday': 9, 'Monday': 19, 'Thursday': 68, 'Tuesday': 65, 'Wednesday': 46}`
-- By session: `{'LONDON': 2, 'OTHER': 54, 'ROLLOVER': 151}`
-- By root-cause category: `{'OFF_SESSION_ZERO_TICK': 54, 'PRIMARY_SESSION_ZERO_TICK': 2, 'ROLLOVER_ZERO_TICK': 151}`
+- By hour UTC: `{'0': 7, '1': 2, '10': 2, '14': 3, '17': 3, '18': 5, '19': 7, '2': 7, '20': 55, '21': 179, '22': 199, '23': 74, '3': 11, '4': 23, '5': 11, '6': 1, '7': 1, '8': 1}`
+- By weekday: `{'Friday': 19, 'Monday': 117, 'Thursday': 133, 'Tuesday': 196, 'Wednesday': 126}`
+- By session: `{'LONDON': 2, 'NY': 3, 'OTHER': 208, 'ROLLOVER': 378}`
+- By root-cause category: `{'OFF_SESSION_ZERO_TICK': 208, 'PRIMARY_SESSION_ZERO_TICK': 5, 'ROLLOVER_ZERO_TICK': 378}`
 - Samples: `['2021-01-04T22:19:00Z', '2021-01-05T22:18:00Z', '2021-01-05T22:19:00Z', '2021-01-06T22:04:00Z', '2021-01-22T18:24:00Z', '2021-01-22T20:26:00Z', '2021-02-10T04:48:00Z', '2021-02-10T05:11:00Z', '2021-02-10T05:53:00Z', '2021-02-10T21:24:00Z', '2021-02-10T21:32:00Z', '2021-02-10T22:17:00Z', '2021-04-13T00:30:00Z', '2021-04-13T02:12:00Z', '2021-04-13T04:41:00Z', '2021-04-13T08:29:00Z', '2021-04-13T20:18:00Z', '2021-04-13T20:22:00Z', '2021-04-13T20:26:00Z', '2021-04-13T20:27:00Z', '2021-04-13T20:28:00Z', '2021-04-13T21:07:00Z', '2021-04-13T21:08:00Z', '2021-04-13T21:46:00Z', '2021-04-13T22:24:00Z']`
 
 ## Cross-Source Comparison
@@ -90,9 +90,9 @@ Guardrail: Statistical source integrity investigation does not change contracts,
 
 ## Pre-Registered Decision Framework
 
-- Current decision status: `INSUFFICIENT_EVIDENCE`
-- Recommendation: `CONTINUE_EVIDENCE_COLLECTION`
-- Next gate: `complete deterministic source-integrity evidence sample`
+- Current decision status: `MISSING_RATE_EXCEEDS_THRESHOLD`
+- Recommendation: `OPEN_DATA_GOVERNANCE_REVIEW`
+- Next gate: `data governance review board`
 
 ## Decision
 

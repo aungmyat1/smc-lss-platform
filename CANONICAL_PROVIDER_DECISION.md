@@ -1,75 +1,56 @@
 # ST-C3 Canonical Provider Decision
 
-Date: 2026-07-30
+Date: 2026-07-31
 
 ## Decision
 
-**QUALIFIED**
+**OPEN_DATA_GOVERNANCE_REVIEW**
 
-## Selected Canonical Provider
+## Provider Under Review
 
 **Dukascopy**
 
 ## Decision Scope
 
-This is a provider qualification decision only.
+This is a provider qualification evidence decision only.
 
 It does not:
 
+- approve Dukascopy as the canonical ST-C3 v1.x provider
 - approve a dataset
 - update the dataset manifest to approved
 - approve the dataset contract
 - unblock replay
 - open A3
 - authorize statistical validation
-- authorize demo/live trading
+- authorize demo trading
+- authorize live trading
 
-## Rationale
+## Evidence Basis
 
-Dukascopy is selected because:
+The deterministic source-integrity sample is complete:
 
-- public documentation advertises historical data export from tick-by-tick
-  through monthly timeframes
-- public historical-data documentation exists for historical bars and ticks
-- deterministic hourly `.bi5` tick URLs are available for automated
-  acquisition
-- limited repository verification succeeded for both required symbols
-- sampled tick data reconstructed complete M1 bars with zero minute gaps
-- sampled ticks were monotonic
-- sampled reconstructed OHLC values were valid
-- M3 can be deterministically derived from complete M1/tick data
+- Target sample days: `100`
+- Cached complete deterministic sample days: `100`
+- Audited cached days, including pilot evidence: `103`
+- Symbols: `EURUSD`, `GBPUSD`
+- Coverage window: `2021-01-01` through `2025-12-31`
 
-## Rejected Providers
+The statistical source-integrity report found:
 
-HistData:
+- Total expected minutes: `288240`
+- Total missing market-open minutes: `1240`
+- Missing-minute rate: `0.004301970580072162`
+- 95% confidence interval: `0.004069558281261814` to `0.004547595328160722`
+- Pre-registered threshold: `0.001`
 
-Rejected because the acquired and constructed candidate failed the unchanged
-ST-C3 integrity validator with missing timestamps in every required file.
+Because the observed missing-minute rate exceeds the threshold, Dukascopy is
+not approved for canonical ST-C3 v1.x dataset construction at this time.
 
-MT5 Export:
+## Final Provider Qualification Recommendation
 
-Rejected because the current candidate is fragmented, M15 coverage is
-incomplete, M3 is unusable, and exact-candle recovery failed.
+Provider qualification result: **OPEN_DATA_GOVERNANCE_REVIEW**
 
-Existing Repository Dataset:
-
-Rejected because legacy files are not governed by the ST-C3 manifest and do
-not satisfy the required scope.
-
-## Conditions Before Dataset Acquisition
-
-Before full acquisition begins:
-
-- owner must approve the acquisition plan
-- storage/runtime expectations must be accepted
-- the acquisition script must construct candidate files only
-- validation gates must remain unchanged
-- replay must remain blocked
-
-## Final Provider Decision
-
-Provider qualification result: **QUALIFIED**
-
-Selected canonical provider for the next sprint: **Dukascopy**
-
-Recommended next step: proceed to Dataset Acquisition Sprint.
+Next step: review Dukascopy source suitability and contract compatibility
+using the completed source-integrity evidence before any provider freeze,
+dataset approval, replay, A3, demo, or live trading action.
