@@ -1,0 +1,903 @@
+cluster_id,symbol,start,end,calendar_decision,calendar_event,root_cause,evidence,confidence
+MM-00001,EURUSD,2021-01-04T22:45:00Z,2021-01-04T22:46:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00002,EURUSD,2021-01-05T22:02:00Z,2021-01-05T22:02:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00003,EURUSD,2021-01-05T22:20:00Z,2021-01-05T22:20:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00004,EURUSD,2021-01-05T22:23:00Z,2021-01-05T22:23:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00005,EURUSD,2021-01-05T22:44:00Z,2021-01-05T22:44:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00006,EURUSD,2021-01-05T22:46:00Z,2021-01-05T22:46:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00007,EURUSD,2021-01-05T22:49:00Z,2021-01-05T22:50:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00008,EURUSD,2021-01-06T22:08:00Z,2021-01-06T22:09:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00009,EURUSD,2021-01-06T22:16:00Z,2021-01-06T22:16:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00010,EURUSD,2021-01-06T22:21:00Z,2021-01-06T22:21:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00011,EURUSD,2021-01-06T22:23:00Z,2021-01-06T22:23:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00012,EURUSD,2021-01-06T22:26:00Z,2021-01-06T22:26:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00013,EURUSD,2021-01-06T22:28:00Z,2021-01-06T22:28:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00014,EURUSD,2021-01-22T21:38:00Z,2021-01-22T21:38:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00015,EURUSD,2021-02-10T04:29:00Z,2021-02-10T04:29:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00016,EURUSD,2021-02-10T21:24:00Z,2021-02-10T21:24:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00017,EURUSD,2021-02-10T22:07:00Z,2021-02-10T22:07:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00018,EURUSD,2021-02-10T22:44:00Z,2021-02-10T22:46:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00019,EURUSD,2021-02-10T22:49:00Z,2021-02-10T22:51:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00020,EURUSD,2021-02-10T22:56:00Z,2021-02-10T22:56:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00021,EURUSD,2021-04-13T04:42:00Z,2021-04-13T04:42:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00022,EURUSD,2021-04-13T08:29:00Z,2021-04-13T08:29:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00023,EURUSD,2021-04-13T19:25:00Z,2021-04-13T19:25:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00024,EURUSD,2021-04-13T20:19:00Z,2021-04-13T20:19:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00025,EURUSD,2021-04-13T21:17:00Z,2021-04-13T21:17:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00026,EURUSD,2021-04-13T21:22:00Z,2021-04-13T21:22:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00027,EURUSD,2021-04-13T21:38:00Z,2021-04-13T21:38:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00028,EURUSD,2021-04-13T21:44:00Z,2021-04-13T21:44:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00029,EURUSD,2021-04-13T22:26:00Z,2021-04-13T22:26:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00030,EURUSD,2021-04-13T23:43:00Z,2021-04-13T23:44:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00031,EURUSD,2021-04-16T00:13:00Z,2021-04-16T00:13:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00032,EURUSD,2021-04-16T04:50:00Z,2021-04-16T04:50:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00033,EURUSD,2021-04-16T17:15:00Z,2021-04-16T17:15:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00034,EURUSD,2021-04-16T17:50:00Z,2021-04-16T17:50:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00035,EURUSD,2021-04-16T18:20:00Z,2021-04-16T18:20:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00036,EURUSD,2021-04-16T18:29:00Z,2021-04-16T18:30:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00037,EURUSD,2021-04-16T20:05:00Z,2021-04-16T20:05:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00038,EURUSD,2021-04-16T20:19:00Z,2021-04-16T20:19:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00039,EURUSD,2021-05-14T03:41:00Z,2021-05-14T03:41:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00040,EURUSD,2021-05-14T04:54:00Z,2021-05-14T04:54:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00041,EURUSD,2021-07-02T03:53:00Z,2021-07-02T03:53:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00042,EURUSD,2021-07-02T04:09:00Z,2021-07-02T04:09:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00043,EURUSD,2021-07-02T04:52:00Z,2021-07-02T04:52:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00044,EURUSD,2021-07-02T04:55:00Z,2021-07-02T04:55:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00045,EURUSD,2021-07-02T05:20:00Z,2021-07-02T05:20:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00046,EURUSD,2021-07-02T18:39:00Z,2021-07-02T18:39:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00047,EURUSD,2021-07-02T18:41:00Z,2021-07-02T18:41:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00048,EURUSD,2021-07-02T19:23:00Z,2021-07-02T19:23:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00049,EURUSD,2021-07-02T19:30:00Z,2021-07-02T19:30:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00050,EURUSD,2021-07-02T20:18:00Z,2021-07-02T20:18:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00051,EURUSD,2021-07-27T03:36:00Z,2021-07-27T03:36:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00052,EURUSD,2021-07-27T04:29:00Z,2021-07-27T04:29:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00053,EURUSD,2021-07-27T21:04:00Z,2021-07-27T21:04:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00054,EURUSD,2021-07-27T21:18:00Z,2021-07-27T21:19:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00055,EURUSD,2021-07-27T21:27:00Z,2021-07-27T21:27:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00056,EURUSD,2021-07-27T21:29:00Z,2021-07-27T21:29:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00057,EURUSD,2021-07-27T23:16:00Z,2021-07-27T23:16:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00058,EURUSD,2021-07-27T23:20:00Z,2021-07-27T23:20:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00059,EURUSD,2021-07-27T23:26:00Z,2021-07-27T23:27:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00060,EURUSD,2021-07-27T23:47:00Z,2021-07-27T23:47:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00061,EURUSD,2021-07-27T23:57:00Z,2021-07-27T23:57:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00062,EURUSD,2021-08-10T03:41:00Z,2021-08-10T03:41:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00063,EURUSD,2021-08-10T03:55:00Z,2021-08-10T03:55:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00064,EURUSD,2021-08-10T04:16:00Z,2021-08-10T04:16:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00065,EURUSD,2021-08-10T04:24:00Z,2021-08-10T04:24:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00066,EURUSD,2021-08-10T05:35:00Z,2021-08-10T05:35:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00067,EURUSD,2021-08-10T06:13:00Z,2021-08-10T06:13:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00068,EURUSD,2021-08-10T21:02:00Z,2021-08-10T21:02:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00069,EURUSD,2021-08-10T21:08:00Z,2021-08-10T21:09:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00070,EURUSD,2021-08-10T22:04:00Z,2021-08-10T22:04:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00071,EURUSD,2021-08-10T22:24:00Z,2021-08-10T22:24:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00072,EURUSD,2021-08-10T22:26:00Z,2021-08-10T22:26:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00073,EURUSD,2021-08-10T22:42:00Z,2021-08-10T22:42:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00074,EURUSD,2021-08-10T22:50:00Z,2021-08-10T22:50:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00075,EURUSD,2021-08-10T22:56:00Z,2021-08-10T22:56:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00076,EURUSD,2021-08-10T23:07:00Z,2021-08-10T23:07:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00077,EURUSD,2021-08-10T23:13:00Z,2021-08-10T23:14:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00078,EURUSD,2021-08-10T23:27:00Z,2021-08-10T23:28:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00079,EURUSD,2021-08-10T23:52:00Z,2021-08-10T23:52:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00080,EURUSD,2021-08-25T03:30:00Z,2021-08-25T03:30:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00081,EURUSD,2021-08-25T03:33:00Z,2021-08-25T03:33:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00082,EURUSD,2021-08-25T04:20:00Z,2021-08-25T04:20:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00083,EURUSD,2021-08-25T04:24:00Z,2021-08-25T04:24:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00084,EURUSD,2021-08-25T04:54:00Z,2021-08-25T04:54:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00085,EURUSD,2021-08-25T18:04:00Z,2021-08-25T18:04:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00086,EURUSD,2021-08-25T19:17:00Z,2021-08-25T19:17:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00087,EURUSD,2021-08-25T19:26:00Z,2021-08-25T19:26:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00088,EURUSD,2021-08-25T19:28:00Z,2021-08-25T19:28:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00089,EURUSD,2021-08-25T20:22:00Z,2021-08-25T20:22:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00090,EURUSD,2021-08-25T20:30:00Z,2021-08-25T20:30:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00091,EURUSD,2021-08-25T20:36:00Z,2021-08-25T20:37:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00092,EURUSD,2021-08-25T20:41:00Z,2021-08-25T20:41:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00093,EURUSD,2021-08-25T22:10:00Z,2021-08-25T22:11:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00094,EURUSD,2021-08-25T22:21:00Z,2021-08-25T22:21:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00095,EURUSD,2021-08-25T22:23:00Z,2021-08-25T22:23:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00096,EURUSD,2021-08-25T22:47:00Z,2021-08-25T22:47:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00097,EURUSD,2021-08-25T22:53:00Z,2021-08-25T22:53:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00098,EURUSD,2021-08-25T23:38:00Z,2021-08-25T23:38:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00099,EURUSD,2021-08-25T23:40:00Z,2021-08-25T23:42:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00100,EURUSD,2021-09-14T20:21:00Z,2021-09-14T20:21:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00101,EURUSD,2021-09-14T20:25:00Z,2021-09-14T20:26:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00102,EURUSD,2021-09-14T20:32:00Z,2021-09-14T20:32:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00103,EURUSD,2021-09-14T21:41:00Z,2021-09-14T21:41:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00104,EURUSD,2021-09-14T22:11:00Z,2021-09-14T22:11:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00105,EURUSD,2021-09-14T22:17:00Z,2021-09-14T22:21:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00106,EURUSD,2021-09-14T22:55:00Z,2021-09-14T22:55:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00107,EURUSD,2021-09-14T22:58:00Z,2021-09-14T22:59:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00108,EURUSD,2021-09-14T23:03:00Z,2021-09-14T23:03:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00109,EURUSD,2021-09-14T23:07:00Z,2021-09-14T23:07:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00110,EURUSD,2021-09-14T23:17:00Z,2021-09-14T23:17:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00111,EURUSD,2021-09-14T23:23:00Z,2021-09-14T23:23:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00112,EURUSD,2021-09-14T23:25:00Z,2021-09-14T23:27:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00113,EURUSD,2021-09-14T23:31:00Z,2021-09-14T23:31:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00114,EURUSD,2021-09-14T23:33:00Z,2021-09-14T23:33:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00115,EURUSD,2021-09-14T23:38:00Z,2021-09-14T23:39:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00116,EURUSD,2021-09-14T23:43:00Z,2021-09-14T23:44:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00117,EURUSD,2021-09-14T23:46:00Z,2021-09-14T23:46:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00118,EURUSD,2021-09-30T22:13:00Z,2021-09-30T22:13:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00119,EURUSD,2021-09-30T22:56:00Z,2021-09-30T22:56:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00120,EURUSD,2021-09-30T23:26:00Z,2021-09-30T23:26:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00121,EURUSD,2021-09-30T23:32:00Z,2021-09-30T23:32:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00122,EURUSD,2021-11-24T00:37:00Z,2021-11-24T00:38:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00123,EURUSD,2021-11-24T03:33:00Z,2021-11-24T03:33:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00124,EURUSD,2021-11-24T03:39:00Z,2021-11-24T03:39:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00125,EURUSD,2021-11-24T22:04:00Z,2021-11-24T22:04:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00126,EURUSD,2021-11-24T22:23:00Z,2021-11-24T22:23:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00127,EURUSD,2021-11-24T23:07:00Z,2021-11-24T23:07:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00128,EURUSD,2021-11-24T23:13:00Z,2021-11-24T23:13:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00129,EURUSD,2021-11-24T23:16:00Z,2021-11-24T23:16:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00130,EURUSD,2021-11-24T23:19:00Z,2021-11-24T23:19:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00131,EURUSD,2021-11-24T23:22:00Z,2021-11-24T23:22:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00132,EURUSD,2021-11-24T23:49:00Z,2021-11-24T23:49:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00133,EURUSD,2021-11-24T23:56:00Z,2021-11-24T23:56:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00134,EURUSD,2021-12-23T02:24:00Z,2021-12-23T02:24:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00135,EURUSD,2021-12-23T02:26:00Z,2021-12-23T02:26:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00136,EURUSD,2021-12-23T04:03:00Z,2021-12-23T04:03:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00137,EURUSD,2021-12-23T04:27:00Z,2021-12-23T04:27:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00138,EURUSD,2021-12-23T04:35:00Z,2021-12-23T04:35:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00139,EURUSD,2021-12-23T20:02:00Z,2021-12-23T20:03:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00140,EURUSD,2021-12-23T21:48:00Z,2021-12-23T21:48:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00141,EURUSD,2021-12-23T22:01:00Z,2021-12-23T22:01:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00142,EURUSD,2021-12-23T22:03:00Z,2021-12-23T22:04:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00143,EURUSD,2021-12-23T22:07:00Z,2021-12-23T22:07:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00144,EURUSD,2022-01-31T02:46:00Z,2022-01-31T02:46:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00145,EURUSD,2022-01-31T04:03:00Z,2022-01-31T04:03:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00146,EURUSD,2022-01-31T05:13:00Z,2022-01-31T05:13:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00147,EURUSD,2022-01-31T21:19:00Z,2022-01-31T21:19:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00148,EURUSD,2022-01-31T22:01:00Z,2022-01-31T22:04:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00149,EURUSD,2022-01-31T22:22:00Z,2022-01-31T22:22:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00150,EURUSD,2022-01-31T22:24:00Z,2022-01-31T22:24:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00151,EURUSD,2022-01-31T22:31:00Z,2022-01-31T22:33:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00152,EURUSD,2022-01-31T22:39:00Z,2022-01-31T22:39:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00153,EURUSD,2022-01-31T22:42:00Z,2022-01-31T22:43:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00154,EURUSD,2022-02-02T03:07:00Z,2022-02-02T03:07:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00155,EURUSD,2022-02-02T03:19:00Z,2022-02-02T03:19:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00156,EURUSD,2022-02-02T03:38:00Z,2022-02-02T03:38:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00157,EURUSD,2022-02-02T03:42:00Z,2022-02-02T03:42:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00158,EURUSD,2022-02-02T04:07:00Z,2022-02-02T04:07:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00159,EURUSD,2022-02-02T04:28:00Z,2022-02-02T04:28:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00160,EURUSD,2022-02-02T05:37:00Z,2022-02-02T05:38:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00161,EURUSD,2022-02-02T06:28:00Z,2022-02-02T06:28:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00162,EURUSD,2022-02-02T20:24:00Z,2022-02-02T20:24:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00163,EURUSD,2022-02-02T21:35:00Z,2022-02-02T21:35:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00164,EURUSD,2022-02-02T21:47:00Z,2022-02-02T21:47:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00165,EURUSD,2022-02-02T22:08:00Z,2022-02-02T22:08:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00166,EURUSD,2022-02-02T22:37:00Z,2022-02-02T22:40:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00167,EURUSD,2022-02-02T23:42:00Z,2022-02-02T23:42:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00168,EURUSD,2022-02-02T23:48:00Z,2022-02-02T23:49:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00169,EURUSD,2022-02-02T23:52:00Z,2022-02-02T23:52:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00170,EURUSD,2022-02-07T22:07:00Z,2022-02-07T22:07:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00171,EURUSD,2022-02-07T23:23:00Z,2022-02-07T23:23:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00172,EURUSD,2022-03-17T20:27:00Z,2022-03-17T20:27:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00173,EURUSD,2022-03-17T22:42:00Z,2022-03-17T22:42:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00174,EURUSD,2022-04-08T03:19:00Z,2022-04-08T03:19:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00175,EURUSD,2022-04-08T03:36:00Z,2022-04-08T03:36:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00176,EURUSD,2022-04-21T21:33:00Z,2022-04-21T21:33:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00177,EURUSD,2022-06-23T20:33:00Z,2022-06-23T20:33:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00178,EURUSD,2022-06-23T21:01:00Z,2022-06-23T21:03:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00179,EURUSD,2022-06-23T21:34:00Z,2022-06-23T21:34:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00180,EURUSD,2022-07-01T20:33:00Z,2022-07-01T20:33:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00181,EURUSD,2022-07-12T20:38:00Z,2022-07-12T20:38:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00182,EURUSD,2022-07-12T21:22:00Z,2022-07-12T21:22:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00183,EURUSD,2022-07-12T22:41:00Z,2022-07-12T22:41:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00184,EURUSD,2022-08-25T20:34:00Z,2022-08-25T20:34:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00185,EURUSD,2022-08-25T21:02:00Z,2022-08-25T21:02:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00186,EURUSD,2022-10-27T21:05:00Z,2022-10-27T21:05:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00187,EURUSD,2022-10-27T21:10:00Z,2022-10-27T21:10:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00188,EURUSD,2022-10-27T21:12:00Z,2022-10-27T21:14:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00189,EURUSD,2022-10-27T21:19:00Z,2022-10-27T21:21:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00190,EURUSD,2022-10-27T21:26:00Z,2022-10-27T21:31:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00191,EURUSD,2022-10-27T21:35:00Z,2022-10-27T21:35:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00192,EURUSD,2022-10-27T21:37:00Z,2022-10-27T21:39:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00193,EURUSD,2022-10-27T21:41:00Z,2022-10-27T21:44:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00194,EURUSD,2022-10-27T21:47:00Z,2022-10-27T21:48:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00195,EURUSD,2022-10-27T21:50:00Z,2022-10-27T21:50:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00196,EURUSD,2022-11-03T10:58:00Z,2022-11-03T10:59:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00197,EURUSD,2022-11-03T21:01:00Z,2022-11-03T21:04:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00198,EURUSD,2022-11-03T21:09:00Z,2022-11-03T21:09:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00199,EURUSD,2022-11-09T22:01:00Z,2022-11-09T22:01:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00200,EURUSD,2022-11-09T22:11:00Z,2022-11-09T22:11:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00201,EURUSD,2022-11-23T22:19:00Z,2022-11-23T22:19:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00202,EURUSD,2022-11-23T22:28:00Z,2022-11-23T22:28:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00203,EURUSD,2022-11-30T22:01:00Z,2022-11-30T22:01:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00204,EURUSD,2022-12-05T22:06:00Z,2022-12-05T22:06:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00205,EURUSD,2022-12-05T22:10:00Z,2022-12-05T22:11:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00206,EURUSD,2022-12-05T22:14:00Z,2022-12-05T22:14:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00207,EURUSD,2022-12-21T22:13:00Z,2022-12-21T22:13:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00208,EURUSD,2022-12-21T22:28:00Z,2022-12-21T22:29:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00209,EURUSD,2023-01-10T22:04:00Z,2023-01-10T22:07:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00210,EURUSD,2023-01-10T22:09:00Z,2023-01-10T22:09:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00211,EURUSD,2023-01-10T22:12:00Z,2023-01-10T22:13:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00212,EURUSD,2023-01-10T22:16:00Z,2023-01-10T22:17:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00213,EURUSD,2023-01-10T22:19:00Z,2023-01-10T22:19:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00214,EURUSD,2023-01-10T22:21:00Z,2023-01-10T22:24:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00215,EURUSD,2023-01-10T23:52:00Z,2023-01-10T23:52:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00216,EURUSD,2023-03-29T21:02:00Z,2023-03-29T21:04:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00217,EURUSD,2023-03-29T21:18:00Z,2023-03-29T21:18:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00218,EURUSD,2023-03-29T21:33:00Z,2023-03-29T21:33:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00219,EURUSD,2023-03-29T21:44:00Z,2023-03-29T21:44:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00220,EURUSD,2023-03-29T21:52:00Z,2023-03-29T21:53:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00221,EURUSD,2023-03-29T22:48:00Z,2023-03-29T22:48:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00222,EURUSD,2023-03-29T23:33:00Z,2023-03-29T23:33:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00223,EURUSD,2023-04-18T21:11:00Z,2023-04-18T21:13:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00224,EURUSD,2023-04-18T21:32:00Z,2023-04-18T21:33:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00225,EURUSD,2023-04-18T23:20:00Z,2023-04-18T23:20:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00226,EURUSD,2023-04-19T21:04:00Z,2023-04-19T21:04:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00227,EURUSD,2023-04-19T21:08:00Z,2023-04-19T21:08:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00228,EURUSD,2023-04-19T21:13:00Z,2023-04-19T21:13:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00229,EURUSD,2023-04-19T21:54:00Z,2023-04-19T21:54:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00230,EURUSD,2023-04-19T22:43:00Z,2023-04-19T22:43:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00231,EURUSD,2023-04-24T20:37:00Z,2023-04-24T20:37:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00232,EURUSD,2023-04-24T21:01:00Z,2023-04-24T21:01:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00233,EURUSD,2023-04-24T21:03:00Z,2023-04-24T21:04:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00234,EURUSD,2023-04-24T21:06:00Z,2023-04-24T21:06:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00235,EURUSD,2023-04-24T21:08:00Z,2023-04-24T21:08:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00236,EURUSD,2023-04-24T21:17:00Z,2023-04-24T21:17:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00237,EURUSD,2023-04-24T21:19:00Z,2023-04-24T21:19:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00238,EURUSD,2023-04-24T21:22:00Z,2023-04-24T21:24:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00239,EURUSD,2023-04-24T21:31:00Z,2023-04-24T21:31:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00240,EURUSD,2023-04-24T21:43:00Z,2023-04-24T21:44:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00241,EURUSD,2023-04-24T22:53:00Z,2023-04-24T22:53:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00242,EURUSD,2023-05-01T21:03:00Z,2023-05-01T21:03:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00243,EURUSD,2023-05-01T21:14:00Z,2023-05-01T21:14:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00244,EURUSD,2023-05-01T21:17:00Z,2023-05-01T21:17:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00245,EURUSD,2023-05-01T21:21:00Z,2023-05-01T21:21:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00246,EURUSD,2023-05-01T21:27:00Z,2023-05-01T21:34:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00247,EURUSD,2023-05-01T21:37:00Z,2023-05-01T21:49:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00248,EURUSD,2023-05-09T21:06:00Z,2023-05-09T21:06:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00249,EURUSD,2023-05-09T21:11:00Z,2023-05-09T21:13:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00250,EURUSD,2023-05-09T21:15:00Z,2023-05-09T21:17:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00251,EURUSD,2023-05-09T21:54:00Z,2023-05-09T21:54:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00252,EURUSD,2023-06-07T21:19:00Z,2023-06-07T21:19:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00253,EURUSD,2023-06-07T21:22:00Z,2023-06-07T21:22:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00254,EURUSD,2023-06-07T21:24:00Z,2023-06-07T21:24:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00255,EURUSD,2023-06-07T21:26:00Z,2023-06-07T21:26:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00256,EURUSD,2023-06-07T21:30:00Z,2023-06-07T21:30:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00257,EURUSD,2023-06-07T21:34:00Z,2023-06-07T21:34:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00258,EURUSD,2023-06-07T22:45:00Z,2023-06-07T22:45:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00259,EURUSD,2023-06-07T22:54:00Z,2023-06-07T22:54:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00260,EURUSD,2023-06-20T04:18:00Z,2023-06-20T04:18:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00261,EURUSD,2023-06-20T21:04:00Z,2023-06-20T21:11:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00262,EURUSD,2023-06-20T21:15:00Z,2023-06-20T21:15:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00263,EURUSD,2023-06-20T21:48:00Z,2023-06-20T21:49:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00264,EURUSD,2023-06-20T23:26:00Z,2023-06-20T23:26:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00265,EURUSD,2023-09-01T05:06:00Z,2023-09-01T05:06:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00266,EURUSD,2023-09-01T17:40:00Z,2023-09-01T17:40:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00267,EURUSD,2023-09-01T18:17:00Z,2023-09-01T18:17:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00268,EURUSD,2023-09-13T03:10:00Z,2023-09-13T03:10:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00269,EURUSD,2023-09-13T14:57:00Z,2023-09-13T14:59:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00270,EURUSD,2023-09-13T20:16:00Z,2023-09-13T20:16:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00271,EURUSD,2023-09-13T20:18:00Z,2023-09-13T20:19:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00272,EURUSD,2023-09-13T20:22:00Z,2023-09-13T20:22:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00273,EURUSD,2023-09-13T20:34:00Z,2023-09-13T20:34:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00274,EURUSD,2023-09-13T20:36:00Z,2023-09-13T20:36:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00275,EURUSD,2023-09-13T20:38:00Z,2023-09-13T20:39:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00276,EURUSD,2023-09-13T22:18:00Z,2023-09-13T22:18:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00277,EURUSD,2023-09-13T23:12:00Z,2023-09-13T23:12:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00278,EURUSD,2023-09-13T23:56:00Z,2023-09-13T23:56:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00279,EURUSD,2023-11-28T00:27:00Z,2023-11-28T00:27:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00280,EURUSD,2023-11-28T04:21:00Z,2023-11-28T04:21:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00281,EURUSD,2023-11-28T22:28:00Z,2023-11-28T22:28:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00282,EURUSD,2023-11-28T22:51:00Z,2023-11-28T22:51:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00283,EURUSD,2023-12-06T21:37:00Z,2023-12-06T21:38:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00284,EURUSD,2023-12-06T22:48:00Z,2023-12-06T22:48:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00285,EURUSD,2024-01-03T00:53:00Z,2024-01-03T00:53:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00286,EURUSD,2024-01-03T02:39:00Z,2024-01-03T02:39:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00287,EURUSD,2024-01-03T06:43:00Z,2024-01-03T06:43:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00288,EURUSD,2024-01-03T22:19:00Z,2024-01-03T22:19:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00289,EURUSD,2024-01-03T22:23:00Z,2024-01-03T22:23:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00290,EURUSD,2024-01-16T21:24:00Z,2024-01-16T21:24:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00291,EURUSD,2024-01-16T21:27:00Z,2024-01-16T21:27:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00292,EURUSD,2024-01-16T23:11:00Z,2024-01-16T23:11:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00293,EURUSD,2024-01-16T23:16:00Z,2024-01-16T23:16:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00294,EURUSD,2024-01-16T23:18:00Z,2024-01-16T23:18:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00295,EURUSD,2024-01-16T23:24:00Z,2024-01-16T23:24:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00296,EURUSD,2024-01-16T23:26:00Z,2024-01-16T23:27:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00297,EURUSD,2024-01-26T03:32:00Z,2024-01-26T03:32:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00298,EURUSD,2024-01-26T04:10:00Z,2024-01-26T04:10:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00299,EURUSD,2024-02-01T22:02:00Z,2024-02-01T22:02:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00300,EURUSD,2024-02-01T22:04:00Z,2024-02-01T22:04:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00301,EURUSD,2024-02-01T22:19:00Z,2024-02-01T22:19:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00302,EURUSD,2024-02-01T23:17:00Z,2024-02-01T23:17:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00303,EURUSD,2024-02-01T23:57:00Z,2024-02-01T23:58:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00304,EURUSD,2024-02-27T02:50:00Z,2024-02-27T02:50:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00305,EURUSD,2024-02-27T04:07:00Z,2024-02-27T04:07:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00306,EURUSD,2024-02-27T04:15:00Z,2024-02-27T04:15:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00307,EURUSD,2024-02-27T21:34:00Z,2024-02-27T21:34:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00308,EURUSD,2024-02-27T21:43:00Z,2024-02-27T21:43:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00309,EURUSD,2024-02-27T22:43:00Z,2024-02-27T22:43:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00310,EURUSD,2024-02-27T22:50:00Z,2024-02-27T22:50:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00311,EURUSD,2024-02-27T23:25:00Z,2024-02-27T23:25:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00312,EURUSD,2024-02-28T22:07:00Z,2024-02-28T22:07:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00313,EURUSD,2024-02-28T23:37:00Z,2024-02-28T23:37:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00314,EURUSD,2024-02-28T23:39:00Z,2024-02-28T23:39:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00315,EURUSD,2024-03-14T21:56:00Z,2024-03-14T21:56:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00316,EURUSD,2024-03-14T22:11:00Z,2024-03-14T22:11:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00317,EURUSD,2024-03-14T22:15:00Z,2024-03-14T22:15:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00318,EURUSD,2024-03-14T22:45:00Z,2024-03-14T22:45:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00319,EURUSD,2024-03-14T23:48:00Z,2024-03-14T23:49:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00320,EURUSD,2024-03-20T02:12:00Z,2024-03-20T02:13:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00321,EURUSD,2024-03-20T21:04:00Z,2024-03-20T21:04:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00322,EURUSD,2024-03-28T06:10:00Z,2024-03-28T06:10:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00323,EURUSD,2024-03-28T20:28:00Z,2024-03-28T20:28:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00324,EURUSD,2024-03-28T21:01:00Z,2024-03-28T21:03:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00325,EURUSD,2024-05-01T02:20:00Z,2024-05-01T02:20:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00326,EURUSD,2024-05-01T03:29:00Z,2024-05-01T03:29:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00327,EURUSD,2024-05-01T04:05:00Z,2024-05-01T04:05:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00328,EURUSD,2024-05-07T22:55:00Z,2024-05-07T22:56:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00329,EURUSD,2024-05-07T23:09:00Z,2024-05-07T23:09:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00330,EURUSD,2024-05-07T23:12:00Z,2024-05-07T23:12:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00331,EURUSD,2024-05-07T23:19:00Z,2024-05-07T23:20:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00332,EURUSD,2024-05-08T20:21:00Z,2024-05-08T20:21:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00333,EURUSD,2024-05-08T20:25:00Z,2024-05-08T20:25:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00334,EURUSD,2024-05-08T21:01:00Z,2024-05-08T21:02:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00335,EURUSD,2024-05-08T22:04:00Z,2024-05-08T22:04:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00336,EURUSD,2024-05-08T22:06:00Z,2024-05-08T22:06:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00337,EURUSD,2024-05-08T22:17:00Z,2024-05-08T22:17:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00338,EURUSD,2024-05-08T22:22:00Z,2024-05-08T22:22:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00339,EURUSD,2024-05-08T22:50:00Z,2024-05-08T22:53:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00340,EURUSD,2024-05-08T23:14:00Z,2024-05-08T23:14:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00341,EURUSD,2024-05-08T23:27:00Z,2024-05-08T23:28:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00342,EURUSD,2024-05-20T03:46:00Z,2024-05-20T03:46:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00343,EURUSD,2024-05-20T18:38:00Z,2024-05-20T18:38:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00344,EURUSD,2024-05-20T21:03:00Z,2024-05-20T21:03:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00345,EURUSD,2024-05-20T21:40:00Z,2024-05-20T21:40:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00346,EURUSD,2024-05-20T22:17:00Z,2024-05-20T22:18:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00347,EURUSD,2024-05-20T22:22:00Z,2024-05-20T22:22:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00348,EURUSD,2024-05-20T22:24:00Z,2024-05-20T22:24:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00349,EURUSD,2024-05-20T22:27:00Z,2024-05-20T22:27:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00350,EURUSD,2024-05-20T22:35:00Z,2024-05-20T22:35:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00351,EURUSD,2024-05-20T22:42:00Z,2024-05-20T22:43:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00352,EURUSD,2024-05-20T22:52:00Z,2024-05-20T22:52:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00353,EURUSD,2024-06-04T20:22:00Z,2024-06-04T20:22:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00354,EURUSD,2024-06-04T20:41:00Z,2024-06-04T20:41:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00355,EURUSD,2024-06-04T20:44:00Z,2024-06-04T20:44:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00356,EURUSD,2024-06-04T21:02:00Z,2024-06-04T21:02:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00357,EURUSD,2024-06-04T22:17:00Z,2024-06-04T22:20:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00358,EURUSD,2024-06-04T22:26:00Z,2024-06-04T22:26:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00359,EURUSD,2024-06-04T22:42:00Z,2024-06-04T22:42:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00360,EURUSD,2024-06-04T22:53:00Z,2024-06-04T22:53:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00361,EURUSD,2024-06-04T23:10:00Z,2024-06-04T23:11:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00362,EURUSD,2024-06-04T23:28:00Z,2024-06-04T23:28:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00363,EURUSD,2024-06-04T23:42:00Z,2024-06-04T23:42:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00364,EURUSD,2024-06-12T04:07:00Z,2024-06-12T04:08:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00365,EURUSD,2024-06-12T04:14:00Z,2024-06-12T04:14:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00366,EURUSD,2024-06-12T04:46:00Z,2024-06-12T04:46:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00367,EURUSD,2024-06-12T04:51:00Z,2024-06-12T04:51:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00368,EURUSD,2024-06-12T22:51:00Z,2024-06-12T22:51:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00369,EURUSD,2024-06-24T04:33:00Z,2024-06-24T04:33:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00370,EURUSD,2024-06-24T21:01:00Z,2024-06-24T21:01:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00371,EURUSD,2024-06-24T21:03:00Z,2024-06-24T21:03:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00372,EURUSD,2024-06-24T22:22:00Z,2024-06-24T22:22:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00373,EURUSD,2024-06-24T22:27:00Z,2024-06-24T22:27:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00374,EURUSD,2024-06-24T22:49:00Z,2024-06-24T22:56:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00375,EURUSD,2024-06-24T23:21:00Z,2024-06-24T23:21:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00376,EURUSD,2024-06-24T23:23:00Z,2024-06-24T23:24:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00377,EURUSD,2024-06-24T23:26:00Z,2024-06-24T23:26:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00378,EURUSD,2024-06-24T23:29:00Z,2024-06-24T23:29:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00379,EURUSD,2024-06-24T23:32:00Z,2024-06-24T23:33:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00380,EURUSD,2024-07-08T16:35:00Z,2024-07-08T16:35:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00381,EURUSD,2024-07-08T21:02:00Z,2024-07-08T21:08:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00382,EURUSD,2024-07-08T21:18:00Z,2024-07-08T21:23:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00383,EURUSD,2024-07-08T21:27:00Z,2024-07-08T21:28:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00384,EURUSD,2024-07-08T21:46:00Z,2024-07-08T21:46:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00385,EURUSD,2024-07-08T21:49:00Z,2024-07-08T21:49:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00386,EURUSD,2024-07-08T22:11:00Z,2024-07-08T22:11:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00387,EURUSD,2024-07-08T22:15:00Z,2024-07-08T22:15:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00388,EURUSD,2024-07-08T22:32:00Z,2024-07-08T22:33:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00389,EURUSD,2024-07-08T22:45:00Z,2024-07-08T22:45:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00390,EURUSD,2024-07-08T22:48:00Z,2024-07-08T22:49:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00391,EURUSD,2024-07-08T23:23:00Z,2024-07-08T23:23:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00392,EURUSD,2024-07-08T23:26:00Z,2024-07-08T23:28:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00393,EURUSD,2024-07-08T23:32:00Z,2024-07-08T23:32:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00394,EURUSD,2024-07-08T23:45:00Z,2024-07-08T23:45:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00395,EURUSD,2024-07-08T23:51:00Z,2024-07-08T23:51:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00396,EURUSD,2024-08-12T00:42:00Z,2024-08-12T00:42:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00397,EURUSD,2024-08-12T03:12:00Z,2024-08-12T03:12:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00398,EURUSD,2024-08-12T04:15:00Z,2024-08-12T04:15:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00399,EURUSD,2024-08-12T20:09:00Z,2024-08-12T20:09:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00400,EURUSD,2024-08-12T21:56:00Z,2024-08-12T21:56:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00401,EURUSD,2024-08-12T22:52:00Z,2024-08-12T22:52:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00402,EURUSD,2024-08-12T23:11:00Z,2024-08-12T23:12:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00403,EURUSD,2024-08-12T23:23:00Z,2024-08-12T23:23:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00404,EURUSD,2024-08-12T23:27:00Z,2024-08-12T23:27:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00405,EURUSD,2024-10-14T04:41:00Z,2024-10-14T04:42:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00406,EURUSD,2024-10-14T04:50:00Z,2024-10-14T04:50:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00407,EURUSD,2024-10-14T22:20:00Z,2024-10-14T22:20:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00408,EURUSD,2024-10-14T22:31:00Z,2024-10-14T22:31:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00409,EURUSD,2024-10-14T22:33:00Z,2024-10-14T22:33:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00410,EURUSD,2024-10-21T03:49:00Z,2024-10-21T03:49:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00411,EURUSD,2024-10-21T04:18:00Z,2024-10-21T04:18:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00412,EURUSD,2024-10-21T21:31:00Z,2024-10-21T21:31:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00413,EURUSD,2024-10-21T21:47:00Z,2024-10-21T21:47:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00414,EURUSD,2024-10-21T22:20:00Z,2024-10-21T22:20:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00415,EURUSD,2024-10-21T22:25:00Z,2024-10-21T22:25:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00416,EURUSD,2024-10-21T22:28:00Z,2024-10-21T22:28:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00417,EURUSD,2024-10-21T23:40:00Z,2024-10-21T23:40:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00418,EURUSD,2024-11-25T22:01:00Z,2024-11-25T22:01:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00419,EURUSD,2024-11-25T22:44:00Z,2024-11-25T22:44:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00420,EURUSD,2024-12-17T21:18:00Z,2024-12-17T21:18:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00421,EURUSD,2024-12-17T22:08:00Z,2024-12-17T22:08:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00422,EURUSD,2024-12-17T22:14:00Z,2024-12-17T22:14:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00423,EURUSD,2024-12-17T22:34:00Z,2024-12-17T22:34:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00424,EURUSD,2024-12-17T22:39:00Z,2024-12-17T22:39:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00425,EURUSD,2024-12-17T22:47:00Z,2024-12-17T22:47:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00426,EURUSD,2024-12-17T23:57:00Z,2024-12-17T23:57:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00427,EURUSD,2024-12-17T23:59:00Z,2024-12-17T23:59:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00428,EURUSD,2025-01-14T22:13:00Z,2025-01-14T22:13:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00429,EURUSD,2025-01-14T22:32:00Z,2025-01-14T22:33:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00430,EURUSD,2025-01-14T22:46:00Z,2025-01-14T22:49:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00431,EURUSD,2025-01-14T22:53:00Z,2025-01-14T22:53:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00432,EURUSD,2025-01-14T23:41:00Z,2025-01-14T23:41:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00433,EURUSD,2025-01-16T21:17:00Z,2025-01-16T21:17:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00434,EURUSD,2025-01-16T22:18:00Z,2025-01-16T22:18:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00435,EURUSD,2025-01-16T22:27:00Z,2025-01-16T22:27:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00436,EURUSD,2025-01-16T22:51:00Z,2025-01-16T22:52:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00437,EURUSD,2025-01-16T23:56:00Z,2025-01-16T23:56:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00438,EURUSD,2025-03-20T21:03:00Z,2025-03-20T21:03:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00439,EURUSD,2025-03-20T23:27:00Z,2025-03-20T23:27:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00440,EURUSD,2025-03-25T21:20:00Z,2025-03-25T21:20:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00441,EURUSD,2025-03-25T21:33:00Z,2025-03-25T21:33:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00442,EURUSD,2025-03-25T21:35:00Z,2025-03-25T21:35:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00443,EURUSD,2025-03-25T21:37:00Z,2025-03-25T21:37:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00444,EURUSD,2025-03-25T21:43:00Z,2025-03-25T21:44:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00445,EURUSD,2025-03-25T21:54:00Z,2025-03-25T21:54:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00446,EURUSD,2025-04-17T21:00:00Z,2025-04-17T21:03:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00447,EURUSD,2025-04-17T21:10:00Z,2025-04-17T21:10:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00448,EURUSD,2025-06-19T17:27:00Z,2025-06-19T17:27:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00449,EURUSD,2025-06-19T21:45:00Z,2025-06-19T21:45:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00450,EURUSD,2025-06-19T21:52:00Z,2025-06-19T21:52:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00451,EURUSD,2025-06-24T21:03:00Z,2025-06-24T21:03:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00452,EURUSD,2025-06-24T21:12:00Z,2025-06-24T21:12:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00453,EURUSD,2025-06-24T21:44:00Z,2025-06-24T21:44:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00454,EURUSD,2025-06-24T23:08:00Z,2025-06-24T23:09:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00455,EURUSD,2025-06-26T23:05:00Z,2025-06-26T23:05:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00456,EURUSD,2025-08-26T23:41:00Z,2025-08-26T23:41:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00457,EURUSD,2025-09-09T22:16:00Z,2025-09-09T22:16:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00458,EURUSD,2025-09-09T22:26:00Z,2025-09-09T22:26:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00459,EURUSD,2025-09-09T22:30:00Z,2025-09-09T22:30:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00460,EURUSD,2025-09-09T23:03:00Z,2025-09-09T23:03:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00461,EURUSD,2025-10-21T20:13:00Z,2025-10-21T20:14:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00462,EURUSD,2025-10-21T23:12:00Z,2025-10-21T23:12:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00463,EURUSD,2025-11-14T21:07:00Z,2025-11-14T21:07:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00464,EURUSD,2025-11-20T22:01:00Z,2025-11-20T22:03:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00465,EURUSD,2025-12-05T05:07:00Z,2025-12-05T05:07:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00466,EURUSD,2025-12-29T03:22:00Z,2025-12-29T03:22:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00467,EURUSD,2025-12-29T21:16:00Z,2025-12-29T21:16:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00468,EURUSD,2025-12-29T22:03:00Z,2025-12-29T22:03:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00469,EURUSD,2025-12-29T22:14:00Z,2025-12-29T22:14:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00470,EURUSD,2025-12-29T22:16:00Z,2025-12-29T22:16:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00471,GBPUSD,2021-01-04T22:19:00Z,2021-01-04T22:19:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00472,GBPUSD,2021-01-05T22:18:00Z,2021-01-05T22:19:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00473,GBPUSD,2021-01-06T22:04:00Z,2021-01-06T22:04:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00474,GBPUSD,2021-01-22T18:24:00Z,2021-01-22T18:24:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00475,GBPUSD,2021-01-22T20:26:00Z,2021-01-22T20:26:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00476,GBPUSD,2021-02-10T04:48:00Z,2021-02-10T04:48:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00477,GBPUSD,2021-02-10T05:11:00Z,2021-02-10T05:11:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00478,GBPUSD,2021-02-10T05:53:00Z,2021-02-10T05:53:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00479,GBPUSD,2021-02-10T21:24:00Z,2021-02-10T21:24:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00480,GBPUSD,2021-02-10T21:32:00Z,2021-02-10T21:32:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00481,GBPUSD,2021-02-10T22:17:00Z,2021-02-10T22:17:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00482,GBPUSD,2021-04-13T00:30:00Z,2021-04-13T00:30:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00483,GBPUSD,2021-04-13T02:12:00Z,2021-04-13T02:12:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00484,GBPUSD,2021-04-13T04:41:00Z,2021-04-13T04:41:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00485,GBPUSD,2021-04-13T08:29:00Z,2021-04-13T08:29:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00486,GBPUSD,2021-04-13T20:18:00Z,2021-04-13T20:18:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00487,GBPUSD,2021-04-13T20:22:00Z,2021-04-13T20:22:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00488,GBPUSD,2021-04-13T20:26:00Z,2021-04-13T20:28:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00489,GBPUSD,2021-04-13T21:07:00Z,2021-04-13T21:08:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00490,GBPUSD,2021-04-13T21:46:00Z,2021-04-13T21:46:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00491,GBPUSD,2021-04-13T22:24:00Z,2021-04-13T22:24:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00492,GBPUSD,2021-04-16T17:48:00Z,2021-04-16T17:48:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00493,GBPUSD,2021-05-14T20:09:00Z,2021-05-14T20:09:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00494,GBPUSD,2021-05-14T20:11:00Z,2021-05-14T20:11:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00495,GBPUSD,2021-05-14T20:16:00Z,2021-05-14T20:16:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00496,GBPUSD,2021-07-02T20:18:00Z,2021-07-02T20:18:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00497,GBPUSD,2021-07-27T19:11:00Z,2021-07-27T19:11:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00498,GBPUSD,2021-07-27T21:05:00Z,2021-07-27T21:14:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00499,GBPUSD,2021-07-27T21:16:00Z,2021-07-27T21:18:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00500,GBPUSD,2021-07-27T21:23:00Z,2021-07-27T21:24:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00501,GBPUSD,2021-07-27T21:42:00Z,2021-07-27T21:42:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00502,GBPUSD,2021-07-27T21:45:00Z,2021-07-27T21:45:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00503,GBPUSD,2021-07-27T21:48:00Z,2021-07-27T21:48:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00504,GBPUSD,2021-07-27T22:14:00Z,2021-07-27T22:14:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00505,GBPUSD,2021-07-27T22:16:00Z,2021-07-27T22:16:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00506,GBPUSD,2021-07-27T22:53:00Z,2021-07-27T22:53:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00507,GBPUSD,2021-07-27T23:16:00Z,2021-07-27T23:16:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00508,GBPUSD,2021-08-10T02:46:00Z,2021-08-10T02:46:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00509,GBPUSD,2021-08-10T05:09:00Z,2021-08-10T05:09:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00510,GBPUSD,2021-08-10T20:18:00Z,2021-08-10T20:18:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00511,GBPUSD,2021-08-10T20:22:00Z,2021-08-10T20:22:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00512,GBPUSD,2021-08-10T20:36:00Z,2021-08-10T20:36:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00513,GBPUSD,2021-08-10T21:06:00Z,2021-08-10T21:07:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00514,GBPUSD,2021-08-10T21:09:00Z,2021-08-10T21:10:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00515,GBPUSD,2021-08-10T21:23:00Z,2021-08-10T21:23:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00516,GBPUSD,2021-08-10T21:40:00Z,2021-08-10T21:41:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00517,GBPUSD,2021-08-10T21:44:00Z,2021-08-10T21:44:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00518,GBPUSD,2021-08-10T21:50:00Z,2021-08-10T21:50:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00519,GBPUSD,2021-08-10T22:26:00Z,2021-08-10T22:26:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00520,GBPUSD,2021-08-25T02:58:00Z,2021-08-25T02:58:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00521,GBPUSD,2021-08-25T05:10:00Z,2021-08-25T05:10:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00522,GBPUSD,2021-08-25T18:50:00Z,2021-08-25T18:50:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00523,GBPUSD,2021-08-25T19:17:00Z,2021-08-25T19:17:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00524,GBPUSD,2021-08-25T19:34:00Z,2021-08-25T19:34:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00525,GBPUSD,2021-08-25T19:36:00Z,2021-08-25T19:36:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00526,GBPUSD,2021-08-25T20:23:00Z,2021-08-25T20:23:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00527,GBPUSD,2021-08-25T20:46:00Z,2021-08-25T20:46:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00528,GBPUSD,2021-08-25T21:16:00Z,2021-08-25T21:16:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00529,GBPUSD,2021-08-25T22:42:00Z,2021-08-25T22:42:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00530,GBPUSD,2021-08-25T23:31:00Z,2021-08-25T23:31:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00531,GBPUSD,2021-08-25T23:41:00Z,2021-08-25T23:41:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00532,GBPUSD,2021-09-14T20:10:00Z,2021-09-14T20:10:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00533,GBPUSD,2021-09-14T21:13:00Z,2021-09-14T21:14:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00534,GBPUSD,2021-09-14T21:27:00Z,2021-09-14T21:27:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00535,GBPUSD,2021-09-14T22:26:00Z,2021-09-14T22:26:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00536,GBPUSD,2021-09-14T22:35:00Z,2021-09-14T22:35:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00537,GBPUSD,2021-09-14T23:08:00Z,2021-09-14T23:08:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00538,GBPUSD,2021-09-14T23:27:00Z,2021-09-14T23:27:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00539,GBPUSD,2021-09-14T23:38:00Z,2021-09-14T23:38:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00540,GBPUSD,2021-09-14T23:42:00Z,2021-09-14T23:42:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00541,GBPUSD,2021-09-30T21:26:00Z,2021-09-30T21:26:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00542,GBPUSD,2021-09-30T22:36:00Z,2021-09-30T22:37:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00543,GBPUSD,2021-11-24T22:02:00Z,2021-11-24T22:02:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00544,GBPUSD,2021-11-24T22:04:00Z,2021-11-24T22:04:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00545,GBPUSD,2021-11-24T22:07:00Z,2021-11-24T22:07:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00546,GBPUSD,2021-11-24T22:09:00Z,2021-11-24T22:15:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00547,GBPUSD,2021-11-24T22:17:00Z,2021-11-24T22:25:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00548,GBPUSD,2021-11-24T22:27:00Z,2021-11-24T22:29:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00549,GBPUSD,2021-11-24T22:32:00Z,2021-11-24T22:32:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00550,GBPUSD,2021-11-24T22:40:00Z,2021-11-24T22:40:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00551,GBPUSD,2021-11-24T22:44:00Z,2021-11-24T22:44:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00552,GBPUSD,2021-11-24T23:06:00Z,2021-11-24T23:06:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00553,GBPUSD,2021-11-24T23:29:00Z,2021-11-24T23:29:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00554,GBPUSD,2021-12-23T00:18:00Z,2021-12-23T00:19:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00555,GBPUSD,2021-12-23T01:56:00Z,2021-12-23T01:56:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00556,GBPUSD,2021-12-23T02:53:00Z,2021-12-23T02:53:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00557,GBPUSD,2021-12-23T06:59:00Z,2021-12-23T06:59:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00558,GBPUSD,2021-12-23T07:31:00Z,2021-12-23T07:31:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00559,GBPUSD,2021-12-23T19:27:00Z,2021-12-23T19:27:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00560,GBPUSD,2021-12-23T19:37:00Z,2021-12-23T19:37:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00561,GBPUSD,2021-12-23T20:06:00Z,2021-12-23T20:06:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00562,GBPUSD,2021-12-23T22:23:00Z,2021-12-23T22:23:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00563,GBPUSD,2022-01-31T22:06:00Z,2022-01-31T22:06:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00564,GBPUSD,2022-01-31T22:08:00Z,2022-01-31T22:08:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00565,GBPUSD,2022-01-31T22:17:00Z,2022-01-31T22:17:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00566,GBPUSD,2022-01-31T22:22:00Z,2022-01-31T22:25:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00567,GBPUSD,2022-01-31T22:29:00Z,2022-01-31T22:29:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00568,GBPUSD,2022-01-31T22:45:00Z,2022-01-31T22:46:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00569,GBPUSD,2022-01-31T22:53:00Z,2022-01-31T22:53:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00570,GBPUSD,2022-02-07T21:33:00Z,2022-02-07T21:33:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00571,GBPUSD,2022-02-07T21:41:00Z,2022-02-07T21:41:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00572,GBPUSD,2022-02-07T22:16:00Z,2022-02-07T22:16:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00573,GBPUSD,2022-02-07T22:32:00Z,2022-02-07T22:32:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00574,GBPUSD,2022-02-07T22:41:00Z,2022-02-07T22:41:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00575,GBPUSD,2022-02-07T22:44:00Z,2022-02-07T22:44:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00576,GBPUSD,2022-02-07T22:51:00Z,2022-02-07T22:51:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00577,GBPUSD,2022-03-17T21:39:00Z,2022-03-17T21:39:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00578,GBPUSD,2022-03-17T21:41:00Z,2022-03-17T21:42:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00579,GBPUSD,2022-04-08T20:22:00Z,2022-04-08T20:22:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00580,GBPUSD,2022-04-21T21:19:00Z,2022-04-21T21:19:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00581,GBPUSD,2022-04-21T22:40:00Z,2022-04-21T22:40:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00582,GBPUSD,2022-06-23T21:35:00Z,2022-06-23T21:35:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00583,GBPUSD,2022-06-23T21:38:00Z,2022-06-23T21:38:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00584,GBPUSD,2022-06-23T21:47:00Z,2022-06-23T21:47:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00585,GBPUSD,2022-06-23T21:50:00Z,2022-06-23T21:50:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00586,GBPUSD,2022-06-23T21:53:00Z,2022-06-23T21:54:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00587,GBPUSD,2022-06-23T21:58:00Z,2022-06-23T21:58:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00588,GBPUSD,2022-06-23T22:08:00Z,2022-06-23T22:08:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00589,GBPUSD,2022-07-01T20:17:00Z,2022-07-01T20:17:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00590,GBPUSD,2022-07-12T21:13:00Z,2022-07-12T21:13:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00591,GBPUSD,2022-08-25T21:01:00Z,2022-08-25T21:01:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00592,GBPUSD,2022-08-25T21:05:00Z,2022-08-25T21:05:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00593,GBPUSD,2022-08-25T21:07:00Z,2022-08-25T21:07:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00594,GBPUSD,2022-08-25T21:09:00Z,2022-08-25T21:09:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00595,GBPUSD,2022-08-25T21:16:00Z,2022-08-25T21:17:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00596,GBPUSD,2022-08-25T22:04:00Z,2022-08-25T22:04:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00597,GBPUSD,2022-08-25T22:07:00Z,2022-08-25T22:07:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00598,GBPUSD,2022-08-25T22:19:00Z,2022-08-25T22:23:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00599,GBPUSD,2022-08-25T22:26:00Z,2022-08-25T22:26:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00600,GBPUSD,2022-08-25T22:30:00Z,2022-08-25T22:30:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00601,GBPUSD,2022-08-25T22:32:00Z,2022-08-25T22:32:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00602,GBPUSD,2022-08-25T22:40:00Z,2022-08-25T22:40:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00603,GBPUSD,2022-09-20T21:06:00Z,2022-09-20T21:06:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00604,GBPUSD,2022-10-27T21:07:00Z,2022-10-27T21:09:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00605,GBPUSD,2022-10-27T21:12:00Z,2022-10-27T21:13:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00606,GBPUSD,2022-10-27T21:21:00Z,2022-10-27T21:22:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00607,GBPUSD,2022-10-27T21:24:00Z,2022-10-27T21:24:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00608,GBPUSD,2022-10-27T21:26:00Z,2022-10-27T21:26:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00609,GBPUSD,2022-10-27T21:28:00Z,2022-10-27T21:28:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00610,GBPUSD,2022-10-27T21:32:00Z,2022-10-27T21:33:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00611,GBPUSD,2022-10-27T21:35:00Z,2022-10-27T21:39:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00612,GBPUSD,2022-10-27T21:41:00Z,2022-10-27T21:41:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00613,GBPUSD,2022-10-27T21:43:00Z,2022-10-27T21:44:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00614,GBPUSD,2022-10-27T21:51:00Z,2022-10-27T21:52:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00615,GBPUSD,2022-11-03T10:58:00Z,2022-11-03T10:59:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00616,GBPUSD,2022-11-03T21:06:00Z,2022-11-03T21:06:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00617,GBPUSD,2022-11-09T22:01:00Z,2022-11-09T22:04:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00618,GBPUSD,2022-11-09T22:36:00Z,2022-11-09T22:36:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00619,GBPUSD,2022-11-23T22:01:00Z,2022-11-23T22:02:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00620,GBPUSD,2022-11-30T22:02:00Z,2022-11-30T22:02:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00621,GBPUSD,2022-11-30T23:27:00Z,2022-11-30T23:27:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00622,GBPUSD,2022-12-05T22:00:00Z,2022-12-05T22:00:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00623,GBPUSD,2022-12-05T22:07:00Z,2022-12-05T22:07:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00624,GBPUSD,2022-12-05T22:56:00Z,2022-12-05T22:56:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00625,GBPUSD,2023-01-10T22:01:00Z,2023-01-10T22:02:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00626,GBPUSD,2023-01-10T22:09:00Z,2023-01-10T22:11:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00627,GBPUSD,2023-01-10T22:15:00Z,2023-01-10T22:15:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00628,GBPUSD,2023-01-10T22:18:00Z,2023-01-10T22:18:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00629,GBPUSD,2023-01-10T22:35:00Z,2023-01-10T22:35:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00630,GBPUSD,2023-01-10T22:37:00Z,2023-01-10T22:39:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00631,GBPUSD,2023-01-10T22:41:00Z,2023-01-10T22:41:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00632,GBPUSD,2023-03-29T20:49:00Z,2023-03-29T20:49:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00633,GBPUSD,2023-03-29T21:40:00Z,2023-03-29T21:40:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00634,GBPUSD,2023-04-18T04:59:00Z,2023-04-18T04:59:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00635,GBPUSD,2023-04-18T20:20:00Z,2023-04-18T20:20:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00636,GBPUSD,2023-04-19T20:22:00Z,2023-04-19T20:22:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00637,GBPUSD,2023-04-24T04:34:00Z,2023-04-24T04:34:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00638,GBPUSD,2023-04-24T22:35:00Z,2023-04-24T22:35:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00639,GBPUSD,2023-04-24T22:38:00Z,2023-04-24T22:39:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00640,GBPUSD,2023-04-24T23:57:00Z,2023-04-24T23:58:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00641,GBPUSD,2023-05-01T23:14:00Z,2023-05-01T23:14:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00642,GBPUSD,2023-06-07T22:46:00Z,2023-06-07T22:46:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00643,GBPUSD,2023-06-07T22:52:00Z,2023-06-07T22:52:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00644,GBPUSD,2023-09-01T00:46:00Z,2023-09-01T00:46:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00645,GBPUSD,2023-09-01T18:17:00Z,2023-09-01T18:17:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00646,GBPUSD,2023-09-13T14:57:00Z,2023-09-13T14:59:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00647,GBPUSD,2023-09-13T21:07:00Z,2023-09-13T21:07:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00648,GBPUSD,2023-09-13T21:13:00Z,2023-09-13T21:13:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00649,GBPUSD,2023-09-13T21:19:00Z,2023-09-13T21:19:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00650,GBPUSD,2023-09-13T22:48:00Z,2023-09-13T22:49:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00651,GBPUSD,2023-09-13T23:44:00Z,2023-09-13T23:44:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00652,GBPUSD,2023-11-28T21:20:00Z,2023-11-28T21:20:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00653,GBPUSD,2023-11-28T22:08:00Z,2023-11-28T22:09:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00654,GBPUSD,2023-11-28T22:12:00Z,2023-11-28T22:13:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00655,GBPUSD,2023-12-06T03:59:00Z,2023-12-06T03:59:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00656,GBPUSD,2023-12-06T04:05:00Z,2023-12-06T04:05:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00657,GBPUSD,2024-01-03T22:01:00Z,2024-01-03T22:03:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00658,GBPUSD,2024-01-03T22:10:00Z,2024-01-03T22:11:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00659,GBPUSD,2024-01-16T23:05:00Z,2024-01-16T23:05:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00660,GBPUSD,2024-01-16T23:22:00Z,2024-01-16T23:22:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00661,GBPUSD,2024-02-01T22:04:00Z,2024-02-01T22:04:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00662,GBPUSD,2024-02-01T22:06:00Z,2024-02-01T22:09:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00663,GBPUSD,2024-02-01T22:11:00Z,2024-02-01T22:12:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00664,GBPUSD,2024-02-27T03:59:00Z,2024-02-27T03:59:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00665,GBPUSD,2024-02-27T21:34:00Z,2024-02-27T21:34:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00666,GBPUSD,2024-02-27T21:44:00Z,2024-02-27T21:44:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00667,GBPUSD,2024-02-27T21:46:00Z,2024-02-27T21:46:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00668,GBPUSD,2024-02-27T21:55:00Z,2024-02-27T21:55:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00669,GBPUSD,2024-02-27T22:21:00Z,2024-02-27T22:21:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00670,GBPUSD,2024-02-28T02:53:00Z,2024-02-28T02:53:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00671,GBPUSD,2024-02-28T23:28:00Z,2024-02-28T23:28:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00672,GBPUSD,2024-03-14T21:01:00Z,2024-03-14T21:03:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00673,GBPUSD,2024-03-14T21:05:00Z,2024-03-14T21:05:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00674,GBPUSD,2024-03-14T21:29:00Z,2024-03-14T21:29:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00675,GBPUSD,2024-03-14T23:43:00Z,2024-03-14T23:43:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00676,GBPUSD,2024-03-20T02:34:00Z,2024-03-20T02:34:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00677,GBPUSD,2024-03-20T22:09:00Z,2024-03-20T22:09:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00678,GBPUSD,2024-03-28T20:36:00Z,2024-03-28T20:36:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00679,GBPUSD,2024-05-01T02:41:00Z,2024-05-01T02:41:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00680,GBPUSD,2024-05-01T03:05:00Z,2024-05-01T03:05:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00681,GBPUSD,2024-05-01T03:38:00Z,2024-05-01T03:39:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00682,GBPUSD,2024-05-01T04:14:00Z,2024-05-01T04:14:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00683,GBPUSD,2024-05-01T04:34:00Z,2024-05-01T04:35:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00684,GBPUSD,2024-05-01T05:01:00Z,2024-05-01T05:01:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00685,GBPUSD,2024-05-01T05:32:00Z,2024-05-01T05:32:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00686,GBPUSD,2024-05-01T22:55:00Z,2024-05-01T22:55:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00687,GBPUSD,2024-05-07T20:23:00Z,2024-05-07T20:23:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00688,GBPUSD,2024-05-07T20:33:00Z,2024-05-07T20:33:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00689,GBPUSD,2024-05-07T21:02:00Z,2024-05-07T21:02:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00690,GBPUSD,2024-05-07T21:04:00Z,2024-05-07T21:04:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00691,GBPUSD,2024-05-07T21:07:00Z,2024-05-07T21:07:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00692,GBPUSD,2024-05-07T21:09:00Z,2024-05-07T21:09:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00693,GBPUSD,2024-05-07T22:45:00Z,2024-05-07T22:45:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00694,GBPUSD,2024-05-07T22:54:00Z,2024-05-07T22:55:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00695,GBPUSD,2024-05-07T23:23:00Z,2024-05-07T23:24:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00696,GBPUSD,2024-05-07T23:27:00Z,2024-05-07T23:28:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00697,GBPUSD,2024-05-07T23:34:00Z,2024-05-07T23:34:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00698,GBPUSD,2024-05-07T23:57:00Z,2024-05-07T23:57:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00699,GBPUSD,2024-05-08T05:17:00Z,2024-05-08T05:17:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00700,GBPUSD,2024-05-08T05:19:00Z,2024-05-08T05:19:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00701,GBPUSD,2024-05-08T20:09:00Z,2024-05-08T20:09:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00702,GBPUSD,2024-05-08T20:21:00Z,2024-05-08T20:21:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00703,GBPUSD,2024-05-08T20:24:00Z,2024-05-08T20:25:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00704,GBPUSD,2024-05-08T20:39:00Z,2024-05-08T20:42:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00705,GBPUSD,2024-05-08T22:39:00Z,2024-05-08T22:39:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00706,GBPUSD,2024-05-08T23:07:00Z,2024-05-08T23:07:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00707,GBPUSD,2024-05-08T23:18:00Z,2024-05-08T23:18:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00708,GBPUSD,2024-05-08T23:25:00Z,2024-05-08T23:25:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00709,GBPUSD,2024-05-08T23:27:00Z,2024-05-08T23:27:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00710,GBPUSD,2024-05-08T23:56:00Z,2024-05-08T23:56:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00711,GBPUSD,2024-05-20T03:03:00Z,2024-05-20T03:04:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00712,GBPUSD,2024-05-20T04:01:00Z,2024-05-20T04:01:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00713,GBPUSD,2024-05-20T05:24:00Z,2024-05-20T05:24:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00714,GBPUSD,2024-05-20T17:48:00Z,2024-05-20T17:48:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00715,GBPUSD,2024-05-20T18:36:00Z,2024-05-20T18:36:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00716,GBPUSD,2024-05-20T19:06:00Z,2024-05-20T19:06:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00717,GBPUSD,2024-05-20T20:14:00Z,2024-05-20T20:14:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00718,GBPUSD,2024-05-20T20:33:00Z,2024-05-20T20:33:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00719,GBPUSD,2024-05-20T22:21:00Z,2024-05-20T22:21:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00720,GBPUSD,2024-05-20T22:24:00Z,2024-05-20T22:24:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00721,GBPUSD,2024-05-20T22:28:00Z,2024-05-20T22:28:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00722,GBPUSD,2024-05-20T22:35:00Z,2024-05-20T22:35:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00723,GBPUSD,2024-05-20T22:38:00Z,2024-05-20T22:38:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00724,GBPUSD,2024-05-20T22:43:00Z,2024-05-20T22:43:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00725,GBPUSD,2024-05-20T22:45:00Z,2024-05-20T22:46:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00726,GBPUSD,2024-05-20T22:49:00Z,2024-05-20T22:49:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00727,GBPUSD,2024-05-20T22:52:00Z,2024-05-20T22:52:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00728,GBPUSD,2024-05-20T22:55:00Z,2024-05-20T22:59:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00729,GBPUSD,2024-05-20T23:02:00Z,2024-05-20T23:02:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00730,GBPUSD,2024-05-20T23:07:00Z,2024-05-20T23:08:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00731,GBPUSD,2024-05-20T23:15:00Z,2024-05-20T23:16:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00732,GBPUSD,2024-05-20T23:22:00Z,2024-05-20T23:22:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00733,GBPUSD,2024-05-20T23:25:00Z,2024-05-20T23:25:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00734,GBPUSD,2024-05-20T23:43:00Z,2024-05-20T23:43:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00735,GBPUSD,2024-06-04T04:11:00Z,2024-06-04T04:11:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00736,GBPUSD,2024-06-04T04:21:00Z,2024-06-04T04:21:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00737,GBPUSD,2024-06-04T05:26:00Z,2024-06-04T05:26:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00738,GBPUSD,2024-06-04T20:09:00Z,2024-06-04T20:09:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00739,GBPUSD,2024-06-04T20:46:00Z,2024-06-04T20:46:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00740,GBPUSD,2024-06-04T21:08:00Z,2024-06-04T21:09:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00741,GBPUSD,2024-06-04T22:17:00Z,2024-06-04T22:17:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00742,GBPUSD,2024-06-04T22:43:00Z,2024-06-04T22:43:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00743,GBPUSD,2024-06-04T22:48:00Z,2024-06-04T22:48:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00744,GBPUSD,2024-06-04T23:03:00Z,2024-06-04T23:03:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00745,GBPUSD,2024-06-04T23:12:00Z,2024-06-04T23:12:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00746,GBPUSD,2024-06-04T23:17:00Z,2024-06-04T23:17:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00747,GBPUSD,2024-06-04T23:26:00Z,2024-06-04T23:27:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00748,GBPUSD,2024-06-04T23:36:00Z,2024-06-04T23:37:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00749,GBPUSD,2024-06-04T23:55:00Z,2024-06-04T23:55:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00750,GBPUSD,2024-06-12T00:32:00Z,2024-06-12T00:32:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00751,GBPUSD,2024-06-12T03:59:00Z,2024-06-12T03:59:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00752,GBPUSD,2024-06-12T04:17:00Z,2024-06-12T04:17:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00753,GBPUSD,2024-06-12T04:27:00Z,2024-06-12T04:27:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00754,GBPUSD,2024-06-12T04:46:00Z,2024-06-12T04:46:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00755,GBPUSD,2024-06-12T04:48:00Z,2024-06-12T04:49:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00756,GBPUSD,2024-06-12T04:51:00Z,2024-06-12T04:52:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00757,GBPUSD,2024-06-12T04:54:00Z,2024-06-12T04:54:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00758,GBPUSD,2024-06-12T20:12:00Z,2024-06-12T20:12:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00759,GBPUSD,2024-06-12T20:34:00Z,2024-06-12T20:38:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00760,GBPUSD,2024-06-12T20:49:00Z,2024-06-12T20:49:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00761,GBPUSD,2024-06-12T20:51:00Z,2024-06-12T20:51:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00762,GBPUSD,2024-06-12T21:52:00Z,2024-06-12T21:52:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00763,GBPUSD,2024-06-12T23:14:00Z,2024-06-12T23:14:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00764,GBPUSD,2024-06-24T00:33:00Z,2024-06-24T00:33:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00765,GBPUSD,2024-06-24T00:44:00Z,2024-06-24T00:44:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00766,GBPUSD,2024-06-24T21:02:00Z,2024-06-24T21:02:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00767,GBPUSD,2024-06-24T22:16:00Z,2024-06-24T22:16:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00768,GBPUSD,2024-06-24T22:41:00Z,2024-06-24T22:41:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00769,GBPUSD,2024-06-24T22:49:00Z,2024-06-24T22:49:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00770,GBPUSD,2024-07-08T18:22:00Z,2024-07-08T18:22:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00771,GBPUSD,2024-07-08T20:37:00Z,2024-07-08T20:39:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00772,GBPUSD,2024-07-08T22:06:00Z,2024-07-08T22:07:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00773,GBPUSD,2024-07-08T22:22:00Z,2024-07-08T22:22:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00774,GBPUSD,2024-07-08T22:24:00Z,2024-07-08T22:26:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00775,GBPUSD,2024-07-08T22:28:00Z,2024-07-08T22:28:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00776,GBPUSD,2024-07-08T22:30:00Z,2024-07-08T22:30:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00777,GBPUSD,2024-07-08T22:33:00Z,2024-07-08T22:33:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00778,GBPUSD,2024-07-08T22:37:00Z,2024-07-08T22:37:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00779,GBPUSD,2024-07-08T22:39:00Z,2024-07-08T22:39:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00780,GBPUSD,2024-07-08T22:41:00Z,2024-07-08T22:41:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00781,GBPUSD,2024-07-08T23:26:00Z,2024-07-08T23:26:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00782,GBPUSD,2024-07-08T23:36:00Z,2024-07-08T23:36:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00783,GBPUSD,2024-08-12T01:56:00Z,2024-08-12T01:56:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00784,GBPUSD,2024-08-12T21:01:00Z,2024-08-12T21:01:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00785,GBPUSD,2024-08-12T22:25:00Z,2024-08-12T22:25:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00786,GBPUSD,2024-08-12T23:12:00Z,2024-08-12T23:12:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00787,GBPUSD,2024-08-12T23:19:00Z,2024-08-12T23:19:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00788,GBPUSD,2024-10-14T04:15:00Z,2024-10-14T04:15:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00789,GBPUSD,2024-10-14T04:51:00Z,2024-10-14T04:51:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00790,GBPUSD,2024-10-14T21:06:00Z,2024-10-14T21:07:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00791,GBPUSD,2024-10-14T21:15:00Z,2024-10-14T21:15:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00792,GBPUSD,2024-10-14T21:17:00Z,2024-10-14T21:17:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00793,GBPUSD,2024-10-14T22:34:00Z,2024-10-14T22:34:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00794,GBPUSD,2024-10-14T23:52:00Z,2024-10-14T23:52:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00795,GBPUSD,2024-10-21T22:13:00Z,2024-10-21T22:13:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00796,GBPUSD,2024-10-21T22:27:00Z,2024-10-21T22:27:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00797,GBPUSD,2024-10-21T23:06:00Z,2024-10-21T23:06:00Z,UNEXPECTED,Unexpected market-open period,PROVIDER_DATA_MISSING,Reference provider contains minute(s) missing in Dukascopy,0.95
+MM-00798,GBPUSD,2024-11-19T22:27:00Z,2024-11-19T22:27:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00799,GBPUSD,2024-11-19T22:43:00Z,2024-11-19T22:44:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00800,GBPUSD,2024-11-25T22:02:00Z,2024-11-25T22:02:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00801,GBPUSD,2024-11-25T22:23:00Z,2024-11-25T22:23:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00802,GBPUSD,2024-11-25T22:36:00Z,2024-11-25T22:36:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00803,GBPUSD,2024-12-17T22:01:00Z,2024-12-17T22:03:00Z,EXPECTED_CLOSURE,Daily Maintenance,EXPECTED_MAINTENANCE,All checked reference minutes absent during rollover window,0.7
+MM-00804,GBPUSD,2024-12-17T23:39:00Z,2024-12-17T23:39:00Z,UNEXPECTED,Broker maintenance,BROKER_SESSION,All checked reference minutes absent outside primary sessions; provider-specific closure not independently verified,0.45
+MM-00805,GBPUSD,2025-01-14T22:37:00Z,2025-01-14T22:38:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00806,GBPUSD,2025-01-14T22:55:00Z,2025-01-14T22:55:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00807,GBPUSD,2025-01-16T22:03:00Z,2025-01-16T22:03:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00808,GBPUSD,2025-01-16T22:52:00Z,2025-01-16T22:52:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00809,GBPUSD,2025-03-20T21:01:00Z,2025-03-20T21:01:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00810,GBPUSD,2025-03-20T21:04:00Z,2025-03-20T21:04:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00811,GBPUSD,2025-03-20T21:09:00Z,2025-03-20T21:11:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00812,GBPUSD,2025-03-20T21:42:00Z,2025-03-20T21:42:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00813,GBPUSD,2025-03-20T21:52:00Z,2025-03-20T21:53:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00814,GBPUSD,2025-03-20T23:04:00Z,2025-03-20T23:04:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00815,GBPUSD,2025-03-20T23:52:00Z,2025-03-20T23:52:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00816,GBPUSD,2025-03-25T21:01:00Z,2025-03-25T21:01:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00817,GBPUSD,2025-03-25T21:06:00Z,2025-03-25T21:06:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00818,GBPUSD,2025-03-25T21:14:00Z,2025-03-25T21:15:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00819,GBPUSD,2025-03-25T21:19:00Z,2025-03-25T21:19:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00820,GBPUSD,2025-03-25T22:34:00Z,2025-03-25T22:34:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00821,GBPUSD,2025-03-25T23:13:00Z,2025-03-25T23:13:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00822,GBPUSD,2025-03-25T23:27:00Z,2025-03-25T23:28:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00823,GBPUSD,2025-03-25T23:37:00Z,2025-03-25T23:37:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00824,GBPUSD,2025-04-17T21:01:00Z,2025-04-17T21:03:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00825,GBPUSD,2025-04-17T21:08:00Z,2025-04-17T21:08:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00826,GBPUSD,2025-04-17T21:10:00Z,2025-04-17T21:10:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00827,GBPUSD,2025-04-17T21:14:00Z,2025-04-17T21:14:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00828,GBPUSD,2025-04-17T21:24:00Z,2025-04-17T21:26:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00829,GBPUSD,2025-04-17T21:28:00Z,2025-04-17T21:30:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00830,GBPUSD,2025-04-17T21:44:00Z,2025-04-17T21:44:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00831,GBPUSD,2025-04-25T20:34:00Z,2025-04-25T20:34:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00832,GBPUSD,2025-04-25T20:47:00Z,2025-04-25T20:47:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00833,GBPUSD,2025-06-19T17:29:00Z,2025-06-19T17:29:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00834,GBPUSD,2025-06-19T21:00:00Z,2025-06-19T21:01:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00835,GBPUSD,2025-06-19T21:52:00Z,2025-06-19T21:52:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00836,GBPUSD,2025-06-24T21:01:00Z,2025-06-24T21:01:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00837,GBPUSD,2025-06-24T21:03:00Z,2025-06-24T21:03:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00838,GBPUSD,2025-06-24T21:17:00Z,2025-06-24T21:25:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00839,GBPUSD,2025-06-24T21:32:00Z,2025-06-24T21:32:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00840,GBPUSD,2025-06-24T21:34:00Z,2025-06-24T21:35:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00841,GBPUSD,2025-06-24T21:38:00Z,2025-06-24T21:38:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00842,GBPUSD,2025-06-24T21:41:00Z,2025-06-24T21:41:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00843,GBPUSD,2025-06-24T23:08:00Z,2025-06-24T23:08:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00844,GBPUSD,2025-06-24T23:12:00Z,2025-06-24T23:12:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00845,GBPUSD,2025-06-26T21:02:00Z,2025-06-26T21:03:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00846,GBPUSD,2025-06-26T21:07:00Z,2025-06-26T21:07:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00847,GBPUSD,2025-06-26T21:18:00Z,2025-06-26T21:18:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00848,GBPUSD,2025-06-26T21:21:00Z,2025-06-26T21:21:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00849,GBPUSD,2025-06-26T21:29:00Z,2025-06-26T21:29:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00850,GBPUSD,2025-08-26T20:22:00Z,2025-08-26T20:22:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00851,GBPUSD,2025-08-26T20:24:00Z,2025-08-26T20:24:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00852,GBPUSD,2025-08-26T21:01:00Z,2025-08-26T21:01:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00853,GBPUSD,2025-08-26T21:03:00Z,2025-08-26T21:04:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00854,GBPUSD,2025-08-26T23:11:00Z,2025-08-26T23:11:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00855,GBPUSD,2025-08-26T23:13:00Z,2025-08-26T23:13:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00856,GBPUSD,2025-08-26T23:15:00Z,2025-08-26T23:15:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00857,GBPUSD,2025-08-26T23:41:00Z,2025-08-26T23:41:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00858,GBPUSD,2025-09-09T21:01:00Z,2025-09-09T21:01:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00859,GBPUSD,2025-09-09T21:03:00Z,2025-09-09T21:03:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00860,GBPUSD,2025-09-09T22:07:00Z,2025-09-09T22:07:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00861,GBPUSD,2025-09-09T22:13:00Z,2025-09-09T22:13:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00862,GBPUSD,2025-09-09T22:16:00Z,2025-09-09T22:17:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00863,GBPUSD,2025-09-09T22:21:00Z,2025-09-09T22:21:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00864,GBPUSD,2025-09-09T22:35:00Z,2025-09-09T22:35:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00865,GBPUSD,2025-09-09T22:38:00Z,2025-09-09T22:39:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00866,GBPUSD,2025-09-09T22:42:00Z,2025-09-09T22:42:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00867,GBPUSD,2025-10-21T03:20:00Z,2025-10-21T03:20:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00868,GBPUSD,2025-10-21T21:01:00Z,2025-10-21T21:03:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00869,GBPUSD,2025-10-21T21:08:00Z,2025-10-21T21:09:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00870,GBPUSD,2025-10-21T21:15:00Z,2025-10-21T21:15:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00871,GBPUSD,2025-10-21T21:18:00Z,2025-10-21T21:18:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00872,GBPUSD,2025-10-21T21:20:00Z,2025-10-21T21:20:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00873,GBPUSD,2025-10-21T22:46:00Z,2025-10-21T22:46:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00874,GBPUSD,2025-10-21T23:12:00Z,2025-10-21T23:12:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00875,GBPUSD,2025-10-21T23:38:00Z,2025-10-21T23:38:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00876,GBPUSD,2025-10-21T23:42:00Z,2025-10-21T23:42:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00877,GBPUSD,2025-10-30T20:12:00Z,2025-10-30T20:13:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00878,GBPUSD,2025-10-30T20:36:00Z,2025-10-30T20:36:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00879,GBPUSD,2025-10-30T21:01:00Z,2025-10-30T21:03:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00880,GBPUSD,2025-10-30T21:32:00Z,2025-10-30T21:32:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00881,GBPUSD,2025-10-30T22:17:00Z,2025-10-30T22:17:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00882,GBPUSD,2025-10-30T22:27:00Z,2025-10-30T22:27:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00883,GBPUSD,2025-10-30T22:31:00Z,2025-10-30T22:31:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00884,GBPUSD,2025-10-30T23:06:00Z,2025-10-30T23:06:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00885,GBPUSD,2025-10-30T23:11:00Z,2025-10-30T23:11:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00886,GBPUSD,2025-10-30T23:44:00Z,2025-10-30T23:44:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00887,GBPUSD,2025-10-31T03:50:00Z,2025-10-31T03:50:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00888,GBPUSD,2025-11-14T21:23:00Z,2025-11-14T21:23:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00889,GBPUSD,2025-11-20T22:01:00Z,2025-11-20T22:03:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00890,GBPUSD,2025-12-05T03:08:00Z,2025-12-05T03:08:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00891,GBPUSD,2025-12-05T04:05:00Z,2025-12-05T04:05:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00892,GBPUSD,2025-12-05T04:11:00Z,2025-12-05T04:11:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00893,GBPUSD,2025-12-05T05:07:00Z,2025-12-05T05:07:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00894,GBPUSD,2025-12-29T21:24:00Z,2025-12-29T21:24:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00895,GBPUSD,2025-12-29T21:35:00Z,2025-12-29T21:35:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00896,GBPUSD,2025-12-29T22:01:00Z,2025-12-29T22:03:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00897,GBPUSD,2025-12-29T22:09:00Z,2025-12-29T22:09:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00898,GBPUSD,2025-12-29T22:12:00Z,2025-12-29T22:14:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00899,GBPUSD,2025-12-29T22:53:00Z,2025-12-29T22:53:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00900,GBPUSD,2025-12-29T23:24:00Z,2025-12-29T23:24:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00901,GBPUSD,2025-12-29T23:41:00Z,2025-12-29T23:41:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25
+MM-00902,GBPUSD,2025-12-29T23:48:00Z,2025-12-29T23:48:00Z,UNEXPECTED,Unexpected market-open period,UNKNOWN,Insufficient reference/calendar evidence for deterministic classification,0.25

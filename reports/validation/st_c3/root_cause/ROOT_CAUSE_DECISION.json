@@ -1,0 +1,14 @@
+{
+  "dataset_status": "REJECTED",
+  "decision": "REJECT_DATASET",
+  "demo_status": "BLOCKED",
+  "effective_missing_rate": 0.0032507632528448517,
+  "live_status": "BLOCKED",
+  "reason": "Effective missing rate exceeds threshold and/or unknown gaps remain.",
+  "recommendation": "REJECT_DATASET",
+  "replay_status": "BLOCKED",
+  "strategy_validation_status": "BLOCKED",
+  "threshold": 0.001,
+  "unknown_cluster_count": 141,
+  "unknown_missing_minutes": 192
+}
