@@ -1,0 +1,93 @@
+{
+  "account_environment": "local authenticated MT5 terminal; broker reported as Vantage MT5",
+  "candidate_dir": "research_data\\canonical\\st_c5_vantage_mt5_candidate",
+  "date_range": {
+    "from": "2021-01-04T00:00:00Z",
+    "to": "2025-12-31T23:57:00Z"
+  },
+  "files": [
+    {
+      "bytes": 706304,
+      "checksum_sha256": "d192216496c2ba5a41d7ad0c0000862253e412bfa0eff1b36a7879dd84e72384",
+      "download_method": "MetaTrader5.copy_rates_range via tools.st_c3_download_mt5_dataset",
+      "file": "EURUSD_H4.csv",
+      "first_timestamp": "2021-01-04T00:00:00Z",
+      "last_timestamp": "2025-12-31T20:00:00Z",
+      "rows": 7786,
+      "source": "Vantage MT5",
+      "symbol": "EURUSD",
+      "timeframe": "H4"
+    },
+    {
+      "bytes": 7627185,
+      "checksum_sha256": "ea17531c05adab798a279f85aa1911dbfa4b4f5e5a8490a9748b0665ff763f6c",
+      "download_method": "MetaTrader5.copy_rates_range via tools.st_c3_download_mt5_dataset",
+      "file": "EURUSD_M15.csv",
+      "first_timestamp": "2022-07-22T05:45:00Z",
+      "last_timestamp": "2025-12-31T23:45:00Z",
+      "rows": 85708,
+      "source": "Vantage MT5",
+      "symbol": "EURUSD",
+      "timeframe": "M15"
+    },
+    {
+      "bytes": 2443879,
+      "checksum_sha256": "919e42eb3e6657fb2a9927e56177d753dc3c8fa9c68bbbccc4239a3f13e03db5",
+      "download_method": "MetaTrader5.copy_rates_range via tools.st_c3_download_mt5_dataset",
+      "file": "EURUSD_M3.csv",
+      "first_timestamp": "2025-10-10T08:30:00Z",
+      "last_timestamp": "2025-12-31T23:57:00Z",
+      "rows": 27647,
+      "source": "Vantage MT5",
+      "symbol": "EURUSD",
+      "timeframe": "M3"
+    },
+    {
+      "bytes": 707339,
+      "checksum_sha256": "9658741e42ec6bc947d08f34286a4b0ec3b8b543596f2ef746d57c7df29754ef",
+      "download_method": "MetaTrader5.copy_rates_range via tools.st_c3_download_mt5_dataset",
+      "file": "GBPUSD_H4.csv",
+      "first_timestamp": "2021-01-04T00:00:00Z",
+      "last_timestamp": "2025-12-31T20:00:00Z",
+      "rows": 7786,
+      "source": "Vantage MT5",
+      "symbol": "GBPUSD",
+      "timeframe": "H4"
+    },
+    {
+      "bytes": 7622117,
+      "checksum_sha256": "00c3be039c11eb1df3e0d8677f6fd28e8b640e18f76d59eb41620c701958d124",
+      "download_method": "MetaTrader5.copy_rates_range via tools.st_c3_download_mt5_dataset",
+      "file": "GBPUSD_M15.csv",
+      "first_timestamp": "2022-07-26T04:45:00Z",
+      "last_timestamp": "2025-12-31T23:45:00Z",
+      "rows": 85522,
+      "source": "Vantage MT5",
+      "symbol": "GBPUSD",
+      "timeframe": "M15"
+    },
+    {
+      "bytes": 2448907,
+      "checksum_sha256": "c6c4ade1a9ffc89b293d65aae35cddb7433c34987e1b392afcbb067d4fc3645d",
+      "download_method": "MetaTrader5.copy_rates_range via tools.st_c3_download_mt5_dataset",
+      "file": "GBPUSD_M3.csv",
+      "first_timestamp": "2025-10-10T07:33:00Z",
+      "last_timestamp": "2025-12-31T23:57:00Z",
+      "rows": 27647,
+      "source": "Vantage MT5",
+      "symbol": "GBPUSD",
+      "timeframe": "M3"
+    }
+  ],
+  "guardrail": "ST-C5 broker-data qualification only; dataset approval, replay, strategy validation, demo, and live remain blocked.",
+  "missing_files": [],
+  "symbols": [
+    "EURUSD",
+    "GBPUSD"
+  ],
+  "timeframes": [
+    "H4",
+    "M15",
+    "M3"
+  ]
+}

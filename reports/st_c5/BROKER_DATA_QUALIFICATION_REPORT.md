@@ -8,7 +8,7 @@ Dataset Status: **NOT_APPROVED**
 
 Replay Status: **BLOCKED**
 
-Reason: acquisition not requested; run with --acquire on a machine with the broker MT5 terminal open and authenticated
+Reason: research_data\canonical\st_c5_vantage_mt5_candidate\EURUSD_M15.csv: missing or irregular candle between 2023-08-31 17:00:00 and 2023-08-31 17:30:00
 
 Acquisition status: `BLOCKED`
 

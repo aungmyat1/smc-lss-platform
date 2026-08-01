@@ -1,0 +1,12 @@
+{
+  "dataset_status": "REJECTED",
+  "decision": "REJECT_DATASET",
+  "demo_status": "BLOCKED",
+  "guardrail": "ST-C5 broker-data qualification only; dataset approval, replay, strategy validation, demo, and live remain blocked.",
+  "live_status": "BLOCKED",
+  "reason": "unchanged ST-C3 integrity inspection is blocked",
+  "recommendation": "REJECT_DATASET",
+  "replay_status": "BLOCKED",
+  "st_c3_result": "BLOCKED",
+  "strategy_validation_status": "BLOCKED"
+}

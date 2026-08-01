@@ -79,7 +79,7 @@
     ]
   },
   "conformance_report": {
-    "generated_utc": "2026-07-29T18:23:41Z",
+    "generated_utc": "2026-07-31T16:26:18Z",
     "strategy": "ST-C3",
     "spec": "specs/st-c3_v1.0.7.yaml",
     "focus_gate": {

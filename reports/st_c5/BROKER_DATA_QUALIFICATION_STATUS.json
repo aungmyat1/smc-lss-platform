@@ -1,6 +1,7 @@
 {
   "acquisition": {
-    "reason": "acquisition not requested; run with --acquire on a machine with the broker MT5 terminal open and authenticated",
+    "guardrail": "Replay run does not open A3 or imply acceptance.",
+    "reason": "research_data\\canonical\\st_c5_vantage_mt5_candidate\\EURUSD_M15.csv: missing or irregular candle between 2023-08-31 17:00:00 and 2023-08-31 17:30:00",
     "status": "BLOCKED"
   },
   "broker": "Vantage MT5",
@@ -8,7 +9,7 @@
   "decision": {
     "dataset_status": "NOT_APPROVED",
     "next_action": "Acquire broker MT5 candidate data, then rerun unchanged ST-C3 integrity and governance checks.",
-    "reason": "acquisition not requested; run with --acquire on a machine with the broker MT5 terminal open and authenticated",
+    "reason": "research_data\\canonical\\st_c5_vantage_mt5_candidate\\EURUSD_M15.csv: missing or irregular candle between 2023-08-31 17:00:00 and 2023-08-31 17:30:00",
     "recommendation": "BROKER_DATA_PENDING",
     "replay_status": "BLOCKED",
     "strategy_validation_status": "BLOCKED"
