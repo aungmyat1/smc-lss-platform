@@ -1,0 +1,7 @@
+symbol,timeframe,file,status,rows,first_timestamp,last_timestamp,mt5_first_available_bar,mt5_last_available_bar,mt5_total_bars,row_count_delta_mt5_minus_export,reconciliation_status
+EURUSD,H4,research_data\canonical\st_c5_vantage_mt5_candidate\EURUSD_H4.csv,PRESENT,7786,2021-01-04T00:00:00Z,2025-12-31T20:00:00Z,2021-01-04T00:00:00Z,2025-12-31T20:00:00Z,7786,0,RECONCILED_OR_TERMINAL_LIMITED
+EURUSD,M15,research_data\canonical\st_c5_vantage_mt5_candidate\EURUSD_M15.csv,PRESENT,85708,2022-07-22T05:45:00Z,2025-12-31T23:45:00Z,,,,,MT5_QUERY_BLOCKED
+EURUSD,M3,research_data\canonical\st_c5_vantage_mt5_candidate\EURUSD_M3.csv,PRESENT,27647,2025-10-10T08:30:00Z,2025-12-31T23:57:00Z,,,,,NO_DIRECT_MT5_QUERY
+GBPUSD,H4,research_data\canonical\st_c5_vantage_mt5_candidate\GBPUSD_H4.csv,PRESENT,7786,2021-01-04T00:00:00Z,2025-12-31T20:00:00Z,2021-01-04T00:00:00Z,2025-12-31T20:00:00Z,7786,0,RECONCILED_OR_TERMINAL_LIMITED
+GBPUSD,M15,research_data\canonical\st_c5_vantage_mt5_candidate\GBPUSD_M15.csv,PRESENT,85522,2022-07-26T04:45:00Z,2025-12-31T23:45:00Z,,,,,MT5_QUERY_BLOCKED
+GBPUSD,M3,research_data\canonical\st_c5_vantage_mt5_candidate\GBPUSD_M3.csv,PRESENT,27647,2025-10-10T07:33:00Z,2025-12-31T23:57:00Z,,,,,NO_DIRECT_MT5_QUERY

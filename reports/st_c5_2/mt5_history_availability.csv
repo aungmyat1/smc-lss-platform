@@ -1,0 +1,13 @@
+symbol,timeframe,status,first_available_bar,last_available_bar,total_bars,source,reason
+EURUSD,M1,BLOCKED,,,,MetaTrader5.copy_rates_range,"copy_rates_range returned no bars: (-2, 'Terminal: Invalid params')"
+EURUSD,M5,BLOCKED,,,,MetaTrader5.copy_rates_range,"copy_rates_range returned no bars: (-2, 'Terminal: Invalid params')"
+EURUSD,M15,BLOCKED,,,,MetaTrader5.copy_rates_range,"copy_rates_range returned no bars: (-2, 'Terminal: Invalid params')"
+EURUSD,H1,AVAILABLE,2021-01-04T00:00:00Z,2025-12-31T23:00:00Z,31120,MetaTrader5.copy_rates_range,
+EURUSD,H4,AVAILABLE,2021-01-04T00:00:00Z,2025-12-31T20:00:00Z,7786,MetaTrader5.copy_rates_range,
+EURUSD,D1,AVAILABLE,2021-01-04T00:00:00Z,2025-12-31T00:00:00Z,1299,MetaTrader5.copy_rates_range,
+GBPUSD,M1,BLOCKED,,,,MetaTrader5.copy_rates_range,"copy_rates_range returned no bars: (-2, 'Terminal: Invalid params')"
+GBPUSD,M5,BLOCKED,,,,MetaTrader5.copy_rates_range,"copy_rates_range returned no bars: (-2, 'Terminal: Invalid params')"
+GBPUSD,M15,BLOCKED,,,,MetaTrader5.copy_rates_range,"copy_rates_range returned no bars: (-2, 'Terminal: Invalid params')"
+GBPUSD,H1,AVAILABLE,2021-01-04T00:00:00Z,2025-12-31T23:00:00Z,31121,MetaTrader5.copy_rates_range,
+GBPUSD,H4,AVAILABLE,2021-01-04T00:00:00Z,2025-12-31T20:00:00Z,7786,MetaTrader5.copy_rates_range,
+GBPUSD,D1,AVAILABLE,2021-01-04T00:00:00Z,2025-12-31T00:00:00Z,1299,MetaTrader5.copy_rates_range,

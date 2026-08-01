@@ -1,0 +1,13 @@
+{
+  "coverage_failure_count": 4,
+  "dataset_status": "NOT_APPROVED",
+  "decision": "INCOMPLETE_EXPORT",
+  "demo_status": "BLOCKED",
+  "guardrail": "ST-C5 broker-data qualification only; dataset approval, replay, strategy validation, demo, and live remain blocked.",
+  "live_status": "BLOCKED",
+  "missing_timestamp_count": 179,
+  "reason": "Vantage MT5 candidate has incomplete timeframe coverage and/or missing expected timestamps.",
+  "recommendation": "REQUIRES_REEXPORT",
+  "replay_status": "BLOCKED",
+  "strategy_validation_status": "BLOCKED"
+}

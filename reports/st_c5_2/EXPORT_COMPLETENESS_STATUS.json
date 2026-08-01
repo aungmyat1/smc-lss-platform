@@ -1,0 +1,26 @@
+{
+  "candidate_dir": "research_data\\canonical\\st_c5_vantage_mt5_candidate",
+  "decision": {
+    "coverage_failure_count": 4,
+    "dataset_status": "NOT_APPROVED",
+    "decision": "INCOMPLETE_EXPORT",
+    "demo_status": "BLOCKED",
+    "guardrail": "ST-C5 broker-data qualification only; dataset approval, replay, strategy validation, demo, and live remain blocked.",
+    "live_status": "BLOCKED",
+    "missing_timestamp_count": 179,
+    "reason": "Vantage MT5 candidate has incomplete timeframe coverage and/or missing expected timestamps.",
+    "recommendation": "REQUIRES_REEXPORT",
+    "replay_status": "BLOCKED",
+    "strategy_validation_status": "BLOCKED"
+  },
+  "guardrail": "ST-C5 broker-data qualification only; dataset approval, replay, strategy validation, demo, and live remain blocked.",
+  "mt5_query_status": "AVAILABLE",
+  "stage": "st_c5_2_export_completeness_audit",
+  "status": "COMPLETE",
+  "summary": {
+    "export_rows": 6,
+    "missing_timestamp_rows": 179,
+    "mt5_rows": 12,
+    "reconciliation_rows": 6
+  }
+}
