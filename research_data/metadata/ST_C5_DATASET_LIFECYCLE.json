@@ -1,0 +1,12 @@
+{
+  "candidate_dir": "research_data\\canonical\\st_c5_vantage_mt5_candidate",
+  "current_lifecycle_state": "PENDING_HISTORY_SYNC",
+  "dataset_status": "NOT_APPROVED",
+  "demo_status": "BLOCKED",
+  "guardrail": "ST-C5 broker-data qualification only; dataset approval, replay, strategy validation, demo, and live remain blocked.",
+  "live_status": "BLOCKED",
+  "recommendation": "REQUIRES_HISTORY_SYNC",
+  "replay_status": "BLOCKED",
+  "strategy_validation_status": "BLOCKED",
+  "updated_at_utc": "2026-08-02T08:18:15Z"
+}
