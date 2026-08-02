@@ -179,17 +179,18 @@ def build_pipeline_dashboard(result: dict[str, Any]) -> dict[str, Any]:
     audit = steps.get("export_completeness")
     governance = steps.get("st_c3_governance")
     stages = [
-        _dashboard_stage("History Sync", history, result["updated_at_utc"], result["reason"], "reports/st_c5_3/MT5_HISTORY_SYNC_REPORT.md"),
-        _dashboard_stage("Export", export, result["updated_at_utc"], "Waiting for history sync", "reports/st_c5_3/MT5_HISTORY_SYNC_DECISION.json"),
-        _dashboard_stage("Normalization", normalization, result["updated_at_utc"], "Export not complete", "reports/st_c5/BROKER_DATA_QUALIFICATION_STATUS.json"),
-        _dashboard_stage("Export Audit", audit, result["updated_at_utc"], "Export not complete", "reports/st_c5_2/EXPORT_COMPLETENESS_AUDIT.md"),
-        _dashboard_stage("ST-C3", governance, result["updated_at_utc"], "Export not complete", "reports/st_c5/DATASET_GOVERNANCE_DECISION.json"),
+        _dashboard_stage("History Sync", history, result["updated_at_utc"], result["reason"], "reports/st_c5_3/MT5_HISTORY_SYNC_REPORT.md", "Execute reports/st_c5_3/HISTORY_SYNC_RUNBOOK.md and rerun the history gate."),
+        _dashboard_stage("Export", export, result["updated_at_utc"], "Waiting for history sync", "reports/st_c5_3/MT5_HISTORY_SYNC_DECISION.json", "Run broker export only after history sync returns READY_FOR_REEXPORT."),
+        _dashboard_stage("Normalization", normalization, result["updated_at_utc"], "Export not complete", "reports/st_c5/BROKER_DATA_QUALIFICATION_STATUS.json", "Wait for a successful broker export."),
+        _dashboard_stage("Export Audit", audit, result["updated_at_utc"], "Export not complete", "reports/st_c5_2/EXPORT_COMPLETENESS_AUDIT.md", "Run unchanged export completeness audit after export."),
+        _dashboard_stage("ST-C3", governance, result["updated_at_utc"], "Export not complete", "reports/st_c5/DATASET_GOVERNANCE_DECISION.json", "Run unchanged ST-C3 validation only after export audit passes."),
         {
             "stage": "Replay",
             "status": result["replay_status"],
             "last_run": "",
             "blocking_reason": "Dataset not approved",
             "evidence": "research_data/metadata/ST_C5_DATASET_LIFECYCLE.json",
+            "next_action": "Wait for approved dataset evidence; do not execute replay.",
         },
         {
             "stage": "Strategy Validation",
@@ -197,6 +198,7 @@ def build_pipeline_dashboard(result: dict[str, Any]) -> dict[str, Any]:
             "last_run": "",
             "blocking_reason": "Replay blocked",
             "evidence": "reports/st_c5_pipeline/ST_C5_PIPELINE_STATUS.json",
+            "next_action": "Wait for replay unlock after dataset approval.",
         },
         {
             "stage": "Demo",
@@ -204,6 +206,7 @@ def build_pipeline_dashboard(result: dict[str, Any]) -> dict[str, Any]:
             "last_run": "",
             "blocking_reason": "Strategy validation blocked",
             "evidence": "reports/st_c5_pipeline/ST_C5_PIPELINE_STATUS.json",
+            "next_action": "Wait for strategy validation approval.",
         },
         {
             "stage": "Live",
@@ -211,6 +214,7 @@ def build_pipeline_dashboard(result: dict[str, Any]) -> dict[str, Any]:
             "last_run": "",
             "blocking_reason": "Demo blocked",
             "evidence": "reports/st_c5_pipeline/ST_C5_PIPELINE_STATUS.json",
+            "next_action": "Wait for demo authorization after strategy validation.",
         },
     ]
     return {
@@ -228,6 +232,7 @@ def _dashboard_stage(
     last_run: str,
     waiting_reason: str,
     evidence: str,
+    next_action: str,
 ) -> dict[str, str]:
     if step is None:
         return {
@@ -236,6 +241,7 @@ def _dashboard_stage(
             "last_run": "",
             "blocking_reason": waiting_reason,
             "evidence": evidence,
+            "next_action": next_action,
         }
     detail = step.get("detail") or {}
     return {
@@ -244,6 +250,7 @@ def _dashboard_stage(
         "last_run": last_run,
         "blocking_reason": str(detail.get("reason") or ""),
         "evidence": evidence,
+        "next_action": str(detail.get("next_action") or next_action),
     }
 
 
@@ -279,12 +286,12 @@ def _dashboard_markdown(dashboard: dict[str, Any]) -> str:
         "",
         f"Recommendation: **{dashboard['recommendation']}**",
         "",
-        "| Stage | Status | Last Run | Blocking Reason | Evidence |",
-        "| --- | --- | --- | --- | --- |",
+        "| Stage | Status | Last Run | Blocking Reason | Next Action | Evidence |",
+        "| --- | --- | --- | --- | --- | --- |",
     ]
     for stage in dashboard["stages"]:
         lines.append(
-            f"| {stage['stage']} | {stage['status']} | {stage['last_run'] or '-'} | {stage['blocking_reason'] or '-'} | {stage['evidence']} |"
+            f"| {stage['stage']} | {stage['status']} | {stage['last_run'] or '-'} | {stage['blocking_reason'] or '-'} | {stage['next_action']} | {stage['evidence']} |"
         )
     lines.extend(
         [

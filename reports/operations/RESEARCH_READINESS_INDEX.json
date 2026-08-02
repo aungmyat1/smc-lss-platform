@@ -1,5 +1,6 @@
 {
   "current_blocker": "PENDING_HISTORY_SYNC",
+  "generated_at_utc": "2026-08-02T08:58:50Z",
   "guardrail": "Readiness index is informational only; it does not approve datasets, unlock replay, modify ST-C3, or change strategy logic.",
   "overall_readiness_percent": 55,
   "recommendation": "REQUIRES_HISTORY_SYNC",
@@ -54,5 +55,37 @@
       "weighted_score_percent": 3
     }
   ],
-  "next_action": "Execute MT5 history synchronization runbook, then rerun the frozen ST-C5 pipeline unchanged."
+  "next_action": "Execute MT5 history synchronization runbook, then rerun the frozen ST-C5 pipeline unchanged.",
+  "remaining_milestones": [
+    "Synchronize MT5 history",
+    "Pass history synchronization gate",
+    "Complete broker export",
+    "Pass export completeness audit",
+    "Pass unchanged ST-C3 validation",
+    "Record governance approval before replay"
+  ],
+  "completed_milestones": [
+    "ST-C1 strategy specification",
+    "ST-C2 deterministic rule engine",
+    "ST-C3 governance framework",
+    "ST-C4 provider benchmark",
+    "ST-C4.1 provider qualification",
+    "ST-C5 broker acquisition framework",
+    "ST-C5.2 export completeness audit",
+    "ST-C5.3 history synchronization gate",
+    "ST-C5 pipeline orchestration",
+    "Dataset lifecycle tracking",
+    "Pipeline dashboard",
+    "Decision traceability",
+    "ST-C6 operational documentation"
+  ],
+  "historical_trend": [
+    {
+      "timestamp_utc": "2026-08-02T08:58:50Z",
+      "overall_readiness_percent": 55,
+      "critical_blocker": "PENDING_HISTORY_SYNC",
+      "recommendation": "REQUIRES_HISTORY_SYNC",
+      "evidence": "reports/operations/MT5_HISTORY_SYNCHRONIZATION_EVIDENCE.json"
+    }
+  ]
 }

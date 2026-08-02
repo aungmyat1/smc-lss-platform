@@ -70,10 +70,13 @@ def test_pipeline_dashboard_summarizes_blocked_stages(tmp_path, monkeypatch):
     assert dashboard["stages"][1]["status"] == "WAITING"
     assert dashboard["stages"][1]["blocking_reason"] == "Waiting for history sync"
     assert dashboard["stages"][0]["evidence"] == "reports/st_c5_3/MT5_HISTORY_SYNC_REPORT.md"
+    assert dashboard["stages"][0]["next_action"] == "Execute reports/st_c5_3/HISTORY_SYNC_RUNBOOK.md and rerun the history gate."
     assert dashboard["stages"][1]["evidence"] == "reports/st_c5_3/MT5_HISTORY_SYNC_DECISION.json"
+    assert dashboard["stages"][1]["next_action"] == "Run broker export only after history sync returns READY_FOR_REEXPORT."
     assert dashboard["stages"][-1]["stage"] == "Live"
     assert dashboard["stages"][-1]["status"] == "BLOCKED"
     assert dashboard["stages"][-1]["evidence"] == "reports/st_c5_pipeline/ST_C5_PIPELINE_STATUS.json"
+    assert dashboard["stages"][-1]["next_action"] == "Wait for demo authorization after strategy validation."
 
 
 def test_pipeline_runs_acquisition_then_blocks_on_incomplete_export(tmp_path, monkeypatch):

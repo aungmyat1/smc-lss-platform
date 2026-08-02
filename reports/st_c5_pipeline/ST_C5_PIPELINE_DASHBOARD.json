@@ -6,7 +6,8 @@
     {
       "blocking_reason": "Local MT5 terminal does not yet contain sufficient in-window history for every export source timeframe.",
       "evidence": "reports/st_c5_3/MT5_HISTORY_SYNC_REPORT.md",
-      "last_run": "2026-08-02T08:36:23Z",
+      "last_run": "2026-08-02T08:58:50Z",
+      "next_action": "Synchronize MT5 terminal history before running any broker re-export.",
       "stage": "History Sync",
       "status": "REQUIRES_HISTORY_SYNC"
     },
@@ -14,6 +15,7 @@
       "blocking_reason": "Waiting for history sync",
       "evidence": "reports/st_c5_3/MT5_HISTORY_SYNC_DECISION.json",
       "last_run": "",
+      "next_action": "Run broker export only after history sync returns READY_FOR_REEXPORT.",
       "stage": "Export",
       "status": "WAITING"
     },
@@ -21,6 +23,7 @@
       "blocking_reason": "Export not complete",
       "evidence": "reports/st_c5/BROKER_DATA_QUALIFICATION_STATUS.json",
       "last_run": "",
+      "next_action": "Wait for a successful broker export.",
       "stage": "Normalization",
       "status": "WAITING"
     },
@@ -28,6 +31,7 @@
       "blocking_reason": "Export not complete",
       "evidence": "reports/st_c5_2/EXPORT_COMPLETENESS_AUDIT.md",
       "last_run": "",
+      "next_action": "Run unchanged export completeness audit after export.",
       "stage": "Export Audit",
       "status": "WAITING"
     },
@@ -35,6 +39,7 @@
       "blocking_reason": "Export not complete",
       "evidence": "reports/st_c5/DATASET_GOVERNANCE_DECISION.json",
       "last_run": "",
+      "next_action": "Run unchanged ST-C3 validation only after export audit passes.",
       "stage": "ST-C3",
       "status": "WAITING"
     },
@@ -42,6 +47,7 @@
       "blocking_reason": "Dataset not approved",
       "evidence": "research_data/metadata/ST_C5_DATASET_LIFECYCLE.json",
       "last_run": "",
+      "next_action": "Wait for approved dataset evidence; do not execute replay.",
       "stage": "Replay",
       "status": "BLOCKED"
     },
@@ -49,6 +55,7 @@
       "blocking_reason": "Replay blocked",
       "evidence": "reports/st_c5_pipeline/ST_C5_PIPELINE_STATUS.json",
       "last_run": "",
+      "next_action": "Wait for replay unlock after dataset approval.",
       "stage": "Strategy Validation",
       "status": "BLOCKED"
     },
@@ -56,6 +63,7 @@
       "blocking_reason": "Strategy validation blocked",
       "evidence": "reports/st_c5_pipeline/ST_C5_PIPELINE_STATUS.json",
       "last_run": "",
+      "next_action": "Wait for strategy validation approval.",
       "stage": "Demo",
       "status": "BLOCKED"
     },
@@ -63,9 +71,10 @@
       "blocking_reason": "Demo blocked",
       "evidence": "reports/st_c5_pipeline/ST_C5_PIPELINE_STATUS.json",
       "last_run": "",
+      "next_action": "Wait for demo authorization after strategy validation.",
       "stage": "Live",
       "status": "BLOCKED"
     }
   ],
-  "updated_at_utc": "2026-08-02T08:36:23Z"
+  "updated_at_utc": "2026-08-02T08:58:50Z"
 }

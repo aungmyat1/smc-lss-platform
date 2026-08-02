@@ -1,0 +1,70 @@
+{
+  "candidate_dir": "research_data/canonical/st_c5_vantage_mt5_candidate",
+  "current_lifecycle_state": "PENDING_HISTORY_SYNC",
+  "dataset_status": "NOT_APPROVED",
+  "decision": "REQUIRES_HISTORY_SYNC",
+  "execution_status": "STOPPED_AT_HISTORY_GATE",
+  "generated_at_utc": "2026-08-02T08:58:50Z",
+  "guardrail": "ST-C6 execution status is operational evidence only; no validation thresholds, strategy logic, approval state, replay, demo, or live state changed.",
+  "history_evidence": "reports/operations/MT5_HISTORY_SYNCHRONIZATION_EVIDENCE.json",
+  "history_gate_evidence": "reports/st_c5_3/MT5_HISTORY_SYNC_DECISION.json",
+  "pipeline_dashboard": "reports/st_c5_pipeline/ST_C5_PIPELINE_DASHBOARD.md",
+  "replay_status": "BLOCKED",
+  "stage_results": [
+    {
+      "blocking_reason": "Local MT5 terminal does not contain sufficient in-window history for every export source timeframe.",
+      "evidence": "reports/operations/MT5_HISTORY_SYNCHRONIZATION_EVIDENCE.json",
+      "stage": "MT5 History Synchronization",
+      "status": "REQUIRES_HISTORY_SYNC"
+    },
+    {
+      "blocking_reason": "History synchronization gate returned REQUIRES_HISTORY_SYNC.",
+      "evidence": "reports/st_c5_3/MT5_HISTORY_SYNC_DECISION.json",
+      "stage": "History Gate",
+      "status": "REQUIRES_HISTORY_SYNC"
+    },
+    {
+      "blocking_reason": "ST-C6 rules require stopping when history gate is not PASS.",
+      "evidence": "reports/st_c5_pipeline/ST_C5_PIPELINE_STATUS.json",
+      "stage": "Broker Export",
+      "status": "NOT_RUN"
+    },
+    {
+      "blocking_reason": "Broker export was not run.",
+      "evidence": "reports/st_c5_pipeline/ST_C5_PIPELINE_STATUS.json",
+      "stage": "Normalization",
+      "status": "NOT_RUN"
+    },
+    {
+      "blocking_reason": "Export was not refreshed.",
+      "evidence": "reports/st_c5_2/EXPORT_COMPLETENESS_AUDIT.md",
+      "stage": "Export Audit",
+      "status": "NOT_RUN"
+    },
+    {
+      "blocking_reason": "Export audit did not pass because export was not run.",
+      "evidence": "reports/st_c5/DATASET_GOVERNANCE_DECISION.json",
+      "stage": "ST-C3 Validation",
+      "status": "NOT_RUN"
+    },
+    {
+      "blocking_reason": "Dataset is not approved.",
+      "evidence": "research_data/metadata/ST_C5_DATASET_LIFECYCLE.json",
+      "stage": "Replay",
+      "status": "BLOCKED"
+    }
+  ],
+  "strategy_validation_status": "BLOCKED",
+  "terminal_blockers": [
+    "EURUSD M1 has no in-window bars",
+    "EURUSD M3 starts after required start",
+    "EURUSD M15 starts after required start",
+    "GBPUSD M1 has no in-window bars",
+    "GBPUSD M3 starts after required start",
+    "GBPUSD M15 starts after required start"
+  ],
+  "terminal_passing_items": [
+    "EURUSD H4",
+    "GBPUSD H4"
+  ]
+}
