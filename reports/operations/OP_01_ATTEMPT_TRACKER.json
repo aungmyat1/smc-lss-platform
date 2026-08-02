@@ -1,0 +1,28 @@
+{
+  "campaign": "OP-01 Broker History Acquisition Campaign",
+  "current_broker_server": "VTMarkets-Demo",
+  "current_status": "REQUIRES_HISTORY_SYNC",
+  "dataset_status": "NOT_APPROVED",
+  "exit_rule": {
+    "attempt_limit": 3,
+    "classification_after_identical_failures": "OPERATIONALLY_INSUFFICIENT_FOR_ST_C3_HISTORY",
+    "description": "If three independent synchronization attempts on the same broker using the documented runbook produce materially identical evidence, classify the broker environment as operationally insufficient for ST-C3 historical data."
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "status": "REQUIRES_HISTORY_SYNC",
+      "evidence": "reports/operations/ST_C6_EXECUTION_STATUS.json",
+      "summary": "Initial ST-C6 execution stopped at history gate."
+    },
+    {
+      "attempt": 2,
+      "status": "REQUIRES_HISTORY_SYNC",
+      "evidence": "reports/operations/ST_C6_OPERATIONAL_ATTEMPT_02.json",
+      "summary": "Terminal connected, symbols selected, history gate still failed on M1 missing and M15 late-start conditions."
+    }
+  ],
+  "remaining_attempts_before_exit_classification": 1,
+  "next_action": "Execute one deliberate MT5 history synchronization attempt, then rerun python -m tools.st_c5_3_history_sync_gate and record Attempt 03.",
+  "guardrail": "Operational tracker only; no validation, threshold, strategy, approval, replay, demo, or live behavior changed."
+}

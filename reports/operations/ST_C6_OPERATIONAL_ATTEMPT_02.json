@@ -1,0 +1,54 @@
+{
+  "attempt": "ST-C6_OPERATIONAL_ATTEMPT_02",
+  "generated_at_utc": "2026-08-02T09:06:23Z",
+  "status": "STOPPED_AT_HISTORY_GATE",
+  "decision": "REQUIRES_HISTORY_SYNC",
+  "dataset_status": "NOT_APPROVED",
+  "replay_status": "BLOCKED",
+  "strategy_validation_status": "BLOCKED",
+  "demo_status": "BLOCKED",
+  "live_status": "BLOCKED",
+  "terminal_connected": true,
+  "terminal_build": 6063,
+  "terminal_maxbars": 100000,
+  "broker_server": "VTMarkets-Demo",
+  "symbols_selected": {
+    "EURUSD": true,
+    "GBPUSD": true
+  },
+  "history_gate_result": "REQUIRES_HISTORY_SYNC",
+  "required_failures": [
+    {
+      "symbol": "EURUSD",
+      "timeframe": "M1",
+      "status": "NOT_PRESENT_IN_TERMINAL",
+      "reason": "copy_rates_range returned 261 bars outside requested audit window"
+    },
+    {
+      "symbol": "EURUSD",
+      "timeframe": "M15",
+      "status": "START_DATE_MISSING",
+      "reason": "first available bar is after required start 2021-01-04T00:00:00Z"
+    },
+    {
+      "symbol": "GBPUSD",
+      "timeframe": "M1",
+      "status": "NOT_PRESENT_IN_TERMINAL",
+      "reason": "copy_rates_range returned 261 bars outside requested audit window"
+    },
+    {
+      "symbol": "GBPUSD",
+      "timeframe": "M15",
+      "status": "START_DATE_MISSING",
+      "reason": "first available bar is after required start 2021-01-04T00:00:00Z"
+    }
+  ],
+  "evidence": [
+    "reports/st_c5_3/MT5_HISTORY_SYNC_DECISION.json",
+    "reports/st_c5_3/MT5_HISTORY_SYNC_REPORT.md",
+    "reports/operations/MT5_HISTORY_SYNCHRONIZATION_EVIDENCE.json",
+    "reports/operations/ST_C6_EXECUTION_STATUS.json"
+  ],
+  "guardrail": "No export, ST-C3 validation, approval, replay, demo, or live path was executed because the history gate did not pass.",
+  "next_action": "Execute reports/st_c5_3/HISTORY_SYNC_RUNBOOK.md on the MT5 terminal, then rerun python -m tools.st_c5_3_history_sync_gate."
+}

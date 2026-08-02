@@ -63,3 +63,15 @@ The following work may proceed because it does not depend on approved historical
 
 Avoid strategy-logic or governance-rule changes until a dataset is approved,
 unless a verified defect is found.
+
+## Operational Campaign Handoff
+
+The current blocker is now tracked under OP-01 Broker History Acquisition:
+
+- `reports/operations/OP_01_BROKER_HISTORY_ACQUISITION_CAMPAIGN.md`
+- `reports/operations/OP_01_PROVIDER_CAPABILITY_MATRIX.md`
+- `reports/operations/OP_01_ATTEMPT_TRACKER.json`
+
+Do not create additional ST-C6.x phases for broker-history retries. Record new
+synchronization attempts as OP-01 operational evidence and rerun the frozen
+ST-C5 history gate unchanged.
