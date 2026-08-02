@@ -15,7 +15,7 @@ sequence, dataset approval criteria, or research readiness scoring.
 | --- | --- |
 | Broker server | VTMarkets-Demo |
 | Terminal build | 6063 |
-| Current status | REQUIRES_HISTORY_SYNC |
+| Current status | OPERATIONALLY_INSUFFICIENT_FOR_ST_C3_HISTORY |
 | Dataset status | NOT_APPROVED |
 | Replay status | BLOCKED |
 
@@ -24,9 +24,11 @@ sequence, dataset approval criteria, or research readiness scoring.
 | Evidence | Location |
 | --- | --- |
 | Operational attempt 02 | `reports/operations/ST_C6_OPERATIONAL_ATTEMPT_02.md` |
+| Operational attempt 03 | `reports/operations/OP_01_ATTEMPT_03_RESULT.md` |
 | MT5 synchronization evidence | `reports/operations/MT5_HISTORY_SYNCHRONIZATION_EVIDENCE.md` |
 | History gate decision | `reports/st_c5_3/MT5_HISTORY_SYNC_DECISION.json` |
 | Pipeline dashboard | `reports/st_c5_pipeline/ST_C5_PIPELINE_DASHBOARD.md` |
+| Provider evaluation freeze rule | `reports/operations/OP_01_PROVIDER_EVALUATION_FREEZE_RULE.md` |
 
 ## Broker Retention Check
 
@@ -59,11 +61,10 @@ currently produce the required historical research dataset.
 
 ## Required Next Evidence
 
-1. Execute `reports/operations/OP_01_ATTEMPT_03_PROTOCOL.md` as the final controlled VTMarkets-Demo synchronization attempt.
-2. Record whether M1/M3/M15/H4 history changes for EURUSD and GBPUSD.
-3. If unchanged, record Attempt 03.
-4. If Attempt 03 remains materially identical, mark VTMarkets-Demo as operationally insufficient for ST-C3 historical data.
-5. Evaluate another MT5 broker with the unchanged frozen ST-C5 pipeline.
+1. Close VTMarkets-Demo for ST-C3 historical data after Attempt 03.
+2. Evaluate MetaQuotes Demo with the unchanged frozen ST-C5 pipeline.
+3. If MetaQuotes Demo is insufficient, proceed to IC Markets Demo.
+4. If IC Markets Demo is insufficient, proceed to Pepperstone Demo.
 
 ## Decision Tree
 

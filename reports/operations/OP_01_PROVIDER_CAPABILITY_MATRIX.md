@@ -5,12 +5,12 @@ Status: **OPEN**
 This matrix tracks operational broker-history capability only. It does not
 replace ST-C4/ST-C4.1 provider qualification or ST-C3 validation.
 
-| Provider / Server | Account Type | Earliest M1 | Earliest M3 | Earliest M15 | Earliest H4 | ST-C3 Eligible | Status | Evidence |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| VTMarkets-Demo | Demo | None in-window | 2025-10-10 | 2022-07-26 | 2021-01-04 | No | FINAL_ATTEMPT_PENDING | `reports/operations/ST_C6_OPERATIONAL_ATTEMPT_02.md` |
-| MetaQuotes Demo | Demo | Pending | Pending | Pending | Pending | Pending | PLANNED | Pending |
-| IC Markets Demo | Demo | Pending | Pending | Pending | Pending | Pending | PLANNED | Pending |
-| Pepperstone Demo | Demo | Pending | Pending | Pending | Pending | Pending | PLANNED | Pending |
+| Provider | Account Type | Server | Connection Date | Earliest M1 | Earliest M3 | Earliest M15 | Earliest H4 | ST-C3 Result | ST-C3 Eligible | Failure Class | Status | Evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| VTMarkets | Demo | VTMarkets-Demo | 2026-08-02 | None in-window | 2025-10-10 | 2022-07-26 | 2021-01-04 | NOT_RUN | No | History | OPERATIONALLY_INSUFFICIENT_FOR_ST_C3_HISTORY | `reports/operations/OP_01_ATTEMPT_03_RESULT.md` |
+| MetaQuotes | Demo | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending | NEXT_EVALUATION | Pending |
+| IC Markets | Demo | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending | PLANNED | Pending |
+| Pepperstone | Demo | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending | PLANNED | Pending |
 
 ## Interpretation
 
@@ -29,7 +29,10 @@ against a second MT5 broker environment.
 This matrix is the primary OP-01 control document. Do not repeat broker-history
 evaluations unless this matrix is updated with the attempt status and evidence.
 
-VTMarkets-Demo receives one final controlled synchronization attempt under
-`reports/operations/OP_01_ATTEMPT_03_PROTOCOL.md`. If Attempt 03 is materially
-identical to Attempts 01 and 02, update the VTMarkets-Demo status to
-`OPERATIONALLY_INSUFFICIENT_FOR_ST_C3_HISTORY` and proceed to the next broker.
+Provider evaluations are governed by
+`reports/operations/OP_01_PROVIDER_EVALUATION_FREEZE_RULE.md`.
+
+VTMarkets-Demo completed its final controlled synchronization attempt under
+`reports/operations/OP_01_ATTEMPT_03_PROTOCOL.md` and is classified as
+`OPERATIONALLY_INSUFFICIENT_FOR_ST_C3_HISTORY`. Proceed to MetaQuotes Demo with
+the unchanged frozen ST-C5 pipeline.

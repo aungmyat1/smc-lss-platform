@@ -1,7 +1,7 @@
 {
   "campaign": "OP-01 Broker History Acquisition Campaign",
   "current_broker_server": "VTMarkets-Demo",
-  "current_status": "REQUIRES_HISTORY_SYNC",
+  "current_status": "OPERATIONALLY_INSUFFICIENT_FOR_ST_C3_HISTORY",
   "dataset_status": "NOT_APPROVED",
   "exit_rule": {
     "attempt_limit": 3,
@@ -20,11 +20,18 @@
       "status": "REQUIRES_HISTORY_SYNC",
       "evidence": "reports/operations/ST_C6_OPERATIONAL_ATTEMPT_02.json",
       "summary": "Terminal connected, symbols selected, history gate still failed on M1 missing and M15 late-start conditions."
+    },
+    {
+      "attempt": 3,
+      "status": "REQUIRES_HISTORY_SYNC",
+      "evidence": "reports/operations/OP_01_ATTEMPT_03_RESULT.json",
+      "summary": "Final controlled attempt reproduced the same M1 missing and M15 late-start conditions; VTMarkets-Demo classified as operationally insufficient for ST-C3 history."
     }
   ],
   "attempt_03_protocol": "reports/operations/OP_01_ATTEMPT_03_PROTOCOL.md",
-  "remaining_attempts_before_exit_classification": 1,
-  "next_action": "Execute OP_01_ATTEMPT_03_PROTOCOL.md as the final controlled VTMarkets-Demo synchronization attempt, then rerun python -m tools.st_c5_3_history_sync_gate.",
+  "provider_evaluation_freeze_rule": "reports/operations/OP_01_PROVIDER_EVALUATION_FREEZE_RULE.md",
+  "remaining_attempts_before_exit_classification": 0,
+  "next_action": "Evaluate MetaQuotes Demo with the unchanged frozen ST-C5 history gate and pipeline.",
   "next_provider_sequence": [
     "MetaQuotes Demo",
     "IC Markets Demo",

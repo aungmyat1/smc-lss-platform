@@ -26,12 +26,15 @@ be changed.
 
 ## Controlled Execution
 
-1. Execute `reports/st_c5_3/HISTORY_SYNC_RUNBOOK.md`.
-2. Do not modify ST-C3.
-3. Do not alter export code.
-4. Do not change validation thresholds.
-5. Do not manually edit or fill data.
-6. Rerun `python -m tools.st_c5_3_history_sync_gate`.
+1. Confirm the provider evaluation freeze rule is active: `reports/operations/OP_01_PROVIDER_EVALUATION_FREEZE_RULE.md`.
+2. Execute `reports/st_c5_3/HISTORY_SYNC_RUNBOOK.md`.
+3. Run `python -m tools.st_c5_3_history_sync_gate`.
+4. Capture command output, timestamp, and generated reports.
+5. Do not modify ST-C3.
+6. Do not alter export code.
+7. Do not change validation thresholds.
+8. Do not change timeframes.
+9. Do not manually edit or fill data.
 
 ## Post-Attempt Evidence To Capture
 
@@ -58,6 +61,9 @@ VTMarkets-Demo as:
 
 Then stop retrying VTMarkets-Demo for ST-C3 historical research data and move to
 the next MT5 broker candidate using the unchanged frozen ST-C5 pipeline.
+
+If Attempt 03 passes, continue with the frozen ST-C5 pipeline. Do not jump
+directly to replay.
 
 ## Branching
 

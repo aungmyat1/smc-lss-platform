@@ -1,0 +1,44 @@
+{
+  "attempt": 3,
+  "broker_server": "VTMarkets-Demo",
+  "classification": "OPERATIONALLY_INSUFFICIENT_FOR_ST_C3_HISTORY",
+  "dataset_status": "NOT_APPROVED",
+  "decision": "REQUIRES_HISTORY_SYNC",
+  "evidence": [
+    "reports/operations/OP_01_ATTEMPT_03_PRECHECK.json",
+    "reports/st_c5_3/MT5_HISTORY_SYNC_DECISION.json",
+    "reports/st_c5_3/MT5_HISTORY_SYNC_REPORT.md"
+  ],
+  "generated_at_utc": "2026-08-02T09:06:23Z",
+  "guardrail": "This is an operational source suitability classification only; it does not reject VTMarkets for trading and does not modify validation, strategy, approval, replay, demo, or live behavior.",
+  "materially_identical_to_prior_attempts": true,
+  "next_action": "Evaluate MetaQuotes Demo with the unchanged frozen ST-C5 history gate and pipeline.",
+  "replay_status": "BLOCKED",
+  "required_failures": [
+    {
+      "reason": "copy_rates_range returned 261 bars outside requested audit window",
+      "status": "NOT_PRESENT_IN_TERMINAL",
+      "symbol": "EURUSD",
+      "timeframe": "M1"
+    },
+    {
+      "reason": "first available bar is after required start 2021-01-04T00:00:00Z",
+      "status": "START_DATE_MISSING",
+      "symbol": "EURUSD",
+      "timeframe": "M15"
+    },
+    {
+      "reason": "copy_rates_range returned 261 bars outside requested audit window",
+      "status": "NOT_PRESENT_IN_TERMINAL",
+      "symbol": "GBPUSD",
+      "timeframe": "M1"
+    },
+    {
+      "reason": "first available bar is after required start 2021-01-04T00:00:00Z",
+      "status": "START_DATE_MISSING",
+      "symbol": "GBPUSD",
+      "timeframe": "M15"
+    }
+  ],
+  "strategy_validation_status": "BLOCKED"
+}
