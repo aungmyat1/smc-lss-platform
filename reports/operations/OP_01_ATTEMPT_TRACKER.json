@@ -22,7 +22,13 @@
       "summary": "Terminal connected, symbols selected, history gate still failed on M1 missing and M15 late-start conditions."
     }
   ],
+  "attempt_03_protocol": "reports/operations/OP_01_ATTEMPT_03_PROTOCOL.md",
   "remaining_attempts_before_exit_classification": 1,
-  "next_action": "Execute one deliberate MT5 history synchronization attempt, then rerun python -m tools.st_c5_3_history_sync_gate and record Attempt 03.",
+  "next_action": "Execute OP_01_ATTEMPT_03_PROTOCOL.md as the final controlled VTMarkets-Demo synchronization attempt, then rerun python -m tools.st_c5_3_history_sync_gate.",
+  "next_provider_sequence": [
+    "MetaQuotes Demo",
+    "IC Markets Demo",
+    "Pepperstone Demo"
+  ],
   "guardrail": "Operational tracker only; no validation, threshold, strategy, approval, replay, demo, or live behavior changed."
 }

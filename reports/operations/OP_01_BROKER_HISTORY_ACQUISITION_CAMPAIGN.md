@@ -59,11 +59,30 @@ currently produce the required historical research dataset.
 
 ## Required Next Evidence
 
-1. Execute `reports/st_c5_3/HISTORY_SYNC_RUNBOOK.md` again after a deliberate MT5 history-center/chart synchronization attempt.
+1. Execute `reports/operations/OP_01_ATTEMPT_03_PROTOCOL.md` as the final controlled VTMarkets-Demo synchronization attempt.
 2. Record whether M1/M3/M15/H4 history changes for EURUSD and GBPUSD.
 3. If unchanged, record Attempt 03.
 4. If Attempt 03 remains materially identical, mark VTMarkets-Demo as operationally insufficient for ST-C3 historical data.
 5. Evaluate another MT5 broker with the unchanged frozen ST-C5 pipeline.
+
+## Decision Tree
+
+```text
+VTMarkets Attempt 03
+        |
+        +-- PASS
+        |     |
+        |     v
+        |  Continue ST-C5 Pipeline
+        |
+        +-- FAIL / REQUIRES_HISTORY_SYNC
+              |
+              v
+        Operationally Insufficient
+              |
+              v
+        Evaluate Next Broker
+```
 
 ## Guardrail
 
