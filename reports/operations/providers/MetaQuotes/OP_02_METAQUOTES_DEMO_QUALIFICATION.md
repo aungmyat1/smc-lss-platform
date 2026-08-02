@@ -1,6 +1,6 @@
 # OP-02 MetaQuotes Demo Qualification Campaign
 
-Status: **PENDING_EXECUTION**
+Status: **PENDING_METAQUOTES_CONNECTION**
 
 Objective: determine whether MetaQuotes Demo can provide the historical data
 required by ST-C3 using the unchanged frozen ST-C5 pipeline.
@@ -18,6 +18,15 @@ required by ST-C3 using the unchanged frozen ST-C5 pipeline.
 | Required start | 2021-01-04T00:00:00Z |
 | Required end | 2025-12-31 by timeframe |
 | Validation | Frozen ST-C5/ST-C3 gates |
+| SLA | `reports/operations/PROVIDER_EVALUATION_SLA.md` |
+
+## Current Precheck
+
+| Field | Value |
+| --- | --- |
+| Precheck status | PENDING_METAQUOTES_CONNECTION |
+| Active terminal server | VTMarkets-Demo |
+| Evidence | `reports/operations/providers/MetaQuotes/attempt_01/CONNECTION_PRECHECK.json` |
 
 ## Execution Sequence
 

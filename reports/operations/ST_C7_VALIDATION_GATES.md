@@ -19,6 +19,7 @@ These gates are predeclared before replay results are available.
 | Out-of-sample | Train 2021-2024, test 2025 |
 | Walk-forward | 6 months train, 3 months validate, repeat |
 | Monte Carlo | Trade sequence randomness, drawdown probability, stability |
+| Parameter sensitivity | Verify edge is not isolated to one exact setting |
 
 ## Guardrail
 

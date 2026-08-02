@@ -21,7 +21,17 @@ unlock replay and does not change strategy logic.
 | Commission model | Predeclare broker/account commission before run |
 | Slippage model | Predeclare conservative slippage assumption before run |
 | Risk model | Use frozen strategy risk model |
-| Execution assumptions | Deterministic replay only; no live/demo execution |
+| Execution assumptions | Deterministic replay only; next available candle fill assumption unless approved replay engine specifies stricter behavior |
+
+## Frozen Market Model Assumptions
+
+| Area | Frozen Assumption |
+| --- | --- |
+| Spread | Broker historical spread if present in approved data; otherwise predeclared conservative spread before replay |
+| Commission | Realistic commission for the provider/account used by the approved dataset |
+| Slippage | Conservative fixed slippage assumption declared before replay |
+| Execution timing | Next available candle in deterministic replay |
+| Risk | Frozen ST-C strategy risk model; no post-results tuning |
 
 ## Guardrails
 

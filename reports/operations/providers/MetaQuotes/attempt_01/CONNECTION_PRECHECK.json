@@ -1,0 +1,11 @@
+{
+  "account_company": "VT Markets (Pty) Ltd",
+  "account_trade_mode": 0,
+  "broker_server": "VTMarkets-Demo",
+  "connected": true,
+  "expected_provider": "MetaQuotes Demo",
+  "generated_at_utc": "2026-08-02T09:55:58Z",
+  "guardrail": "Connection precheck only; no history gate, export, ST-C3, approval, replay, demo, or live action executed.",
+  "status": "PENDING_METAQUOTES_CONNECTION",
+  "terminal_build": 6063
+}
