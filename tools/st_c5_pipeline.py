@@ -162,10 +162,77 @@ def _write_pipeline_reports(result: dict[str, Any], report_dir: Path, lifecycle_
         "guardrail": GUARDRAIL,
     }
     report_dir.mkdir(parents=True, exist_ok=True)
+    dashboard = build_pipeline_dashboard(result)
     (report_dir / "ST_C5_PIPELINE_STATUS.json").write_text(json.dumps(result, indent=2, sort_keys=True), encoding="utf-8")
     (report_dir / "ST_C5_PIPELINE_REPORT.md").write_text(_pipeline_markdown(result), encoding="utf-8")
+    (report_dir / "ST_C5_PIPELINE_DASHBOARD.json").write_text(json.dumps(dashboard, indent=2, sort_keys=True), encoding="utf-8")
+    (report_dir / "ST_C5_PIPELINE_DASHBOARD.md").write_text(_dashboard_markdown(dashboard), encoding="utf-8")
     lifecycle_path.write_text(json.dumps(lifecycle, indent=2, sort_keys=True), encoding="utf-8")
     return result
+
+
+def build_pipeline_dashboard(result: dict[str, Any]) -> dict[str, Any]:
+    steps = {step["name"]: step for step in result["steps"]}
+    history = steps.get("history_sync")
+    export = steps.get("broker_export")
+    normalization = steps.get("normalization")
+    audit = steps.get("export_completeness")
+    governance = steps.get("st_c3_governance")
+    stages = [
+        _dashboard_stage("History Sync", history, result["updated_at_utc"], result["reason"]),
+        _dashboard_stage("Export", export, result["updated_at_utc"], "Waiting for history sync"),
+        _dashboard_stage("Normalization", normalization, result["updated_at_utc"], "Export not complete"),
+        _dashboard_stage("Export Audit", audit, result["updated_at_utc"], "Export not complete"),
+        _dashboard_stage("ST-C3", governance, result["updated_at_utc"], "Export not complete"),
+        {
+            "stage": "Replay",
+            "status": result["replay_status"],
+            "last_run": "",
+            "blocking_reason": "Dataset not approved",
+        },
+        {
+            "stage": "Strategy Validation",
+            "status": result["strategy_validation_status"],
+            "last_run": "",
+            "blocking_reason": "Replay blocked",
+        },
+        {
+            "stage": "Demo",
+            "status": result["demo_status"],
+            "last_run": "",
+            "blocking_reason": "Strategy validation blocked",
+        },
+        {
+            "stage": "Live",
+            "status": result["live_status"],
+            "last_run": "",
+            "blocking_reason": "Demo blocked",
+        },
+    ]
+    return {
+        "current_lifecycle_state": result["current_lifecycle_state"],
+        "recommendation": result["recommendation"],
+        "updated_at_utc": result["updated_at_utc"],
+        "stages": stages,
+        "guardrail": GUARDRAIL,
+    }
+
+
+def _dashboard_stage(step_name: str, step: dict[str, Any] | None, last_run: str, waiting_reason: str) -> dict[str, str]:
+    if step is None:
+        return {
+            "stage": step_name,
+            "status": "WAITING",
+            "last_run": "",
+            "blocking_reason": waiting_reason,
+        }
+    detail = step.get("detail") or {}
+    return {
+        "stage": step_name,
+        "status": str(step["status"]),
+        "last_run": last_run,
+        "blocking_reason": str(detail.get("reason") or ""),
+    }
 
 
 def _pipeline_markdown(result: dict[str, Any]) -> str:
@@ -190,6 +257,31 @@ def _pipeline_markdown(result: dict[str, Any]) -> str:
             "",
         ]
     )
+
+
+def _dashboard_markdown(dashboard: dict[str, Any]) -> str:
+    lines = [
+        "# ST-C5 Pipeline Dashboard",
+        "",
+        f"Lifecycle State: **{dashboard['current_lifecycle_state']}**",
+        "",
+        f"Recommendation: **{dashboard['recommendation']}**",
+        "",
+        "| Stage | Status | Last Run | Blocking Reason |",
+        "| --- | --- | --- | --- |",
+    ]
+    for stage in dashboard["stages"]:
+        lines.append(
+            f"| {stage['stage']} | {stage['status']} | {stage['last_run'] or '-'} | {stage['blocking_reason'] or '-'} |"
+        )
+    lines.extend(
+        [
+            "",
+            "Dataset remains not approved. Replay, strategy validation, demo, and live remain blocked.",
+            "",
+        ]
+    )
+    return "\n".join(lines)
 
 
 def main() -> None:

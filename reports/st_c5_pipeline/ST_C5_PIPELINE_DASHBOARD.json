@@ -1,0 +1,62 @@
+{
+  "current_lifecycle_state": "PENDING_HISTORY_SYNC",
+  "guardrail": "ST-C5 broker-data qualification only; dataset approval, replay, strategy validation, demo, and live remain blocked.",
+  "recommendation": "REQUIRES_HISTORY_SYNC",
+  "stages": [
+    {
+      "blocking_reason": "Local MT5 terminal does not yet contain sufficient in-window history for every export source timeframe.",
+      "last_run": "2026-08-02T08:27:04Z",
+      "stage": "History Sync",
+      "status": "REQUIRES_HISTORY_SYNC"
+    },
+    {
+      "blocking_reason": "Waiting for history sync",
+      "last_run": "",
+      "stage": "Export",
+      "status": "WAITING"
+    },
+    {
+      "blocking_reason": "Export not complete",
+      "last_run": "",
+      "stage": "Normalization",
+      "status": "WAITING"
+    },
+    {
+      "blocking_reason": "Export not complete",
+      "last_run": "",
+      "stage": "Export Audit",
+      "status": "WAITING"
+    },
+    {
+      "blocking_reason": "Export not complete",
+      "last_run": "",
+      "stage": "ST-C3",
+      "status": "WAITING"
+    },
+    {
+      "blocking_reason": "Dataset not approved",
+      "last_run": "",
+      "stage": "Replay",
+      "status": "BLOCKED"
+    },
+    {
+      "blocking_reason": "Replay blocked",
+      "last_run": "",
+      "stage": "Strategy Validation",
+      "status": "BLOCKED"
+    },
+    {
+      "blocking_reason": "Strategy validation blocked",
+      "last_run": "",
+      "stage": "Demo",
+      "status": "BLOCKED"
+    },
+    {
+      "blocking_reason": "Demo blocked",
+      "last_run": "",
+      "stage": "Live",
+      "status": "BLOCKED"
+    }
+  ],
+  "updated_at_utc": "2026-08-02T08:27:04Z"
+}
