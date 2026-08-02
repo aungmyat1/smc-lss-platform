@@ -1,0 +1,45 @@
+# OP-02 MetaQuotes Demo Qualification Campaign
+
+Status: **PENDING_EXECUTION**
+
+Objective: determine whether MetaQuotes Demo can provide the historical data
+required by ST-C3 using the unchanged frozen ST-C5 pipeline.
+
+## Frozen Evaluation Configuration
+
+| Item | Value |
+| --- | --- |
+| Provider | MetaQuotes |
+| Account type | Demo |
+| Server | Pending exact MT5 server |
+| Symbols | EURUSD, GBPUSD |
+| Evidence timeframes | M1, M3, M15, H4 |
+| Candidate export timeframes | H4, M15, M3 |
+| Required start | 2021-01-04T00:00:00Z |
+| Required end | 2025-12-31 by timeframe |
+| Validation | Frozen ST-C5/ST-C3 gates |
+
+## Execution Sequence
+
+1. Connect MT5 to MetaQuotes Demo.
+2. Record terminal build, server, account type, and symbol metadata.
+3. Run `python -m tools.st_c5_3_history_sync_gate`.
+4. If history sync fails, record evidence and update the provider matrix.
+5. If history sync passes, run `python -m tools.st_c5_pipeline --acquire`.
+6. Continue only through the frozen pipeline sequence.
+7. Do not unlock replay unless the dataset is approved by governance evidence.
+
+## Success Criteria
+
+MetaQuotes Demo is ST-C3 eligible only if:
+
+- EURUSD and GBPUSD history satisfies the required window.
+- M1/M3/M15/H4 evidence is available.
+- Export, normalization, and export audit pass.
+- Unchanged ST-C3 validation passes.
+- Governance decision is `APPROVE_DATASET`.
+
+## Guardrail
+
+No provider-specific exceptions, manual gap filling, threshold changes, strategy
+changes, replay unlock, demo, or live actions are allowed.
