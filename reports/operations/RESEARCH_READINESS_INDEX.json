@@ -1,0 +1,58 @@
+{
+  "current_blocker": "PENDING_HISTORY_SYNC",
+  "guardrail": "Readiness index is informational only; it does not approve datasets, unlock replay, modify ST-C3, or change strategy logic.",
+  "overall_readiness_percent": 55,
+  "recommendation": "REQUIRES_HISTORY_SYNC",
+  "sections": [
+    {
+      "area": "Strategy",
+      "evidence": "ST-C1 strategy specification and current freeze policy",
+      "status": "STABLE",
+      "weight_percent": 15,
+      "weighted_score_percent": 15
+    },
+    {
+      "area": "Rule Engine",
+      "evidence": "ST-C2 deterministic rule engine and conformance tests",
+      "status": "STABLE",
+      "weight_percent": 15,
+      "weighted_score_percent": 15
+    },
+    {
+      "area": "Governance",
+      "evidence": "ST-C3 governance framework and ST-C6 freeze policy",
+      "status": "STABLE",
+      "weight_percent": 15,
+      "weighted_score_percent": 15
+    },
+    {
+      "area": "Dataset",
+      "evidence": "reports/st_c5_3/MT5_HISTORY_SYNC_DECISION.json",
+      "status": "BLOCKED_REQUIRES_HISTORY_SYNC",
+      "weight_percent": 25,
+      "weighted_score_percent": 0
+    },
+    {
+      "area": "Replay",
+      "evidence": "research_data/metadata/ST_C5_DATASET_LIFECYCLE.json",
+      "status": "BLOCKED_DATASET_NOT_APPROVED",
+      "weight_percent": 15,
+      "weighted_score_percent": 0
+    },
+    {
+      "area": "Execution Layer",
+      "evidence": "Permitted parallel workstream; not dependent on approved historical dataset",
+      "status": "PREPARABLE_PARALLEL_TRACK",
+      "weight_percent": 10,
+      "weighted_score_percent": 7
+    },
+    {
+      "area": "Monitoring",
+      "evidence": "reports/st_c5_pipeline/ST_C5_PIPELINE_DASHBOARD.md",
+      "status": "STABLE",
+      "weight_percent": 5,
+      "weighted_score_percent": 3
+    }
+  ],
+  "next_action": "Execute MT5 history synchronization runbook, then rerun the frozen ST-C5 pipeline unchanged."
+}
