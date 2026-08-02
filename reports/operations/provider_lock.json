@@ -1,0 +1,24 @@
+{
+  "active_provider": "MetaQuotes",
+  "allowed_symbols": [
+    "EURUSD",
+    "GBPUSD"
+  ],
+  "candidate_export_timeframes": [
+    "H4",
+    "M15",
+    "M3"
+  ],
+  "evidence_timeframes": [
+    "M1",
+    "M3",
+    "M15",
+    "H4"
+  ],
+  "guardrail": "Provider lock is operational control only; it does not approve datasets, unlock replay, modify ST-C3, or change strategy logic.",
+  "locked": true,
+  "qualification_status": "PENDING_METAQUOTES_CONNECTION",
+  "required_end": "2025-12-31",
+  "required_start": "2021-01-04T00:00:00Z",
+  "server": "MetaQuotes-Demo"
+}

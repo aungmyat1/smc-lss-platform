@@ -21,6 +21,7 @@ Complete this checklist before every provider qualification attempt.
 | Pipeline unchanged | Frozen ST-C5 pipeline reference |
 | Validation criteria unchanged | ST-C3/ST-C5 freeze references |
 | Provider evaluation SLA active | `reports/operations/PROVIDER_EVALUATION_SLA.md` |
+| Provider lock active | `reports/operations/provider_lock.json` |
 
 ## MetaQuotes Current State
 
@@ -30,6 +31,7 @@ Complete this checklist before every provider qualification attempt.
 | Current active server | VTMarkets-Demo |
 | Status | PENDING_METAQUOTES_CONNECTION |
 | Evidence | `reports/operations/providers/MetaQuotes/attempt_01/CONNECTION_PRECHECK.json` |
+| Provider lock | `reports/operations/provider_lock.json` |
 
 ## Guardrail
 

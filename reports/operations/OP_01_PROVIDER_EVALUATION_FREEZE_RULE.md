@@ -17,6 +17,7 @@ that provider reaches an operational decision.
 | Validation criteria | Frozen ST-C3 and ST-C5 gates |
 | Pipeline sequence | Frozen ST-C5 orchestrator |
 | Connection handoff | `reports/operations/PROVIDER_CONNECTION_HANDOFF_CHECKLIST.md` |
+| Provider lock | `reports/operations/provider_lock.json` |
 
 ## Prohibited During Provider Evaluation
 
