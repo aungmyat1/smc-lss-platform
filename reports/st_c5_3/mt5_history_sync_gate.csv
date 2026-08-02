@@ -1,0 +1,13 @@
+symbol,timeframe,terminal_status,first_available_bar,last_available_bar,total_bars,required_for_export,export_requirement,required_start,expected_last,start_ok,last_ok,sync_status,reason
+EURUSD,M1,BLOCKED,,,,true,M3 derivation source when broker-native M3 is incomplete or unavailable,2021-01-04T00:00:00Z,2025-12-31T23:59:00Z,false,false,NOT_PRESENT_IN_TERMINAL,copy_rates_range returned 261 bars outside requested audit window
+EURUSD,M5,AVAILABLE,2025-03-27T15:30:00Z,2025-12-31T23:55:00Z,57229,false,diagnostic only,,,false,true,RECORDED_DIAGNOSTIC,
+EURUSD,M15,AVAILABLE,2022-07-26T08:45:00Z,2025-12-31T23:45:00Z,85513,true,direct canonical export,2021-01-04T00:00:00Z,2025-12-31T23:45:00Z,false,true,START_DATE_MISSING,first available bar is after required start 2021-01-04T00:00:00Z
+EURUSD,H1,AVAILABLE,2021-01-04T00:00:00Z,2025-12-31T23:00:00Z,31120,false,diagnostic only,,,true,true,RECORDED_DIAGNOSTIC,
+EURUSD,H4,AVAILABLE,2021-01-04T00:00:00Z,2025-12-31T20:00:00Z,7786,true,direct canonical export,2021-01-04T00:00:00Z,2025-12-31T20:00:00Z,true,true,SYNCHRONIZED,
+EURUSD,D1,AVAILABLE,2021-01-04T00:00:00Z,2025-12-31T00:00:00Z,1299,false,diagnostic only,,,true,true,RECORDED_DIAGNOSTIC,
+GBPUSD,M1,BLOCKED,,,,true,M3 derivation source when broker-native M3 is incomplete or unavailable,2021-01-04T00:00:00Z,2025-12-31T23:59:00Z,false,false,NOT_PRESENT_IN_TERMINAL,copy_rates_range returned 261 bars outside requested audit window
+GBPUSD,M5,AVAILABLE,2025-03-31T16:45:00Z,2025-12-31T23:55:00Z,56623,false,diagnostic only,,,false,true,RECORDED_DIAGNOSTIC,
+GBPUSD,M15,AVAILABLE,2022-07-26T09:15:00Z,2025-12-31T23:45:00Z,85513,true,direct canonical export,2021-01-04T00:00:00Z,2025-12-31T23:45:00Z,false,true,START_DATE_MISSING,first available bar is after required start 2021-01-04T00:00:00Z
+GBPUSD,H1,AVAILABLE,2021-01-04T00:00:00Z,2025-12-31T23:00:00Z,31121,false,diagnostic only,,,true,true,RECORDED_DIAGNOSTIC,
+GBPUSD,H4,AVAILABLE,2021-01-04T00:00:00Z,2025-12-31T20:00:00Z,7786,true,direct canonical export,2021-01-04T00:00:00Z,2025-12-31T20:00:00Z,true,true,SYNCHRONIZED,
+GBPUSD,D1,AVAILABLE,2021-01-04T00:00:00Z,2025-12-31T00:00:00Z,1299,false,diagnostic only,,,true,true,RECORDED_DIAGNOSTIC,

@@ -11,7 +11,7 @@ import argparse
 import csv
 import json
 from collections import Counter
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -209,21 +209,68 @@ def _mt5_timeframe_availability(mt5: Any, symbol: str, timeframe: str, selected:
     timeframe_id = _timeframe_id(mt5, timeframe)
     if timeframe_id is None:
         return _availability_blocked_row(symbol, timeframe, "timeframe unsupported by local MetaTrader5 package")
-    rates = mt5.copy_rates_range(symbol, timeframe_id, START, END)
-    if rates is None or len(rates) == 0:
-        return _availability_blocked_row(symbol, timeframe, f"copy_rates_range returned no bars: {mt5.last_error()}")
-    first = datetime.fromtimestamp(int(rates[0]["time"]), tz=UTC)
-    last = datetime.fromtimestamp(int(rates[-1]["time"]), tz=UTC)
+    summary = _copy_rates_availability(mt5, symbol, timeframe_id, START, END, _availability_chunk_days(timeframe))
+    if summary["total_bars"] == 0:
+        if summary["raw_bars"] > 0:
+            reason = f"copy_rates_range returned {summary['raw_bars']} bars outside requested audit window"
+        else:
+            reason = f"copy_rates_range returned no bars: {mt5.last_error()}"
+        return _availability_blocked_row(symbol, timeframe, reason)
     return {
         "symbol": symbol,
         "timeframe": timeframe,
         "status": "AVAILABLE",
-        "first_available_bar": _format_time(first.replace(tzinfo=None)),
-        "last_available_bar": _format_time(last.replace(tzinfo=None)),
-        "total_bars": int(len(rates)),
+        "first_available_bar": _format_time(summary["first"].replace(tzinfo=None)),
+        "last_available_bar": _format_time(summary["last"].replace(tzinfo=None)),
+        "total_bars": summary["total_bars"],
         "source": "MetaTrader5.copy_rates_range",
         "reason": "",
     }
+
+
+def _copy_rates_availability(
+    mt5: Any,
+    symbol: str,
+    timeframe_id: int,
+    start: datetime,
+    end: datetime,
+    chunk_days: int,
+) -> dict[str, Any]:
+    first: datetime | None = None
+    last: datetime | None = None
+    raw_total = 0
+    total = 0
+    cursor = start
+    while cursor <= end:
+        chunk_end = min(cursor + timedelta(days=chunk_days) - timedelta(seconds=1), end)
+        rates = mt5.copy_rates_range(symbol, timeframe_id, cursor, chunk_end)
+        if rates is not None and len(rates) > 0:
+            raw_total += int(len(rates))
+            timestamps = []
+            for rate in rates:
+                timestamp = datetime.fromtimestamp(int(rate["time"]), tz=UTC)
+                if start <= timestamp <= end:
+                    timestamps.append(timestamp)
+            if timestamps:
+                chunk_first = min(timestamps)
+                chunk_last = max(timestamps)
+                first = chunk_first if first is None or chunk_first < first else first
+                last = chunk_last if last is None or chunk_last > last else last
+                total += len(timestamps)
+        cursor = chunk_end + timedelta(seconds=1)
+    return {"first": first, "last": last, "raw_bars": raw_total, "total_bars": total}
+
+
+def _availability_chunk_days(timeframe: str) -> int:
+    if timeframe == "M1":
+        return 7
+    if timeframe == "M5":
+        return 14
+    if timeframe == "M15":
+        return 60
+    if timeframe == "H1":
+        return 180
+    return 365
 
 
 def _timeframe_id(mt5: Any, timeframe: str) -> int | None:
@@ -333,9 +380,10 @@ Recommended acquisition actions:
 1. In MT5, open EURUSD and GBPUSD charts for M1, M5, M15, H1, H4, and D1.
 2. Scroll each chart back to at least 2021-01-01 to force local history synchronization.
 3. Increase terminal chart/history bar limits if needed.
-4. Rerun `python -m tools.st_c5_broker_data_qualification --acquire`.
-5. Rerun `python -m tools.st_c5_1_vantage_quality_report`.
-6. Rerun `python -m tools.st_c5_2_export_completeness_audit`.
+4. Rerun `python -m tools.st_c5_3_history_sync_gate`.
+5. Only if ST-C5.3 returns `READY_FOR_REEXPORT`, rerun `python -m tools.st_c5_broker_data_qualification --acquire`.
+6. Rerun `python -m tools.st_c5_1_vantage_quality_report`.
+7. Rerun `python -m tools.st_c5_2_export_completeness_audit`.
 
 No replay or strategy validation may start until a fresh unchanged ST-C3 run approves the dataset.
 """

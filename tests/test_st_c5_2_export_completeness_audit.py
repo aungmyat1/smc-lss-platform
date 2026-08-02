@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 from datetime import UTC, datetime
 
+import tools.st_c5_2_export_completeness_audit as audit
 from tools.st_c5_2_export_completeness_audit import (
     classify_missing_timestamp,
     completeness_decision,
@@ -44,6 +45,55 @@ def test_reconcile_flags_export_with_fewer_rows_than_mt5(tmp_path):
     result = reconcile_exports(mt5, exports)
 
     assert result[0]["reconciliation_status"] == "EXPORT_HAS_FEWER_ROWS_THAN_MT5"
+
+
+def test_mt5_availability_uses_chunked_requests(monkeypatch):
+    class FakeMT5:
+        TIMEFRAME_M1 = 1
+
+        def __init__(self):
+            self.calls = []
+
+        def copy_rates_range(self, symbol, timeframe_id, start, end):
+            self.calls.append((symbol, timeframe_id, start, end))
+            return [
+                {"time": int(start.timestamp())},
+                {"time": int(end.timestamp())},
+            ]
+
+        def last_error(self):
+            return (0, "ok")
+
+    fake = FakeMT5()
+    monkeypatch.setattr(audit, "START", datetime(2025, 1, 1, tzinfo=UTC))
+    monkeypatch.setattr(audit, "END", datetime(2025, 1, 20, 23, 59, 59, tzinfo=UTC))
+
+    result = audit._mt5_timeframe_availability(fake, "EURUSD", "M1", True)
+
+    assert result["status"] == "AVAILABLE"
+    assert result["first_available_bar"] == "2025-01-01T00:00:00Z"
+    assert result["last_available_bar"] == "2025-01-20T23:59:59Z"
+    assert result["total_bars"] == 6
+    assert len(fake.calls) == 3
+
+
+def test_mt5_availability_reports_out_of_window_bars(monkeypatch):
+    class FakeMT5:
+        TIMEFRAME_M1 = 1
+
+        def copy_rates_range(self, symbol, timeframe_id, start, end):
+            return [{"time": int(datetime(2026, 1, 1, tzinfo=UTC).timestamp())}]
+
+        def last_error(self):
+            return (1, "Success")
+
+    monkeypatch.setattr(audit, "START", datetime(2025, 1, 1, tzinfo=UTC))
+    monkeypatch.setattr(audit, "END", datetime(2025, 1, 1, 23, 59, 59, tzinfo=UTC))
+
+    result = audit._mt5_timeframe_availability(FakeMT5(), "EURUSD", "M1", True)
+
+    assert result["status"] == "BLOCKED"
+    assert result["reason"] == "copy_rates_range returned 1 bars outside requested audit window"
 
 
 def test_completeness_decision_marks_incomplete_export_for_missing_rows():

@@ -1,0 +1,49 @@
+{
+  "decision": {
+    "dataset_status": "NOT_APPROVED",
+    "decision": "REQUIRES_HISTORY_SYNC",
+    "demo_status": "BLOCKED",
+    "guardrail": "ST-C5 broker-data qualification only; dataset approval, replay, strategy validation, demo, and live remain blocked.",
+    "live_status": "BLOCKED",
+    "next_action": "Synchronize MT5 terminal history before running any broker re-export.",
+    "reason": "Local MT5 terminal does not yet contain sufficient in-window history for every export source timeframe.",
+    "recommendation": "REQUIRES_HISTORY_SYNC",
+    "replay_status": "BLOCKED",
+    "required_failure_count": 4,
+    "required_failures": [
+      {
+        "reason": "copy_rates_range returned 261 bars outside requested audit window",
+        "symbol": "EURUSD",
+        "sync_status": "NOT_PRESENT_IN_TERMINAL",
+        "timeframe": "M1"
+      },
+      {
+        "reason": "first available bar is after required start 2021-01-04T00:00:00Z",
+        "symbol": "EURUSD",
+        "sync_status": "START_DATE_MISSING",
+        "timeframe": "M15"
+      },
+      {
+        "reason": "copy_rates_range returned 261 bars outside requested audit window",
+        "symbol": "GBPUSD",
+        "sync_status": "NOT_PRESENT_IN_TERMINAL",
+        "timeframe": "M1"
+      },
+      {
+        "reason": "first available bar is after required start 2021-01-04T00:00:00Z",
+        "symbol": "GBPUSD",
+        "sync_status": "START_DATE_MISSING",
+        "timeframe": "M15"
+      }
+    ],
+    "strategy_validation_status": "BLOCKED"
+  },
+  "guardrail": "ST-C5 broker-data qualification only; dataset approval, replay, strategy validation, demo, and live remain blocked.",
+  "stage": "st_c5_3_history_sync_gate",
+  "status": "COMPLETE",
+  "summary": {
+    "availability_rows": 12,
+    "required_failures": 4,
+    "sync_rows": 12
+  }
+}

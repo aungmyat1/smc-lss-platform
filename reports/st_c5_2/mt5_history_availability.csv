@@ -1,13 +1,13 @@
 symbol,timeframe,status,first_available_bar,last_available_bar,total_bars,source,reason
-EURUSD,M1,BLOCKED,,,,MetaTrader5.copy_rates_range,"copy_rates_range returned no bars: (-2, 'Terminal: Invalid params')"
-EURUSD,M5,BLOCKED,,,,MetaTrader5.copy_rates_range,"copy_rates_range returned no bars: (-2, 'Terminal: Invalid params')"
-EURUSD,M15,BLOCKED,,,,MetaTrader5.copy_rates_range,"copy_rates_range returned no bars: (-2, 'Terminal: Invalid params')"
+EURUSD,M1,BLOCKED,,,,MetaTrader5.copy_rates_range,copy_rates_range returned 261 bars outside requested audit window
+EURUSD,M5,AVAILABLE,2025-03-27T15:30:00Z,2025-12-31T23:55:00Z,57229,MetaTrader5.copy_rates_range,
+EURUSD,M15,AVAILABLE,2022-07-26T08:45:00Z,2025-12-31T23:45:00Z,85513,MetaTrader5.copy_rates_range,
 EURUSD,H1,AVAILABLE,2021-01-04T00:00:00Z,2025-12-31T23:00:00Z,31120,MetaTrader5.copy_rates_range,
 EURUSD,H4,AVAILABLE,2021-01-04T00:00:00Z,2025-12-31T20:00:00Z,7786,MetaTrader5.copy_rates_range,
 EURUSD,D1,AVAILABLE,2021-01-04T00:00:00Z,2025-12-31T00:00:00Z,1299,MetaTrader5.copy_rates_range,
-GBPUSD,M1,BLOCKED,,,,MetaTrader5.copy_rates_range,"copy_rates_range returned no bars: (-2, 'Terminal: Invalid params')"
-GBPUSD,M5,BLOCKED,,,,MetaTrader5.copy_rates_range,"copy_rates_range returned no bars: (-2, 'Terminal: Invalid params')"
-GBPUSD,M15,BLOCKED,,,,MetaTrader5.copy_rates_range,"copy_rates_range returned no bars: (-2, 'Terminal: Invalid params')"
+GBPUSD,M1,BLOCKED,,,,MetaTrader5.copy_rates_range,copy_rates_range returned 261 bars outside requested audit window
+GBPUSD,M5,AVAILABLE,2025-03-31T16:45:00Z,2025-12-31T23:55:00Z,56623,MetaTrader5.copy_rates_range,
+GBPUSD,M15,AVAILABLE,2022-07-26T09:15:00Z,2025-12-31T23:45:00Z,85513,MetaTrader5.copy_rates_range,
 GBPUSD,H1,AVAILABLE,2021-01-04T00:00:00Z,2025-12-31T23:00:00Z,31121,MetaTrader5.copy_rates_range,
 GBPUSD,H4,AVAILABLE,2021-01-04T00:00:00Z,2025-12-31T20:00:00Z,7786,MetaTrader5.copy_rates_range,
 GBPUSD,D1,AVAILABLE,2021-01-04T00:00:00Z,2025-12-31T00:00:00Z,1299,MetaTrader5.copy_rates_range,
