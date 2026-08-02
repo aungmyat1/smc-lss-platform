@@ -1,0 +1,26 @@
+{
+  "account_company": "VT Markets (Pty) Ltd",
+  "account_trade_mode": 0,
+  "attempt": "OP-02_METAQUOTES_CONNECTION_RECHECK",
+  "broker_server": "VTMarkets-Demo",
+  "connected": true,
+  "expected_provider": "MetaQuotes Demo",
+  "generated_at_utc": "2026-08-02T10:10:28Z",
+  "guardrail": "Connection recheck only; no history gate, export, ST-C3, approval, replay, demo, or live action executed.",
+  "status": "PENDING_METAQUOTES_CONNECTION",
+  "symbols": {
+    "EURUSD": {
+      "description": "Euro vs US Dollar",
+      "path": "Forex Major\\Forex Major\\EURUSD",
+      "selected": true,
+      "symbol_info_available": true
+    },
+    "GBPUSD": {
+      "description": "Great Britain Pound vs US Dollar",
+      "path": "Forex Major\\Forex Major\\GBPUSD",
+      "selected": true,
+      "symbol_info_available": true
+    }
+  },
+  "terminal_build": 6063
+}

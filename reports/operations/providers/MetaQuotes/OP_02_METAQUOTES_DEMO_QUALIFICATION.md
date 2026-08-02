@@ -27,7 +27,7 @@ required by ST-C3 using the unchanged frozen ST-C5 pipeline.
 | --- | --- |
 | Precheck status | PENDING_METAQUOTES_CONNECTION |
 | Active terminal server | VTMarkets-Demo |
-| Evidence | `reports/operations/providers/MetaQuotes/attempt_01/CONNECTION_PRECHECK.json` |
+| Evidence | `reports/operations/providers/MetaQuotes/attempt_01/CONNECTION_RECHECK_02.json` |
 
 ## Execution Sequence
 
