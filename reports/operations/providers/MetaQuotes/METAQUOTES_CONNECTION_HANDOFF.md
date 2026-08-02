@@ -9,7 +9,7 @@ using a non-MetaQuotes MT5 server.
 
 | Check | Status | Evidence |
 | --- | --- | --- |
-| MT5 connected | Pending MetaQuotes connection | `reports/operations/providers/MetaQuotes/attempt_01/CONNECTION_RECHECK_03.json` |
+| MT5 connected | Pending MetaQuotes connection | `reports/operations/providers/MetaQuotes/attempt_01/CONNECTION_RECHECK_04.json` |
 | Server = MetaQuotes-Demo | Pending | `reports/operations/provider_lock.json` |
 | Provider identity confirmed | Pending | `python -m tools.st_c5_3_connection_check` |
 | EURUSD enabled | Pending MetaQuotes connection | Connection check output |
@@ -20,6 +20,8 @@ using a non-MetaQuotes MT5 server.
 ## Decision
 
 Current decision: **PENDING_METAQUOTES_CONNECTION**
+
+Latest connection check: `reports/operations/providers/MetaQuotes/attempt_01/CONNECTION_RECHECK_04.json`
 
 The next valid state is **READY_FOR_HISTORY_GATE**, and it may only be reached
 after `python -m tools.st_c5_3_connection_check` confirms the active MT5 server
