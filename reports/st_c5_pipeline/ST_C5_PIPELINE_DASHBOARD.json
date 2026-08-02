@@ -5,58 +5,67 @@
   "stages": [
     {
       "blocking_reason": "Local MT5 terminal does not yet contain sufficient in-window history for every export source timeframe.",
-      "last_run": "2026-08-02T08:27:04Z",
+      "evidence": "reports/st_c5_3/MT5_HISTORY_SYNC_REPORT.md",
+      "last_run": "2026-08-02T08:36:23Z",
       "stage": "History Sync",
       "status": "REQUIRES_HISTORY_SYNC"
     },
     {
       "blocking_reason": "Waiting for history sync",
+      "evidence": "reports/st_c5_3/MT5_HISTORY_SYNC_DECISION.json",
       "last_run": "",
       "stage": "Export",
       "status": "WAITING"
     },
     {
       "blocking_reason": "Export not complete",
+      "evidence": "reports/st_c5/BROKER_DATA_QUALIFICATION_STATUS.json",
       "last_run": "",
       "stage": "Normalization",
       "status": "WAITING"
     },
     {
       "blocking_reason": "Export not complete",
+      "evidence": "reports/st_c5_2/EXPORT_COMPLETENESS_AUDIT.md",
       "last_run": "",
       "stage": "Export Audit",
       "status": "WAITING"
     },
     {
       "blocking_reason": "Export not complete",
+      "evidence": "reports/st_c5/DATASET_GOVERNANCE_DECISION.json",
       "last_run": "",
       "stage": "ST-C3",
       "status": "WAITING"
     },
     {
       "blocking_reason": "Dataset not approved",
+      "evidence": "research_data/metadata/ST_C5_DATASET_LIFECYCLE.json",
       "last_run": "",
       "stage": "Replay",
       "status": "BLOCKED"
     },
     {
       "blocking_reason": "Replay blocked",
+      "evidence": "reports/st_c5_pipeline/ST_C5_PIPELINE_STATUS.json",
       "last_run": "",
       "stage": "Strategy Validation",
       "status": "BLOCKED"
     },
     {
       "blocking_reason": "Strategy validation blocked",
+      "evidence": "reports/st_c5_pipeline/ST_C5_PIPELINE_STATUS.json",
       "last_run": "",
       "stage": "Demo",
       "status": "BLOCKED"
     },
     {
       "blocking_reason": "Demo blocked",
+      "evidence": "reports/st_c5_pipeline/ST_C5_PIPELINE_STATUS.json",
       "last_run": "",
       "stage": "Live",
       "status": "BLOCKED"
     }
   ],
-  "updated_at_utc": "2026-08-02T08:27:04Z"
+  "updated_at_utc": "2026-08-02T08:36:23Z"
 }

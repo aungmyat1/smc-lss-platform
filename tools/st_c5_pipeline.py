@@ -179,34 +179,38 @@ def build_pipeline_dashboard(result: dict[str, Any]) -> dict[str, Any]:
     audit = steps.get("export_completeness")
     governance = steps.get("st_c3_governance")
     stages = [
-        _dashboard_stage("History Sync", history, result["updated_at_utc"], result["reason"]),
-        _dashboard_stage("Export", export, result["updated_at_utc"], "Waiting for history sync"),
-        _dashboard_stage("Normalization", normalization, result["updated_at_utc"], "Export not complete"),
-        _dashboard_stage("Export Audit", audit, result["updated_at_utc"], "Export not complete"),
-        _dashboard_stage("ST-C3", governance, result["updated_at_utc"], "Export not complete"),
+        _dashboard_stage("History Sync", history, result["updated_at_utc"], result["reason"], "reports/st_c5_3/MT5_HISTORY_SYNC_REPORT.md"),
+        _dashboard_stage("Export", export, result["updated_at_utc"], "Waiting for history sync", "reports/st_c5_3/MT5_HISTORY_SYNC_DECISION.json"),
+        _dashboard_stage("Normalization", normalization, result["updated_at_utc"], "Export not complete", "reports/st_c5/BROKER_DATA_QUALIFICATION_STATUS.json"),
+        _dashboard_stage("Export Audit", audit, result["updated_at_utc"], "Export not complete", "reports/st_c5_2/EXPORT_COMPLETENESS_AUDIT.md"),
+        _dashboard_stage("ST-C3", governance, result["updated_at_utc"], "Export not complete", "reports/st_c5/DATASET_GOVERNANCE_DECISION.json"),
         {
             "stage": "Replay",
             "status": result["replay_status"],
             "last_run": "",
             "blocking_reason": "Dataset not approved",
+            "evidence": "research_data/metadata/ST_C5_DATASET_LIFECYCLE.json",
         },
         {
             "stage": "Strategy Validation",
             "status": result["strategy_validation_status"],
             "last_run": "",
             "blocking_reason": "Replay blocked",
+            "evidence": "reports/st_c5_pipeline/ST_C5_PIPELINE_STATUS.json",
         },
         {
             "stage": "Demo",
             "status": result["demo_status"],
             "last_run": "",
             "blocking_reason": "Strategy validation blocked",
+            "evidence": "reports/st_c5_pipeline/ST_C5_PIPELINE_STATUS.json",
         },
         {
             "stage": "Live",
             "status": result["live_status"],
             "last_run": "",
             "blocking_reason": "Demo blocked",
+            "evidence": "reports/st_c5_pipeline/ST_C5_PIPELINE_STATUS.json",
         },
     ]
     return {
@@ -218,13 +222,20 @@ def build_pipeline_dashboard(result: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _dashboard_stage(step_name: str, step: dict[str, Any] | None, last_run: str, waiting_reason: str) -> dict[str, str]:
+def _dashboard_stage(
+    step_name: str,
+    step: dict[str, Any] | None,
+    last_run: str,
+    waiting_reason: str,
+    evidence: str,
+) -> dict[str, str]:
     if step is None:
         return {
             "stage": step_name,
             "status": "WAITING",
             "last_run": "",
             "blocking_reason": waiting_reason,
+            "evidence": evidence,
         }
     detail = step.get("detail") or {}
     return {
@@ -232,6 +243,7 @@ def _dashboard_stage(step_name: str, step: dict[str, Any] | None, last_run: str,
         "status": str(step["status"]),
         "last_run": last_run,
         "blocking_reason": str(detail.get("reason") or ""),
+        "evidence": evidence,
     }
 
 
@@ -267,12 +279,12 @@ def _dashboard_markdown(dashboard: dict[str, Any]) -> str:
         "",
         f"Recommendation: **{dashboard['recommendation']}**",
         "",
-        "| Stage | Status | Last Run | Blocking Reason |",
-        "| --- | --- | --- | --- |",
+        "| Stage | Status | Last Run | Blocking Reason | Evidence |",
+        "| --- | --- | --- | --- | --- |",
     ]
     for stage in dashboard["stages"]:
         lines.append(
-            f"| {stage['stage']} | {stage['status']} | {stage['last_run'] or '-'} | {stage['blocking_reason'] or '-'} |"
+            f"| {stage['stage']} | {stage['status']} | {stage['last_run'] or '-'} | {stage['blocking_reason'] or '-'} | {stage['evidence']} |"
         )
     lines.extend(
         [
