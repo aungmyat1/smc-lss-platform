@@ -16,6 +16,7 @@ that provider reaches an operational decision.
 | Date range | Required start `2021-01-04T00:00:00Z`; required end per timeframe |
 | Validation criteria | Frozen ST-C3 and ST-C5 gates |
 | Pipeline sequence | Frozen ST-C5 orchestrator |
+| Connection handoff | `reports/operations/PROVIDER_CONNECTION_HANDOFF_CHECKLIST.md` |
 
 ## Prohibited During Provider Evaluation
 
@@ -28,6 +29,7 @@ that provider reaches an operational decision.
 - Editing exported CSVs manually
 - Filling missing bars manually
 - Changing export code to force a pass
+- Running a history gate while connected to the wrong provider server
 
 ## Decision Rule
 
