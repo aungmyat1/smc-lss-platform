@@ -1,6 +1,6 @@
 # OP-02 MetaQuotes Demo Qualification Campaign
 
-Status: **PENDING_METAQUOTES_CONNECTION**
+Status: **ENVIRONMENT_FAILED**
 
 Objective: determine whether MetaQuotes Demo can provide the historical data
 required by ST-C3 using the unchanged frozen ST-C5 pipeline.
@@ -21,15 +21,25 @@ required by ST-C3 using the unchanged frozen ST-C5 pipeline.
 | SLA | `reports/operations/PROVIDER_EVALUATION_SLA.md` |
 | Connection handoff | `reports/operations/PROVIDER_CONNECTION_HANDOFF_CHECKLIST.md` |
 | Provider lock | `reports/operations/provider_lock.json` |
+| Environment checklist | `reports/operations/OP_02_ENVIRONMENT_VERIFICATION_CHECKLIST.md` |
+| Retry policy | `reports/operations/OP_02_RETRY_POLICY.md` |
 
 ## Current Precheck
 
 | Field | Value |
 | --- | --- |
-| Precheck status | PENDING_METAQUOTES_CONNECTION |
+| Precheck status | ENVIRONMENT_FAILED |
 | Active terminal server | VTMarkets-Demo |
-| Evidence | `reports/operations/providers/MetaQuotes/attempt_01/CONNECTION_RECHECK_04.json` |
+| Evidence | `reports/operations/providers/MetaQuotes/attempt_01/CONNECTION_RECHECK_05.json` |
 | Handoff checkpoint | `reports/operations/providers/MetaQuotes/METAQUOTES_CONNECTION_HANDOFF.md` |
+
+## Implementation Status
+
+OP-02 implementation is complete, but the environment failed the retry policy.
+The active MT5 server never reached MetaQuotes-Demo; final evidence remains on
+VTMarkets-Demo.
+
+Escalation decision: `reports/operations/OP_02_ESCALATION_DECISION.md`
 
 ## Execution Sequence
 
@@ -57,4 +67,6 @@ MetaQuotes Demo is ST-C3 eligible only if:
 ## Guardrail
 
 No provider-specific exceptions, manual gap filling, threshold changes, strategy
-changes, replay unlock, demo, or live actions are allowed.
+changes, replay unlock, demo, or live actions are allowed. MetaQuotes history
+sync must not be run unless the provider identity check reaches
+`READY_FOR_HISTORY_GATE` in a future explicitly reopened evaluation.

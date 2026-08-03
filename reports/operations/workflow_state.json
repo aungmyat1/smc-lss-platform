@@ -1,0 +1,22 @@
+{
+  "current_state": "OP_02_ENVIRONMENT_FAILED",
+  "dataset_status": "NOT_APPROVED",
+  "demo_status": "BLOCKED",
+  "guardrail": "Machine-readable operations state only; it does not approve datasets, unlock replay, modify ST-C3, or change strategy logic.",
+  "last_updated_utc": "2026-08-02T14:10:04Z",
+  "live_status": "BLOCKED",
+  "next_action": "Prepare IC Markets Demo provider lock and connection handoff, then run provider identity check.",
+  "next_provider": "IC Markets Demo",
+  "replay_status": "BLOCKED",
+  "state_transitions": [
+    {
+      "condition": "MetaQuotes connection check returned READY_FOR_HISTORY_GATE",
+      "next_state": "READY_FOR_HISTORY_GATE"
+    },
+    {
+      "condition": "MetaQuotes connection retry policy exhausted",
+      "next_state": "OP_02_ENVIRONMENT_FAILED"
+    }
+  ],
+  "strategy_validation_status": "BLOCKED"
+}

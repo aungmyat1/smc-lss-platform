@@ -1,0 +1,20 @@
+{
+  "active_server": "VTMarkets-Demo",
+  "blocker_type": "Environment",
+  "decision": "METAQUOTES_ENVIRONMENT_UNAVAILABLE",
+  "dataset_status": "NOT_APPROVED",
+  "evidence": [
+    "reports/operations/providers/MetaQuotes/attempt_01/CONNECTION_RECHECK_05.json",
+    "reports/operations/OP_02_RETRY_POLICY.md",
+    "reports/operations/provider_lock.json"
+  ],
+  "expected_server": "MetaQuotes-Demo",
+  "generated_at_utc": "2026-08-02T14:10:04Z",
+  "guardrail": "No history gate, export, ST-C3 validation, approval, replay, demo, or live action was executed for MetaQuotes.",
+  "next_provider": "IC Markets Demo",
+  "op_02_status": "ENVIRONMENT_FAILED",
+  "replay_status": "BLOCKED",
+  "strategy_validation_status": "BLOCKED",
+  "terminal_build": 6063,
+  "terminal_connected": true
+}
