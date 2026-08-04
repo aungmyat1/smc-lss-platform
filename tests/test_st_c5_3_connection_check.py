@@ -66,3 +66,17 @@ def test_connection_check_allows_metaquotes_server(tmp_path, monkeypatch):
 
     assert result["status"] == "READY_FOR_HISTORY_GATE"
     assert result["next_action"] == "Run python -m tools.st_c5_3_history_sync_gate"
+
+
+def test_connection_check_reuses_guard_for_non_metaquotes_provider(tmp_path, monkeypatch):
+    _patch_mt5(monkeypatch, _FakeMT5("VTMarkets-Demo", "VT Markets (Pty) Ltd"))
+
+    result = check.run_connection_check(
+        expected_provider="ICMarkets",
+        report_dir=tmp_path,
+        filename_stem="check",
+    )
+
+    assert result["status"] == "PENDING_PROVIDER_CONNECTION"
+    assert result["expected_provider"] == "ICMarkets"
+    assert result["next_action"] == "Connect MT5 to the expected ICMarkets server before running history gate."

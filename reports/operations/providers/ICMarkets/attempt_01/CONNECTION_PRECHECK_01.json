@@ -1,0 +1,27 @@
+{
+  "account_company": "VT Markets (Pty) Ltd",
+  "account_type": "Demo",
+  "expected_provider": "ICMarkets",
+  "generated_at_utc": "2026-08-03T10:00:35Z",
+  "guardrail": "ST-C5 broker-data qualification only; dataset approval, replay, strategy validation, demo, and live remain blocked.",
+  "next_action": "Connect MT5 to the expected ICMarkets server before running history gate.",
+  "server": "VTMarkets-Demo",
+  "stage": "st_c5_3_connection_check",
+  "status": "PENDING_PROVIDER_CONNECTION",
+  "symbols": {
+    "EURUSD": {
+      "description": "Euro vs US Dollar",
+      "path": "Forex Major\\Forex Major\\EURUSD",
+      "selected": true,
+      "symbol_info_available": true
+    },
+    "GBPUSD": {
+      "description": "Great Britain Pound vs US Dollar",
+      "path": "Forex Major\\Forex Major\\GBPUSD",
+      "selected": true,
+      "symbol_info_available": true
+    }
+  },
+  "terminal_build": 6063,
+  "terminal_connected": true
+}

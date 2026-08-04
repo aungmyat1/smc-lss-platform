@@ -9,7 +9,7 @@ replace ST-C4/ST-C4.1 provider qualification or ST-C3 validation.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | VTMarkets | Demo | VTMarkets-Demo | 2026-08-02 | None in-window | 2025-10-10 | 2022-07-26 | 2021-01-04 | NOT_RUN | No | History | OPERATIONALLY_INSUFFICIENT_FOR_ST_C3_HISTORY | `reports/operations/OP_01_ATTEMPT_03_RESULT.md` |
 | MetaQuotes | Demo | Pending exact server | 2026-08-02 retry policy exhausted on VTMarkets-Demo | Pending | Pending | Pending | Pending | NOT_RUN | No | Environment | METAQUOTES_ENVIRONMENT_UNAVAILABLE | `reports/operations/OP_02_ESCALATION_DECISION.md` |
-| IC Markets | Demo | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending | NEXT_EVALUATION | Pending |
+| IC Markets | Demo | ICMarkets-Demo expected; active server VTMarkets-Demo rejected | 2026-08-03 connection precheck blocked | Pending | Pending | Pending | Pending | NOT_RUN | No | Environment | PENDING_PROVIDER_CONNECTION | `reports/operations/providers/ICMarkets/attempt_01/CONNECTION_PRECHECK_01.json` |
 | Pepperstone | Demo | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending | PLANNED | Pending |
 
 ## Interpretation
@@ -34,5 +34,6 @@ Provider evaluations are governed by
 
 VTMarkets-Demo completed its final controlled synchronization attempt under
 `reports/operations/OP_01_ATTEMPT_03_PROTOCOL.md` and is classified as
-`OPERATIONALLY_INSUFFICIENT_FOR_ST_C3_HISTORY`. Proceed to MetaQuotes Demo with
-the unchanged frozen ST-C5 pipeline.
+`OPERATIONALLY_INSUFFICIENT_FOR_ST_C3_HISTORY`. MetaQuotes could not be started
+because the environment never reached `MetaQuotes-Demo` under the retry policy.
+Proceed to IC Markets Demo with the unchanged frozen ST-C5 pipeline.

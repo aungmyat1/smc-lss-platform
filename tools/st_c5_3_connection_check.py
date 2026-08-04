@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Provider identity precheck for OP-02 MetaQuotes qualification.
+"""Provider identity precheck for broker-data qualification.
 
 This tool verifies the active MT5 server before a provider history gate runs.
 It does not query history, export data, approve datasets, unlock replay, or
@@ -62,7 +62,7 @@ def _connection_payload(expected_provider: str) -> dict[str, Any]:
     company = str(account.get("company") or "")
     provider_match = expected_provider.lower() in server.lower() or expected_provider.lower() in company.lower()
     symbols_ok = all(item["selected"] and item["symbol_info_available"] for item in symbols.values())
-    status = "READY_FOR_HISTORY_GATE" if provider_match and symbols_ok and terminal.get("connected") else "PENDING_METAQUOTES_CONNECTION"
+    status = "READY_FOR_HISTORY_GATE" if provider_match and symbols_ok and terminal.get("connected") else _pending_status(expected_provider)
     return {
         "stage": "st_c5_3_connection_check",
         "status": status,
@@ -74,7 +74,7 @@ def _connection_payload(expected_provider: str) -> dict[str, Any]:
         "terminal_connected": bool(terminal.get("connected")),
         "terminal_build": terminal.get("build"),
         "symbols": symbols,
-        "next_action": "Run python -m tools.st_c5_3_history_sync_gate" if status == "READY_FOR_HISTORY_GATE" else "Connect MT5 to the exact MetaQuotes Demo server before running history gate.",
+        "next_action": "Run python -m tools.st_c5_3_history_sync_gate" if status == "READY_FOR_HISTORY_GATE" else f"Connect MT5 to the expected {expected_provider} server before running history gate.",
         "guardrail": GUARDRAIL,
     }
 
@@ -99,6 +99,12 @@ def _as_dict(value: Any) -> dict[str, Any]:
     return dict(value) if isinstance(value, dict) else {}
 
 
+def _pending_status(expected_provider: str) -> str:
+    if expected_provider == "MetaQuotes":
+        return "PENDING_METAQUOTES_CONNECTION"
+    return "PENDING_PROVIDER_CONNECTION"
+
+
 def _connection_markdown(payload: dict[str, Any]) -> str:
     symbols = payload.get("symbols") or {}
     symbol_lines = [
@@ -109,7 +115,7 @@ def _connection_markdown(payload: dict[str, Any]) -> str:
         symbol_lines = ["| - | - | - | - |"]
     return "\n".join(
         [
-            "# OP-02 MetaQuotes Connection Check",
+            f"# {payload.get('expected_provider')} Connection Check",
             "",
             f"Status: **{payload['status']}**",
             "",

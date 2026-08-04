@@ -1,11 +1,11 @@
 {
-  "current_state": "OP_02_ENVIRONMENT_FAILED",
+  "current_state": "OP_03_PENDING_PROVIDER_CONNECTION",
   "dataset_status": "NOT_APPROVED",
   "demo_status": "BLOCKED",
   "guardrail": "Machine-readable operations state only; it does not approve datasets, unlock replay, modify ST-C3, or change strategy logic.",
-  "last_updated_utc": "2026-08-02T14:10:04Z",
+  "last_updated_utc": "2026-08-03T10:00:35Z",
   "live_status": "BLOCKED",
-  "next_action": "Prepare IC Markets Demo provider lock and connection handoff, then run provider identity check.",
+  "next_action": "Switch MT5 from VTMarkets-Demo to IC Markets Demo, then rerun provider identity check.",
   "next_provider": "IC Markets Demo",
   "replay_status": "BLOCKED",
   "state_transitions": [
@@ -16,6 +16,14 @@
     {
       "condition": "MetaQuotes connection retry policy exhausted",
       "next_state": "OP_02_ENVIRONMENT_FAILED"
+    },
+    {
+      "condition": "IC Markets connection check returned READY_FOR_HISTORY_GATE",
+      "next_state": "READY_FOR_HISTORY_GATE"
+    },
+    {
+      "condition": "IC Markets connection check rejected active server",
+      "next_state": "OP_03_PENDING_PROVIDER_CONNECTION"
     }
   ],
   "strategy_validation_status": "BLOCKED"
